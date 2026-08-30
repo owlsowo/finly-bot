@@ -1,0 +1,105 @@
+{
+  "schema_version": "finly_attempt115_activation.v1",
+  "attempt_id": "finly_prospective_profitability_attempt_115",
+  "entry_kind": "PRE_SIGNAL_DETERMINISTIC_INPUT_COMMITMENT_ACTIVATION",
+  "frozen_at": "2026-08-30T06:58:26.000Z",
+  "publication_deadline": "2026-08-31T20:00:00.000Z",
+  "protocol": {
+    "path": "research/downside_semivolatility_challenger_protocol.json",
+    "raw_bytes_sha256": "sha256:34d30a46e70c07b27fad637b1948262f953662b43e30cbbaf86b84927dbe0e53",
+    "protocol_sha256": "sha256:340ba21e8e3404bd42adcd8e4e30ea5f0f327ee2d891988564ca3f0654657619"
+  },
+  "upstream_capture": {
+    "trial_id": "finly_forward_trial_live_1a",
+    "activation": {
+      "path": "research/forward_trial_live/activation.json",
+      "raw_bytes_sha256": "sha256:ecf7a16fbe84061799b8df6db7b58e8b8b0f028e8d7a4c4147b08b20d45a6180",
+      "activation_sha256": "sha256:a9ad429e2094d7cb59300bab18727306121554b62ac112a8e297ce9e12b2800d"
+    },
+    "runtime_manifest": {
+      "path": "research/forward_trial_live/runtime_manifest.json",
+      "raw_bytes_sha256": "sha256:c5df20d6bc9908d89cfef46b0d3c1901688a25835e22fa87f14e7c73cf6c3d1c",
+      "manifest_sha256": "sha256:9ab2b2d7b3e788880db9d6de1212fa485967472b1f0fae5963c6c51f88912457"
+    },
+    "commitment_schema": "finly_forward_trial_live_commitment.v2",
+    "public_anchor_schema": "finly_forward_trial_live_public_anchor.v2",
+    "github_publication_receipt_schema": "finly_forward_trial_live_github_publication_receipt.v4",
+    "required_adjusted_history_sessions": 253,
+    "required_symbols": [
+      "SPY",
+      "BIL"
+    ],
+    "adjusted_book": "adjustment=all",
+    "raw_book": "adjustment=raw",
+    "feed": "iex",
+    "timeframe": "1Day"
+  },
+  "deterministic_commitment": {
+    "mechanism": "PREPUBLISHED_DETERMINISTIC_FUNCTION_OVER_PREOPEN_PUBLIC_INPUT_HASH",
+    "public_input_hash_field": "forward_public_anchor.private_bundle_sha256",
+    "private_input_hash_definition": "SHA-256 of the complete canonical forward private commitment body",
+    "reveal_requirement": "The reopened private commitment must hash exactly to the public anchor and pass the frozen forward activation, runtime, acquisition, and prior-chain validators.",
+    "decision_rule": "The Attempt 115 incumbent and challenger decisions are deterministic functions only of the frozen runtime, commitment sequence, and reopened acquisition committed by that hash.",
+    "separate_attempt115_signal_anchor_required": false,
+    "timeliness_rule": "The existing forward-anchor GitHub workflow and verification job must complete strictly before the reopened bundle's committed next_market_open_at.",
+    "forward_next_close_deadline_alone_sufficient": false,
+    "github_commit_timestamp_used": false,
+    "independent_cryptographic_timestamp_verified": false
+  },
+  "sample": {
+    "first_signal_session": "2026-08-31",
+    "first_signal_market_close_at": "2026-08-31T20:00:00.000Z",
+    "first_signal_bar_eligible_at": "2026-08-31T20:15:00.000Z",
+    "first_execution_session": "2026-09-01",
+    "first_execution_market_open_at": "2026-09-01T13:30:00.000Z",
+    "required_policy_signal_commitments": 252,
+    "required_upstream_source_bundles": 253,
+    "required_primary_settlements": 252,
+    "signal_commitment_sequences": "1 through 252 inclusive",
+    "outcome_source_sequences": "2 through 253 inclusive",
+    "no_skips": true,
+    "no_backfill": true,
+    "replacement_window_permitted": false,
+    "optional_stopping_permitted": false,
+    "execution_timing": "completed close t signal, next official session open t+1 execution, next official session close t+1 valuation"
+  },
+  "initial_state": {
+    "incumbent_policy_id": "tsmom_ensemble_vol",
+    "challenger_policy_id": "tsmom_ensemble_downside_semivol",
+    "both_books_initial_weights": {
+      "SPY": 0,
+      "BIL": 1
+    },
+    "rebalance_interval_sessions": 5,
+    "rebalance_anchor": 0,
+    "first_commitment_sequence": 1,
+    "first_commitment_rebalances": true
+  },
+  "authority": {
+    "research_only": true,
+    "alpaca_or_broker_network_requests_permitted": false,
+    "public_github_get_verification_permitted": true,
+    "broker_reads_permitted": false,
+    "broker_mutation_authorized": false,
+    "order_payload": null,
+    "retrospective_scoring_permitted": false,
+    "public_claim_mutation_authorized": false
+  },
+  "evaluation_gates": {
+    "protocol_activation_runtime_publication_verified": false,
+    "input_commitment_replay_enabled": false,
+    "settlement_enabled": false,
+    "inference_enabled": false
+  },
+  "assurance": {
+    "github_publication_before_first_signal_close_required": true,
+    "all_first_252_forward_input_hashes_verified_before_their_committed_next_opens_required": true,
+    "all_first_253_forward_private_bundles_reopened_and_verified_required": true,
+    "all_first_252_outcome_price_lineages_required": true,
+    "provider_origin_verified": false,
+    "broker_execution_verified": false,
+    "performance_inference_permitted": false
+  },
+  "claim_boundary": "This activation freezes a commit-reveal evaluation rule for Attempt 115. A timely public hash of the complete forward input bundle, combined with the previously published deterministic policy runtime, commits the paired policy decision without a second signal anchor. The stronger Attempt 115 timeliness gate is the next market open, not the forward trial's next-close deadline. This local activation is not independent publication evidence, does not open settlement or inference, does not verify provider origin or broker execution, does not authorize trading, and does not establish profitability.",
+  "activation_sha256": "sha256:96f03b0a592f7f8358507ffa04e04ba28f8f51fdbe916975982ce8b00f6afc51"
+}

@@ -1,0 +1,79 @@
+{
+  "schema_version": "finly_attempt115_runtime_manifest.v1",
+  "attempt_id": "finly_prospective_profitability_attempt_115",
+  "manifest_kind": "PRE_SIGNAL_DETERMINISTIC_COMMIT_REVEAL_RUNTIME_FREEZE",
+  "frozen_at": "2026-08-30T07:18:13.000Z",
+  "publication_deadline": "2026-08-31T20:00:00.000Z",
+  "publication_deadline_exclusive": true,
+  "protocol": {
+    "path": "research/downside_semivolatility_challenger_protocol.json",
+    "raw_bytes_sha256": "sha256:34d30a46e70c07b27fad637b1948262f953662b43e30cbbaf86b84927dbe0e53",
+    "protocol_sha256": "sha256:340ba21e8e3404bd42adcd8e4e30ea5f0f327ee2d891988564ca3f0654657619"
+  },
+  "activation": {
+    "path": "research/prospective_attempt115/activation.json",
+    "raw_bytes_sha256": "sha256:6519ccca48848b8b8d20593c011a11bd2b3f98c608cf4c1fbd61bf2347841255",
+    "activation_sha256": "sha256:96f03b0a592f7f8358507ffa04e04ba28f8f51fdbe916975982ce8b00f6afc51"
+  },
+  "runtime_source_files": {
+    ".github/workflows/ci.yml": "sha256:f23196c2cd6e070455395490e7fde6ad14b8ae31016771188269d85cb75e70e5",
+    "lib/canonical.mjs": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904",
+    "lib/economic_research.mjs": "sha256:efde15977d43fb5556683ce7ba5ca7fe29fa82a1cc6acd9632d8f6e6fc5c1256",
+    "lib/forward_market_data.mjs": "sha256:a7d8597f3733817fed3420b07ca2a51fece15f4b37b69d5b4e462ec6e9dfc053",
+    "research/champion_trial_ledger_generation6.json": "sha256:f1b35f0b6ff50888b4ca7dbb6c1bb46258af081c09cf344d44adc88753991ecf",
+    "research/downside_semivolatility_challenger_protocol.json": "sha256:34d30a46e70c07b27fad637b1948262f953662b43e30cbbaf86b84927dbe0e53",
+    "research/downside_semivolatility_challenger.mjs": "sha256:ec9f9422471901ed933cbd2f5dac08ec8c4915fc1b724806437ec0d2083f9a83",
+    "research/equity_execution_realism.mjs": "sha256:12212bbecb3b6d11033ec7289be624405b56c42cdbd4659034fefe24487d79f6",
+    "research/forward_trial_live_core.mjs": "sha256:ef8651fe4ada18045dd8765f30746936254917f599d89d1bd89f514c9e43f523",
+    "research/forward_trial_live/activation.json": "sha256:ecf7a16fbe84061799b8df6db7b58e8b8b0f028e8d7a4c4147b08b20d45a6180",
+    "research/forward_trial_live/runtime_manifest.json": "sha256:c5df20d6bc9908d89cfef46b0d3c1901688a25835e22fa87f14e7c73cf6c3d1c",
+    "research/prospective_attempt114/inference.mjs": "sha256:62f64a60797500d35191fa7a7d53e31d93e0c5b125a0b9533cc8d43372b0f88f",
+    "research/prospective_attempt114/protocol.json": "sha256:794bb93d578b4b4766daac1c27d7fa0a68f730fbeda853b208aa98ad501572ff",
+    "research/prospective_attempt114/runtime_manifest.json": "sha256:c3fbcb985385ef9dcbc118824a6e318b1e39f45b290e180a6a1f1f0865ea9966",
+    "research/prospective_attempt114/runtime.mjs": "sha256:c6eeefccdf26f50f20a5fec781809e525009f63a40ee4d7a964cb866f305079f",
+    "research/prospective_attempt114/settlement.mjs": "sha256:3c6c5eeaf864bccbbb7afa0346bc4bbfe1d9532f4c56541a2a64139c84a29079",
+    "research/prospective_attempt115/activation.json": "sha256:6519ccca48848b8b8d20593c011a11bd2b3f98c608cf4c1fbd61bf2347841255",
+    "research/prospective_attempt115/activation.mjs": "sha256:1dedfcc032542f1b63f13cece9ac1e1614b9bcd2a948edce70aac73ec640ea49",
+    "research/prospective_attempt115/inference.mjs": "sha256:b5f12f8dfca7d8cc73794fefd3918496a341c2a78a1e37cbb390c5448af7b13d",
+    "research/prospective_attempt115/policy.mjs": "sha256:e30a3f1076212df634b7f8f9e573192f80c5bdcd4ec2700de842a0c603c02fb6",
+    "research/prospective_attempt115/protocol.mjs": "sha256:a0414483900e3351579870dfee181626fbb4713f83c1ecf153237b3518adadd6",
+    "research/prospective_attempt115/runtime.mjs": "sha256:1678628d04f664bbdd2cb2807b8d32f2dffd7aeba5e597d270b6508cab25765e",
+    "research/prospective_attempt115/settlement.mjs": "sha256:9dfad3f07bd4f4caedbb5f5d36f5f67855fb1890622037e14aeee971bb633955",
+    "research/run_forward_trial_live.mjs": "sha256:221fd0f6a2ce17041f5984cfc68baa6b68648337ccf678e758640d929d318fea",
+    "scripts/verify_attempt115_forward_anchor.mjs": "sha256:78421e1d24e7f761249444e83c023df4726647fdd24184d6e46bc86df692cef6",
+    "scripts/verify_attempt115_github_publication.mjs": "sha256:dc137ac26410820906a40f8c95d0ea379402f9eafadd5a496f48336ec3031fc2",
+    "scripts/verify_forward_live_github_publication.mjs": "sha256:424716274d2b304d0197964bd4d0f5efc28147912aa4f032d2a2ff4491472af5"
+  },
+  "runtime_source_files_sha256": "sha256:40d64e97f2817c0d6253eeaa12b72e2469644804996a431bf40838fb67c1bd61",
+  "authority": {
+    "research_only": true,
+    "alpaca_or_broker_network_requests_permitted": false,
+    "public_github_get_verification_permitted": true,
+    "broker_reads_permitted": false,
+    "broker_mutation_authorized": false,
+    "order_payload": null,
+    "content_addressed_local_evidence_persistence_permitted": true,
+    "retrospective_scoring_permitted": false,
+    "public_claim_mutation_authorized": false
+  },
+  "evaluation_gates": {
+    "protocol_activation_runtime_publication_verified": false,
+    "input_commitment_replay_enabled": false,
+    "settlement_enabled": false,
+    "inference_enabled": false
+  },
+  "assurance": {
+    "github_publication_before_first_signal_close_required": true,
+    "separate_attempt115_signal_anchor_required": false,
+    "frozen_function_over_preopen_forward_input_hash_required": true,
+    "all_first_252_forward_input_publication_runs_complete_before_committed_next_open_required": true,
+    "all_first_253_forward_private_bundles_and_public_anchors_required": true,
+    "all_first_252_outcome_price_lineages_required": true,
+    "independent_cryptographic_timestamp_verified": false,
+    "provider_origin_verified": false,
+    "broker_execution_verified": false,
+    "performance_inference_permitted": false
+  },
+  "claim_boundary": "This manifest binds the exact pre-signal Attempt 115 protocol, activation, deterministic policy compiler, input-hash verifier, settlement, inference, and frozen upstream source bytes. It does not itself prove public publication, open replay, settlement, or inference gates, verify provider origin or broker execution, authorize trading, or establish profitability.",
+  "manifest_sha256": "sha256:3ef9475549f67fb2fc10bdcb9c75b396069faf6fb6a5dadb3910748ac2872ab0"
+}
