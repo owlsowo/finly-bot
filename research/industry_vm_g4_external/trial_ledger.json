@@ -1,0 +1,80 @@
+{
+  "schema_version": "finly_industry_vm_g4_trial_ledger.v1",
+  "append_only_through": 149,
+  "counting_policy": "Conservative effective multiplicity count. Every prior registered formula, control, diagnostic eligible for comparison, aborted or consumed replay, and every inspected exploratory variant counts even when it was not promoted or its exact scratch command was not retained.",
+  "blocks": [
+    {
+      "range": "1-113",
+      "count": 113,
+      "status": "incorporated_by_hash_from_generation6_ledger",
+      "path": "research/champion_trial_ledger_generation6.json",
+      "raw_bytes_sha256": "sha256:f1b35f0b6ff50888b4ca7dbb6c1bb46258af081c09cf344d44adc88753991ecf"
+    },
+    {
+      "range": "114-118",
+      "count": 5,
+      "status": "incorporated_registered_attempts",
+      "attempts": [
+        {
+          "number": 114,
+          "id": "prospective_attempt114",
+          "path": "research/prospective_attempt114/protocol.json",
+          "raw_bytes_sha256": "sha256:794bb93d578b4b4766daac1c27d7fa0a68f730fbeda853b208aa98ad501572ff"
+        },
+        {
+          "number": 115,
+          "id": "downside_semivolatility_challenger",
+          "path": "research/downside_semivolatility_challenger_protocol.json",
+          "raw_bytes_sha256": "sha256:34d30a46e70c07b27fad637b1948262f953662b43e30cbbaf86b84927dbe0e53"
+        },
+        {
+          "number": 116,
+          "id": "prospective_attempt116",
+          "path": "research/prospective_attempt116/protocol.json",
+          "raw_bytes_sha256": "sha256:3baa380e02f982d1c0c892357cded0e24ad311c2e73c1c1cc38d1d1b5d1501a2"
+        },
+        {
+          "number": 117,
+          "id": "external_factor_replay_attempt117",
+          "path": "research/external_validation_attempt115/frozen_protocol.json",
+          "raw_bytes_sha256": "sha256:29e467273c9d6a9c958da5cb0ce1621f04da4cad5c303773d61e5f7b005345eb"
+        },
+        {
+          "number": 118,
+          "id": "external_factor_replay_attempt118",
+          "path": "research/external_validation_attempt115/attempt118_frozen_protocol.json",
+          "raw_bytes_sha256": "sha256:e094d13edd348485cef54f7ad20f179ce88793134e59c360bf681ffdf7e15b5b"
+        }
+      ]
+    },
+    {
+      "range": "119-136",
+      "count": 18,
+      "status": "retrospectively_registered_exploratory_family_before_attempt149",
+      "family": "external_factor_formula_and_cadence_band_exploration",
+      "evidence_boundary": "The exploratory shell commands were not retained as a durable per-variant ledger. Eighteen is the no-fewer-than count reconstructed from the six inspected formula families plus their inspected cadence and rebalance-band variants; the full family is charged to multiplicity and none is eligible to be called preregistered."
+    },
+    {
+      "range": "137-148",
+      "count": 12,
+      "status": "retrospectively_registered_exploratory_family_before_attempt149",
+      "family": "volatility_managed_g4_target_cap_cadence_grid",
+      "selected_formula_within_family": "g4_volatility_managed_20_target_1_5_cap",
+      "selected_formula_source": "research/volatility_managed_g4_candidate.mjs",
+      "selected_formula_source_raw_bytes_sha256": "sha256:7834a6df652b2a53fb316d154c9ec2ff727e5e6bfefa16de301adb2119afdd7e",
+      "evidence_boundary": "All twelve inspected target, gross-cap, and cadence cells count. Development, validation, recent, and anchor outcomes were seen before Attempt149, so no ETF-panel interval is an untouched holdout."
+    },
+    {
+      "range": "149",
+      "count": 1,
+      "status": "registered_before_industry_source_acquisition",
+      "id": "industry_vm_g4_external_replay_attempt149",
+      "candidate_count": 1,
+      "diagnostic_mapping_count": 1,
+      "diagnostic_mapping_is_selection_eligible": false
+    }
+  ],
+  "block_count_sum": 149,
+  "inferential_cumulative_trial_count": 149,
+  "claim_boundary": "This ledger deliberately over-credits incomplete scratch history to the multiplicity penalty. It prevents the selected volatility-managed G4 formula from being represented as an untouched discovery and does not convert the new industry replay into live, forward, tradable-ETF, or options evidence."
+}
