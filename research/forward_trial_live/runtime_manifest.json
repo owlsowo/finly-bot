@@ -1,0 +1,64 @@
+{
+  "schema_version": "finly_forward_trial_live_runtime_manifest.v1",
+  "trial_id": "finly_forward_trial_live_1a",
+  "manifest_kind": "PRE_SIGNAL_RUNTIME_FREEZE",
+  "activation_sha256": "sha256:a9ad429e2094d7cb59300bab18727306121554b62ac112a8e297ce9e12b2800d",
+  "frozen_at": "2026-08-30T03:11:43.000Z",
+  "entrypoint": "research/run_forward_trial_live.mjs",
+  "runtime_source_files": {
+    "lib/canonical.mjs": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904",
+    "lib/economic_research.mjs": "sha256:efde15977d43fb5556683ce7ba5ca7fe29fa82a1cc6acd9632d8f6e6fc5c1256",
+    "lib/forward_market_data.mjs": "sha256:a7d8597f3733817fed3420b07ca2a51fece15f4b37b69d5b4e462ec6e9dfc053",
+    "research/forward_trial_live_core.mjs": "sha256:0146eb29b8f9ac029569dde4dc9bf6ca8c3e65317df4463763fbf66f639aefc0",
+    "research/run_forward_trial_live.mjs": "sha256:0c21d61ef260e4a3382ac901b86e7a74c6842ea06d44546fd575364296a704ad"
+  },
+  "runtime_source_files_sha256": "sha256:03f30ba8e7833986be7eeb339b037678b56fe20be6d93324155435879619f9c1",
+  "runtime_environment": {
+    "node": "26.7.0",
+    "v8": "14.6.202.34-node.28",
+    "icu": "78.3",
+    "tz": "2026a",
+    "unicode": "17.0",
+    "openssl": "3.6.3",
+    "permitted_exec_argv": [
+      [],
+      [
+        "--env-file-if-exists=.env.local"
+      ]
+    ],
+    "forbidden_environment_variables": [
+      "NODE_OPTIONS",
+      "NODE_PATH",
+      "NODE_EXTRA_CA_CERTS",
+      "NODE_ICU_DATA",
+      "NODE_TLS_REJECT_UNAUTHORIZED",
+      "NODE_USE_ENV_PROXY",
+      "OPENSSL_CONF",
+      "SSL_CERT_FILE",
+      "SSL_CERT_DIR",
+      "HTTP_PROXY",
+      "HTTPS_PROXY",
+      "ALL_PROXY",
+      "NO_PROXY",
+      "http_proxy",
+      "https_proxy",
+      "all_proxy",
+      "no_proxy"
+    ],
+    "global_fetch_source_sha256": "sha256:2be60467736c9cc643fd8fa5c75710facaa62e68c43d067a84d16d500ba11779"
+  },
+  "authority": {
+    "research_only": true,
+    "broker_mutation_authorized": false,
+    "order_payload": null
+  },
+  "assurance": {
+    "github_publication_before_first_signal_required": true,
+    "independent_cryptographic_timestamp_verified": false,
+    "provider_origin_verified": false,
+    "broker_execution_verified": false,
+    "performance_inference_permitted": false,
+    "hostile_preexecution_environment_excluded": false
+  },
+  "manifest_sha256": "sha256:0e9a62aff778be809443599fd7f2dfc0e2ef388edbdd4d1696445dbff24593cb"
+}

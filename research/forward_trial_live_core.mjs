@@ -3,13 +3,16 @@ import {
   buildCurrentEconomicDecision,
   CURRENT_ECONOMIC_DECISION_PROTOCOL,
 } from "../lib/economic_research.mjs";
+import implementationBindingJson from "./forward_trial_live/runtime_manifest.json" with { type: "json" };
 
 export const FORWARD_TRIAL_LIVE_ID = "finly_forward_trial_live_1a";
 export const FORWARD_TRIAL_LIVE_PINNED_FIRST_SESSION = "2026-08-31";
 export const FORWARD_TRIAL_LIVE_ACTIVATION_SCHEMA = "finly_forward_trial_live_activation.v1";
-export const FORWARD_TRIAL_LIVE_ACQUISITION_SCHEMA = "finly_forward_trial_live_acquisition.v1";
-export const FORWARD_TRIAL_LIVE_COMMITMENT_SCHEMA = "finly_forward_trial_live_commitment.v1";
-export const FORWARD_TRIAL_LIVE_ANCHOR_SCHEMA = "finly_forward_trial_live_public_anchor.v1";
+export const FORWARD_TRIAL_LIVE_ACQUISITION_SCHEMA = "finly_forward_trial_live_acquisition.v2";
+export const FORWARD_TRIAL_LIVE_COMMITMENT_SCHEMA = "finly_forward_trial_live_commitment.v2";
+export const FORWARD_TRIAL_LIVE_ANCHOR_SCHEMA = "finly_forward_trial_live_public_anchor.v2";
+export const FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING_SCHEMA =
+  "finly_forward_trial_live_runtime_manifest.v1";
 
 export const FORWARD_TRIAL_LIVE_SYMBOLS = Object.freeze([
   "SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ",
@@ -137,6 +140,25 @@ function expectedEligibleAt(marketCloseAt) {
   return new Date(new Date(marketCloseAt).getTime() + 15 * 60_000).toISOString();
 }
 
+function newYorkClock(instantValue) {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    hourCycle: "h23",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const parts = Object.fromEntries(formatter.formatToParts(new Date(instantValue))
+    .filter(({ type }) => type !== "literal")
+    .map(({ type, value }) => [type, value]));
+  return `${parts.hour}:${parts.minute}:${parts.second}`;
+}
+
+function isWeekday(value) {
+  const day = new Date(`${value}T12:00:00.000Z`).getUTCDay();
+  return day >= 1 && day <= 5;
+}
+
 function validateCalendarSession(value, label = "official calendar session") {
   exact(value, [
     "calendar_provider", "calendar_endpoint", "calendar_request_sha256", "calendar_response_sha256",
@@ -156,16 +178,28 @@ function validateCalendarSession(value, label = "official calendar session") {
   const eligible = instant(value.bar_eligible_at, `${label}.bar_eligible_at`);
   const nextOpen = instant(value.next_market_open_at, `${label}.next_market_open_at`);
   const nextClose = instant(value.next_market_close_at, `${label}.next_market_close_at`);
+  const successorGapDays = (Date.parse(`${value.next_session_date}T00:00:00.000Z`)
+    - Date.parse(`${value.session_date}T00:00:00.000Z`)) / 86_400_000;
   if (open.slice(0, 10) !== value.session_date || close.slice(0, 10) !== value.session_date || open >= close) {
     fail(`${label} current-session timestamps are inconsistent`);
   }
+  if (newYorkClock(open) !== "09:30:00" || !new Set(["13:00:00", "16:00:00"]).has(newYorkClock(close))) {
+    fail(`${label} current-session hours are outside the fixed US-equity schedule`);
+  }
   if (eligible !== expectedEligibleAt(close)) fail(`${label} must use the fixed close-plus-15-minute boundary`);
   if (value.next_session_date <= value.session_date
+    || successorGapDays < 1
+    || successorGapDays > 14
+    || !isWeekday(value.session_date)
+    || !isWeekday(value.next_session_date)
     || nextOpen.slice(0, 10) !== value.next_session_date
     || nextClose.slice(0, 10) !== value.next_session_date
     || nextOpen >= nextClose
     || close >= nextOpen) {
     fail(`${label} next-session timestamps are inconsistent`);
+  }
+  if (newYorkClock(nextOpen) !== "09:30:00" || !new Set(["13:00:00", "16:00:00"]).has(newYorkClock(nextClose))) {
+    fail(`${label} next-session hours are outside the fixed US-equity schedule`);
   }
   return value;
 }
@@ -190,6 +224,34 @@ const FORMULA_BINDING = deepFreeze({
   protocol_sha256: sha256(CURRENT_ECONOMIC_DECISION_PROTOCOL),
 });
 
+const IMPLEMENTATION_SOURCE_PATHS = deepFreeze([
+  "lib/canonical.mjs",
+  "lib/economic_research.mjs",
+  "lib/forward_market_data.mjs",
+  "research/forward_trial_live_core.mjs",
+  "research/run_forward_trial_live.mjs",
+]);
+
+const RUNTIME_FORBIDDEN_ENVIRONMENT_VARIABLES = deepFreeze([
+  "NODE_OPTIONS",
+  "NODE_PATH",
+  "NODE_EXTRA_CA_CERTS",
+  "NODE_ICU_DATA",
+  "NODE_TLS_REJECT_UNAUTHORIZED",
+  "NODE_USE_ENV_PROXY",
+  "OPENSSL_CONF",
+  "SSL_CERT_FILE",
+  "SSL_CERT_DIR",
+  "HTTP_PROXY",
+  "HTTPS_PROXY",
+  "ALL_PROXY",
+  "NO_PROXY",
+  "http_proxy",
+  "https_proxy",
+  "all_proxy",
+  "no_proxy",
+]);
+
 const AUTHORITY = deepFreeze({
   research_only: true,
   broker_mutation_authorized: false,
@@ -200,6 +262,103 @@ const CLOSED_GATES = deepFreeze({
   settlement_enabled: false,
   inference_enabled: false,
 });
+
+function implementationBindingBody(value) {
+  return {
+    schema_version: value.schema_version,
+    trial_id: value.trial_id,
+    manifest_kind: value.manifest_kind,
+    activation_sha256: value.activation_sha256,
+    frozen_at: value.frozen_at,
+    entrypoint: value.entrypoint,
+    runtime_source_files: value.runtime_source_files,
+    runtime_source_files_sha256: value.runtime_source_files_sha256,
+    runtime_environment: value.runtime_environment,
+    authority: value.authority,
+    assurance: value.assurance,
+  };
+}
+
+export function validateForwardTrialLiveImplementationBinding(value, { activation = null } = {}) {
+  noSecrets(value, "runtime implementation manifest");
+  exact(value, [
+    "schema_version", "trial_id", "manifest_kind", "activation_sha256", "frozen_at",
+    "entrypoint", "runtime_source_files", "runtime_source_files_sha256", "runtime_environment",
+    "authority", "assurance", "manifest_sha256",
+  ], "runtime implementation manifest");
+  if (value.schema_version !== FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING_SCHEMA
+    || value.trial_id !== FORWARD_TRIAL_LIVE_ID
+    || value.manifest_kind !== "PRE_SIGNAL_RUNTIME_FREEZE"
+    || value.entrypoint !== "research/run_forward_trial_live.mjs") {
+    fail("runtime implementation manifest envelope is invalid");
+  }
+  digest(value.activation_sha256, "runtime implementation manifest activation hash");
+  instant(value.frozen_at, "runtime implementation manifest frozen_at");
+  exact(value.runtime_source_files, IMPLEMENTATION_SOURCE_PATHS, "runtime implementation source files");
+  for (const path of IMPLEMENTATION_SOURCE_PATHS) {
+    digest(value.runtime_source_files[path], `runtime implementation source hash ${path}`);
+  }
+  digest(value.runtime_source_files_sha256, "runtime implementation source-map hash");
+  if (value.runtime_source_files_sha256 !== sha256(value.runtime_source_files)) {
+    fail("runtime implementation source-map hash is invalid");
+  }
+  exact(value.runtime_environment, [
+    "node", "v8", "icu", "tz", "unicode", "openssl", "permitted_exec_argv",
+    "forbidden_environment_variables", "global_fetch_source_sha256",
+  ], "runtime implementation environment");
+  for (const key of ["node", "v8", "icu", "tz", "unicode", "openssl"]) {
+    if (typeof value.runtime_environment[key] !== "string"
+      || value.runtime_environment[key].length < 1
+      || value.runtime_environment[key].length > 128) {
+      fail(`runtime implementation environment.${key} must be a bounded version string`);
+    }
+  }
+  if (!same(value.runtime_environment.permitted_exec_argv, [
+    [],
+    ["--env-file-if-exists=.env.local"],
+  ])
+    || !same(
+      value.runtime_environment.forbidden_environment_variables,
+      RUNTIME_FORBIDDEN_ENVIRONMENT_VARIABLES,
+    )) {
+    fail("runtime implementation environment changes the frozen launch contract");
+  }
+  digest(
+    value.runtime_environment.global_fetch_source_sha256,
+    "runtime implementation global fetch source hash",
+  );
+  exact(value.authority, ["research_only", "broker_mutation_authorized", "order_payload"], "runtime implementation authority");
+  if (!same(value.authority, AUTHORITY)) fail("runtime implementation manifest crosses the research-only authority boundary");
+  exact(value.assurance, [
+    "github_publication_before_first_signal_required", "independent_cryptographic_timestamp_verified",
+    "provider_origin_verified", "broker_execution_verified", "performance_inference_permitted",
+    "hostile_preexecution_environment_excluded",
+  ], "runtime implementation assurance");
+  if (value.assurance.github_publication_before_first_signal_required !== true
+    || value.assurance.independent_cryptographic_timestamp_verified !== false
+    || value.assurance.provider_origin_verified !== false
+    || value.assurance.broker_execution_verified !== false
+    || value.assurance.performance_inference_permitted !== false
+    || value.assurance.hostile_preexecution_environment_excluded !== false) {
+    fail("runtime implementation manifest assurance boundary is invalid");
+  }
+  digest(value.manifest_sha256, "runtime implementation manifest hash");
+  if (value.manifest_sha256 !== sha256(implementationBindingBody(value))) {
+    fail("runtime implementation manifest self-hash is invalid");
+  }
+  if (activation !== null) {
+    validateForwardTrialLiveActivation(activation);
+    if (value.activation_sha256 !== activation.activation_sha256
+      || value.frozen_at >= activation.payload.activation_session.market_close_at) {
+      fail("runtime implementation manifest is not bound before the activated first session closes");
+    }
+  }
+  return value;
+}
+
+export const FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING = deepFreeze(
+  validateForwardTrialLiveImplementationBinding(structuredClone(implementationBindingJson)),
+);
 
 function activationBody(value) {
   return {
@@ -319,23 +478,265 @@ function validateCloseRowsMap(value, expectedLength, signalSessionDate, label) {
   return canonicalDates;
 }
 
-function validateSource(value, adjustedDates, rawDates, sessionDate) {
+function validateNormalizedBar(value, sessionDate, label) {
+  exact(value, ["timestamp", "session_date", "open", "high", "low", "close", "volume", "trade_count", "vwap"], label);
+  instant(value.timestamp, `${label}.timestamp`);
+  date(value.session_date, `${label}.session_date`);
+  if (value.timestamp.slice(0, 10) !== value.session_date || value.session_date > sessionDate) {
+    fail(`${label} is outside the completed signal-session boundary`);
+  }
+  for (const key of ["open", "high", "low", "close"]) positive(value[key], `${label}.${key}`);
+  if (value.high < Math.max(value.open, value.close, value.low)
+    || value.low > Math.min(value.open, value.close, value.high)) {
+    fail(`${label} has inconsistent OHLC values`);
+  }
+  if (!Number.isInteger(value.volume) || value.volume < 0) fail(`${label}.volume must be a non-negative integer`);
+  if (value.trade_count !== null && (!Number.isInteger(value.trade_count) || value.trade_count < 0)) {
+    fail(`${label}.trade_count must be null or a non-negative integer`);
+  }
+  if (value.vwap !== null) positive(value.vwap, `${label}.vwap`);
+}
+
+function validateTransportReceipt(value, session, label) {
   exact(value, [
-    "provider", "feed", "timeframe", "currency", "asof", "adjusted", "raw",
+    "request_started_at", "response_received_at", "origin_http_date", "origin_http_date_source",
+    "maximum_origin_clock_skew_seconds", "local_clock_verified", "provider_signature_verified",
+  ], label);
+  const requestStartedAt = instant(value.request_started_at, `${label}.request_started_at`);
+  const responseReceivedAt = instant(value.response_received_at, `${label}.response_received_at`);
+  const originHttpDate = instant(value.origin_http_date, `${label}.origin_http_date`);
+  if (value.origin_http_date_source !== "HTTPS_RESPONSE_DATE_HEADER"
+    || value.maximum_origin_clock_skew_seconds !== 300
+    || value.local_clock_verified !== false
+    || value.provider_signature_verified !== false) {
+    fail(`${label} changes the fixed unsigned HTTPS timing boundary`);
+  }
+  if (requestStartedAt < session.bar_eligible_at || originHttpDate < session.bar_eligible_at) {
+    fail(`${label} begins before the close-plus-15-minute eligibility boundary`);
+  }
+  if (responseReceivedAt < requestStartedAt || responseReceivedAt >= session.next_market_close_at) {
+    fail(`${label} has an invalid request/response interval`);
+  }
+  if (Math.abs(Date.parse(originHttpDate) - Date.parse(responseReceivedAt)) > 300_000) {
+    fail(`${label} exceeds the declared origin/local clock skew bound`);
+  }
+}
+
+function validateBookEvidence(value, { symbol, adjustment, start, end, session, label }) {
+  exact(value, ["bars", "content_hash", "retrieved_at", "provenance"], label);
+  if (!Array.isArray(value.bars) || value.bars.length !== 253) fail(`${label}.bars must contain exactly 253 normalized bars`);
+  let priorDate = null;
+  value.bars.forEach((bar, index) => {
+    validateNormalizedBar(bar, session.session_date, `${label}.bars[${index}]`);
+    if (priorDate !== null && bar.session_date <= priorDate) fail(`${label}.bars must be strictly chronological`);
+    priorDate = bar.session_date;
+  });
+  if (value.bars[0].session_date !== start || value.bars.at(-1).session_date !== end) {
+    fail(`${label}.bars differ from the fixed request window`);
+  }
+  digest(value.content_hash, `${label}.content_hash`);
+  const expectedContentHash = sha256({
+    schema: "finly.forward-daily-bars.v1",
+    symbol,
+    adjustment,
+    start,
+    end,
+    bars: value.bars,
+  });
+  if (value.content_hash !== expectedContentHash) fail(`${label}.content_hash does not match the persisted normalized bars`);
+  const retrievedAt = instant(value.retrieved_at, `${label}.retrieved_at`);
+  const provenance = value.provenance;
+  exact(provenance, [
+    "provider", "origin", "path", "method", "transport", "read_only", "complete", "authentication",
+    "page_count", "request", "request_started_at", "response_received_at", "transport_receipts",
+    "transport_receipts_sha256",
+  ], `${label}.provenance`);
+  if (provenance.provider !== "Alpaca"
+    || provenance.origin !== "https://data.alpaca.markets"
+    || provenance.path !== `/v2/stocks/${symbol}/bars`
+    || provenance.method !== "GET"
+    || provenance.transport !== "HTTPS"
+    || provenance.read_only !== true
+    || provenance.complete !== true
+    || provenance.authentication !== "caller-supplied; redacted") {
+    fail(`${label}.provenance changes the fixed read-only Alpaca source`);
+  }
+  exact(provenance.request, ["symbol", "start", "end", "timeframe", "feed", "adjustment", "sort", "limit"], `${label}.provenance.request`);
+  if (!same(provenance.request, {
+    symbol,
+    start,
+    end,
+    timeframe: "1Day",
+    feed: "iex",
+    adjustment,
+    sort: "asc",
+    limit: 10_000,
+  })) fail(`${label}.provenance.request differs from the fixed daily-bar request`);
+  if (!Array.isArray(provenance.transport_receipts)
+    || provenance.transport_receipts.length !== provenance.page_count
+    || provenance.page_count < 1) {
+    fail(`${label}.provenance does not persist every transport receipt`);
+  }
+  provenance.transport_receipts.forEach((receipt, index) => {
+    validateTransportReceipt(receipt, session, `${label}.provenance.transport_receipts[${index}]`);
+    if (index > 0 && receipt.request_started_at < provenance.transport_receipts[index - 1].response_received_at) {
+      fail(`${label}.provenance page receipts overlap or rewind`);
+    }
+  });
+  if (provenance.request_started_at !== provenance.transport_receipts[0].request_started_at
+    || provenance.response_received_at !== provenance.transport_receipts.at(-1).response_received_at
+    || retrievedAt !== provenance.response_received_at) {
+    fail(`${label}.provenance summary does not match the persisted page receipts`);
+  }
+  digest(provenance.transport_receipts_sha256, `${label}.provenance.transport_receipts_sha256`);
+  if (provenance.transport_receipts_sha256 !== sha256(provenance.transport_receipts)) {
+    fail(`${label}.provenance transport-receipt hash is invalid`);
+  }
+}
+
+function validateCalendarEvidence(value, adjustedDates, session) {
+  const label = "acquisition source calendar";
+  exact(value, ["start", "end", "sessions", "content_hash", "retrieved_at", "provenance"], label);
+  date(value.start, `${label}.start`);
+  date(value.end, `${label}.end`);
+  if (value.start > value.end) fail(`${label} has an inverted request range`);
+  if (!Array.isArray(value.sessions) || value.sessions.length < 254 || value.sessions.length > 400) {
+    fail(`${label}.sessions is outside the bounded official-calendar window`);
+  }
+  let priorDate = null;
+  value.sessions.forEach((row, index) => {
+    exact(row, ["date", "open", "close"], `${label}.sessions[${index}]`);
+    date(row.date, `${label}.sessions[${index}].date`);
+    if (row.date < value.start || row.date > value.end) {
+      fail(`${label}.sessions[${index}] escapes the persisted request range`);
+    }
+    if (!/^\d{2}:\d{2}:\d{2}$/.test(row.open) || !/^\d{2}:\d{2}:\d{2}$/.test(row.close) || row.open >= row.close) {
+      fail(`${label}.sessions[${index}] has invalid market hours`);
+    }
+    if (priorDate !== null && row.date <= priorDate) fail(`${label}.sessions must be strictly chronological`);
+    priorDate = row.date;
+  });
+  const throughSignal = value.sessions.filter(({ date: sessionDate }) => sessionDate <= session.session_date);
+  if (!same(throughSignal.slice(-253).map(({ date: sessionDate }) => sessionDate), adjustedDates)) {
+    fail(`${label} does not reproduce the complete 253-session signal window`);
+  }
+  const signalIndex = value.sessions.findIndex(({ date: sessionDate }) => sessionDate === session.session_date);
+  if (signalIndex < 0 || value.sessions[signalIndex + 1]?.date !== session.next_session_date
+    || value.start > adjustedDates[0] || value.end < session.next_session_date) {
+    fail(`${label} does not bind the signal session and its official successor`);
+  }
+  const currentCalendarRow = value.sessions[signalIndex];
+  const nextCalendarRow = value.sessions[signalIndex + 1];
+  if (currentCalendarRow.open !== newYorkClock(session.market_open_at)
+    || currentCalendarRow.close !== newYorkClock(session.market_close_at)
+    || nextCalendarRow.open !== newYorkClock(session.next_market_open_at)
+    || nextCalendarRow.close !== newYorkClock(session.next_market_close_at)) {
+    fail(`${label} market hours differ from the acquisition session envelope`);
+  }
+  digest(value.content_hash, `${label}.content_hash`);
+  if (value.content_hash !== sha256({
+    schema: "finly.market-calendar.v1",
+    start: value.start,
+    end: value.end,
+    sessions: value.sessions,
+  })) fail(`${label}.content_hash does not match the persisted normalized sessions`);
+  const retrievedAt = instant(value.retrieved_at, `${label}.retrieved_at`);
+  const provenance = value.provenance;
+  exact(provenance, [
+    "provider", "origin", "path", "method", "transport", "read_only", "complete", "authentication",
+    "page_count", "request", "request_started_at", "response_received_at", "transport_receipts",
+    "transport_receipts_sha256",
+  ], `${label}.provenance`);
+  if (provenance.provider !== "Alpaca"
+    || provenance.origin !== "https://paper-api.alpaca.markets"
+    || provenance.path !== "/v2/calendar"
+    || provenance.method !== "GET"
+    || provenance.transport !== "HTTPS"
+    || provenance.read_only !== true
+    || provenance.complete !== true
+    || provenance.authentication !== "caller-supplied; redacted"
+    || provenance.page_count !== 1
+    || !same(provenance.request, { start: value.start, end: value.end, date_type: "TRADING" })) {
+    fail(`${label}.provenance changes the fixed read-only Alpaca calendar request`);
+  }
+  if (!Array.isArray(provenance.transport_receipts) || provenance.transport_receipts.length !== 1) {
+    fail(`${label}.provenance must persist its single HTTPS receipt`);
+  }
+  if (session.calendar_response_sha256 !== value.content_hash
+    || session.calendar_request_sha256 !== sha256(provenance.request)) {
+    fail(`${label} request or response hash differs from the acquisition session envelope`);
+  }
+  validateTransportReceipt(provenance.transport_receipts[0], session, `${label}.provenance.transport_receipts[0]`);
+  if (provenance.request_started_at !== provenance.transport_receipts[0].request_started_at
+    || provenance.response_received_at !== provenance.transport_receipts[0].response_received_at
+    || retrievedAt !== provenance.response_received_at
+    || provenance.transport_receipts_sha256 !== sha256(provenance.transport_receipts)) {
+    fail(`${label}.provenance summary or receipt hash is invalid`);
+  }
+}
+
+function validateSource(value, adjustedDates, rawDates, session) {
+  const sessionDate = session.session_date;
+  exact(value, [
+    "provider", "feed", "timeframe", "currency", "asof", "calendar", "adjusted", "raw",
     "provider_signature_verified", "credentials_persisted", "raw_response_body_persisted",
   ], "acquisition source");
   if (value.provider !== MARKET_PROVIDER || value.feed !== "iex" || value.timeframe !== "1Day" || value.currency !== "USD" || value.asof !== sessionDate) {
     fail("acquisition source metadata is not the fixed IEX daily-bar method");
   }
+  validateCalendarEvidence(value.calendar, adjustedDates, session);
   for (const [key, expectedAdjustment, dates] of [["adjusted", "all", adjustedDates], ["raw", "raw", rawDates]]) {
-    exact(value[key], ["adjustment", "window_start_session_date", "window_end_session_date", "request_parameters_sha256", "response_content_sha256"], `acquisition source ${key}`);
+    exact(value[key], [
+      "adjustment", "request_start_session_date", "request_end_session_date",
+      "retained_close_start_session_date", "retained_close_end_session_date",
+      "request_parameters_sha256", "response_content_sha256", "provenance_by_symbol",
+    ], `acquisition source ${key}`);
     if (value[key].adjustment !== expectedAdjustment
-      || value[key].window_start_session_date !== dates[0]
-      || value[key].window_end_session_date !== dates.at(-1)) {
+      || value[key].request_start_session_date !== adjustedDates[0]
+      || value[key].request_end_session_date !== adjustedDates.at(-1)
+      || value[key].retained_close_start_session_date !== dates[0]
+      || value[key].retained_close_end_session_date !== dates.at(-1)) {
       fail(`acquisition source ${key} window or adjustment is invalid`);
+    }
+    symbols(value[key].provenance_by_symbol, `acquisition source ${key} provenance symbols`);
+    for (const symbol of FORWARD_TRIAL_LIVE_SYMBOLS) {
+      validateBookEvidence(value[key].provenance_by_symbol[symbol], {
+        symbol,
+        adjustment: expectedAdjustment,
+        start: adjustedDates[0],
+        end: adjustedDates.at(-1),
+        session,
+        label: `acquisition source ${key}.${symbol}`,
+      });
     }
     digest(value[key].request_parameters_sha256, `acquisition source ${key} request hash`);
     digest(value[key].response_content_sha256, `acquisition source ${key} response hash`);
+    const expectedRequestHash = sha256(Object.fromEntries(FORWARD_TRIAL_LIVE_SYMBOLS.map((symbol) => [
+      symbol,
+      value[key].provenance_by_symbol[symbol].provenance.request,
+    ])));
+    const expectedResponseHash = sha256(Object.fromEntries(FORWARD_TRIAL_LIVE_SYMBOLS.map((symbol) => {
+      const book = value[key].provenance_by_symbol[symbol];
+      return [symbol, {
+        content_hash: book.content_hash,
+        response_received_at: book.retrieved_at,
+        transport_receipts_sha256: book.provenance.transport_receipts_sha256,
+      }];
+    })));
+    if (value[key].request_parameters_sha256 !== expectedRequestHash
+      || value[key].response_content_sha256 !== expectedResponseHash) {
+      fail(`acquisition source ${key} panel hashes do not match the persisted normalized evidence`);
+    }
+  }
+  let priorResponseAt = value.calendar.provenance.response_received_at;
+  for (const symbol of FORWARD_TRIAL_LIVE_SYMBOLS) {
+    for (const key of ["raw", "adjusted"]) {
+      const provenance = value[key].provenance_by_symbol[symbol].provenance;
+      if (provenance.request_started_at < priorResponseAt) {
+        fail("acquisition source requests overlap or rewind the fixed sequential read order");
+      }
+      priorResponseAt = provenance.response_received_at;
+    }
   }
   if (value.provider_signature_verified !== false
     || value.credentials_persisted !== false
@@ -389,7 +790,33 @@ function validateAcquisitionBody(body) {
   const adjustedDates = validateCloseRowsMap(body.adjusted_close_rows, 253, session.session_date, "adjustment=all close rows");
   const rawDates = validateCloseRowsMap(body.raw_close_rows, 2, session.session_date, "adjustment=raw close rows");
   if (!same(rawDates, adjustedDates.slice(-2))) fail("raw and all-adjusted closes must cover the same final two sessions");
-  validateSource(body.source, adjustedDates, rawDates, session.session_date);
+  validateSource(body.source, adjustedDates, rawDates, session);
+  const latestPersistedResponseAt = [
+    body.source.calendar.retrieved_at,
+    ...FORWARD_TRIAL_LIVE_SYMBOLS.flatMap((symbol) => [
+      body.source.raw.provenance_by_symbol[symbol].retrieved_at,
+      body.source.adjusted.provenance_by_symbol[symbol].retrieved_at,
+    ]),
+  ].reduce((latest, current) => (current > latest ? current : latest));
+  if (body.retrieved_at !== latestPersistedResponseAt) {
+    fail("acquisition retrieved_at must equal the latest persisted source response");
+  }
+  for (const symbol of FORWARD_TRIAL_LIVE_SYMBOLS) {
+    const adjustedProjection = body.source.adjusted.provenance_by_symbol[symbol].bars.map((bar) => ({
+      session_date: bar.session_date,
+      bar_timestamp: bar.timestamp,
+      close: bar.close,
+    }));
+    const rawProjection = body.source.raw.provenance_by_symbol[symbol].bars.slice(-2).map((bar) => ({
+      session_date: bar.session_date,
+      bar_timestamp: bar.timestamp,
+      close: bar.close,
+    }));
+    if (!same(body.adjusted_close_rows[symbol], adjustedProjection)
+      || !same(body.raw_close_rows[symbol], rawProjection)) {
+      fail(`retained ${symbol} closes do not match the persisted normalized response evidence`);
+    }
+  }
   exact(body.corporate_action_digests, ["method", "per_symbol", "panel_sha256"], "corporate-action digests");
   symbols(body.corporate_action_digests.per_symbol, "corporate-action per-symbol digests");
   for (const symbol of FORWARD_TRIAL_LIVE_SYMBOLS) digest(body.corporate_action_digests.per_symbol[symbol], `corporate-action digest ${symbol}`);
@@ -525,6 +952,7 @@ function derivePayload(activation, previousCommitment, acquisition) {
     same_vintage_adjusted_return_index: returnIndex,
     formula_commitment: {
       formula_binding: structuredClone(FORMULA_BINDING),
+      implementation_binding: structuredClone(FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING),
       decision_receipt: structuredClone(decision),
       action,
       target_weights: targetWeights,
@@ -576,9 +1004,13 @@ function validateReturnIndex(value, acquisition, priorState, priorBindingSha256)
 }
 
 function validateFormulaCommitment(value, acquisition, priorState) {
-  exact(value, ["formula_binding", "decision_receipt", "action", "target_weights"], "formula commitment");
+  exact(value, ["formula_binding", "implementation_binding", "decision_receipt", "action", "target_weights"], "formula commitment");
   exact(value.formula_binding, ["implementation", "policy_id", "protocol_sha256"], "formula commitment binding");
   if (!same(value.formula_binding, FORMULA_BINDING)) fail("formula commitment substitutes the frozen production formula");
+  validateForwardTrialLiveImplementationBinding(value.implementation_binding);
+  if (!same(value.implementation_binding, FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING)) {
+    fail("formula commitment substitutes the frozen source implementation");
+  }
   const expected = expectedDecision(acquisition, priorState);
   if (!same(value.decision_receipt, expected)) fail("formula decision differs from buildCurrentEconomicDecision");
   const expectedAction = expected.decision === "PROPOSE_REBALANCE" ? "REBALANCE" : "HOLD";
@@ -709,6 +1141,7 @@ function expectedAnchor(commitment) {
       implementation: decision.formula_binding.implementation,
       policy_id: decision.formula_binding.policy_id,
       protocol_sha256: decision.formula_binding.protocol_sha256,
+      implementation_binding_sha256: decision.implementation_binding.manifest_sha256,
       decision_receipt_sha256: decision.decision_receipt.receipt_sha256,
     },
     action: decision.action,
@@ -731,13 +1164,14 @@ export function validateForwardTrialLiveAnchorManifest(value, commitment, option
   noSecrets(value, "public anchor manifest");
   exact(value, ["schema_version", "trial_id", "manifest_kind", "commitment_sequence", "signal_session_date", "timing", "formula", "action", "target_weights", "private_bundle_sha256", "previous_private_bundle_sha256", "authority", "evaluation_gates", "manifest_sha256"], "public anchor manifest");
   exact(value.timing, ["captured_at", "market_close_at", "bar_eligible_at", "next_session_date", "next_market_close_at", "anchor_deadline"], "public anchor timing");
-  exact(value.formula, ["implementation", "policy_id", "protocol_sha256", "decision_receipt_sha256"], "public anchor formula");
+  exact(value.formula, ["implementation", "policy_id", "protocol_sha256", "implementation_binding_sha256", "decision_receipt_sha256"], "public anchor formula");
   validateWeights(value.target_weights, "public anchor target weights");
   exact(value.authority, ["research_only", "broker_mutation_authorized", "order_payload"], "public anchor authority");
   exact(value.evaluation_gates, ["settlement_enabled", "inference_enabled"], "public anchor evaluation gates");
   digest(value.private_bundle_sha256, "public anchor private bundle hash");
   digest(value.previous_private_bundle_sha256, "public anchor previous bundle hash");
   digest(value.formula.protocol_sha256, "public anchor protocol hash");
+  digest(value.formula.implementation_binding_sha256, "public anchor implementation-binding hash");
   digest(value.formula.decision_receipt_sha256, "public anchor decision hash");
   digest(value.manifest_sha256, "public anchor manifest hash");
   const expected = expectedAnchor(commitment);

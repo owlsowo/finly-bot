@@ -32,6 +32,6 @@ G4 was selected after historical results were viewed. It is not the production F
 
 ## Verification
 
-From a clean clone with Node.js 22.13 or newer: `npm install && npm run verify`.
+From a clean clone with the release-pinned Node.js 26.7.0 runtime: `npm install && npm run verify`.
 
 The public evidence is designed to be evaluated against the cited project artifacts and explicit claim boundaries.

@@ -1,9 +1,9 @@
 {
   "name": "finly-bot",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "engines": {
-    "node": ">=22.13.0"
+    "node": "26.7.0"
   },
   "scripts": {
     "dev": "vite",
@@ -31,6 +31,8 @@
     "research:forward-trial": "node research/run_forward_trial1.mjs --verify-existing",
     "research:forward-trial-live": "node --env-file-if-exists=.env.local research/run_forward_trial_live.mjs --verify-existing",
     "research:forward-trial-live:activate": "node --env-file-if-exists=.env.local research/run_forward_trial_live.mjs --activate",
+    "research:forward-trial-live:append": "node --env-file-if-exists=.env.local research/run_forward_trial_live.mjs --append-signal-commitment",
+    "research:forward-trial-live:verify-github": "node scripts/verify_forward_live_github_publication.mjs",
     "economic:decision": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/run_current_economic_decision.mjs",
     "economic:decision-check": "node scripts/check_current_economic_decision.mjs",
     "economic:options-replay": "node scripts/run_economic_options_replay.mjs",

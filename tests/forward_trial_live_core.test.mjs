@@ -69,16 +69,6 @@ function adjustedRows(endDate, scale = 1) {
   }));
 }
 
-function rawTail(adjusted) {
-  return Object.fromEntries(FORWARD_TRIAL_LIVE_SYMBOLS.map((symbol, symbolIndex) => [
-    symbol,
-    adjusted[symbol].slice(-2).map((row) => ({
-      ...row,
-      close: Number((row.close * (1 + (symbolIndex + 1) / 10_000)).toFixed(8)),
-    })),
-  ]));
-}
-
 function acquisitionInput({
   session = calendarSession(),
   retrievedAt = `${session.session_date}T20:16:00.000Z`,
@@ -86,32 +76,173 @@ function acquisitionInput({
   hashOffset = 0,
 } = {}) {
   const adjusted = adjustedRows(session.session_date, scale);
-  const raw = rawTail(adjusted);
+  const rawFull = Object.fromEntries(FORWARD_TRIAL_LIVE_SYMBOLS.map((symbol, symbolIndex) => [
+    symbol,
+    adjusted[symbol].map((row) => ({
+      ...row,
+      close: Number((row.close * (1 + (symbolIndex + 1) / 10_000)).toFixed(8)),
+    })),
+  ]));
+  const raw = Object.fromEntries(FORWARD_TRIAL_LIVE_SYMBOLS.map((symbol) => [symbol, rawFull[symbol].slice(-2)]));
   const adjustedDates = adjusted.SPY.map((row) => row.session_date);
   const rawDates = raw.SPY.map((row) => row.session_date);
-  const chars = "cdef0123456789abcdef0123456789ab";
+  const toNormalizedBars = (rows, symbolIndex) => rows.map((row, index) => ({
+    timestamp: row.bar_timestamp,
+    session_date: row.session_date,
+    open: row.close - 0.25,
+    high: row.close + 0.5,
+    low: row.close - 0.5,
+    close: row.close,
+    volume: 1_000 + index + hashOffset,
+    trade_count: 10 + index + symbolIndex,
+    vwap: row.close - 0.05,
+  }));
+  const provenanceBySymbol = (adjustment) => Object.fromEntries(FORWARD_TRIAL_LIVE_SYMBOLS.map((symbol, symbolIndex) => {
+    const closeRows = adjustment === "all" ? adjusted[symbol] : rawFull[symbol];
+    const bars = toNormalizedBars(closeRows, symbolIndex);
+    const request = {
+      symbol,
+      start: adjustedDates[0],
+      end: adjustedDates.at(-1),
+      timeframe: "1Day",
+      feed: "iex",
+      adjustment,
+      sort: "asc",
+      limit: 10_000,
+    };
+    const orderIndex = symbolIndex * 2 + (adjustment === "raw" ? 0 : 1);
+    const bookRetrievedAt = new Date(Date.parse(retrievedAt) - (39 - orderIndex) * 10).toISOString();
+    const requestStartedAt = new Date(Date.parse(bookRetrievedAt) - 5).toISOString();
+    const transportReceipts = [{
+      request_started_at: requestStartedAt,
+      response_received_at: bookRetrievedAt,
+      origin_http_date: bookRetrievedAt.replace(/\.\d{3}Z$/, ".000Z"),
+      origin_http_date_source: "HTTPS_RESPONSE_DATE_HEADER",
+      maximum_origin_clock_skew_seconds: 300,
+      local_clock_verified: false,
+      provider_signature_verified: false,
+    }];
+    return [symbol, {
+      bars,
+      content_hash: hashForwardTrialLiveValue({
+        schema: "finly.forward-daily-bars.v1",
+        symbol,
+        adjustment,
+        start: adjustedDates[0],
+        end: adjustedDates.at(-1),
+        bars,
+      }),
+      retrieved_at: bookRetrievedAt,
+      provenance: {
+        provider: "Alpaca",
+        origin: "https://data.alpaca.markets",
+        path: `/v2/stocks/${symbol}/bars`,
+        method: "GET",
+        transport: "HTTPS",
+        read_only: true,
+        complete: true,
+        authentication: "caller-supplied; redacted",
+        page_count: 1,
+        request,
+        request_started_at: requestStartedAt,
+        response_received_at: bookRetrievedAt,
+        transport_receipts: transportReceipts,
+        transport_receipts_sha256: hashForwardTrialLiveValue(transportReceipts),
+      },
+    }];
+  }));
+  const adjustedProvenance = provenanceBySymbol("all");
+  const rawProvenance = provenanceBySymbol("raw");
+  const panelDigest = (books, field) => hashForwardTrialLiveValue(Object.fromEntries(FORWARD_TRIAL_LIVE_SYMBOLS.map((symbol) => {
+    const book = books[symbol];
+    return field === "request"
+      ? [symbol, book.provenance.request]
+      : [symbol, {
+        content_hash: book.content_hash,
+        response_received_at: book.retrieved_at,
+        transport_receipts_sha256: book.provenance.transport_receipts_sha256,
+      }];
+  })));
+  const calendarSessions = [
+    ...adjustedDates.map((date) => ({ date, open: "09:30:00", close: "16:00:00" })),
+    { date: session.next_session_date, open: "09:30:00", close: "16:00:00" },
+  ];
+  const calendarStart = adjustedDates[0];
+  const calendarEnd = session.next_session_date;
+  const calendarRequest = { start: calendarStart, end: calendarEnd, date_type: "TRADING" };
+  const calendarContentHash = hashForwardTrialLiveValue({
+    schema: "finly.market-calendar.v1",
+    start: calendarStart,
+    end: calendarEnd,
+    sessions: calendarSessions,
+  });
+  const acquisitionSession = {
+    ...structuredClone(session),
+    calendar_request_sha256: hashForwardTrialLiveValue(calendarRequest),
+    calendar_response_sha256: calendarContentHash,
+  };
+  const calendarRetrievedAt = new Date(Date.parse(retrievedAt) - 1_000).toISOString();
+  const calendarRequestStartedAt = new Date(Date.parse(calendarRetrievedAt) - 5).toISOString();
+  const calendarReceipts = [{
+    request_started_at: calendarRequestStartedAt,
+    response_received_at: calendarRetrievedAt,
+    origin_http_date: calendarRetrievedAt.replace(/\.\d{3}Z$/, ".000Z"),
+    origin_http_date_source: "HTTPS_RESPONSE_DATE_HEADER",
+    maximum_origin_clock_skew_seconds: 300,
+    local_clock_verified: false,
+    provider_signature_verified: false,
+  }];
   return {
     retrieved_at: retrievedAt,
-    session,
+    session: acquisitionSession,
     source: {
       provider: "Alpaca Market Data API",
       feed: "iex",
       timeframe: "1Day",
       currency: "USD",
       asof: session.session_date,
+      calendar: {
+        start: calendarStart,
+        end: calendarEnd,
+        sessions: calendarSessions,
+        content_hash: calendarContentHash,
+        retrieved_at: calendarRetrievedAt,
+        provenance: {
+          provider: "Alpaca",
+          origin: "https://paper-api.alpaca.markets",
+          path: "/v2/calendar",
+          method: "GET",
+          transport: "HTTPS",
+          read_only: true,
+          complete: true,
+          authentication: "caller-supplied; redacted",
+          page_count: 1,
+          request: calendarRequest,
+          request_started_at: calendarRequestStartedAt,
+          response_received_at: calendarRetrievedAt,
+          transport_receipts: calendarReceipts,
+          transport_receipts_sha256: hashForwardTrialLiveValue(calendarReceipts),
+        },
+      },
       adjusted: {
         adjustment: "all",
-        window_start_session_date: adjustedDates[0],
-        window_end_session_date: adjustedDates.at(-1),
-        request_parameters_sha256: digest(chars[hashOffset]),
-        response_content_sha256: digest(chars[hashOffset + 1]),
+        request_start_session_date: adjustedDates[0],
+        request_end_session_date: adjustedDates.at(-1),
+        retained_close_start_session_date: adjustedDates[0],
+        retained_close_end_session_date: adjustedDates.at(-1),
+        request_parameters_sha256: panelDigest(adjustedProvenance, "request"),
+        response_content_sha256: panelDigest(adjustedProvenance, "response"),
+        provenance_by_symbol: adjustedProvenance,
       },
       raw: {
         adjustment: "raw",
-        window_start_session_date: rawDates[0],
-        window_end_session_date: rawDates.at(-1),
-        request_parameters_sha256: digest(chars[hashOffset + 2]),
-        response_content_sha256: digest(chars[hashOffset + 3]),
+        request_start_session_date: adjustedDates[0],
+        request_end_session_date: adjustedDates.at(-1),
+        retained_close_start_session_date: rawDates[0],
+        retained_close_end_session_date: rawDates.at(-1),
+        request_parameters_sha256: panelDigest(rawProvenance, "request"),
+        response_content_sha256: panelDigest(rawProvenance, "response"),
+        provenance_by_symbol: rawProvenance,
       },
       provider_signature_verified: false,
       credentials_persisted: false,
@@ -299,6 +430,55 @@ test("secret-bearing, malformed-schema, and invalid corporate-action acquisition
   const malformed = acquisitionInput();
   malformed.source.unfrozen_field = true;
   assert.throws(() => buildForwardTrialLiveAcquisition(malformed), /must contain exactly/);
+
+  const mismatchedCalendarHash = acquisitionInput();
+  mismatchedCalendarHash.session.calendar_request_sha256 = digest("f");
+  assert.throws(
+    () => buildForwardTrialLiveAcquisition(mismatchedCalendarHash),
+    /request or response hash differs/,
+  );
+
+  const mismatchedCalendarHours = acquisitionInput();
+  const currentCalendarRow = mismatchedCalendarHours.source.calendar.sessions.find(
+    ({ date }) => date === mismatchedCalendarHours.session.session_date,
+  );
+  currentCalendarRow.close = "13:00:00";
+  mismatchedCalendarHours.source.calendar.content_hash = hashForwardTrialLiveValue({
+    schema: "finly.market-calendar.v1",
+    start: mismatchedCalendarHours.source.calendar.start,
+    end: mismatchedCalendarHours.source.calendar.end,
+    sessions: mismatchedCalendarHours.source.calendar.sessions,
+  });
+  mismatchedCalendarHours.session.calendar_response_sha256 = mismatchedCalendarHours.source.calendar.content_hash;
+  assert.throws(
+    () => buildForwardTrialLiveAcquisition(mismatchedCalendarHours),
+    /market hours differ/,
+  );
+
+  const escapedCalendarRange = acquisitionInput();
+  escapedCalendarRange.source.calendar.sessions.unshift({
+    date: "2025-06-26",
+    open: "09:30:00",
+    close: "16:00:00",
+  });
+  escapedCalendarRange.source.calendar.content_hash = hashForwardTrialLiveValue({
+    schema: "finly.market-calendar.v1",
+    start: escapedCalendarRange.source.calendar.start,
+    end: escapedCalendarRange.source.calendar.end,
+    sessions: escapedCalendarRange.source.calendar.sessions,
+  });
+  escapedCalendarRange.session.calendar_response_sha256 = escapedCalendarRange.source.calendar.content_hash;
+  assert.throws(
+    () => buildForwardTrialLiveAcquisition(escapedCalendarRange),
+    /escapes the persisted request range/,
+  );
+
+  const prematureCapture = acquisitionInput();
+  prematureCapture.retrieved_at = "2026-08-31T20:15:59.000Z";
+  assert.throws(
+    () => buildForwardTrialLiveAcquisition(prematureCapture),
+    /must equal the latest persisted source response/,
+  );
 
   const valid = buildForwardTrialLiveAcquisition(acquisitionInput());
   const badDigest = clone(valid);

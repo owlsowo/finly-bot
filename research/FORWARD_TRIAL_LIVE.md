@@ -6,7 +6,7 @@ Finly Forward Live Trial 1A is a prospective, research-only evaluation of the un
 
 The write-once activation in [`forward_trial_live/activation.json`](forward_trial_live/activation.json) was created at `2026-08-30T02:02:35.624Z`, before the official 31 August 2026 market session. It binds:
 
-- the unchanged `buildCurrentEconomicDecision` implementation and protocol hash;
+- the named `buildCurrentEconomicDecision` policy and protocol hash;
 - a fresh-start portfolio held entirely in BIL;
 - the official Alpaca calendar response for the first and next sessions;
 - a close-plus-fifteen-minute data-availability boundary;
@@ -14,23 +14,25 @@ The write-once activation in [`forward_trial_live/activation.json`](forward_tria
 - settlement and performance-inference gates that remain closed; and
 - `broker_mutation_authorized: false` with no order payload.
 
-The activation is not a signal, trade, return, or profitability result. Its purpose is to prevent a favorable first observation from being selected retrospectively.
+The activation is not a signal, trade, return, or profitability result. Its purpose is to prevent a favorable first observation from being selected retrospectively. The supplemental [`forward_trial_live/runtime_manifest.json`](forward_trial_live/runtime_manifest.json) binds the activation hash to the complete capture-time source closure: canonical hashing, the production policy, the Alpaca response normalizer, the commitment core, and the live runner. Before capture and during clean-clone verification, the runner rehashes all five files, checks the pinned Node/V8/ICU/time-zone/OpenSSL versions and built-in fetch source, and rejects visible preload, loader, proxy, or alternate-CA configuration. The manifest must be published on GitHub before the activated first session closes; every private commitment and price-free public anchor carries its self-hash.
+
+That runtime check is an accidental-drift control, not a hostile-host attestation. Code executed before the runner could conceal its own launch flags or monkey-patch the checks; Finly therefore records `hostile_preexecution_environment_excluded: false`. GitHub proves which source bytes were public, not that a local operating system executed them faithfully.
 
 ## Read-only transport evidence
 
-The dedicated client permits only allowlisted HTTPS GET requests for the frozen twenty-symbol universe, the official trading calendar, and bounded corporate-action announcements. Every response must contain a canonical HTTP `Date` header within five minutes of the local receipt. Credential-free provenance records the local request and response instants, the origin date, every page, normalized response hashes, and the fact that Alpaca does not provide a cryptographic response signature.
+The dedicated client permits only allowlisted HTTPS GET requests for the frozen twenty-symbol universe, the official trading calendar, and bounded corporate-action announcements. Every response must contain a canonical HTTP `Date` header within five minutes of the local receipt. For signal bars, every request must begin after the close-plus-fifteen-minute boundary and every origin `Date` must be on or after that boundary. The private commitment durably stores the credential-free request metadata, every per-page timing receipt, all normalized raw and adjusted bars, and recomputable response hashes. It also records that Alpaca does not provide a cryptographic response signature.
 
-This improves the evidence for when an acquisition occurred, but it does not turn a provider header into an independent timestamp authority. The public commitment anchor must still be published before its declared next-session close.
+This improves the evidence for when an acquisition occurred, but it does not turn an unsigned provider header into an independent timestamp authority. The original activation stores hashes rather than the complete first calendar response; that historical omission cannot be repaired retrospectively and remains a provenance limitation. Each later capture does persist and cross-check the complete normalized calendar response and its credential-free HTTPS receipt, but neither is independently provider-signed. The public commitment anchor must still be published before its declared next-session close.
 
 ## Timing of the first permitted signal
 
 The first acquisition is allowed only from `2026-08-31T20:15:00.000Z` until strictly before `2026-09-01T20:00:00.000Z`. It must end on the completed 31 August session, contain exactly 253 aligned all-adjusted closes and the same final two raw closes for all twenty symbols, and derive the target weights through the frozen production function.
 
-The private price-bearing bundle will remain under the ignored `data/private/` boundary. Only its price-free, hash-bound manifest may be committed publicly. Neither path can submit, cancel, or replace an Alpaca order.
+The private price-bearing bundle remains under the ignored `data/private/` boundary. Only its price-free, hash-bound manifest may be committed publicly. The writer locks before discovering the disk head or requesting data, rejects stale or forked sequences with a compare-and-swap check, stages and fsyncs canonical bytes before an atomic content-addressed hard link, and reopens both complete chains after writing. Clean-clone verification checks the public schema, timing, formula/source binding, authority, filenames, and exposed private-hash linkage even when prices are absent. Neither path can submit, cancel, or replace an Alpaca order.
 
 ## Commands
 
-Clean-clone verification is credential-free and performs no network call:
+Clean-clone verification is credential-free and performs no network call. Its output deliberately keeps `external_anchor_verified`, `prospectivity_verified`, and `performance_inference_permitted` false until separate public-timestamp evidence exists:
 
 ```bash
 npm run research:forward-trial-live
@@ -42,4 +44,22 @@ The activation command is idempotent once the tracked activation exists. On a fr
 npm run research:forward-trial-live:activate
 ```
 
-The first signal-capture command is intentionally not exposed until its acquisition adapter, private persistence, public-manifest publication, and deadline checks are all release-tested. No broker mutation route will be added to this runner.
+The signal writer requires a deliberate local acknowledgement. It is invalid before the selected close-plus-fifteen-minute boundary and at or after the next official close:
+
+```bash
+FINLY_FORWARD_LIVE_WRITE_ACK=APPEND_SIGNAL_COMMITMENT_WRITE_ONCE \
+  npm run research:forward-trial-live:append
+```
+
+The command reads only the official calendar and daily bars. It writes one private commitment and one price-free public anchor; it has no broker mutation route. Local creation alone does not prove prospectivity. The public anchor still must be committed and pushed before the printed deadline, and the resulting GitHub publication evidence must be checked separately while `external_anchor_verified` remains false unless an independent cryptographic timestamp is added later.
+
+After the anchor-only commit's `Verify Finly` workflow succeeds, verify the public GitHub record with the run ID, content-addressed anchor path, and the frozen parent release SHA:
+
+```bash
+npm run research:forward-trial-live:verify-github -- \
+  --run-id <github-actions-run-id> \
+  --anchor-path <research/forward_trial_live/anchors/00000001_hash.json> \
+  --expected-parent-sha <frozen-v0.4.2-release-sha>
+```
+
+That verifier performs fifteen fixed, unauthenticated GET requests. It checks the public activation, the pre-signal runtime manifest and all five frozen source files at the parent release, the verifier itself, a successful parent workflow recorded before the first close, the later anchor-only commit, and the strict sequence-one v2 anchor. It writes a content-addressed, write-once receipt containing the exact request URLs, GitHub HTTP dates, response-byte hashes, and byte lengths. The receipt is explicitly a reproducible public-API pointer—not self-contained offline evidence—and leaves `external_anchor_verified: false`: GitHub's platform record is useful publication evidence, not an independent cryptographic timestamp or broker-origin signature.

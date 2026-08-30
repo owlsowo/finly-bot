@@ -71,7 +71,7 @@ An authenticated read-only check of the dedicated Alpaca paper account succeeded
 
 ## The repository can be checked without trusting the presentation
 
-The public verification path requires Node.js 22.13 or newer and no paid service or broker credentials:
+The v0.4.2 prospective-capture release pins Node.js 26.7.0 so its runtime, time-zone data, and built-in fetch implementation can be checked exactly. Public verification needs no paid service or broker credentials:
 
 ```bash
 npm install
