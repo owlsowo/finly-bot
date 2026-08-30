@@ -1,6 +1,7 @@
 import {
   logReturn,
   normalizeLongWeights,
+  round,
   scaleRiskyWeightsToTarget,
   simulateStrategy,
 } from "../champion_engine.mjs";
@@ -20,6 +21,11 @@ export const INDUSTRY_VM_G4_ANNUALIZED_VOLATILITY_TARGET = 0.20;
 export const INDUSTRY_VM_G4_MAXIMUM_TARGET_RISKY_GROSS = 1.5;
 export const INDUSTRY_VM_G4_ANNUAL_BORROW_SPREAD = 0.005;
 export const INDUSTRY_VM_G4_DEFAULT_ONE_WAY_COST_BPS = 5;
+export const INDUSTRY_VM_G4_TRANSACTION_COST_SYMBOLS = Object.freeze(
+  KENNETH_FRENCH_10_INDUSTRY_PANEL_SYMBOLS.filter(
+    (symbol) => symbol !== INDUSTRY_VM_G4_CASH_SYMBOL,
+  ),
+);
 
 export const INDUSTRY_VM_G4_PRIMARY_ID = "industry_vm_g4_primary_hitec";
 export const INDUSTRY_VM_G4_DIAGNOSTIC_ID = "industry_vm_g4_diagnostic_market";
@@ -44,12 +50,176 @@ export const INDUSTRY_VM_G4_EXTERNAL_SPECIFICATION = Object.freeze({
   volatility_lookback_sessions: INDUSTRY_VM_G4_VOLATILITY_LOOKBACK_SESSIONS,
   annualized_volatility_target: INDUSTRY_VM_G4_ANNUALIZED_VOLATILITY_TARGET,
   maximum_target_risky_gross: INDUSTRY_VM_G4_MAXIMUM_TARGET_RISKY_GROSS,
+  transaction_cost_basis:
+    "one-way risky-asset L1 turnover at entry, executed rebalances, and terminal liquidation; RF cash/financing weight excluded",
   annual_borrow_spread: INDUSTRY_VM_G4_ANNUAL_BORROW_SPREAD,
+  borrow_spread_accounting:
+    "negative RF financing is charged separately from risky-asset transaction costs",
   execution: "signal at close t; rebalance at close t+1; first earned return is close t+1 to close t+2",
 });
 
 function fail(message) {
   throw new TypeError(message);
+}
+
+function validateIndustryCostOptions(oneWayCostBps, terminalLiquidation) {
+  if (!Number.isFinite(oneWayCostBps) || oneWayCostBps < 0) {
+    fail("oneWayCostBps must be finite and nonnegative");
+  }
+  if (typeof terminalLiquidation !== "boolean") fail("terminalLiquidation must be boolean");
+}
+
+function industryEndWeights(row) {
+  if (!row?.weights || !row?.asset_returns) {
+    fail("industry accounting rows require weights and per-asset returns");
+  }
+  const grossMultiplier = 1 + Number(row.gross_return);
+  if (!Number.isFinite(grossMultiplier) || grossMultiplier <= 0) {
+    fail("industry accounting row has an invalid gross return");
+  }
+  return Object.freeze(Object.fromEntries(
+    KENNETH_FRENCH_10_INDUSTRY_PANEL_SYMBOLS.map((symbol) => {
+      const weight = Number(row.weights[symbol]);
+      const assetReturn = Number(row.asset_returns[symbol]);
+      if (!Number.isFinite(weight) || !Number.isFinite(assetReturn)) {
+        fail(`industry accounting row has invalid ${symbol} values`);
+      }
+      return [symbol, weight * (1 + assetReturn) / grossMultiplier];
+    }),
+  ));
+}
+
+function withoutPriorBoundaryCosts(row) {
+  return Object.fromEntries(Object.entries(row).filter(([key]) => ![
+    "standalone_entry",
+    "standalone_entry_notional",
+    "standalone_entry_cost",
+    "standalone_terminal_liquidation",
+    "standalone_terminal_liquidation_notional",
+    "standalone_terminal_liquidation_cost",
+    "terminal_liquidation",
+    "terminal_liquidation_notional",
+    "terminal_liquidation_cost",
+  ].includes(key)));
+}
+
+function applyIndustryRiskyOnlyCosts(rows, {
+  oneWayCostBps,
+  standalone,
+  terminalLiquidation,
+}) {
+  validateIndustryCostOptions(oneWayCostBps, terminalLiquidation);
+  if (!Array.isArray(rows)) fail("industry accounting rows must be an array");
+  if (typeof standalone !== "boolean") fail("standalone must be boolean");
+  if (rows.length === 0) return Object.freeze([]);
+
+  const cashWeights = Object.freeze(Object.fromEntries(
+    KENNETH_FRENCH_10_INDUSTRY_PANEL_SYMBOLS.map((symbol) => [
+      symbol,
+      symbol === INDUSTRY_VM_G4_CASH_SYMBOL ? 1 : 0,
+    ]),
+  ));
+  let priorEndWeights = cashWeights;
+  const costRate = oneWayCostBps / 10_000;
+  const costed = rows.map((rawRow, index) => {
+    const row = withoutPriorBoundaryCosts(rawRow);
+    const establishStandalone = standalone && index === 0;
+    const chargeRebalance = row.rebalanced === true && !establishStandalone;
+    const turnoverNotional = establishStandalone || chargeRebalance
+      ? INDUSTRY_VM_G4_TRANSACTION_COST_SYMBOLS.reduce(
+        (sum, symbol) => sum + Math.abs(
+          Number(row.weights?.[symbol] ?? 0) - Number(priorEndWeights[symbol] ?? 0),
+        ),
+        0,
+      )
+      : 0;
+    const transactionCost = turnoverNotional * costRate;
+    const grossReturn = Number(row.gross_return);
+    const financingSpreadCost = Number(row.financing_spread_cost);
+    if (!Number.isFinite(grossReturn) || !Number.isFinite(financingSpreadCost)) {
+      fail("industry accounting row has invalid return or financing cost");
+    }
+    const netReturn = grossReturn - transactionCost - financingSpreadCost;
+    if (!Number.isFinite(netReturn) || netReturn <= -1) {
+      fail("industry accounting row has an invalid net return");
+    }
+    const updated = {
+      ...row,
+      ...(establishStandalone ? {
+        standalone_entry: true,
+        standalone_entry_notional: round(turnoverNotional),
+        standalone_entry_cost: round(transactionCost),
+      } : {}),
+      turnover_notional: round(turnoverNotional),
+      transaction_cost: round(transactionCost),
+      net_return: round(netReturn),
+    };
+    priorEndWeights = industryEndWeights(row);
+    return updated;
+  });
+
+  if (terminalLiquidation) {
+    const lastIndex = costed.length - 1;
+    const last = costed[lastIndex];
+    const liquidationNotional = INDUSTRY_VM_G4_TRANSACTION_COST_SYMBOLS.reduce(
+      (sum, symbol) => sum + Math.abs(priorEndWeights[symbol] ?? 0),
+      0,
+    );
+    const liquidationCost = liquidationNotional * costRate;
+    const terminalFields = standalone ? {
+      standalone_terminal_liquidation: true,
+      standalone_terminal_liquidation_notional: round(liquidationNotional),
+      standalone_terminal_liquidation_cost: round(liquidationCost),
+    } : {
+      terminal_liquidation: true,
+      terminal_liquidation_notional: round(liquidationNotional),
+      terminal_liquidation_cost: round(liquidationCost),
+    };
+    costed[lastIndex] = {
+      ...last,
+      ...terminalFields,
+      turnover_notional: round(last.turnover_notional + liquidationNotional),
+      transaction_cost: round(last.transaction_cost + liquidationCost),
+      net_return: round(last.net_return - liquidationCost),
+    };
+  }
+  return Object.freeze(costed.map((row) => Object.freeze(row)));
+}
+
+/**
+ * Price the zero-cost causal ledger without changing the frozen shared engine.
+ * RF borrowing is deliberately excluded here and remains in financing_spread_cost.
+ */
+export function applyIndustryVmG4RiskyOnlyTransactionCosts(simulation, {
+  oneWayCostBps = INDUSTRY_VM_G4_DEFAULT_ONE_WAY_COST_BPS,
+  terminalLiquidation = false,
+} = {}) {
+  if (!simulation || !Array.isArray(simulation.rows)) {
+    fail("industry simulation must contain rows");
+  }
+  if (simulation.rows.some((row) => row.transaction_cost !== 0
+    || Object.hasOwn(row, "terminal_liquidation"))) {
+    fail("industry post-processor requires a zero-cost nonterminal simulation");
+  }
+  return Object.freeze({
+    ...simulation,
+    rows: applyIndustryRiskyOnlyCosts(simulation.rows, {
+      oneWayCostBps,
+      standalone: false,
+      terminalLiquidation,
+    }),
+  });
+}
+
+/** Re-establish an independently funded evaluation window and liquidate it. */
+export function rebaseIndustryVmG4RowsForStandalonePeriod(rows, {
+  oneWayCostBps = INDUSTRY_VM_G4_DEFAULT_ONE_WAY_COST_BPS,
+} = {}) {
+  return applyIndustryRiskyOnlyCosts(rows, {
+    oneWayCostBps,
+    standalone: true,
+    terminalLiquidation: true,
+  });
 }
 
 function validateDecisionInputs(points, returnsBySymbol, signalIndex) {
@@ -198,16 +368,13 @@ function simulateIndustryVmG4(points, strategy, {
   terminalLiquidation = true,
   rebalanceAnchor = 0,
 } = {}) {
-  if (!Number.isFinite(oneWayCostBps) || oneWayCostBps < 0) {
-    fail("oneWayCostBps must be finite and nonnegative");
-  }
-  if (typeof terminalLiquidation !== "boolean") fail("terminalLiquidation must be boolean");
+  validateIndustryCostOptions(oneWayCostBps, terminalLiquidation);
   if (!Number.isSafeInteger(rebalanceAnchor)
     || rebalanceAnchor < 0
     || rebalanceAnchor >= INDUSTRY_VM_G4_REBALANCE_INTERVAL_SESSIONS) {
     fail("rebalanceAnchor must be an integer from 0 through 20");
   }
-  return simulateStrategy(
+  const zeroCostSimulation = simulateStrategy(
     points,
     KENNETH_FRENCH_10_INDUSTRY_PANEL_SYMBOLS,
     strategy,
@@ -216,12 +383,16 @@ function simulateIndustryVmG4(points, strategy, {
       lookbackSessions: INDUSTRY_VM_G4_SIGNAL_LOOKBACK_SESSIONS,
       rebalanceIntervalSessions: INDUSTRY_VM_G4_REBALANCE_INTERVAL_SESSIONS,
       rebalanceAnchor,
-      oneWayCostBps,
+      oneWayCostBps: 0,
       annualBorrowSpread: INDUSTRY_VM_G4_ANNUAL_BORROW_SPREAD,
       maximumRiskyGross: INDUSTRY_VM_G4_MAXIMUM_TARGET_RISKY_GROSS,
-      terminalLiquidation,
+      terminalLiquidation: false,
     },
   );
+  return applyIndustryVmG4RiskyOnlyTransactionCosts(zeroCostSimulation, {
+    oneWayCostBps,
+    terminalLiquidation,
+  });
 }
 
 export function simulateIndustryVmG4Primary(points, options) {

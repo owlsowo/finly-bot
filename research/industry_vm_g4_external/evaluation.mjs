@@ -2,7 +2,6 @@ import { inverseNormal, normalCdf } from "../../lib/quant.mjs";
 import { sha256 } from "../../lib/canonical.mjs";
 import {
   normalizeLongWeights,
-  rebaseRowsForStandalonePeriod,
   rowsWithin,
   scaleRiskyWeightsToTarget,
   simulateStrategy,
@@ -21,8 +20,11 @@ import {
   INDUSTRY_VM_G4_PRIMARY_STRATEGY,
   INDUSTRY_VM_G4_REBALANCE_INTERVAL_SESSIONS,
   INDUSTRY_VM_G4_SIGNAL_LOOKBACK_SESSIONS,
+  INDUSTRY_VM_G4_TRANSACTION_COST_SYMBOLS,
   INDUSTRY_VM_G4_VOLATILITY_LOOKBACK_SESSIONS,
+  applyIndustryVmG4RiskyOnlyTransactionCosts,
   buildIndustryVmG4PrimaryRawWeights,
+  rebaseIndustryVmG4RowsForStandalonePeriod,
 } from "./strategy.mjs";
 
 export const INDUSTRY_VM_G4_EVALUATION_SCHEMA =
@@ -79,6 +81,16 @@ const EXPECTED_COMPLETE_DECADES = Object.freeze([
 ]);
 const EULER_MASCHERONI = 0.5772156649015329;
 const MINIMUM_INFERENCE_OBSERVATIONS = 41;
+const MARKET_BUY_HOLD_POLICY_ID = "industry_external_market_buy_hold.anchor_0";
+const COMPACT_ACCOUNTING_ROW_KEYS = Object.freeze([
+  "cash_return",
+  "execution_return_date",
+  "financing_spread_cost",
+  "net_return",
+  "rebalanced",
+  "transaction_cost",
+  "turnover_notional",
+]);
 
 function fail(message) {
   throw new TypeError(message);
@@ -278,7 +290,7 @@ function rfCashStrategy() {
 }
 
 function simulate(points, strategy, anchor, oneWayCostBps) {
-  return simulateStrategy(
+  const zeroCostSimulation = simulateStrategy(
     points,
     KENNETH_FRENCH_10_INDUSTRY_PANEL_SYMBOLS,
     anchoredStrategy(strategy, anchor, `.cost_${oneWayCostBps}`),
@@ -287,19 +299,22 @@ function simulate(points, strategy, anchor, oneWayCostBps) {
       lookbackSessions: INDUSTRY_VM_G4_SIGNAL_LOOKBACK_SESSIONS,
       rebalanceIntervalSessions: INDUSTRY_VM_G4_REBALANCE_INTERVAL_SESSIONS,
       rebalanceAnchor: anchor,
-      oneWayCostBps,
+      oneWayCostBps: 0,
       annualBorrowSpread: INDUSTRY_VM_G4_ANNUAL_BORROW_SPREAD,
       maximumRiskyGross: INDUSTRY_VM_G4_MAXIMUM_TARGET_RISKY_GROSS,
-      terminalLiquidation: true,
+      terminalLiquidation: false,
     },
   );
+  return applyIndustryVmG4RiskyOnlyTransactionCosts(zeroCostSimulation, {
+    oneWayCostBps,
+    terminalLiquidation: false,
+  });
 }
 
 function standaloneRows(simulation, start, end, oneWayCostBps, label) {
   const selected = rowsWithin(simulation.rows, start, end);
   if (selected.length < 2) fail(`${label} partition requires at least two scored rows`);
-  return rebaseRowsForStandalonePeriod(selected, {
-    cashSymbol: INDUSTRY_VM_G4_CASH_SYMBOL,
+  return rebaseIndustryVmG4RowsForStandalonePeriod(selected, {
     oneWayCostBps,
   });
 }
@@ -327,8 +342,11 @@ function summarizeRows(rows, label) {
     maximumDrawdown = Math.min(maximumDrawdown, wealth / peak - 1);
     returns.push(netReturn);
     excessReturns.push(netReturn - cashReturn);
-    turnover += finite(row.turnover_notional, `${label} row ${index + 1} turnover`);
-    transactionCost += finite(row.transaction_cost, `${label} row ${index + 1} transaction cost`);
+    turnover += finite(row.turnover_notional, `${label} row ${index + 1} risky-asset turnover`);
+    transactionCost += finite(
+      row.transaction_cost,
+      `${label} row ${index + 1} risky-asset transaction cost`,
+    );
     financingCost += finite(row.financing_spread_cost, `${label} row ${index + 1} financing cost`);
     if (row.rebalanced === true) rebalancedObservations += 1;
   }
@@ -347,8 +365,8 @@ function summarizeRows(rows, label) {
       ? mean(excessReturns) / excessVolatility * Math.sqrt(252)
       : null,
     maximum_drawdown: maximumDrawdown,
-    annualized_turnover_notional: turnover * 252 / rows.length,
-    modeled_transaction_cost_simple_sum: transactionCost,
+    annualized_risky_asset_turnover_notional: turnover * 252 / rows.length,
+    modeled_risky_asset_transaction_cost_simple_sum: transactionCost,
     modeled_financing_spread_simple_sum: financingCost,
     rebalanced_observations: rebalancedObservations,
   });
@@ -374,7 +392,19 @@ function pairRows(candidateRows, benchmarkRows, label) {
   });
 }
 
-function comparison(candidateRows, benchmarkRows, label) {
+function policyId(strategy, anchor = 0) {
+  return `${strategy.id}.anchor_${anchor}`;
+}
+
+function comparison(candidateRows, benchmarkRows, {
+  label,
+  candidatePolicy,
+  benchmarkPolicy,
+}) {
+  if (typeof candidatePolicy !== "string" || candidatePolicy.length === 0
+    || typeof benchmarkPolicy !== "string" || benchmarkPolicy.length === 0) {
+    fail(`${label} requires explicit candidate and benchmark policy ids`);
+  }
   const paired = pairRows(candidateRows, benchmarkRows, label);
   const candidate = summarizeRows(candidateRows, `${label} candidate`);
   const benchmark = summarizeRows(benchmarkRows, `${label} benchmark`);
@@ -383,6 +413,8 @@ function comparison(candidateRows, benchmarkRows, label) {
     0,
   );
   return deepFreeze({
+    candidate_policy: candidatePolicy,
+    benchmark_policy: benchmarkPolicy,
     candidate,
     benchmark,
     paired_mean_daily_net_log_return_difference: edge / paired.length,
@@ -404,6 +436,8 @@ function comparison(candidateRows, benchmarkRows, label) {
 
 function compactComparison(value) {
   return deepFreeze({
+    candidate_policy: value.candidate_policy,
+    benchmark_policy: value.benchmark_policy,
     candidate: value.candidate,
     benchmark: value.benchmark,
     paired_mean_daily_net_log_return_difference:
@@ -412,6 +446,26 @@ function compactComparison(value) {
     net_log_growth_difference: value.net_log_growth_difference,
     candidate_path_sha256: value.candidate_path_sha256,
     benchmark_path_sha256: value.benchmark_path_sha256,
+  });
+}
+
+function compactAccountingRows(rows) {
+  return Object.freeze(rows.map((row) => Object.freeze({
+    execution_return_date: row.execution_return_date,
+    rebalanced: row.rebalanced,
+    cash_return: row.cash_return,
+    net_return: row.net_return,
+    turnover_notional: row.turnover_notional,
+    transaction_cost: row.transaction_cost,
+    financing_spread_cost: row.financing_spread_cost,
+  })));
+}
+
+function accountingRowsAreCompact(rows) {
+  return rows.every((row) => {
+    const keys = Object.keys(row).sort();
+    return keys.length === COMPACT_ACCOUNTING_ROW_KEYS.length
+      && keys.every((key, index) => key === COMPACT_ACCOUNTING_ROW_KEYS[index]);
   });
 }
 
@@ -607,6 +661,14 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
   }
 
   const marketStrategy = marketBuyHoldStrategy();
+  const primaryPolicy = policyId(
+    INDUSTRY_VM_G4_PRIMARY_STRATEGY,
+    INDUSTRY_VM_G4_PRIMARY_ANCHOR,
+  );
+  const marketPolicy = policyId(marketStrategy, 0);
+  if (marketPolicy !== MARKET_BUY_HOLD_POLICY_ID) {
+    fail("market buy-and-hold policy id changed");
+  }
   const primaryCostCells = [];
   const primaryBoundaryChecksByCost = {};
   let primaryPair = null;
@@ -639,7 +701,11 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
       costBps,
       `primary market ${costBps}bp`,
     );
-    const compared = comparison(candidateRows, marketRows, `primary ${costBps}bp`);
+    const compared = comparison(candidateRows, marketRows, {
+      label: `primary ${costBps}bp`,
+      candidatePolicy: primaryPolicy,
+      benchmarkPolicy: marketPolicy,
+    });
     primaryBoundaryChecksByCost[costBps] = Object.freeze({
       candidate_entry: exactStandaloneEntry(candidateRows, costBps),
       market_entry: exactStandaloneEntry(marketRows, costBps),
@@ -663,6 +729,12 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
       || primaryPair.benchmark.observations !== INDUSTRY_VM_G4_EXPECTED_PRIMARY_OBSERVATIONS)) {
     fail("official industry replay primary partition differs from 1927-05-07 / 21,218");
   }
+  const primaryChronologyAtFive = chronologyIsCausal(primaryRowsAtFive)
+    && chronologyIsCausal(marketRowsAtFive);
+  primaryRowsAtFive = compactAccountingRows(primaryRowsAtFive);
+  marketRowsAtFive = compactAccountingRows(marketRowsAtFive);
+  const primaryAccountingLedgersCompacted = accountingRowsAreCompact(primaryRowsAtFive)
+    && accountingRowsAreCompact(marketRowsAtFive);
 
   const cadenceCells = [];
   for (const anchor of INDUSTRY_VM_G4_CADENCE_ANCHORS) {
@@ -685,7 +757,11 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
       ...compactComparison(comparison(
         candidateRows,
         marketRowsAtFive,
-        `cadence anchor ${anchor}`,
+        {
+          label: `cadence anchor ${anchor}`,
+          candidatePolicy: policyId(INDUSTRY_VM_G4_PRIMARY_STRATEGY, anchor),
+          benchmarkPolicy: marketPolicy,
+        },
       )),
     }));
   }
@@ -709,12 +785,20 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
       ? compactComparison(comparison(
         rows,
         marketRowsAtFive,
-        "mapping B versus market",
+        {
+          label: "mapping B versus market",
+          candidatePolicy: policyId(strategy, 0),
+          benchmarkPolicy: marketPolicy,
+        },
       ))
       : compactComparison(comparison(
         primaryRowsAtFive,
         rows,
-        `candidate versus ${id}`,
+        {
+          label: `candidate versus ${id}`,
+          candidatePolicy: primaryPolicy,
+          benchmarkPolicy: policyId(strategy, 0),
+        },
       ));
   }
 
@@ -735,7 +819,11 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
   const overlapDiagnostic = compactComparison(comparison(
     overlapCandidateRows,
     overlapMarketRows,
-    "overlap diagnostic",
+    {
+      label: "overlap diagnostic",
+      candidatePolicy: primaryPolicy,
+      benchmarkPolicy: marketPolicy,
+    },
   ));
 
   const dailyValues = primaryPair.paired.map(
@@ -753,8 +841,7 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
   }
 
   const computedIntegrity = {
-    warmup_signal_rebalance_outcome_chronology:
-      chronologyIsCausal(primaryRowsAtFive) && chronologyIsCausal(marketRowsAtFive),
+    warmup_signal_rebalance_outcome_chronology: primaryChronologyAtFive,
     cost_monotonicity_and_exact_entry_cost:
       costByBps[5].candidate.net_log_growth >= costByBps[10].candidate.net_log_growth
       && costByBps[10].candidate.net_log_growth >= costByBps[25].candidate.net_log_growth
@@ -769,6 +856,8 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
         primaryBoundaryChecksByCost[costBps].candidate_terminal
         && primaryBoundaryChecksByCost[costBps].market_terminal
       )),
+    retained_5bp_ledgers_compacted_after_boundary_and_chronology_checks:
+      primaryAccountingLedgersCompacted,
   };
 
   const gates = {
@@ -833,6 +922,12 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
       "Retrospective external industry-proxy mechanism evidence only; mapping B is diagnostic and cannot rescue primary A.",
     primary_policy: "A: 50% HiTec plus top three of the remaining nine industries, volatility-managed",
     diagnostic_mapping_b_role: "NON_RESCUING",
+    transaction_cost_accounting: {
+      basis: "one-way risky-asset L1 turnover at standalone entry, executed rebalances, and terminal liquidation",
+      charged_symbols: [...INDUSTRY_VM_G4_TRANSACTION_COST_SYMBOLS],
+      excluded_cash_and_financing_symbol: INDUSTRY_VM_G4_CASH_SYMBOL,
+      borrow_spread_financing_charged_separately: true,
+    },
     source: {
       observations: points.length,
       first_date: points[0].date,
@@ -866,8 +961,8 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
   const primaryPairedSeriesCore = {
     schema_version: INDUSTRY_VM_G4_PRIMARY_SERIES_SCHEMA,
     partition: "PRIMARY_UNSEEN_THROUGH_2007_05_29",
-    candidate: "industry_vm_g4_primary_hitec",
-    benchmark: "industry_external_market_buy_hold",
+    candidate_policy: primaryPair.candidate_policy,
+    benchmark_policy: primaryPair.benchmark_policy,
     cadence_anchor: 0,
     one_way_cost_bps: 5,
     rows: primaryPair.paired,
@@ -893,6 +988,7 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
       primary_series_bytes: pairedSeriesBytes,
       primary_series_maximum_bytes: INDUSTRY_VM_G4_MAX_PRIMARY_SERIES_BYTES,
       full_cartesian_grid_persisted: false,
+      retained_5bp_accounting_ledgers_compacted: primaryAccountingLedgersCompacted,
       passed: true,
     },
   });

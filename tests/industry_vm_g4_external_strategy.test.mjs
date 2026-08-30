@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { buildReturnsBySymbol } from "../research/champion_engine.mjs";
@@ -16,11 +18,16 @@ import {
   INDUSTRY_VM_G4_EXTERNAL_SPECIFICATION,
   INDUSTRY_VM_G4_MAXIMUM_TARGET_RISKY_GROSS,
   INDUSTRY_VM_G4_PRIMARY_STRATEGY,
+  INDUSTRY_VM_G4_TRANSACTION_COST_SYMBOLS,
   INDUSTRY_VM_G4_UNSCALED_PRIMARY_STRATEGY,
   INDUSTRY_VM_G4_VOLATILITY_LOOKBACK_SESSIONS,
+  rebaseIndustryVmG4RowsForStandalonePeriod,
   simulateIndustryVmG4Primary,
   simulateIndustryVmG4UnscaledPrimary,
 } from "../research/industry_vm_g4_external/strategy.mjs";
+
+const FROZEN_CHAMPION_ENGINE_RAW_SHA256 =
+  "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e";
 
 const DAILY_SLOPES = Object.freeze({
   NoDur: 0.00001,
@@ -79,11 +86,25 @@ test("strategy specification and objects pin the two isolated external mechanism
   assert.equal(INDUSTRY_VM_G4_VOLATILITY_LOOKBACK_SESSIONS, 22);
   assert.equal(INDUSTRY_VM_G4_ANNUALIZED_VOLATILITY_TARGET, 0.20);
   assert.equal(INDUSTRY_VM_G4_MAXIMUM_TARGET_RISKY_GROSS, 1.5);
+  assert.deepEqual(
+    INDUSTRY_VM_G4_TRANSACTION_COST_SYMBOLS,
+    KENNETH_FRENCH_10_INDUSTRY_PANEL_SYMBOLS.filter((symbol) => symbol !== "RF"),
+  );
+  assert.match(INDUSTRY_VM_G4_EXTERNAL_SPECIFICATION.transaction_cost_basis, /RF.*excluded/iu);
+  assert.match(INDUSTRY_VM_G4_EXTERNAL_SPECIFICATION.borrow_spread_accounting, /separately/iu);
   assert.equal(INDUSTRY_VM_G4_PRIMARY_STRATEGY.id, "industry_vm_g4_primary_hitec");
   assert.equal(INDUSTRY_VM_G4_DIAGNOSTIC_STRATEGY.id, "industry_vm_g4_diagnostic_market");
   assert.equal(INDUSTRY_VM_G4_PRIMARY_STRATEGY.researchOnly, true);
   assert.equal(INDUSTRY_VM_G4_DIAGNOSTIC_STRATEGY.researchOnly, true);
   assert.equal(INDUSTRY_VM_G4_UNSCALED_PRIMARY_STRATEGY.comparatorOnly, true);
+});
+
+test("industry accounting preserves the frozen shared engine bytes", async () => {
+  const bytes = await readFile(new URL("../research/champion_engine.mjs", import.meta.url));
+  assert.equal(
+    createHash("sha256").update(bytes).digest("hex"),
+    FROZEN_CHAMPION_ENGINE_RAW_SHA256,
+  );
 });
 
 test("primary and diagnostic formulas select their exact 252-to-126 momentum leaders", () => {
@@ -176,7 +197,7 @@ test("both weight builders are invariant to every price observation after the si
   );
 });
 
-test("1.5 target cap creates explicit negative RF financing and the simulator charges it", () => {
+test("risky-only L1 costs exclude RF while its negative financing remains separately charged", () => {
   const points = fixturePanel();
   const returnsBySymbol = buildReturnsBySymbol(points, KENNETH_FRENCH_10_INDUSTRY_PANEL_SYMBOLS);
   const weights = buildIndustryVmG4PrimaryWeights(points, returnsBySymbol, 252);
@@ -196,12 +217,97 @@ test("1.5 target cap creates explicit negative RF financing and the simulator ch
   assert.equal(first.execution_return_date, points[254].date);
   approximately(riskyGross(first.signal_weights), 1.5);
   approximately(first.signal_weights.RF, -0.5);
-  approximately(first.turnover_notional, 3);
-  approximately(first.transaction_cost, 3 * oneWayCostBps / 10_000);
+  approximately(first.turnover_notional, 1.5);
+  approximately(first.transaction_cost, 1.5 * oneWayCostBps / 10_000);
   approximately(first.financing_spread_cost, 0.5 * 0.005 / 252);
   approximately(
     first.net_return,
     first.gross_return - first.transaction_cost - first.financing_spread_cost,
+    2e-10,
+  );
+
+  const secondRebalance = simulation.rows.find((row, index) => index > 0 && row.rebalanced);
+  assert.ok(secondRebalance);
+  const priorRow = simulation.rows[simulation.rows.indexOf(secondRebalance) - 1];
+  const priorGrossMultiplier = 1 + priorRow.gross_return;
+  const expectedRiskyTurnover = KENNETH_FRENCH_10_INDUSTRY_SYMBOLS.reduce(
+    (sum, symbol) => sum + Math.abs(
+      secondRebalance.weights[symbol]
+        - priorRow.weights[symbol] * (1 + priorRow.asset_returns[symbol]) / priorGrossMultiplier,
+    ),
+    0,
+  );
+  approximately(secondRebalance.turnover_notional, expectedRiskyTurnover, 2e-9);
+  approximately(
+    secondRebalance.transaction_cost,
+    expectedRiskyTurnover * oneWayCostBps / 10_000,
+    2e-10,
+  );
+
+  const standalone = rebaseIndustryVmG4RowsForStandalonePeriod(
+    simulation.rows.slice(2, -2),
+    { oneWayCostBps },
+  );
+  const standaloneFirst = standalone[0];
+  const expectedEntryNotional = KENNETH_FRENCH_10_INDUSTRY_SYMBOLS.reduce(
+    (sum, symbol) => sum + Math.abs(standaloneFirst.weights[symbol]),
+    0,
+  );
+  approximately(standaloneFirst.standalone_entry_notional, expectedEntryNotional, 2e-10);
+  approximately(
+    standaloneFirst.standalone_entry_cost,
+    expectedEntryNotional * oneWayCostBps / 10_000,
+    2e-10,
+  );
+  approximately(standaloneFirst.turnover_notional, expectedEntryNotional, 2e-10);
+  approximately(
+    standaloneFirst.net_return,
+    standaloneFirst.gross_return
+      - standaloneFirst.standalone_entry_cost
+      - standaloneFirst.financing_spread_cost,
+    2e-10,
+  );
+
+  const standaloneLast = standalone.at(-1);
+  const lastGrossMultiplier = 1 + standaloneLast.gross_return;
+  const expectedTerminalNotional = KENNETH_FRENCH_10_INDUSTRY_SYMBOLS.reduce(
+    (sum, symbol) => sum + Math.abs(
+      standaloneLast.weights[symbol]
+        * (1 + standaloneLast.asset_returns[symbol]) / lastGrossMultiplier,
+    ),
+    0,
+  );
+  approximately(
+    standaloneLast.standalone_terminal_liquidation_notional,
+    expectedTerminalNotional,
+    2e-9,
+  );
+  approximately(
+    standaloneLast.standalone_terminal_liquidation_cost,
+    expectedTerminalNotional * oneWayCostBps / 10_000,
+    2e-10,
+  );
+  approximately(
+    standaloneLast.transaction_cost,
+    standaloneLast.standalone_terminal_liquidation_cost,
+    2e-10,
+  );
+  approximately(
+    standaloneLast.net_return,
+    standaloneLast.gross_return
+      - standaloneLast.transaction_cost
+      - standaloneLast.financing_spread_cost,
+    2e-10,
+  );
+
+  const withTerminal = simulateIndustryVmG4Primary(points, {
+    oneWayCostBps,
+    terminalLiquidation: true,
+  });
+  const terminal = withTerminal.rows.at(-1);
+  approximately(
+    terminal.terminal_liquidation_cost,
+    terminal.terminal_liquidation_notional * oneWayCostBps / 10_000,
     2e-10,
   );
 });

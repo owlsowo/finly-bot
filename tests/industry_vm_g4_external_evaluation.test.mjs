@@ -161,6 +161,39 @@ test("synthetic evaluation returns aggregates plus only the frozen primary pair"
     "volatility_matched_market",
   ]);
   assert.equal(evaluated.aggregate.diagnostic_mapping_b_role, "NON_RESCUING");
+  const aggregateComparisons = [
+    ...Object.values(evaluated.aggregate.partitions),
+    ...evaluated.aggregate.primary_cost_cells,
+    ...evaluated.aggregate.cadence_5bp_cells,
+    ...Object.values(evaluated.aggregate.comparators),
+  ];
+  assert.ok(aggregateComparisons.every((item) => (
+    typeof item.candidate_policy === "string"
+      && item.candidate_policy.length > 0
+      && typeof item.benchmark_policy === "string"
+      && item.benchmark_policy.length > 0
+  )));
+  assert.equal(
+    evaluated.aggregate.comparators.mapping_b_non_rescuing.candidate_policy,
+    "industry_vm_g4_diagnostic_market.anchor_0",
+  );
+  assert.equal(
+    evaluated.aggregate.comparators.mapping_b_non_rescuing.benchmark_policy,
+    "industry_external_market_buy_hold.anchor_0",
+  );
+  assert.match(evaluated.aggregate.transaction_cost_accounting.basis, /risky-asset L1/iu);
+  assert.equal(
+    evaluated.aggregate.transaction_cost_accounting.excluded_cash_and_financing_symbol,
+    "RF",
+  );
+  assert.equal(
+    evaluated.aggregate.transaction_cost_accounting.charged_symbols.includes("RF"),
+    false,
+  );
+  assert.equal(
+    evaluated.aggregate.transaction_cost_accounting.borrow_spread_financing_charged_separately,
+    true,
+  );
   assert.ok(evaluated.aggregate.primary_cost_cells.every((cell) => (
     cell.benchmark.rebalanced_observations === 1
   )));
@@ -179,6 +212,7 @@ test("synthetic evaluation returns aggregates plus only the frozen primary pair"
   assert.ok(evaluated.aggregate.partitions.overlap_diagnostic_non_rescuing.candidate.start_date
     >= INDUSTRY_VM_G4_OVERLAP_START);
   assert.equal(evaluated.output_size_guard.full_cartesian_grid_persisted, false);
+  assert.equal(evaluated.output_size_guard.retained_5bp_accounting_ledgers_compacted, true);
   assert.equal(evaluated.output_size_guard.passed, true);
   assert.equal(
     evaluated.aggregate.gates.integrity.checks.exact_terminal_liquidation,
@@ -190,6 +224,28 @@ test("synthetic evaluation returns aggregates plus only the frozen primary pair"
       <= INDUSTRY_VM_G4_MAX_PRIMARY_SERIES_BYTES,
   );
   assert.equal("rows" in evaluated.aggregate.partitions.primary_unseen, false);
+  assert.equal(
+    "annualized_turnover_notional"
+      in evaluated.aggregate.partitions.primary_unseen.candidate,
+    false,
+  );
+  assert.ok(
+    evaluated.aggregate.partitions.primary_unseen.candidate
+      .annualized_risky_asset_turnover_notional >= 0,
+  );
+  assert.ok(
+    evaluated.aggregate.partitions.primary_unseen.candidate
+      .modeled_risky_asset_transaction_cost_simple_sum >= 0,
+  );
+  assert.deepEqual(
+    Object.keys(evaluated.primary_paired_series.rows[0]).sort(),
+    [
+      "benchmark_net_return",
+      "candidate_minus_benchmark_net_log_return",
+      "candidate_net_return",
+      "outcome_date",
+    ],
+  );
   assert.ok(Object.isFrozen(evaluated));
   assert.ok(Object.isFrozen(evaluated.aggregate));
   assert.ok(Object.isFrozen(evaluated.primary_paired_series.rows));
