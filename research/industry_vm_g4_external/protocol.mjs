@@ -26,7 +26,7 @@ export const INDUSTRY_VM_G4_EXPECTED_DATE_SEQUENCE_SHA256 =
   "sha256:4d0b141f05d01b5b4028060a11081d5fc983bc0133c69325d994a469c5ff1eba";
 
 export const INDUSTRY_VM_G4_FACTOR_ARTIFACT_RELATIVE_PATH =
-  "data/external_validation_attempt115/attempt118/canonical_daily_factors.csv";
+  "research/industry_vm_g4_external/canonical_daily_factors.csv";
 export const INDUSTRY_VM_G4_FACTOR_ARTIFACT_RAW_SHA256 =
   "sha256:156d6bc8396e6c1cc3c680016f132304c09491f077881f5ae932d1ca0610d603";
 export const INDUSTRY_VM_G4_TRIAL_LEDGER_RELATIVE_PATH =
