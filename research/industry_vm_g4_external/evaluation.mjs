@@ -483,6 +483,9 @@ export function industryVmG4DeflatedSharpe(dailyValues) {
   const constantSeries = dailyValues.every((value) => value === dailyValues[0]);
   if (constantSeries || !(sampleDeviation > 0) || !(populationVariance > 0)) {
     return deepFreeze({
+      method: "parametric null-maximum deflated Sharpe probability",
+      calibration: "Cross-trial Sharpe mean is fixed at zero and its null standard error is fixed at 1/sqrt(T-1); no empirical 200-trial Sharpe distribution is available.",
+      empirical_trial_sharpe_distribution_used: false,
       observations,
       probability: null,
       global_trial_count: INDUSTRY_VM_G4_GLOBAL_TRIAL_COUNT,
@@ -518,6 +521,9 @@ export function industryVmG4DeflatedSharpe(dailyValues) {
     zScore, probability].every((value) => Number.isFinite(value))
     && varianceFactor > 0 && probability >= 0 && probability <= 1;
   return deepFreeze({
+    method: "parametric null-maximum deflated Sharpe probability",
+    calibration: "Cross-trial Sharpe mean is fixed at zero and its null standard error is fixed at 1/sqrt(T-1); no empirical 200-trial Sharpe distribution is available.",
+    empirical_trial_sharpe_distribution_used: false,
     observations,
     sample_mean: average,
     sample_standard_deviation: sampleDeviation,
@@ -602,7 +608,7 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
 
   const marketStrategy = marketBuyHoldStrategy();
   const primaryCostCells = [];
-  const primaryRowsByCost = {};
+  const primaryBoundaryChecksByCost = {};
   let primaryPair = null;
   let primaryRowsAtFive = null;
   let marketRowsAtFive = null;
@@ -634,7 +640,12 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
       `primary market ${costBps}bp`,
     );
     const compared = comparison(candidateRows, marketRows, `primary ${costBps}bp`);
-    primaryRowsByCost[costBps] = Object.freeze({ candidateRows, marketRows });
+    primaryBoundaryChecksByCost[costBps] = Object.freeze({
+      candidate_entry: exactStandaloneEntry(candidateRows, costBps),
+      market_entry: exactStandaloneEntry(marketRows, costBps),
+      candidate_terminal: exactStandaloneTerminalLiquidation(candidateRows, costBps),
+      market_terminal: exactStandaloneTerminalLiquidation(marketRows, costBps),
+    });
     primaryCostCells.push(Object.freeze({ cost_bps: costBps, ...compactComparison(compared) }));
     if (costBps === INDUSTRY_VM_G4_PRIMARY_COST_BPS) {
       primaryPair = compared;
@@ -750,19 +761,13 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
       && costByBps[5].benchmark.net_log_growth >= costByBps[10].benchmark.net_log_growth
       && costByBps[10].benchmark.net_log_growth >= costByBps[25].benchmark.net_log_growth
       && INDUSTRY_VM_G4_COST_BPS.every((costBps) => (
-        exactStandaloneEntry(primaryRowsByCost[costBps].candidateRows, costBps)
-        && exactStandaloneEntry(primaryRowsByCost[costBps].marketRows, costBps)
+        primaryBoundaryChecksByCost[costBps].candidate_entry
+        && primaryBoundaryChecksByCost[costBps].market_entry
       )),
     exact_terminal_liquidation:
       INDUSTRY_VM_G4_COST_BPS.every((costBps) => (
-        exactStandaloneTerminalLiquidation(
-          primaryRowsByCost[costBps].candidateRows,
-          costBps,
-        )
-        && exactStandaloneTerminalLiquidation(
-          primaryRowsByCost[costBps].marketRows,
-          costBps,
-        )
+        primaryBoundaryChecksByCost[costBps].candidate_terminal
+        && primaryBoundaryChecksByCost[costBps].market_terminal
       )),
   };
 
@@ -774,7 +779,8 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
     statistical_evidence: gate("statistical_evidence", {
       nominal_p_value_at_most_0_05: bootstrap.passes_nominal_gate,
       bonferroni_raw_p_value_at_most_0_05_over_200: bootstrap.passes_bonferroni_gate,
-      deflated_sharpe_probability_at_least_0_95: deflatedSharpe.passes_gate,
+      parametric_deflated_sharpe_probability_at_least_0_95:
+        deflatedSharpe.passes_gate,
     }),
     absolute_and_rf_performance: gate("absolute_and_rf_performance", {
       candidate_positive_net_log_growth: primaryPair.candidate.net_log_growth > 0,
@@ -845,7 +851,7 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
     primary_cost_cells: primaryCostCells,
     cadence_5bp_cells: cadenceCells,
     comparators,
-    inference: { bootstrap, deflated_sharpe: deflatedSharpe },
+    inference: { bootstrap, parametric_deflated_sharpe: deflatedSharpe },
     complete_decades: decades,
     realized_volatility_ratio_to_matched_market: volatilityRatio,
     gates,

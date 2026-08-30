@@ -123,6 +123,8 @@ test("bootstrap equality fails closed and DSR uses the same 200-trial family", (
 
   const dsr = industryVmG4DeflatedSharpe(oscillatingFixture(731, 0.001));
   assert.equal(dsr.global_trial_count, 200);
+  assert.equal(dsr.empirical_trial_sharpe_distribution_used, false);
+  assert.match(dsr.method, /parametric null-maximum/iu);
   assert.equal(dsr.disposition, "FINITE");
   assert.equal(dsr.passes_gate, true);
   assert.ok(dsr.probability >= 0.95 && dsr.probability <= 1);
