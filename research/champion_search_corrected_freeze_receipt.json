@@ -1,0 +1,21 @@
+{
+  "schema_version": "finly_champion_search_corrected_freeze_receipt.v1",
+  "status": "frozen_before_first_corrected_output",
+  "created_at": "2026-08-29T10:32:22Z",
+  "independent_static_audit": "GO after queued execution, weight drift, execution-time bands, signal-time ensemble weights, standalone boundary costs, content-addressed private evidence, and conservative trial-ledger validation.",
+  "claim_boundary": "This is a local timestamp, not an independent time authority. File hashes are the reproducibility anchors. All historical data are already seen; a pass can earn only retrospective shadow status.",
+  "files": {
+    "research/champion_search_corrected_protocol.json": "35d67bc6f7d540efeab8af1ca02712dc5e8873bd84580e793f1dbc6999b4f557",
+    "research/champion_trial_ledger.json": "cbd88396b4bd5e0f2fa805584496b50451e023168d937bf0352708678576d604",
+    "research/champion_engine.mjs": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e",
+    "research/champion_strategies.mjs": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d",
+    "research/champion_strategies_generation2.mjs": "4448c2029112cf2562668d38a0ee5f7a917644292982620c91249cd6b3d3f717",
+    "research/champion_statistics.mjs": "bc3d681771012f11ef27aeb2b7d61a1862d3d026818e4c3b623e041cf5a688de",
+    "research/run_quant_champion_corrected.mjs": "35bfaeed7d968d4b5d53838cff29adae5c558836a769b634a59904fef5362b25",
+    "tests/champion_engine.test.mjs": "a77ff77204e00b3be28e32e993ac9a699e580ca5548a9f864a8f19a7f9d9ef9d",
+    "tests/champion_statistics.test.mjs": "28479ac1fc43ef2593ce1e4782bb0e57cc1857035afc20686e4bd6234f918938"
+  },
+  "declared_cumulative_effective_trials": 92,
+  "corrected_results_seen_at_freeze": false,
+  "pre_correction_outputs_eligible": false
+}

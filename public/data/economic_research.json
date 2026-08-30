@@ -1,0 +1,2054 @@
+{
+  "schema_version": "finly_economic_research.v1",
+  "generated_at": "2026-08-29T08:39:41.877Z",
+  "research_scope": "Long-horizon SPY direction and risk-scaling research; this is separate from the shorter historical options execution-proxy replay.",
+  "mutation_authorized": false,
+  "future_profitability_guaranteed": false,
+  "durable_alpha_proven": false,
+  "live_options_profitability_proven": false,
+  "protocol": {
+    "schema_version": "finly_economic_research_protocol.v1",
+    "symbol": "SPY",
+    "bar_source": "Alpaca SIP historical daily bars",
+    "cash_proxy": "BIL adjusted daily return",
+    "adjustment": "all",
+    "requested_start": "2016-01-01",
+    "requested_end": "2026-08-28",
+    "development_start": "2017-01-01",
+    "training_end": "2021-12-31",
+    "validation_start": "2022-01-01",
+    "validation_end": "2024-12-31",
+    "final_holdout_start": "2025-01-01",
+    "final_holdout_end": "2026-08-28",
+    "execution_lag": "signal at adjusted close t; rebalance at adjusted close t+1; exposure first earns adjusted close-to-close return t+1 to t+2",
+    "rebalance_frequency": "every five market sessions",
+    "cash_return_assumption": "observed adjusted BIL close-to-close return; no synthetic interest rate",
+    "one_way_turnover_cost_bps_per_traded_leg": 1,
+    "target_annualized_volatility": 0.1,
+    "maximum_gross_exposure": 1,
+    "leverage_allowed": false,
+    "shorting_allowed_by_selected_policy": false,
+    "economic_candidate_count": 6,
+    "selectable_candidate_count": 1,
+    "diagnostic_candidate_count": 5,
+    "preregistered_candidate_id": "tsmom_ensemble_vol",
+    "preregistered_candidate_definition": "Equal-weight positive-trend fraction across 21-, 63-, and 252-session SPY-minus-BIL return horizons, multiplied by an unlevered 10% 20-session SPY realized-volatility target; unallocated exposure earns the observed BIL return.",
+    "selection_rule": "The preregistered candidate is fixed from the cited literature before economic results are computed. It proceeds to the final holdout only if validation return and BIL-excess Sharpe are positive, validation has at least 252 observations, average exposure is at least 5%, and it has either lower volatility or shallower drawdown than buy-and-hold. All other candidates are diagnostics and cannot be selected.",
+    "holdout_rule": "The preregistered candidate ID and validation gate are instantiated in a hashed selection receipt before the dated final holdout is sliced or scored.",
+    "claim_boundary": "A positive historical holdout is evidence about this fixed sample and cost model, not proof of durable alpha, live options profitability, or future returns."
+  },
+  "sources": [
+    {
+      "title": "Time Series Momentum",
+      "authors": "Tobias J. Moskowitz, Yao Hua Ooi, and Lasse Heje Pedersen",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2089463",
+      "design_use": "Fixed 1- to 12-month time-series trend horizons; Finly uses long-only, unlevered variants rather than claiming to reproduce the paper's diversified futures portfolio."
+    },
+    {
+      "title": "A Century of Evidence on Trend-Following Investing",
+      "authors": "Brian Hurst, Yao Hua Ooi, and Lasse Heje Pedersen",
+      "url": "https://www.aqr.com/Insights/Research/Journal-Article/A-Century-of-Evidence-on-Trend-Following-Investing",
+      "design_use": "Predeclared equal combination of 1-, 3-, and 12-month trend horizons with volatility scaling; Finly applies a long-only, unlevered single-index adaptation."
+    },
+    {
+      "title": "Volatility-Managed Portfolios",
+      "authors": "Alan Moreira and Tyler Muir",
+      "url": "https://www.nber.org/papers/w22208",
+      "design_use": "Inverse-volatility risk scaling; Finly caps exposure at one and does not use leverage."
+    },
+    {
+      "title": "The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting, and Non-Normality",
+      "authors": "David H. Bailey and Marcos López de Prado",
+      "url": "https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf",
+      "design_use": "Non-normality-aware probabilistic and deflated Sharpe falsification with an explicitly disclosed trial count."
+    },
+    {
+      "title": "A Reality Check for Data Snooping",
+      "authors": "Halbert White",
+      "url": "https://users.ssc.wisc.edu/~behansen/718/White2000.pdf",
+      "design_use": "Centered shared-block maximum-statistic bootstrap across the disclosed economic candidate family."
+    },
+    {
+      "title": "Alpaca Market Data API",
+      "authors": "Alpaca",
+      "url": "https://docs.alpaca.markets/docs/about-market-data-api",
+      "design_use": "Read-only adjusted daily delayed SIP bars and explicit data-plan boundary."
+    }
+  ],
+  "dataset": {
+    "provider": "Alpaca",
+    "feed": "sip",
+    "adjustment": "all",
+    "requested_start": "2016-01-01",
+    "requested_end": "2026-08-28",
+    "observed_start": "2016-01-04",
+    "observed_end": "2026-08-28",
+    "bar_count": 2679,
+    "cash_observed_start": "2016-01-04",
+    "cash_observed_end": "2026-08-28",
+    "cash_bar_count": 2679,
+    "page_count": 2,
+    "dataset_sha256": "sha256:573692b27c00968ca1166db2432721115c2cebeb92bebe69a58bf55cb3eb48db",
+    "symbol_sha256": {
+      "SPY": "sha256:78d408702133c73999011198296c8c458866497f3820d44da2078ccd24d8a3c9",
+      "BIL": "sha256:66b50448ea8354569b5ad24ad1849df99db1d130cc26661311a921b465999922"
+    },
+    "raw_bars_embedded_publicly": false
+  },
+  "selection_receipt": {
+    "schema_version": "finly_economic_selection.v1",
+    "protocol": {
+      "schema_version": "finly_economic_research_protocol.v1",
+      "symbol": "SPY",
+      "bar_source": "Alpaca SIP historical daily bars",
+      "cash_proxy": "BIL adjusted daily return",
+      "adjustment": "all",
+      "requested_start": "2016-01-01",
+      "requested_end": "2026-08-28",
+      "development_start": "2017-01-01",
+      "training_end": "2021-12-31",
+      "validation_start": "2022-01-01",
+      "validation_end": "2024-12-31",
+      "final_holdout_start": "2025-01-01",
+      "final_holdout_end": "2026-08-28",
+      "execution_lag": "signal at adjusted close t; rebalance at adjusted close t+1; exposure first earns adjusted close-to-close return t+1 to t+2",
+      "rebalance_frequency": "every five market sessions",
+      "cash_return_assumption": "observed adjusted BIL close-to-close return; no synthetic interest rate",
+      "one_way_turnover_cost_bps_per_traded_leg": 1,
+      "target_annualized_volatility": 0.1,
+      "maximum_gross_exposure": 1,
+      "leverage_allowed": false,
+      "shorting_allowed_by_selected_policy": false,
+      "economic_candidate_count": 6,
+      "selectable_candidate_count": 1,
+      "diagnostic_candidate_count": 5,
+      "preregistered_candidate_id": "tsmom_ensemble_vol",
+      "preregistered_candidate_definition": "Equal-weight positive-trend fraction across 21-, 63-, and 252-session SPY-minus-BIL return horizons, multiplied by an unlevered 10% 20-session SPY realized-volatility target; unallocated exposure earns the observed BIL return.",
+      "selection_rule": "The preregistered candidate is fixed from the cited literature before economic results are computed. It proceeds to the final holdout only if validation return and BIL-excess Sharpe are positive, validation has at least 252 observations, average exposure is at least 5%, and it has either lower volatility or shallower drawdown than buy-and-hold. All other candidates are diagnostics and cannot be selected.",
+      "holdout_rule": "The preregistered candidate ID and validation gate are instantiated in a hashed selection receipt before the dated final holdout is sliced or scored.",
+      "claim_boundary": "A positive historical holdout is evidence about this fixed sample and cost model, not proof of durable alpha, live options profitability, or future returns."
+    },
+    "candidate_definitions": [
+      {
+        "id": "buy_hold",
+        "label": "SPY buy-and-hold baseline",
+        "kind": "buy_hold"
+      },
+      {
+        "id": "vol_target_long",
+        "label": "Long-only 20-session volatility target",
+        "kind": "vol_target_long"
+      },
+      {
+        "id": "tsmom_12m_vol",
+        "label": "Long-only 12-month trend plus volatility target",
+        "kind": "tsmom_12m_vol"
+      },
+      {
+        "id": "tsmom_ensemble_vol",
+        "label": "Long-only multi-horizon trend plus volatility target",
+        "kind": "tsmom_ensemble_vol"
+      },
+      {
+        "id": "tsmom_majority_vol",
+        "label": "Long-only majority trend plus volatility target",
+        "kind": "tsmom_majority_vol"
+      },
+      {
+        "id": "finly_5_20_signed",
+        "label": "Existing Finly 5/20-session signed trend diagnostic",
+        "kind": "finly_5_20_signed"
+      }
+    ],
+    "dataset_fingerprints": {
+      "SPY": "sha256:78d408702133c73999011198296c8c458866497f3820d44da2078ccd24d8a3c9",
+      "BIL": "sha256:66b50448ea8354569b5ad24ad1849df99db1d130cc26661311a921b465999922"
+    },
+    "development_partition": {
+      "training": {
+        "start": "2017-01-01",
+        "end": "2021-12-31"
+      },
+      "validation": {
+        "start": "2022-01-01",
+        "end": "2024-12-31"
+      }
+    },
+    "training_metrics": {
+      "buy_hold": {
+        "observations": 1257,
+        "start_date": "2017-01-05",
+        "end_date": "2021-12-31",
+        "total_return": 1.2802415,
+        "gross_total_return": 1.28069801,
+        "bil_total_return": 0.04787892,
+        "total_return_minus_bil": 1.23236258,
+        "annualized_return": 0.17968768,
+        "annualized_volatility": 0.18356212,
+        "annualized_total_return_to_volatility": 0.99291217,
+        "bil_excess_sharpe": 0.94163756,
+        "bil_excess_sortino": 0.84782782,
+        "maximum_drawdown": -0.33793817,
+        "calmar_ratio": 0.53171761,
+        "average_exposure": 1,
+        "average_bil_exposure": 0,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 1,
+        "modeled_cost_drag_simple_sum": 0.0002,
+        "positive_day_fraction": 0.566428,
+        "calendar_year_returns": {
+          "2017": 0.20109668,
+          "2018": -0.04966231,
+          "2019": 0.3113992,
+          "2020": 0.18451731,
+          "2021": 0.28602259
+        },
+        "positive_calendar_year_fraction": 0.8
+      },
+      "vol_target_long": {
+        "observations": 1257,
+        "start_date": "2017-01-05",
+        "end_date": "2021-12-31",
+        "total_return": 0.81807858,
+        "gross_total_return": 0.82339991,
+        "bil_total_return": 0.04787892,
+        "total_return_minus_bil": 0.77019966,
+        "annualized_return": 0.12731802,
+        "annualized_volatility": 0.10367314,
+        "annualized_total_return_to_volatility": 1.20824807,
+        "bil_excess_sharpe": 1.11809397,
+        "bil_excess_sortino": 0.98707058,
+        "maximum_drawdown": -0.12747078,
+        "calmar_ratio": 0.99880163,
+        "average_exposure": 0.78936149,
+        "average_bil_exposure": 0.21063851,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 14.60470094,
+        "modeled_cost_drag_simple_sum": 0.0029209,
+        "positive_day_fraction": 0.56722355,
+        "calendar_year_returns": {
+          "2017": 0.2008777,
+          "2018": -0.01044591,
+          "2019": 0.18727199,
+          "2020": 0.08190334,
+          "2021": 0.19106551
+        },
+        "positive_calendar_year_fraction": 0.8
+      },
+      "tsmom_12m_vol": {
+        "observations": 1257,
+        "start_date": "2017-01-05",
+        "end_date": "2021-12-31",
+        "total_return": 0.6872798,
+        "gross_total_return": 0.6929102,
+        "bil_total_return": 0.04787892,
+        "total_return_minus_bil": 0.63940087,
+        "annualized_return": 0.11056981,
+        "annualized_volatility": 0.10132833,
+        "annualized_total_return_to_volatility": 1.08605691,
+        "bil_excess_sharpe": 0.9939041,
+        "bil_excess_sortino": 0.84669427,
+        "maximum_drawdown": -0.12767248,
+        "calmar_ratio": 0.86604266,
+        "average_exposure": 0.76639969,
+        "average_bil_exposure": 0.23360031,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 16.64853293,
+        "modeled_cost_drag_simple_sum": 0.00332964,
+        "positive_day_fraction": 0.55290374,
+        "calendar_year_returns": {
+          "2017": 0.2008777,
+          "2018": 0.00673915,
+          "2019": 0.12899813,
+          "2020": 0.03786889,
+          "2021": 0.19106551
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "tsmom_ensemble_vol": {
+        "observations": 1257,
+        "start_date": "2017-01-05",
+        "end_date": "2021-12-31",
+        "total_return": 0.60923922,
+        "gross_total_return": 0.61738201,
+        "bil_total_return": 0.04787892,
+        "total_return_minus_bil": 0.56136029,
+        "annualized_return": 0.10007614,
+        "annualized_volatility": 0.0904577,
+        "annualized_total_return_to_volatility": 1.10002665,
+        "bil_excess_sharpe": 0.99706259,
+        "bil_excess_sortino": 0.85436481,
+        "maximum_drawdown": -0.08958016,
+        "calmar_ratio": 1.11716864,
+        "average_exposure": 0.70393359,
+        "average_bil_exposure": 0.29606641,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 25.23354699,
+        "modeled_cost_drag_simple_sum": 0.00504669,
+        "positive_day_fraction": 0.56165473,
+        "calendar_year_returns": {
+          "2017": 0.17961116,
+          "2018": 0.00919569,
+          "2019": 0.09493774,
+          "2020": 0.05723359,
+          "2021": 0.16773951
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "tsmom_majority_vol": {
+        "observations": 1257,
+        "start_date": "2017-01-05",
+        "end_date": "2021-12-31",
+        "total_return": 0.69688698,
+        "gross_total_return": 0.70479198,
+        "bil_total_return": 0.04787892,
+        "total_return_minus_bil": 0.64900805,
+        "annualized_return": 0.11183465,
+        "annualized_volatility": 0.09587386,
+        "annualized_total_return_to_volatility": 1.15409464,
+        "bil_excess_sharpe": 1.05706949,
+        "bil_excess_sortino": 0.8754925,
+        "maximum_drawdown": -0.09183445,
+        "calmar_ratio": 1.21778536,
+        "average_exposure": 0.73199794,
+        "average_bil_exposure": 0.26800206,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 23.22857014,
+        "modeled_cost_drag_simple_sum": 0.00464564,
+        "positive_day_fraction": 0.55210819,
+        "calendar_year_returns": {
+          "2017": 0.2008777,
+          "2018": 0.00569843,
+          "2019": 0.05681098,
+          "2020": 0.11622924,
+          "2021": 0.19106551
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "finly_5_20_signed": {
+        "observations": 1257,
+        "start_date": "2017-01-05",
+        "end_date": "2021-12-31",
+        "total_return": 0.02954784,
+        "gross_total_return": 0.05697973,
+        "bil_total_return": 0.04787892,
+        "total_return_minus_bil": -0.01833108,
+        "annualized_return": 0.00585492,
+        "annualized_volatility": 0.08948583,
+        "annualized_total_return_to_volatility": 0.11011071,
+        "bil_excess_sharpe": 0.00531159,
+        "bil_excess_sortino": 0.00429083,
+        "maximum_drawdown": -0.16999735,
+        "calmar_ratio": 0.03444122,
+        "average_exposure": 0.35127475,
+        "average_bil_exposure": 0.4222597,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 131.52802565,
+        "modeled_cost_drag_simple_sum": 0.02630562,
+        "positive_day_fraction": 0.47573588,
+        "calendar_year_returns": {
+          "2017": 0.03892128,
+          "2018": -0.0994255,
+          "2019": 0.01598733,
+          "2020": 0.0737643,
+          "2021": 0.0086651
+        },
+        "positive_calendar_year_fraction": 0.8
+      }
+    },
+    "validation_metrics": {
+      "buy_hold": {
+        "observations": 753,
+        "start_date": "2022-01-03",
+        "end_date": "2024-12-31",
+        "total_return": 0.28936159,
+        "gross_total_return": 0.28936159,
+        "bil_total_return": 0.11910957,
+        "total_return_minus_bil": 0.17025202,
+        "annualized_return": 0.08877504,
+        "annualized_volatility": 0.17498643,
+        "annualized_total_return_to_volatility": 0.57360792,
+        "bil_excess_sharpe": 0.3583916,
+        "bil_excess_sortino": 0.34982258,
+        "maximum_drawdown": -0.24496069,
+        "calmar_ratio": 0.36240524,
+        "average_exposure": 1,
+        "average_bil_exposure": 0,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 0,
+        "modeled_cost_drag_simple_sum": 0,
+        "positive_day_fraction": 0.52722444,
+        "calendar_year_returns": {
+          "2022": -0.1817491,
+          "2023": 0.26174583,
+          "2024": 0.24886748
+        },
+        "positive_calendar_year_fraction": 0.66666667
+      },
+      "vol_target_long": {
+        "observations": 753,
+        "start_date": "2022-01-03",
+        "end_date": "2024-12-31",
+        "total_return": 0.27524922,
+        "gross_total_return": 0.27741649,
+        "bil_total_return": 0.11910957,
+        "total_return_minus_bil": 0.15613965,
+        "annualized_return": 0.0847723,
+        "annualized_volatility": 0.10466624,
+        "annualized_total_return_to_volatility": 0.82987721,
+        "bil_excess_sharpe": 0.47031941,
+        "bil_excess_sortino": 0.45476397,
+        "maximum_drawdown": -0.13059064,
+        "calmar_ratio": 0.64914533,
+        "average_exposure": 0.69065737,
+        "average_bil_exposure": 0.30934263,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 8.49306953,
+        "modeled_cost_drag_simple_sum": 0.00169863,
+        "positive_day_fraction": 0.52722444,
+        "calendar_year_returns": {
+          "2022": -0.10358213,
+          "2023": 0.18800449,
+          "2024": 0.19747506
+        },
+        "positive_calendar_year_fraction": 0.66666667
+      },
+      "tsmom_12m_vol": {
+        "observations": 753,
+        "start_date": "2022-01-03",
+        "end_date": "2024-12-31",
+        "total_return": 0.27435729,
+        "gross_total_return": 0.27632695,
+        "bil_total_return": 0.11910957,
+        "total_return_minus_bil": 0.15524772,
+        "annualized_return": 0.08451833,
+        "annualized_volatility": 0.08716583,
+        "annualized_total_return_to_volatility": 0.97456904,
+        "bil_excess_sharpe": 0.54352758,
+        "bil_excess_sortino": 0.41535429,
+        "maximum_drawdown": -0.0938034,
+        "calmar_ratio": 0.90101565,
+        "average_exposure": 0.52682279,
+        "average_bil_exposure": 0.47317721,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 7.72514829,
+        "modeled_cost_drag_simple_sum": 0.00154505,
+        "positive_day_fraction": 0.56042497,
+        "calendar_year_returns": {
+          "2022": -0.07453645,
+          "2023": 0.14991413,
+          "2024": 0.19747506
+        },
+        "positive_calendar_year_fraction": 0.66666667
+      },
+      "tsmom_ensemble_vol": {
+        "observations": 753,
+        "start_date": "2022-01-03",
+        "end_date": "2024-12-31",
+        "total_return": 0.18442627,
+        "gross_total_return": 0.1878393,
+        "bil_total_return": 0.11910957,
+        "total_return_minus_bil": 0.0653167,
+        "annualized_return": 0.05827929,
+        "annualized_volatility": 0.07544929,
+        "annualized_total_return_to_volatility": 0.78859483,
+        "bil_excess_sharpe": 0.29013392,
+        "bil_excess_sortino": 0.25524557,
+        "maximum_drawdown": -0.0943626,
+        "calmar_ratio": 0.61761009,
+        "average_exposure": 0.50298896,
+        "average_bil_exposure": 0.49701104,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 14.39293453,
+        "modeled_cost_drag_simple_sum": 0.00287862,
+        "positive_day_fraction": 0.52988048,
+        "calendar_year_returns": {
+          "2022": -0.08921827,
+          "2023": 0.13656635,
+          "2024": 0.14419206
+        },
+        "positive_calendar_year_fraction": 0.66666667
+      },
+      "tsmom_majority_vol": {
+        "observations": 753,
+        "start_date": "2022-01-03",
+        "end_date": "2024-12-31",
+        "total_return": 0.19522371,
+        "gross_total_return": 0.1990613,
+        "bil_total_return": 0.11910957,
+        "total_return_minus_bil": 0.07611415,
+        "annualized_return": 0.06149818,
+        "annualized_volatility": 0.08218973,
+        "annualized_total_return_to_volatility": 0.76733154,
+        "bil_excess_sharpe": 0.30994404,
+        "bil_excess_sortino": 0.2348707,
+        "maximum_drawdown": -0.1207502,
+        "calmar_ratio": 0.50930085,
+        "average_exposure": 0.51119197,
+        "average_bil_exposure": 0.48880803,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 16.03664675,
+        "modeled_cost_drag_simple_sum": 0.00320735,
+        "positive_day_fraction": 0.53784861,
+        "calendar_year_returns": {
+          "2022": -0.10844161,
+          "2023": 0.14379725,
+          "2024": 0.1720614
+        },
+        "positive_calendar_year_fraction": 0.66666667
+      },
+      "finly_5_20_signed": {
+        "observations": 753,
+        "start_date": "2022-01-03",
+        "end_date": "2024-12-31",
+        "total_return": 0.13568525,
+        "gross_total_return": 0.15224688,
+        "bil_total_return": 0.11910957,
+        "total_return_minus_bil": 0.01657568,
+        "annualized_return": 0.04350062,
+        "annualized_volatility": 0.0900351,
+        "annualized_total_return_to_volatility": 0.51793539,
+        "bil_excess_sharpe": 0.09966147,
+        "bil_excess_sortino": 0.08959987,
+        "maximum_drawdown": -0.09337121,
+        "calmar_ratio": 0.46588903,
+        "average_exposure": 0.1970307,
+        "average_bil_exposure": 0.47936596,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 72.36694483,
+        "modeled_cost_drag_simple_sum": 0.01447341,
+        "positive_day_fraction": 0.54050465,
+        "calendar_year_returns": {
+          "2022": 0.0989635,
+          "2023": 0.03876419,
+          "2024": -0.00514967
+        },
+        "positive_calendar_year_fraction": 0.66666667
+      }
+    },
+    "selection": {
+      "preregistered_id": "tsmom_ensemble_vol",
+      "selected_id": "tsmom_ensemble_vol",
+      "selected_label": "Long-only multi-horizon trend plus volatility target",
+      "diagnostic_qualifiers": [
+        "vol_target_long",
+        "tsmom_12m_vol",
+        "tsmom_ensemble_vol",
+        "tsmom_majority_vol",
+        "finly_5_20_signed"
+      ],
+      "candidate_qualification": {
+        "vol_target_long": true,
+        "tsmom_12m_vol": true,
+        "tsmom_ensemble_vol": true,
+        "tsmom_majority_vol": true,
+        "finly_5_20_signed": true
+      },
+      "selection_failed_closed": false
+    },
+    "selection_sha256": "sha256:362ff442cdb6e676d430e5b58ca39a4605d8a5f6cbef323925cb6cea53f89c47"
+  },
+  "final_holdout": {
+    "evaluation_order": {
+      "full_date_range_fetched_before_in_memory_selection_receipt": true,
+      "training_and_validation_scored_before_final_holdout": true,
+      "final_holdout_metrics_computed_after_selection_receipt": true,
+      "selection_receipt_persisted_with_final_report": true,
+      "claim_boundary": "Control flow prevents final-holdout rows from entering training, validation, or selection. The separate git preregistration commits predate report generation; the in-memory receipt is not a cryptographic proof that a researcher never viewed the historical dates."
+    },
+    "start": "2025-01-01",
+    "end": "2026-08-28",
+    "selected_candidate_id": "tsmom_ensemble_vol",
+    "selected_candidate_metrics": {
+      "observations": 415,
+      "start_date": "2025-01-02",
+      "end_date": "2026-08-28",
+      "total_return": 0.18986739,
+      "gross_total_return": 0.19246136,
+      "bil_total_return": 0.0660696,
+      "total_return_minus_bil": 0.1237978,
+      "annualized_return": 0.11133479,
+      "annualized_volatility": 0.08309429,
+      "annualized_total_return_to_volatility": 1.31219957,
+      "bil_excess_sharpe": 0.84260548,
+      "bil_excess_sortino": 0.77276668,
+      "maximum_drawdown": -0.05788285,
+      "calmar_ratio": 1.9234503,
+      "average_exposure": 0.62843045,
+      "average_bil_exposure": 0.37156955,
+      "maximum_absolute_exposure": 1,
+      "cumulative_turnover": 10.89583625,
+      "modeled_cost_drag_simple_sum": 0.00217912,
+      "positive_day_fraction": 0.56626506,
+      "calendar_year_returns": {
+        "2025": 0.11401345,
+        "2026": 0.06809069
+      },
+      "positive_calendar_year_fraction": 1
+    },
+    "buy_hold_metrics": {
+      "observations": 415,
+      "start_date": "2025-01-02",
+      "end_date": "2026-08-28",
+      "total_return": 0.33523656,
+      "gross_total_return": 0.33523656,
+      "bil_total_return": 0.0660696,
+      "total_return_minus_bil": 0.26916696,
+      "annualized_return": 0.19190757,
+      "annualized_volatility": 0.17332678,
+      "annualized_total_return_to_volatility": 1.09892152,
+      "bil_excess_sharpe": 0.87342294,
+      "bil_excess_sortino": 0.87509677,
+      "maximum_drawdown": -0.18755706,
+      "calmar_ratio": 1.02319567,
+      "average_exposure": 1,
+      "average_bil_exposure": 0,
+      "maximum_absolute_exposure": 1,
+      "cumulative_turnover": 0,
+      "modeled_cost_drag_simple_sum": 0,
+      "positive_day_fraction": 0.55662651,
+      "calendar_year_returns": {
+        "2025": 0.17718105,
+        "2026": 0.1342661
+      },
+      "positive_calendar_year_fraction": 1
+    },
+    "volatility_target_only_metrics": {
+      "observations": 415,
+      "start_date": "2025-01-02",
+      "end_date": "2026-08-28",
+      "total_return": 0.18041666,
+      "gross_total_return": 0.18186792,
+      "bil_total_return": 0.0660696,
+      "total_return_minus_bil": 0.11434707,
+      "annualized_return": 0.10596641,
+      "annualized_volatility": 0.10733427,
+      "annualized_total_return_to_volatility": 0.99220141,
+      "bil_excess_sharpe": 0.62874316,
+      "bil_excess_sortino": 0.574414,
+      "maximum_drawdown": -0.11588937,
+      "calmar_ratio": 0.91437558,
+      "average_exposure": 0.75597457,
+      "average_bil_exposure": 0.24402543,
+      "maximum_absolute_exposure": 1,
+      "cumulative_turnover": 6.15025886,
+      "modeled_cost_drag_simple_sum": 0.00123008,
+      "positive_day_fraction": 0.55903614,
+      "calendar_year_returns": {
+        "2025": 0.09451476,
+        "2026": 0.07848401
+      },
+      "positive_calendar_year_fraction": 1
+    },
+    "comparison_to_buy_hold": {
+      "selected_minus_baseline_total_return": -0.14536917,
+      "selected_minus_baseline_annualized_return": -0.08057278,
+      "selected_minus_baseline_bil_excess_sharpe": -0.03081746,
+      "selected_minus_baseline_maximum_drawdown": 0.12967421,
+      "selected_to_baseline_volatility_ratio": 0.47940826
+    },
+    "comparison_to_volatility_target_only": {
+      "selected_minus_baseline_total_return": 0.00945073,
+      "selected_minus_baseline_annualized_return": 0.00536838,
+      "selected_minus_baseline_bil_excess_sharpe": 0.21386232,
+      "selected_minus_baseline_maximum_drawdown": 0.05800652,
+      "selected_to_baseline_volatility_ratio": 0.77416365
+    },
+    "block_bootstrap": {
+      "method": "deterministic circular block bootstrap of daily net returns",
+      "iterations": 2000,
+      "block_length_sessions": 20,
+      "seed": 20260829,
+      "terminal_return_p05": 0.03701311,
+      "terminal_return_p50": 0.19395909,
+      "terminal_return_p95": 0.36295972,
+      "positive_terminal_return_fraction": 0.979
+    },
+    "target_volatility_sensitivity": {
+      "0.08": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.16680028,
+        "gross_total_return": 0.16914651,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.10073068,
+        "annualized_return": 0.09820199,
+        "annualized_volatility": 0.07053117,
+        "annualized_total_return_to_volatility": 1.36364744,
+        "bil_excess_sharpe": 0.81057136,
+        "bil_excess_sortino": 0.73617182,
+        "maximum_drawdown": -0.04517293,
+        "calmar_ratio": 2.17391221,
+        "average_exposure": 0.52235707,
+        "average_bil_exposure": 0.47764293,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 10.05070909,
+        "modeled_cost_drag_simple_sum": 0.00201009,
+        "positive_day_fraction": 0.56626506,
+        "calendar_year_returns": {
+          "2025": 0.10227119,
+          "2026": 0.05854194
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "0.10": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.18986739,
+        "gross_total_return": 0.19246136,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.1237978,
+        "annualized_return": 0.11133479,
+        "annualized_volatility": 0.08309429,
+        "annualized_total_return_to_volatility": 1.31219957,
+        "bil_excess_sharpe": 0.84260548,
+        "bil_excess_sortino": 0.77276668,
+        "maximum_drawdown": -0.05788285,
+        "calmar_ratio": 1.9234503,
+        "average_exposure": 0.62843045,
+        "average_bil_exposure": 0.37156955,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 10.89583625,
+        "modeled_cost_drag_simple_sum": 0.00217912,
+        "positive_day_fraction": 0.56626506,
+        "calendar_year_returns": {
+          "2025": 0.11401345,
+          "2026": 0.06809069
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "0.12": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.20937052,
+        "gross_total_return": 0.2121061,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.14330093,
+        "annualized_return": 0.12236068,
+        "annualized_volatility": 0.09192372,
+        "annualized_total_return_to_volatility": 1.30199083,
+        "bil_excess_sharpe": 0.8773154,
+        "bil_excess_sortino": 0.81361399,
+        "maximum_drawdown": -0.06828275,
+        "calmar_ratio": 1.7919706,
+        "average_exposure": 0.70093975,
+        "average_bil_exposure": 0.29906025,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 11.29960866,
+        "modeled_cost_drag_simple_sum": 0.00225996,
+        "positive_day_fraction": 0.56144578,
+        "calendar_year_returns": {
+          "2025": 0.11817357,
+          "2026": 0.08155885
+        },
+        "positive_calendar_year_fraction": 1
+      }
+    },
+    "one_way_per_leg_cost_bps_sensitivity": {
+      "1": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.18986739,
+        "gross_total_return": 0.19246136,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.1237978,
+        "annualized_return": 0.11133479,
+        "annualized_volatility": 0.08309429,
+        "annualized_total_return_to_volatility": 1.31219957,
+        "bil_excess_sharpe": 0.84260548,
+        "bil_excess_sortino": 0.77276668,
+        "maximum_drawdown": -0.05788285,
+        "calmar_ratio": 1.9234503,
+        "average_exposure": 0.62843045,
+        "average_bil_exposure": 0.37156955,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 10.89583625,
+        "modeled_cost_drag_simple_sum": 0.00217912,
+        "positive_day_fraction": 0.56626506,
+        "calendar_year_returns": {
+          "2025": 0.11401345,
+          "2026": 0.06809069
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "5": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.17954637,
+        "gross_total_return": 0.19246136,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.11347677,
+        "annualized_return": 0.1054712,
+        "annualized_volatility": 0.0830856,
+        "annualized_total_return_to_volatility": 1.24863162,
+        "bil_excess_sharpe": 0.77916245,
+        "bil_excess_sortino": 0.71664318,
+        "maximum_drawdown": -0.05860723,
+        "calmar_ratio": 1.79962766,
+        "average_exposure": 0.62843045,
+        "average_bil_exposure": 0.37156955,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 10.89583625,
+        "modeled_cost_drag_simple_sum": 0.01089582,
+        "positive_day_fraction": 0.56144578,
+        "calendar_year_returns": {
+          "2025": 0.10889205,
+          "2026": 0.06371614
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "10": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.16676754,
+        "gross_total_return": 0.19246136,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.10069794,
+        "annualized_return": 0.09818328,
+        "annualized_volatility": 0.08309307,
+        "annualized_total_return_to_volatility": 1.16889433,
+        "bil_excess_sharpe": 0.69968016,
+        "bil_excess_sortino": 0.64157557,
+        "maximum_drawdown": -0.05951211,
+        "calmar_ratio": 1.64980341,
+        "average_exposure": 0.62843045,
+        "average_bil_exposure": 0.37156955,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 10.89583625,
+        "modeled_cost_drag_simple_sum": 0.0217917,
+        "positive_day_fraction": 0.55903614,
+        "calendar_year_returns": {
+          "2025": 0.10252205,
+          "2026": 0.05827139
+        },
+        "positive_calendar_year_fraction": 1
+      }
+    },
+    "quarter_fold_evidence": {
+      "fold_definition": "calendar quarters with at least twenty scored sessions",
+      "fold_count": 7,
+      "positive_fold_fraction": 0.71428571,
+      "median_fold_return": 0.01794385,
+      "worst_fold_return": -0.01816018,
+      "best_fold_return": 0.08028248,
+      "largest_positive_fold_share": 0.40050927,
+      "folds": [
+        {
+          "id": "2025-Q1",
+          "metrics": {
+            "observations": 60,
+            "start_date": "2025-01-02",
+            "end_date": "2025-03-31",
+            "total_return": -0.01816018,
+            "gross_total_return": -0.01784042,
+            "bil_total_return": 0.01011981,
+            "total_return_minus_bil": -0.02827999,
+            "annualized_return": -0.0740859,
+            "annualized_volatility": 0.07386507,
+            "annualized_total_return_to_volatility": -1.00552677,
+            "bil_excess_sharpe": -1.56975292,
+            "bil_excess_sortino": -1.34665661,
+            "maximum_drawdown": -0.04747883,
+            "calmar_ratio": -1.56039866,
+            "average_exposure": 0.4770801,
+            "average_bil_exposure": 0.5229199,
+            "maximum_absolute_exposure": 0.89551972,
+            "cumulative_turnover": 1.62297112,
+            "modeled_cost_drag_simple_sum": 0.00032458,
+            "positive_day_fraction": 0.55,
+            "calendar_year_returns": {
+              "2025": -0.01816018
+            },
+            "positive_calendar_year_fraction": 0
+          }
+        },
+        {
+          "id": "2025-Q2",
+          "metrics": {
+            "observations": 62,
+            "start_date": "2025-04-01",
+            "end_date": "2025-06-30",
+            "total_return": 0.03199524,
+            "gross_total_return": 0.03230237,
+            "bil_total_return": 0.0103639,
+            "total_return_minus_bil": 0.02163134,
+            "annualized_return": 0.13656219,
+            "annualized_volatility": 0.05716288,
+            "annualized_total_return_to_volatility": 2.26805496,
+            "bil_excess_sharpe": 1.52088618,
+            "bil_excess_sortino": 1.35908933,
+            "maximum_drawdown": -0.01834583,
+            "calmar_ratio": 7.44377398,
+            "average_exposure": 0.33070516,
+            "average_bil_exposure": 0.66929484,
+            "maximum_absolute_exposure": 0.98999658,
+            "cumulative_turnover": 1.48851578,
+            "modeled_cost_drag_simple_sum": 0.00029769,
+            "positive_day_fraction": 0.62903226,
+            "calendar_year_returns": {
+              "2025": 0.03199524
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2025-Q3",
+          "metrics": {
+            "observations": 64,
+            "start_date": "2025-07-01",
+            "end_date": "2025-09-30",
+            "total_return": 0.08028248,
+            "gross_total_return": 0.08044939,
+            "bil_total_return": 0.01059948,
+            "total_return_minus_bil": 0.069683,
+            "annualized_return": 0.35535559,
+            "annualized_volatility": 0.08406119,
+            "annualized_total_return_to_volatility": 3.66068645,
+            "bil_excess_sharpe": 3.17036586,
+            "bil_excess_sortino": 3.67687103,
+            "maximum_drawdown": -0.0241394,
+            "calmar_ratio": 14.72097791,
+            "average_exposure": 0.95077745,
+            "average_bil_exposure": 0.04922255,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 0.77054964,
+            "modeled_cost_drag_simple_sum": 0.00015411,
+            "positive_day_fraction": 0.546875,
+            "calendar_year_returns": {
+              "2025": 0.08028248
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2025-Q4",
+          "metrics": {
+            "observations": 64,
+            "start_date": "2025-10-01",
+            "end_date": "2025-12-31",
+            "total_return": 0.01773513,
+            "gross_total_return": 0.01811595,
+            "bil_total_return": 0.0098117,
+            "total_return_minus_bil": 0.00792342,
+            "annualized_return": 0.071672,
+            "annualized_volatility": 0.09998687,
+            "annualized_total_return_to_volatility": 0.74183142,
+            "bil_excess_sharpe": 0.35634576,
+            "bil_excess_sortino": 0.29980211,
+            "maximum_drawdown": -0.03312111,
+            "calmar_ratio": 2.16393707,
+            "average_exposure": 0.72607203,
+            "average_bil_exposure": 0.27392797,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.87083718,
+            "modeled_cost_drag_simple_sum": 0.00037415,
+            "positive_day_fraction": 0.59375,
+            "calendar_year_returns": {
+              "2025": 0.01773513
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2026-Q1",
+          "metrics": {
+            "observations": 61,
+            "start_date": "2026-01-02",
+            "end_date": "2026-03-31",
+            "total_return": -0.00064175,
+            "gross_total_return": -0.00021791,
+            "bil_total_return": 0.00848784,
+            "total_return_minus_bil": -0.00912959,
+            "annualized_return": -0.00264851,
+            "annualized_volatility": 0.08653799,
+            "annualized_total_return_to_volatility": 0.01195072,
+            "bil_excess_sharpe": -0.39223378,
+            "bil_excess_sortino": -0.40103436,
+            "maximum_drawdown": -0.02977122,
+            "calmar_ratio": -0.08896209,
+            "average_exposure": 0.62338926,
+            "average_bil_exposure": 0.37661074,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 2.12356186,
+            "modeled_cost_drag_simple_sum": 0.00042471,
+            "positive_day_fraction": 0.47540984,
+            "calendar_year_returns": {
+              "2026": -0.00064175
+            },
+            "positive_calendar_year_fraction": 0
+          }
+        },
+        {
+          "id": "2026-Q2",
+          "metrics": {
+            "observations": 62,
+            "start_date": "2026-04-01",
+            "end_date": "2026-06-30",
+            "total_return": 0.04993667,
+            "gross_total_return": 0.05030643,
+            "bil_total_return": 0.00885934,
+            "total_return_minus_bil": 0.04107733,
+            "annualized_return": 0.21903952,
+            "annualized_volatility": 0.09586124,
+            "annualized_total_return_to_volatility": 2.11440842,
+            "bil_excess_sharpe": 1.73180915,
+            "bil_excess_sortino": 1.36075758,
+            "maximum_drawdown": -0.04466982,
+            "calmar_ratio": 4.90352415,
+            "average_exposure": 0.64680687,
+            "average_bil_exposure": 0.35319313,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.76964693,
+            "modeled_cost_drag_simple_sum": 0.00035394,
+            "positive_day_fraction": 0.64516129,
+            "calendar_year_returns": {
+              "2026": 0.04993667
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2026-Q3",
+          "metrics": {
+            "observations": 42,
+            "start_date": "2026-07-01",
+            "end_date": "2026-08-28",
+            "total_return": 0.01794385,
+            "gross_total_return": 0.01819811,
+            "bil_total_return": 0.00603732,
+            "total_return_minus_bil": 0.01190653,
+            "annualized_return": 0.11260994,
+            "annualized_volatility": 0.07473312,
+            "annualized_total_return_to_volatility": 1.46461173,
+            "bil_excess_sharpe": 0.98098174,
+            "bil_excess_sortino": 1.06786149,
+            "maximum_drawdown": -0.02311464,
+            "calmar_ratio": 4.87180173,
+            "average_exposure": 0.62435655,
+            "average_bil_exposure": 0.37564345,
+            "maximum_absolute_exposure": 0.85715659,
+            "cumulative_turnover": 1.24975374,
+            "modeled_cost_drag_simple_sum": 0.00024994,
+            "positive_day_fraction": 0.5,
+            "calendar_year_returns": {
+              "2026": 0.01794385
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        }
+      ]
+    },
+    "statistical_falsification": {
+      "schema_version": "finly_economic_statistical_evidence.v1",
+      "probabilistic_deflated_sharpe": {
+        "schema_version": "finly_probabilistic_deflated_sharpe_evidence.v1",
+        "method": "Bailey-Lopez de Prado probabilistic Sharpe ratio and deflated Sharpe ratio",
+        "claim_boundary": "These fixed-sample probabilities are model-based falsification evidence, not formal proof of alpha, independence, stationarity, or future profitability.",
+        "reference_formulae": {
+          "probabilistic_sharpe": "Phi((SR_hat - SR_benchmark) * sqrt(n - 1) / sqrt(1 - skewness * SR_hat + ((Pearson_kurtosis - 1) / 4) * SR_hat^2))",
+          "deflated_benchmark": "mean_trial_SR + sd_trial_SR * ((1 - EulerGamma) * Phi^-1(1 - 1 / N) + EulerGamma * Phi^-1(1 - 1 / (N * e)))"
+        },
+        "fixed_candidate_id": "tsmom_ensemble_vol",
+        "candidate_ids": [
+          "vol_target_long",
+          "tsmom_12m_vol",
+          "tsmom_ensemble_vol",
+          "tsmom_majority_vol",
+          "finly_5_20_signed"
+        ],
+        "trial_count": 6,
+        "trial_count_requirement": "Declared explicitly by the caller and no smaller than the candidate IDs supplied to this calculation.",
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "periods_per_year": 252,
+        "excess_return_definition": "candidate daily net_return minus the same row's adjusted BIL cash_return",
+        "observed_candidate": {
+          "mean_daily_bil_excess_return": 0.000278498217,
+          "sample_daily_bil_excess_volatility": 0.00524684711,
+          "sharpe_periodic": 0.053079156111,
+          "sharpe_annualized": 0.842605481227,
+          "skewness": -0.811819839384,
+          "pearson_kurtosis": 7.056880070051,
+          "moment_estimator": "uncorrected central moments with denominator n; kurtosis is Pearson kurtosis, not excess kurtosis",
+          "non_normality_variance_factor": 1.047356870641
+        },
+        "candidate_periodic_sharpes": {
+          "vol_target_long": 0.039607096283,
+          "tsmom_12m_vol": 0.029260457396,
+          "tsmom_ensemble_vol": 0.053079156111,
+          "tsmom_majority_vol": 0.073673611418,
+          "finly_5_20_signed": 0.008483615871
+        },
+        "degenerate_zero_excess_candidates": [],
+        "probabilistic_sharpe": {
+          "benchmark_sharpe_periodic": 0,
+          "benchmark_sharpe_annualized": 0,
+          "z_score": 1.055302184371,
+          "probability_observed_sharpe_exceeds_benchmark": 0.854356402652
+        },
+        "deflated_sharpe": {
+          "trial_sharpe_mean_periodic": 0.040820787416,
+          "trial_sharpe_sample_standard_deviation_periodic": 0.024547823671,
+          "expected_maximum_coefficient": 1.300140788235,
+          "benchmark_sharpe_periodic": 0.072736414232,
+          "benchmark_sharpe_annualized": 1.154654779903,
+          "z_score": -0.390819088958,
+          "probability_observed_sharpe_exceeds_deflated_benchmark": 0.347965530253
+        },
+        "assumptions": [
+          "The probabilistic Sharpe approximation uses IID asymptotics after adjusting its variance for the fixed candidate's return skewness and Pearson kurtosis.",
+          "The deflated benchmark treats the declared N trials as independent and estimates their Sharpe mean and dispersion from the supplied candidate IDs; it does not estimate an effective trial count from candidate correlation.",
+          "Daily arithmetic BIL-excess returns and 252 periods per year are used unless the caller explicitly supplies another annualization frequency."
+        ]
+      },
+      "circular_block_reality_check": {
+        "schema_version": "finly_circular_block_reality_check_evidence.v1",
+        "method": "White-style centered circular-block bootstrap of the maximum BIL-excess sample mean",
+        "claim_boundary": "This deterministic resampling result is falsification evidence under the stated centering and block assumptions; it is not a formal proof of alpha, stationarity, or future profitability.",
+        "null_hypothesis": "Every supplied candidate has population mean daily BIL-excess return less than or equal to zero.",
+        "alternative": "At least one supplied candidate has positive population mean daily BIL-excess return.",
+        "fixed_candidate_alternative": "Candidate tsmom_ensemble_vol has positive population mean daily BIL-excess return.",
+        "statistic": "sqrt(n) multiplied by the arithmetic mean daily BIL-excess return; the familywise statistic is the maximum across candidates",
+        "centering": "Each candidate series is demeaned separately before bootstrap sampling to impose a zero-mean null.",
+        "block_sampling": "Every iteration draws circular blocks of row indexes and applies the identical sampled index path to all candidate series, preserving contemporaneous cross-candidate dependence within sampled blocks.",
+        "p_value_estimator": "(1 + bootstrap exceedances) / (iterations + 1); one-sided, with equality counted as an exceedance",
+        "candidate_ids": [
+          "vol_target_long",
+          "tsmom_12m_vol",
+          "tsmom_ensemble_vol",
+          "tsmom_majority_vol",
+          "finly_5_20_signed"
+        ],
+        "fixed_candidate_id": "tsmom_ensemble_vol",
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "excess_return_definition": "candidate daily net_return minus the same row's adjusted BIL cash_return",
+        "iterations": 2000,
+        "block_length_sessions": 20,
+        "seed": 20260829,
+        "observed_mean_daily_bil_excess_returns": {
+          "vol_target_long": 0.000268422506,
+          "tsmom_12m_vol": 0.000191237494,
+          "tsmom_ensemble_vol": 0.000278498217,
+          "tsmom_majority_vol": 0.000409705759,
+          "finly_5_20_signed": 0.000050556096
+        },
+        "observed_statistics": {
+          "vol_target_long": 0.005468182177,
+          "tsmom_12m_vol": 0.003895803939,
+          "tsmom_ensemble_vol": 0.005673440012,
+          "tsmom_majority_vol": 0.008346340859,
+          "finly_5_20_signed": 0.001029905984
+        },
+        "observed_maximum_candidate_id": "tsmom_majority_vol",
+        "observed_maximum_statistic": 0.008346340859,
+        "observed_fixed_candidate_statistic": 0.005673440012,
+        "familywise_exceedances": 259,
+        "familywise_p_value": 0.129935032484,
+        "fixed_candidate_exceedances": 166,
+        "fixed_candidate_one_sided_p_value": 0.083458270865,
+        "bootstrap_quantiles": {
+          "maximum_statistic_p90": 0.009058749235,
+          "maximum_statistic_p95": 0.010548306255,
+          "maximum_statistic_p99": 0.013294739675,
+          "fixed_statistic_p90": 0.005179803171,
+          "fixed_statistic_p95": 0.006643912493,
+          "fixed_statistic_p99": 0.009304956127
+        },
+        "assumptions": [
+          "Circular blocks approximate serial dependence only up to the caller-selected block length.",
+          "The same sampled blocks across candidates preserve their observed contemporaneous and within-block dependence rather than treating strategy trials as independent.",
+          "The familywise p-value addresses the supplied candidate family only; omitted or undisclosed trials are not corrected."
+        ]
+      }
+    },
+    "diagnostic_candidate_metrics": {
+      "buy_hold": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.33523656,
+        "gross_total_return": 0.33523656,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.26916696,
+        "annualized_return": 0.19190757,
+        "annualized_volatility": 0.17332678,
+        "annualized_total_return_to_volatility": 1.09892152,
+        "bil_excess_sharpe": 0.87342294,
+        "bil_excess_sortino": 0.87509677,
+        "maximum_drawdown": -0.18755706,
+        "calmar_ratio": 1.02319567,
+        "average_exposure": 1,
+        "average_bil_exposure": 0,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 0,
+        "modeled_cost_drag_simple_sum": 0,
+        "positive_day_fraction": 0.55662651,
+        "calendar_year_returns": {
+          "2025": 0.17718105,
+          "2026": 0.1342661
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "vol_target_long": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.18041666,
+        "gross_total_return": 0.18186792,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.11434707,
+        "annualized_return": 0.10596641,
+        "annualized_volatility": 0.10733427,
+        "annualized_total_return_to_volatility": 0.99220141,
+        "bil_excess_sharpe": 0.62874316,
+        "bil_excess_sortino": 0.574414,
+        "maximum_drawdown": -0.11588937,
+        "calmar_ratio": 0.91437558,
+        "average_exposure": 0.75597457,
+        "average_bil_exposure": 0.24402543,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 6.15025886,
+        "modeled_cost_drag_simple_sum": 0.00123008,
+        "positive_day_fraction": 0.55903614,
+        "calendar_year_returns": {
+          "2025": 0.09451476,
+          "2026": 0.07848401
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "tsmom_12m_vol": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.1439632,
+        "gross_total_return": 0.14554189,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.07789361,
+        "annualized_return": 0.08509931,
+        "annualized_volatility": 0.10351599,
+        "annualized_total_return_to_volatility": 0.84089988,
+        "bil_excess_sharpe": 0.46449536,
+        "bil_excess_sortino": 0.41353926,
+        "maximum_drawdown": -0.11846371,
+        "calmar_ratio": 0.71835767,
+        "average_exposure": 0.74995088,
+        "average_bil_exposure": 0.25004912,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 6.9031062,
+        "modeled_cost_drag_simple_sum": 0.00138064,
+        "positive_day_fraction": 0.55421687,
+        "calendar_year_returns": {
+          "2025": 0.06071411,
+          "2026": 0.07848401
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "tsmom_ensemble_vol": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.18986739,
+        "gross_total_return": 0.19246136,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.1237978,
+        "annualized_return": 0.11133479,
+        "annualized_volatility": 0.08309429,
+        "annualized_total_return_to_volatility": 1.31219957,
+        "bil_excess_sharpe": 0.84260548,
+        "bil_excess_sortino": 0.77276668,
+        "maximum_drawdown": -0.05788285,
+        "calmar_ratio": 1.9234503,
+        "average_exposure": 0.62843045,
+        "average_bil_exposure": 0.37156955,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 10.89583625,
+        "modeled_cost_drag_simple_sum": 0.00217912,
+        "positive_day_fraction": 0.56626506,
+        "calendar_year_returns": {
+          "2025": 0.11401345,
+          "2026": 0.06809069
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "tsmom_majority_vol": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.25553749,
+        "gross_total_return": 0.2577229,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.18946789,
+        "annualized_return": 0.14818599,
+        "annualized_volatility": 0.08809911,
+        "annualized_total_return_to_volatility": 1.61296279,
+        "bil_excess_sharpe": 1.16953232,
+        "bil_excess_sortino": 0.98704641,
+        "maximum_drawdown": -0.04466982,
+        "calmar_ratio": 3.31736284,
+        "average_exposure": 0.64821602,
+        "average_bil_exposure": 0.35178398,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 8.70751387,
+        "modeled_cost_drag_simple_sum": 0.00174152,
+        "positive_day_fraction": 0.59277108,
+        "calendar_year_returns": {
+          "2025": 0.15240251,
+          "2026": 0.08949562
+        },
+        "positive_calendar_year_fraction": 1
+      },
+      "finly_5_20_signed": {
+        "observations": 415,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-28",
+        "total_return": 0.08068545,
+        "gross_total_return": 0.09109053,
+        "bil_total_return": 0.0660696,
+        "total_return_minus_bil": 0.01461585,
+        "annualized_return": 0.04824594,
+        "annualized_volatility": 0.09463171,
+        "annualized_total_return_to_volatility": 0.54521762,
+        "bil_excess_sharpe": 0.13467323,
+        "bil_excess_sortino": 0.11746852,
+        "maximum_drawdown": -0.10010593,
+        "calmar_ratio": 0.48194893,
+        "average_exposure": 0.19959955,
+        "average_bil_exposure": 0.48370475,
+        "maximum_absolute_exposure": 1,
+        "cumulative_turnover": 47.91983179,
+        "modeled_cost_drag_simple_sum": 0.00958397,
+        "positive_day_fraction": 0.56385542,
+        "calendar_year_returns": {
+          "2025": 0.04380438,
+          "2026": 0.03533331
+        },
+        "positive_calendar_year_fraction": 1
+      }
+    }
+  },
+  "longitudinal_stability": {
+    "rolling_years": {
+      "window_sessions": 252,
+      "window_count": 2174,
+      "positive_window_fraction": 0.86062557,
+      "worst_window_return": -0.09376608,
+      "median_window_return": 0.08719265,
+      "best_window_return": 0.25385793
+    },
+    "post_training_quarter_folds": {
+      "fold_definition": "calendar quarters with at least twenty scored sessions",
+      "fold_count": 19,
+      "positive_fold_fraction": 0.63157895,
+      "median_fold_return": 0.01773513,
+      "worst_fold_return": -0.04274794,
+      "best_fold_return": 0.08577052,
+      "largest_positive_fold_share": 0.16987906,
+      "folds": [
+        {
+          "id": "2022-Q1",
+          "metrics": {
+            "observations": 62,
+            "start_date": "2022-01-03",
+            "end_date": "2022-03-31",
+            "total_return": -0.04274794,
+            "gross_total_return": -0.0425929,
+            "bil_total_return": 4e-8,
+            "total_return_minus_bil": -0.04274798,
+            "annualized_return": -0.16269992,
+            "annualized_volatility": 0.05894901,
+            "annualized_total_return_to_volatility": -2.98216812,
+            "bil_excess_sharpe": -2.98698857,
+            "bil_excess_sortino": -2.55900471,
+            "maximum_drawdown": -0.05618593,
+            "calmar_ratio": -2.89574149,
+            "average_exposure": 0.28481355,
+            "average_bil_exposure": 0.71518645,
+            "maximum_absolute_exposure": 0.65415808,
+            "cumulative_turnover": 0.80888069,
+            "modeled_cost_drag_simple_sum": 0.00016177,
+            "positive_day_fraction": 0.43548387,
+            "calendar_year_returns": {
+              "2022": -0.04274794
+            },
+            "positive_calendar_year_fraction": 0
+          }
+        },
+        {
+          "id": "2022-Q2",
+          "metrics": {
+            "observations": 62,
+            "start_date": "2022-04-01",
+            "end_date": "2022-06-30",
+            "total_return": -0.02764923,
+            "gross_total_return": -0.02750585,
+            "bil_total_return": 0.00104143,
+            "total_return_minus_bil": -0.02869066,
+            "annualized_return": -0.10770959,
+            "annualized_volatility": 0.04383555,
+            "annualized_total_return_to_volatility": -2.57759313,
+            "bil_excess_sharpe": -2.71589144,
+            "bil_excess_sortino": -1.6769189,
+            "maximum_drawdown": -0.03292109,
+            "calmar_ratio": -3.27175019,
+            "average_exposure": 0.12143182,
+            "average_bil_exposure": 0.87856818,
+            "maximum_absolute_exposure": 0.39748341,
+            "cumulative_turnover": 0.73596785,
+            "modeled_cost_drag_simple_sum": 0.00014719,
+            "positive_day_fraction": 0.4516129,
+            "calendar_year_returns": {
+              "2022": -0.02764923
+            },
+            "positive_calendar_year_fraction": 0
+          }
+        },
+        {
+          "id": "2022-Q3",
+          "metrics": {
+            "observations": 64,
+            "start_date": "2022-07-01",
+            "end_date": "2022-09-30",
+            "total_return": -0.01765476,
+            "gross_total_return": -0.01744113,
+            "bil_total_return": 0.00429125,
+            "total_return_minus_bil": -0.02194601,
+            "annualized_return": -0.06773353,
+            "annualized_volatility": 0.04297705,
+            "annualized_total_return_to_volatility": -1.61049404,
+            "bil_excess_sharpe": -2.01515018,
+            "bil_excess_sortino": -1.36682243,
+            "maximum_drawdown": -0.03546071,
+            "calmar_ratio": -1.91010089,
+            "average_exposure": 0.13869116,
+            "average_bil_exposure": 0.86130884,
+            "maximum_absolute_exposure": 0.40184568,
+            "cumulative_turnover": 1.08790128,
+            "modeled_cost_drag_simple_sum": 0.00021758,
+            "positive_day_fraction": 0.375,
+            "calendar_year_returns": {
+              "2022": -0.01765476
+            },
+            "positive_calendar_year_fraction": 0
+          }
+        },
+        {
+          "id": "2022-Q4",
+          "metrics": {
+            "observations": 63,
+            "start_date": "2022-10-03",
+            "end_date": "2022-12-30",
+            "total_return": -0.00390469,
+            "gross_total_return": -0.00372428,
+            "bil_total_return": 0.0084164,
+            "total_return_minus_bil": -0.01232109,
+            "annualized_return": -0.0155275,
+            "annualized_volatility": 0.0222535,
+            "annualized_total_return_to_volatility": -0.69225779,
+            "bil_excess_sharpe": -2.21912223,
+            "bil_excess_sortino": -1.78995824,
+            "maximum_drawdown": -0.01014449,
+            "calmar_ratio": -1.53063404,
+            "average_exposure": 0.07923362,
+            "average_bil_exposure": 0.92076638,
+            "maximum_absolute_exposure": 0.25545953,
+            "cumulative_turnover": 0.90468194,
+            "modeled_cost_drag_simple_sum": 0.00018094,
+            "positive_day_fraction": 0.41269841,
+            "calendar_year_returns": {
+              "2022": -0.00390469
+            },
+            "positive_calendar_year_fraction": 0
+          }
+        },
+        {
+          "id": "2023-Q1",
+          "metrics": {
+            "observations": 62,
+            "start_date": "2023-01-03",
+            "end_date": "2023-03-31",
+            "total_return": 0.01748425,
+            "gross_total_return": 0.01767654,
+            "bil_total_return": 0.0102722,
+            "total_return_minus_bil": 0.00721205,
+            "annualized_return": 0.07299189,
+            "annualized_volatility": 0.04725523,
+            "annualized_total_return_to_volatility": 1.51431571,
+            "bil_excess_sharpe": 0.63294031,
+            "bil_excess_sortino": 0.58066488,
+            "maximum_drawdown": -0.02385896,
+            "calmar_ratio": 3.05930756,
+            "average_exposure": 0.24354163,
+            "average_bil_exposure": 0.75645837,
+            "maximum_absolute_exposure": 0.42215236,
+            "cumulative_turnover": 0.94659413,
+            "modeled_cost_drag_simple_sum": 0.00018934,
+            "positive_day_fraction": 0.59677419,
+            "calendar_year_returns": {
+              "2023": 0.01748425
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2023-Q2",
+          "metrics": {
+            "observations": 62,
+            "start_date": "2023-04-03",
+            "end_date": "2023-06-30",
+            "total_return": 0.06853896,
+            "gross_total_return": 0.06889008,
+            "bil_total_return": 0.01207419,
+            "total_return_minus_bil": 0.05646477,
+            "annualized_return": 0.30923888,
+            "annualized_volatility": 0.07936384,
+            "annualized_total_return_to_volatility": 3.43583401,
+            "bil_excess_sharpe": 2.87067285,
+            "bil_excess_sortino": 3.51933345,
+            "maximum_drawdown": -0.01827761,
+            "calmar_ratio": 16.91899786,
+            "average_exposure": 0.60876787,
+            "average_bil_exposure": 0.39123213,
+            "maximum_absolute_exposure": 0.93925465,
+            "cumulative_turnover": 1.63750035,
+            "modeled_cost_drag_simple_sum": 0.0003275,
+            "positive_day_fraction": 0.58064516,
+            "calendar_year_returns": {
+              "2023": 0.06853896
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2023-Q3",
+          "metrics": {
+            "observations": 63,
+            "start_date": "2023-07-03",
+            "end_date": "2023-09-29",
+            "total_return": -0.02846831,
+            "gross_total_return": -0.02817631,
+            "bil_total_return": 0.01280922,
+            "total_return_minus_bil": -0.04127753,
+            "annualized_return": -0.1091022,
+            "annualized_volatility": 0.08709569,
+            "annualized_total_return_to_volatility": -1.28317894,
+            "bil_excess_sharpe": -1.84977811,
+            "bil_excess_sortino": -1.64318895,
+            "maximum_drawdown": -0.06117908,
+            "calmar_ratio": -1.78332518,
+            "average_exposure": 0.80139841,
+            "average_bil_exposure": 0.19860159,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.50373531,
+            "modeled_cost_drag_simple_sum": 0.00030076,
+            "positive_day_fraction": 0.50793651,
+            "calendar_year_returns": {
+              "2023": -0.02846831
+            },
+            "positive_calendar_year_fraction": 0
+          }
+        },
+        {
+          "id": "2023-Q4",
+          "metrics": {
+            "observations": 63,
+            "start_date": "2023-10-02",
+            "end_date": "2023-12-29",
+            "total_return": 0.07601856,
+            "gross_total_return": 0.07629394,
+            "bil_total_return": 0.01339118,
+            "total_return_minus_bil": 0.06262738,
+            "annualized_return": 0.34053775,
+            "annualized_volatility": 0.06212376,
+            "annualized_total_return_to_volatility": 4.75082929,
+            "bil_excess_sharpe": 3.88019817,
+            "bil_excess_sortino": 4.10070331,
+            "maximum_drawdown": -0.01430854,
+            "calmar_ratio": 23.79961048,
+            "average_exposure": 0.56178207,
+            "average_bil_exposure": 0.43821793,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.28195647,
+            "modeled_cost_drag_simple_sum": 0.0002564,
+            "positive_day_fraction": 0.65079365,
+            "calendar_year_returns": {
+              "2023": 0.07601856
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2024-Q1",
+          "metrics": {
+            "observations": 61,
+            "start_date": "2024-01-02",
+            "end_date": "2024-03-28",
+            "total_return": 0.08577052,
+            "gross_total_return": 0.08604746,
+            "bil_total_return": 0.01284719,
+            "total_return_minus_bil": 0.07292334,
+            "annualized_return": 0.40487973,
+            "annualized_volatility": 0.09759619,
+            "annualized_total_return_to_volatility": 3.53354194,
+            "bil_excess_sharpe": 3.02214061,
+            "bil_excess_sortino": 3.44861269,
+            "maximum_drawdown": -0.01707,
+            "calmar_ratio": 23.71879258,
+            "average_exposure": 0.87069894,
+            "average_bil_exposure": 0.12930106,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.27717853,
+            "modeled_cost_drag_simple_sum": 0.00025545,
+            "positive_day_fraction": 0.54098361,
+            "calendar_year_returns": {
+              "2024": 0.08577052
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2024-Q2",
+          "metrics": {
+            "observations": 63,
+            "start_date": "2024-04-01",
+            "end_date": "2024-06-28",
+            "total_return": 0.02732285,
+            "gross_total_return": 0.02754676,
+            "bil_total_return": 0.01292585,
+            "total_return_minus_bil": 0.014397,
+            "annualized_return": 0.11385278,
+            "annualized_volatility": 0.08683073,
+            "annualized_total_return_to_volatility": 1.28482305,
+            "bil_excess_sharpe": 0.68890063,
+            "bil_excess_sortino": 0.62731217,
+            "maximum_drawdown": -0.04594851,
+            "calmar_ratio": 2.47783376,
+            "average_exposure": 0.8272676,
+            "average_bil_exposure": 0.1727324,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.09050428,
+            "modeled_cost_drag_simple_sum": 0.0002181,
+            "positive_day_fraction": 0.6031746,
+            "calendar_year_returns": {
+              "2024": 0.02732285
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2024-Q3",
+          "metrics": {
+            "observations": 64,
+            "start_date": "2024-07-01",
+            "end_date": "2024-09-30",
+            "total_return": 0.01895005,
+            "gross_total_return": 0.01929518,
+            "bil_total_return": 0.01347648,
+            "total_return_minus_bil": 0.00547358,
+            "annualized_return": 0.07671814,
+            "annualized_volatility": 0.10736363,
+            "annualized_total_return_to_volatility": 0.74164869,
+            "bil_excess_sharpe": 0.25008863,
+            "bil_excess_sortino": 0.1958183,
+            "maximum_drawdown": -0.0725129,
+            "calmar_ratio": 1.057993,
+            "average_exposure": 0.65512349,
+            "average_bil_exposure": 0.34487651,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.69690691,
+            "modeled_cost_drag_simple_sum": 0.00033937,
+            "positive_day_fraction": 0.625,
+            "calendar_year_returns": {
+              "2024": 0.01895005
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2024-Q4",
+          "metrics": {
+            "observations": 64,
+            "start_date": "2024-10-01",
+            "end_date": "2024-12-31",
+            "total_return": 0.00670225,
+            "gross_total_return": 0.00698817,
+            "bil_total_return": 0.01164978,
+            "total_return_minus_bil": -0.00494753,
+            "annualized_return": 0.02665101,
+            "annualized_volatility": 0.10762476,
+            "annualized_total_return_to_volatility": 0.29774481,
+            "bil_excess_sharpe": -0.12619252,
+            "bil_excess_sortino": -0.10539155,
+            "maximum_drawdown": -0.03514785,
+            "calmar_ratio": 0.75825434,
+            "average_exposure": 0.84083695,
+            "average_bil_exposure": 0.15916305,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.42112679,
+            "modeled_cost_drag_simple_sum": 0.00028422,
+            "positive_day_fraction": 0.578125,
+            "calendar_year_returns": {
+              "2024": 0.00670225
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2025-Q1",
+          "metrics": {
+            "observations": 60,
+            "start_date": "2025-01-02",
+            "end_date": "2025-03-31",
+            "total_return": -0.01816018,
+            "gross_total_return": -0.01784042,
+            "bil_total_return": 0.01011981,
+            "total_return_minus_bil": -0.02827999,
+            "annualized_return": -0.0740859,
+            "annualized_volatility": 0.07386507,
+            "annualized_total_return_to_volatility": -1.00552677,
+            "bil_excess_sharpe": -1.56975292,
+            "bil_excess_sortino": -1.34665661,
+            "maximum_drawdown": -0.04747883,
+            "calmar_ratio": -1.56039866,
+            "average_exposure": 0.4770801,
+            "average_bil_exposure": 0.5229199,
+            "maximum_absolute_exposure": 0.89551972,
+            "cumulative_turnover": 1.62297112,
+            "modeled_cost_drag_simple_sum": 0.00032458,
+            "positive_day_fraction": 0.55,
+            "calendar_year_returns": {
+              "2025": -0.01816018
+            },
+            "positive_calendar_year_fraction": 0
+          }
+        },
+        {
+          "id": "2025-Q2",
+          "metrics": {
+            "observations": 62,
+            "start_date": "2025-04-01",
+            "end_date": "2025-06-30",
+            "total_return": 0.03199524,
+            "gross_total_return": 0.03230237,
+            "bil_total_return": 0.0103639,
+            "total_return_minus_bil": 0.02163134,
+            "annualized_return": 0.13656219,
+            "annualized_volatility": 0.05716288,
+            "annualized_total_return_to_volatility": 2.26805496,
+            "bil_excess_sharpe": 1.52088618,
+            "bil_excess_sortino": 1.35908933,
+            "maximum_drawdown": -0.01834583,
+            "calmar_ratio": 7.44377398,
+            "average_exposure": 0.33070516,
+            "average_bil_exposure": 0.66929484,
+            "maximum_absolute_exposure": 0.98999658,
+            "cumulative_turnover": 1.48851578,
+            "modeled_cost_drag_simple_sum": 0.00029769,
+            "positive_day_fraction": 0.62903226,
+            "calendar_year_returns": {
+              "2025": 0.03199524
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2025-Q3",
+          "metrics": {
+            "observations": 64,
+            "start_date": "2025-07-01",
+            "end_date": "2025-09-30",
+            "total_return": 0.08028248,
+            "gross_total_return": 0.08044939,
+            "bil_total_return": 0.01059948,
+            "total_return_minus_bil": 0.069683,
+            "annualized_return": 0.35535559,
+            "annualized_volatility": 0.08406119,
+            "annualized_total_return_to_volatility": 3.66068645,
+            "bil_excess_sharpe": 3.17036586,
+            "bil_excess_sortino": 3.67687103,
+            "maximum_drawdown": -0.0241394,
+            "calmar_ratio": 14.72097791,
+            "average_exposure": 0.95077745,
+            "average_bil_exposure": 0.04922255,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 0.77054964,
+            "modeled_cost_drag_simple_sum": 0.00015411,
+            "positive_day_fraction": 0.546875,
+            "calendar_year_returns": {
+              "2025": 0.08028248
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2025-Q4",
+          "metrics": {
+            "observations": 64,
+            "start_date": "2025-10-01",
+            "end_date": "2025-12-31",
+            "total_return": 0.01773513,
+            "gross_total_return": 0.01811595,
+            "bil_total_return": 0.0098117,
+            "total_return_minus_bil": 0.00792342,
+            "annualized_return": 0.071672,
+            "annualized_volatility": 0.09998687,
+            "annualized_total_return_to_volatility": 0.74183142,
+            "bil_excess_sharpe": 0.35634576,
+            "bil_excess_sortino": 0.29980211,
+            "maximum_drawdown": -0.03312111,
+            "calmar_ratio": 2.16393707,
+            "average_exposure": 0.72607203,
+            "average_bil_exposure": 0.27392797,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.87083718,
+            "modeled_cost_drag_simple_sum": 0.00037415,
+            "positive_day_fraction": 0.59375,
+            "calendar_year_returns": {
+              "2025": 0.01773513
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2026-Q1",
+          "metrics": {
+            "observations": 61,
+            "start_date": "2026-01-02",
+            "end_date": "2026-03-31",
+            "total_return": -0.00064175,
+            "gross_total_return": -0.00021791,
+            "bil_total_return": 0.00848784,
+            "total_return_minus_bil": -0.00912959,
+            "annualized_return": -0.00264851,
+            "annualized_volatility": 0.08653799,
+            "annualized_total_return_to_volatility": 0.01195072,
+            "bil_excess_sharpe": -0.39223378,
+            "bil_excess_sortino": -0.40103436,
+            "maximum_drawdown": -0.02977122,
+            "calmar_ratio": -0.08896209,
+            "average_exposure": 0.62338926,
+            "average_bil_exposure": 0.37661074,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 2.12356186,
+            "modeled_cost_drag_simple_sum": 0.00042471,
+            "positive_day_fraction": 0.47540984,
+            "calendar_year_returns": {
+              "2026": -0.00064175
+            },
+            "positive_calendar_year_fraction": 0
+          }
+        },
+        {
+          "id": "2026-Q2",
+          "metrics": {
+            "observations": 62,
+            "start_date": "2026-04-01",
+            "end_date": "2026-06-30",
+            "total_return": 0.04993667,
+            "gross_total_return": 0.05030643,
+            "bil_total_return": 0.00885934,
+            "total_return_minus_bil": 0.04107733,
+            "annualized_return": 0.21903952,
+            "annualized_volatility": 0.09586124,
+            "annualized_total_return_to_volatility": 2.11440842,
+            "bil_excess_sharpe": 1.73180915,
+            "bil_excess_sortino": 1.36075758,
+            "maximum_drawdown": -0.04466982,
+            "calmar_ratio": 4.90352415,
+            "average_exposure": 0.64680687,
+            "average_bil_exposure": 0.35319313,
+            "maximum_absolute_exposure": 1,
+            "cumulative_turnover": 1.76964693,
+            "modeled_cost_drag_simple_sum": 0.00035394,
+            "positive_day_fraction": 0.64516129,
+            "calendar_year_returns": {
+              "2026": 0.04993667
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        },
+        {
+          "id": "2026-Q3",
+          "metrics": {
+            "observations": 42,
+            "start_date": "2026-07-01",
+            "end_date": "2026-08-28",
+            "total_return": 0.01794385,
+            "gross_total_return": 0.01819811,
+            "bil_total_return": 0.00603732,
+            "total_return_minus_bil": 0.01190653,
+            "annualized_return": 0.11260994,
+            "annualized_volatility": 0.07473312,
+            "annualized_total_return_to_volatility": 1.46461173,
+            "bil_excess_sharpe": 0.98098174,
+            "bil_excess_sortino": 1.06786149,
+            "maximum_drawdown": -0.02311464,
+            "calmar_ratio": 4.87180173,
+            "average_exposure": 0.62435655,
+            "average_bil_exposure": 0.37564345,
+            "maximum_absolute_exposure": 0.85715659,
+            "cumulative_turnover": 1.24975374,
+            "modeled_cost_drag_simple_sum": 0.00024994,
+            "positive_day_fraction": 0.5,
+            "calendar_year_returns": {
+              "2026": 0.01794385
+            },
+            "positive_calendar_year_fraction": 1
+          }
+        }
+      ]
+    },
+    "post_training_statistical_falsification": {
+      "schema_version": "finly_economic_statistical_evidence.v1",
+      "probabilistic_deflated_sharpe": {
+        "schema_version": "finly_probabilistic_deflated_sharpe_evidence.v1",
+        "method": "Bailey-Lopez de Prado probabilistic Sharpe ratio and deflated Sharpe ratio",
+        "claim_boundary": "These fixed-sample probabilities are model-based falsification evidence, not formal proof of alpha, independence, stationarity, or future profitability.",
+        "reference_formulae": {
+          "probabilistic_sharpe": "Phi((SR_hat - SR_benchmark) * sqrt(n - 1) / sqrt(1 - skewness * SR_hat + ((Pearson_kurtosis - 1) / 4) * SR_hat^2))",
+          "deflated_benchmark": "mean_trial_SR + sd_trial_SR * ((1 - EulerGamma) * Phi^-1(1 - 1 / N) + EulerGamma * Phi^-1(1 - 1 / (N * e)))"
+        },
+        "fixed_candidate_id": "tsmom_ensemble_vol",
+        "candidate_ids": [
+          "vol_target_long",
+          "tsmom_12m_vol",
+          "tsmom_ensemble_vol",
+          "tsmom_majority_vol",
+          "finly_5_20_signed"
+        ],
+        "trial_count": 6,
+        "trial_count_requirement": "Declared explicitly by the caller and no smaller than the candidate IDs supplied to this calculation.",
+        "observations": 1168,
+        "start_date": "2022-01-03",
+        "end_date": "2026-08-28",
+        "periods_per_year": 252,
+        "excess_return_definition": "candidate daily net_return minus the same row's adjusted BIL cash_return",
+        "observed_candidate": {
+          "mean_daily_bil_excess_return": 0.000154803896,
+          "sample_daily_bil_excess_volatility": 0.004924707052,
+          "sharpe_periodic": 0.031434132813,
+          "sharpe_annualized": 0.499001388612,
+          "skewness": -0.75530912657,
+          "pearson_kurtosis": 7.203609164312,
+          "moment_estimator": "uncorrected central moments with denominator n; kurtosis is Pearson kurtosis, not excess kurtosis",
+          "non_normality_variance_factor": 1.025274941251
+        },
+        "candidate_periodic_sharpes": {
+          "vol_target_long": 0.033248887295,
+          "tsmom_12m_vol": 0.032160191617,
+          "tsmom_ensemble_vol": 0.031434132813,
+          "tsmom_majority_vol": 0.039673647497,
+          "finly_5_20_signed": 0.007088393063
+        },
+        "degenerate_zero_excess_candidates": [],
+        "probabilistic_sharpe": {
+          "benchmark_sharpe_periodic": 0,
+          "benchmark_sharpe_annualized": 0,
+          "z_score": 1.06051481627,
+          "probability_observed_sharpe_exceeds_benchmark": 0.855544745523
+        },
+        "deflated_sharpe": {
+          "trial_sharpe_mean_periodic": 0.028721050457,
+          "trial_sharpe_sample_standard_deviation_periodic": 0.012526183198,
+          "expected_maximum_coefficient": 1.300140788235,
+          "benchmark_sharpe_periodic": 0.045006852154,
+          "benchmark_sharpe_annualized": 0.714461628555,
+          "z_score": -0.457912106042,
+          "probability_observed_sharpe_exceeds_deflated_benchmark": 0.323507810817
+        },
+        "assumptions": [
+          "The probabilistic Sharpe approximation uses IID asymptotics after adjusting its variance for the fixed candidate's return skewness and Pearson kurtosis.",
+          "The deflated benchmark treats the declared N trials as independent and estimates their Sharpe mean and dispersion from the supplied candidate IDs; it does not estimate an effective trial count from candidate correlation.",
+          "Daily arithmetic BIL-excess returns and 252 periods per year are used unless the caller explicitly supplies another annualization frequency."
+        ]
+      },
+      "circular_block_reality_check": {
+        "schema_version": "finly_circular_block_reality_check_evidence.v1",
+        "method": "White-style centered circular-block bootstrap of the maximum BIL-excess sample mean",
+        "claim_boundary": "This deterministic resampling result is falsification evidence under the stated centering and block assumptions; it is not a formal proof of alpha, stationarity, or future profitability.",
+        "null_hypothesis": "Every supplied candidate has population mean daily BIL-excess return less than or equal to zero.",
+        "alternative": "At least one supplied candidate has positive population mean daily BIL-excess return.",
+        "fixed_candidate_alternative": "Candidate tsmom_ensemble_vol has positive population mean daily BIL-excess return.",
+        "statistic": "sqrt(n) multiplied by the arithmetic mean daily BIL-excess return; the familywise statistic is the maximum across candidates",
+        "centering": "Each candidate series is demeaned separately before bootstrap sampling to impose a zero-mean null.",
+        "block_sampling": "Every iteration draws circular blocks of row indexes and applies the identical sampled index path to all candidate series, preserving contemporaneous cross-candidate dependence within sampled blocks.",
+        "p_value_estimator": "(1 + bootstrap exceedances) / (iterations + 1); one-sided, with equality counted as an exceedance",
+        "candidate_ids": [
+          "vol_target_long",
+          "tsmom_12m_vol",
+          "tsmom_ensemble_vol",
+          "tsmom_majority_vol",
+          "finly_5_20_signed"
+        ],
+        "fixed_candidate_id": "tsmom_ensemble_vol",
+        "observations": 1168,
+        "start_date": "2022-01-03",
+        "end_date": "2026-08-28",
+        "excess_return_definition": "candidate daily net_return minus the same row's adjusted BIL cash_return",
+        "iterations": 2000,
+        "block_length_sessions": 20,
+        "seed": 20260829,
+        "observed_mean_daily_bil_excess_returns": {
+          "vol_target_long": 0.000221222106,
+          "tsmom_12m_vol": 0.000188908699,
+          "tsmom_ensemble_vol": 0.000154803896,
+          "tsmom_majority_vol": 0.000210550642,
+          "finly_5_20_signed": 0.000040897671
+        },
+        "observed_statistics": {
+          "vol_target_long": 0.007560490014,
+          "tsmom_12m_vol": 0.006456146514,
+          "tsmom_ensemble_vol": 0.005290580253,
+          "tsmom_majority_vol": 0.0071957819,
+          "finly_5_20_signed": 0.001397719425
+        },
+        "observed_maximum_candidate_id": "vol_target_long",
+        "observed_maximum_statistic": 0.007560490014,
+        "observed_fixed_candidate_statistic": 0.005290580253,
+        "familywise_exceedances": 367,
+        "familywise_p_value": 0.183908045977,
+        "fixed_candidate_exceedances": 237,
+        "fixed_candidate_one_sided_p_value": 0.118940529735,
+        "bootstrap_quantiles": {
+          "maximum_statistic_p90": 0.009338992395,
+          "maximum_statistic_p95": 0.010645712299,
+          "maximum_statistic_p99": 0.014408613833,
+          "fixed_statistic_p90": 0.005690672921,
+          "fixed_statistic_p95": 0.007048678192,
+          "fixed_statistic_p99": 0.010129253723
+        },
+        "assumptions": [
+          "Circular blocks approximate serial dependence only up to the caller-selected block length.",
+          "The same sampled blocks across candidates preserve their observed contemporaneous and within-block dependence rather than treating strategy trials as independent.",
+          "The familywise p-value addresses the supplied candidate family only; omitted or undisclosed trials are not corrected."
+        ]
+      }
+    }
+  },
+  "profitability_evidence_gate": {
+    "fixed_holdout_positive_after_modeled_costs": true,
+    "fixed_holdout_positive_above_bil": true,
+    "bil_excess_sharpe_exceeds_volatility_target_only": true,
+    "maximum_drawdown_shallower_than_volatility_target_only": true,
+    "positive_median_holdout_quarter": true,
+    "no_single_positive_holdout_quarter_supplies_half_of_positive_log_return": true,
+    "positive_under_ten_bps_per_traded_leg": true,
+    "deflated_sharpe_probability_at_least_95_percent": false,
+    "white_style_familywise_p_value_at_most_5_percent": false,
+    "prospective_paper_forward_complete": false,
+    "options_execution_pilot_has_at_least_50_completed_trades": false,
+    "all_durable_profitability_gates_pass": false
+  },
+  "evidence_status": "POSITIVE_FIXED_HOLDOUT_WITH_POSITIVE_BLOCK_BOOTSTRAP_P05_NOT_DURABLE_ALPHA_PROOF",
+  "interpretation": "The selected deterministic policy earned a fixed-sample historical result after modeled stock turnover costs. This can support a bounded direction/risk layer. It cannot establish live options fills, causal value from an LLM, persistent alpha, or future profitability.",
+  "next_proof": "Run the frozen policy prospectively in Alpaca paper trading, keep the options execution overlay separately scored, and do not revise the policy using the dated final holdout.",
+  "artifact_sha256": "sha256:b506d082a670b7d8335d1536b438bb3e3260a32e2de85eba318b7013cda5d08e"
+}

@@ -1,0 +1,172 @@
+{
+  "schema_version": "finly_source_overlap_reconciliation_generation5_protocol.v2",
+  "status": "FROZEN_BEFORE_AUTHENTICATED_READ",
+  "frozen_at": "2026-08-29T11:39:29Z",
+  "designed_after_generation4_fail_closed": true,
+  "objective": "Test whether the exact hash-pinned Generation 4 Yahoo adjusted-close panel is concordant with fresh authenticated Alpaca IEX daily adjustment=all data for all 20 CORE_SYMBOLS and every eligible Generation 5 candidate. Alpaca adjustment=split is diagnostic only. This package may not alter or rescue any Generation 4 artifact.",
+  "claim_boundary": "This v2 protocol was designed after the Generation 4 source-reconciliation FAIL_CLOSED result and all quantitative outcomes through Generation 4 were observed. It compares already-seen, retrospectively revised history. A pass is source-concordance evidence only, not fresh out-of-sample evidence, independent alpha, future-profit evidence, or permission for live capital.",
+  "generation4_lock": {
+    "generation4_output_path": "research/output/quant_champion_generation4.json",
+    "generation4_output_sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+    "generation4_protocol_sha256": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "generation4_freeze_receipt_sha256": "c1b662533c31dc326ddb9ed4633b36081fbd0386652cf753cd6a2fc62c843a46",
+    "private_panel_path": "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json",
+    "private_panel_payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+    "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+    "common_sessions": 4843,
+    "prior_source_disposition": "FAIL_CLOSED",
+    "immutability": "No Generation 4 protocol, code, output, receipt, or report is modified or reclassified by this package."
+  },
+  "generation5_lock": {
+    "results_seen_at_source_protocol_freeze": false,
+    "outcome_output_absent_at_source_protocol_freeze": true,
+    "required_symbols_export": "GENERATION5_REQUIRED_SYMBOLS",
+    "eligible_candidate_ids": [
+      "flex_top5_voladj_momentum_trend",
+      "sector_12_1_top3_individual_trend",
+      "qqq_vs_two_factor_residual_sector_basket",
+      "long_only_tsmom_ewma60"
+    ],
+    "files": {
+      "research/champion_search_generation5_protocol.json": "d2187039d1471dd4e27681d350355f917aec556f019c09f8155bb48c0509f10e",
+      "research/champion_trial_ledger_generation5.json": "eb3fa92618a5c5b72282295360cece394ec8b9449ec43c88d40d57f943227fd0",
+      "research/champion_engine.mjs": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e",
+      "research/champion_strategies.mjs": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d",
+      "research/champion_strategies_generation4.mjs": "a3e0124f2171773ca23c8a6e932dd1e3d5d5b265e7e198fdf21971cdaf5c4992",
+      "research/champion_strategies_generation5.mjs": "ed39a207d404c401a3735945d0e2559367dda28f0063a18c6daeeed5fc002c28",
+      "research/run_quant_champion_generation5.mjs": "5eb5f252b97a128fb73622ec5cfc0933e9f81e92def237cceba5cd62f1e24bb8",
+      "research/champion_statistics.mjs": "bc3d681771012f11ef27aeb2b7d61a1862d3d026818e4c3b623e041cf5a688de",
+      "tests/champion_engine.test.mjs": "a77ff77204e00b3be28e32e993ac9a699e580ca5548a9f864a8f19a7f9d9ef9d",
+      "tests/champion_generation4.test.mjs": "9a6d87f81d000fbcbf754dbcefacf68e25ff786a01cbbaac952cfd3786a469bc",
+      "tests/champion_generation5.test.mjs": "0310cfbb6defe07ff8279110f32ded2cd41b7ef7d7c704a8197e041c7145127e",
+      "tests/champion_statistics.test.mjs": "28479ac1fc43ef2593ce1e4782bb0e57cc1857035afc20686e4bd6234f918938",
+      "research/champion_search_generation4_protocol.json": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+      "research/champion_trial_ledger_generation4.json": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88",
+      "research/output/quant_champion_generation4.json": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+      "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+      "research/champion_search_generation5_freeze_receipt.json": "77eafc80d2d5eabec46e22d9193b9f4a8ab51eee199fdca10b1ef176b35351f0"
+    }
+  },
+  "symbols": [
+    "SPY",
+    "BIL",
+    "QQQ",
+    "IWM",
+    "EFA",
+    "EEM",
+    "IEF",
+    "TLT",
+    "GLD",
+    "DBC",
+    "VNQ",
+    "XLK",
+    "XLF",
+    "XLE",
+    "XLY",
+    "XLP",
+    "XLI",
+    "XLB",
+    "XLV",
+    "XLU"
+  ],
+  "dates": {
+    "requested_start": "2007-05-30",
+    "requested_end": "2026-08-27",
+    "common_overlap_rule": "For each symbol, use the intersection of exact Yahoo and Alpaca-all session dates between the later first date and earlier last date. For candidate comparisons, intersect exact dates across both sources and all 20 symbols. Never fill or interpolate a date."
+  },
+  "sources": {
+    "yahoo_primary": {
+      "snapshot": "Exact hash-pinned Generation 4 private panel; no Yahoo redownload",
+      "field": "chart.result[0].indicators.adjclose[0].adjclose",
+      "semantics": "Stored adjusted-close values from the Generation 4 panel. The provider adjustment formula is not independently reconstructed."
+    },
+    "alpaca_all_primary": {
+      "origin": "https://data.alpaca.markets",
+      "path": "/v2/stocks/bars",
+      "method": "GET",
+      "field": "bars[symbol][].c",
+      "timeframe": "1Day",
+      "feed": "iex",
+      "adjustment": "all",
+      "semantics": "Alpaca documents all as forward/reverse split, cash-dividend, and spin-off adjustment. IEX is Investors Exchange, a single-exchange feed.",
+      "role": "Primary per-symbol and candidate price/return/signal concordance series."
+    },
+    "alpaca_split_diagnostic": {
+      "origin": "https://data.alpaca.markets",
+      "path": "/v2/stocks/bars",
+      "method": "GET",
+      "field": "bars[symbol][].c",
+      "timeframe": "1Day",
+      "feed": "iex",
+      "adjustment": "split",
+      "semantics": "Alpaca documents split as forward/reverse split adjustment.",
+      "role": "Diagnostic only. Split/all differences are not classified as corporate-action dates, are not a pass gate, and never exclude an observation from the primary comparison."
+    }
+  },
+  "alignment_and_null_policy": {
+    "timezone": "UTC calendar date derived from each provider timestamp; Alpaca daily IEX bars are normalized to YYYY-MM-DD and the stored Yahoo panel already uses YYYY-MM-DD.",
+    "chronology": "Every source/symbol series must be strictly increasing with unique dates and finite positive closes; a violation fails closed.",
+    "alignment": "Inner join exact dates only. Never forward-fill, backward-fill, interpolate, splice providers, or substitute a missing value.",
+    "return_definition": "Natural log of close_t divided by close_t-1 on adjacent dates in the exact aligned common-date sequence.",
+    "tracking_error": "Sample standard deviation of paired daily log-return differences multiplied by sqrt(252).",
+    "annualized_mean_difference": "Absolute mean paired daily log-return difference multiplied by 252 and 10,000 basis points.",
+    "no_exclusions": "Every primary common-date return enters the metrics. Alpaca all-versus-split differences remove zero observations."
+  },
+  "pass_thresholds": {
+    "minimum_common_sessions_per_symbol": 1250,
+    "minimum_yahoo_coverage_of_alpaca_dates": 0.99,
+    "risky_minimum_daily_log_return_correlation": 0.995,
+    "risky_maximum_annualized_log_return_tracking_error": 0.03,
+    "risky_maximum_median_absolute_daily_log_return_difference_bps": 5,
+    "risky_maximum_p99_absolute_daily_log_return_difference_bps": 50,
+    "bil_maximum_annualized_mean_log_return_difference_bps": 25,
+    "bil_maximum_annualized_log_return_tracking_error": 0.01,
+    "bil_maximum_median_absolute_daily_log_return_difference_bps": 1,
+    "bil_maximum_p99_absolute_daily_log_return_difference_bps": 5,
+    "candidate_minimum_exact_decision_agreement": 0.99,
+    "candidate_minimum_daily_log_return_correlation": 0.995,
+    "candidate_maximum_annualized_log_return_tracking_error": 0.02,
+    "candidate_maximum_absolute_edge_difference_bps_per_year": 50
+  },
+  "per_symbol_decision_rule": {
+    "risky_etfs": "Every symbol other than BIL must pass the common-session, Yahoo-coverage, correlation, tracking-error, median-gap, and p99-gap gates against Alpaca IEX adjustment=all.",
+    "bil": "BIL must pass the common-session and Yahoo-coverage gates plus annualized absolute mean-log-return difference, tracking error, median gap, and p99 gap. Correlation is deliberately not a BIL gate because a near-zero rounded series can make correlation unstable or undefined.",
+    "all_symbols_required": true
+  },
+  "candidate_comparison": {
+    "scope": "Every Generation 5 strategy whose frozen metadata has role=candidate and eligible=true.",
+    "panel": "Exact fully common Yahoo/Alpaca-all panel across all 20 CORE_SYMBOLS.",
+    "decision_schedule": "Use the real Generation 5 strategy objects and the corrected queued execution engine. Wrap each source-specific strategy instance to record each actual decide() call without changing its state or observe() sequence.",
+    "exact_decision_definition": "Compare the full CORE_SYMBOLS weight vector after the engine's canonical ten-decimal rounding. The signal date and canonical vector must match.",
+    "return_definition": "Compare aligned daily log(1 + modeled net return) under the same costs and execution assumptions.",
+    "edge_definition": "For each source separately, annualized candidate log growth minus annualized SPY log growth over the common candidate panel.",
+    "same_sign_rule": "The Yahoo and Alpaca-all candidate-minus-SPY annualized log-growth edges must have exactly the same mathematical sign; there is no neutral-zone exception.",
+    "every_eligible_candidate_required": true
+  },
+  "simulation_options": {
+    "cashSymbol": "BIL",
+    "lookbackSessions": 252,
+    "rebalanceIntervalSessions": 21,
+    "rebalanceAnchor": 0,
+    "oneWayCostBps": 5,
+    "annualBorrowSpread": 0.005,
+    "maximumRiskyGross": 1,
+    "terminalLiquidation": true
+  },
+  "overall_decision_rule": {
+    "pass": "PASS_SOURCE_RECONCILIATION only when all 20 per-symbol primary comparisons and every eligible Generation 5 candidate comparison pass every applicable gate.",
+    "fail": "Any missing source, malformed response, chronology or pagination failure, frozen-hash mismatch, threshold failure, candidate-registry mismatch, incomplete run, or credential error produces FAIL_CLOSED. No candidate-level success can override a symbol failure.",
+    "promotion_boundary": "This package supplies only a source-concordance prerequisite. It cannot rescue a failed Generation 4 result, replace Generation 5 selection/robustness gates, or authorize a champion by itself."
+  },
+  "security": {
+    "credentials": "Read only from ignored local environment variables and transmit only as Alpaca authentication headers to the fixed data.alpaca.markets endpoint.",
+    "persistence": "Never persist credentials, authentication headers, raw response bodies, or page tokens. Persist only content hashes, aggregate metrics, dates, gate results, and source metadata.",
+    "network": "Exactly two authenticated read-only paginated GET families are permitted: IEX adjustment=all primary and IEX adjustment=split diagnostic for the frozen 20-symbol/date request."
+  },
+  "execution_status_at_freeze": {
+    "authenticated_read_executed": false,
+    "output_json_path": "research/output/source_overlap_reconciliation_generation5.json",
+    "output_markdown_path": "research/output/source_overlap_reconciliation_generation5_report.md",
+    "both_outputs_absent": true
+  }
+}

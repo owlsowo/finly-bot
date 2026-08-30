@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Finly — proof before trading authority</title>
+  <desc id="desc">A controlled-delegation trading agent that rejected its strongest retrospective nonproduction shadow after the evidence failed promotion gates.</desc>
+  <rect width="1200" height="630" fill="#f6f3ec"/>
+  <rect x="0" y="0" width="28" height="630" fill="#0d2b43"/>
+
+  <g transform="translate(70 46)">
+    <path d="M8 9c8 2 14 8 18 18-8-3-13-8-15-15-2 5-2 10 0 16-5-5-6-12-3-19Z" fill="#e8efea" stroke="#0d2b43" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M56 9c-8 2-14 8-18 18 8-3 13-8 15-15 2 5 2 10 0 16 5-5 6-12 3-19Z" fill="#e8efea" stroke="#0d2b43" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M20 25c3-5 7-7 12-7s9 2 12 7l-2 20c-3 7-6 10-10 12-4-2-7-5-10-12l-2-20Z" fill="#2e6f5c" stroke="#0d2b43" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M27 27h12v4h-7v6h6v4h-6v10h-5V27Z" fill="#f6f3ec"/>
+    <text x="86" y="43" fill="#0d2b43" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="5">FINLY</text>
+  </g>
+
+  <text x="1130" y="68" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.6" text-anchor="end">ALPACA AI TRADING AGENTS HACKATHON</text>
+  <line x1="70" y1="124" x2="1130" y2="124" stroke="#0d2b43" stroke-width="1.5"/>
+
+  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">PROOF BEFORE AUTHORITY</text>
+  <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="50" font-weight="700" letter-spacing="-1.3">
+    <text x="70" y="252">Finly's strongest retrospective shadow</text>
+    <text x="70" y="318">still did not earn permission to trade.</text>
+  </g>
+
+  <line x1="70" y1="367" x2="1130" y2="367" stroke="#c8ccc7" stroke-width="1"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="70" y="410" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">ANNUALIZED RETURN</text>
+    <text x="70" y="468" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="52" font-weight="700">18.97%</text>
+    <text x="282" y="465" fill="#68706f" font-size="17">vs SPY 15.11%</text>
+
+    <text x="486" y="410" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">MAXIMUM DRAWDOWN</text>
+    <text x="486" y="468" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="52" font-weight="700">−28.99%</text>
+    <text x="742" y="465" fill="#68706f" font-size="17">vs SPY −33.72%</text>
+
+    <g transform="translate(936 402) rotate(-1)">
+      <rect width="194" height="68" fill="#f3e8e5" stroke="#8b3a3a" stroke-width="2"/>
+      <text x="97" y="43" fill="#8b3a3a" font-size="18" font-weight="700" letter-spacing="1.5" text-anchor="middle">NOT PROMOTED</text>
+    </g>
+  </g>
+
+  <line x1="70" y1="516" x2="1130" y2="516" stroke="#0d2b43" stroke-width="1.5"/>
+  <text x="70" y="558" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="21">Controlled delegation · deterministic options compiler · correction-aware evidence gates</text>
+  <text x="70" y="578" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">2013-01-02 to 2026-08-27 · modeled 5 bp one-way turnover cost · selected after viewing history</text>
+  <text x="70" y="603" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Consumed ETF replay · descriptive only · not options P&amp;L · not a forecast</text>
+  <text x="1130" y="603" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" text-anchor="end">BRUCE WEN · SOLO BUILDER</text>
+</svg>

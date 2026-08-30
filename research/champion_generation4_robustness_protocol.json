@@ -1,0 +1,103 @@
+{
+  "schema_version": "finly_champion_generation4_robustness_protocol.v1",
+  "status": "frozen_before_first_post_selection_robustness_output",
+  "created_at": "2026-08-29T11:01:34Z",
+  "purpose": "Falsify, without further search, the one raw-return candidate selected by the frozen Generation 4 result.",
+  "claim_boundary": "All development, validation, and recent observations have been seen. Passing this protocol can earn only RAW_RETURN_SHADOW_ONLY after authenticated source overlap; it cannot establish independent alpha, a balanced champion, future profitability, or permission for live capital.",
+  "frozen_inputs": {
+    "generation4_output": {
+      "path": "research/output/quant_champion_generation4.json",
+      "sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788"
+    },
+    "generation4_protocol_sha256": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "trial_ledger_sha256": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88",
+    "private_panel": {
+      "filename": "generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json",
+      "payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+      "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883"
+    },
+    "private_ledger": {
+      "filename": "generation4_ledger_6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1.json.gz",
+      "gzip_sha256": "6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1"
+    }
+  },
+  "fixed_candidate_id": "qqq_core_sector_12_6",
+  "no_search_boundary": "The runner must obtain the candidate id from the hash-pinned Generation 4 output and must abort if it differs. No alternative candidate, parameter, cost, anchor, period, block length, seed, or comparator may be selected after results.",
+  "data_and_execution": {
+    "data_source": "Saved Generation 4 private panel and ledger only; no market fetch is permitted.",
+    "signal_trade_return": "close-t information -> close-t+1 execution -> first t+1-to-t+2 return",
+    "standalone_boundaries": "Each named slice starts in BIL and charges final risky liquidation at the stated one-way cost.",
+    "cost_levels_bps": [5, 10, 25],
+    "native_rebalance_interval_sessions": 21,
+    "native_offsets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    "anchor_cost_bps": 5,
+    "long_only": true,
+    "maximum_risky_gross": 1
+  },
+  "slices": {
+    "development": { "start": "2008-06-02", "end": "2017-12-29", "status": "consumed_by_search" },
+    "validation": { "start": "2018-01-02", "end": "2024-12-31", "status": "consumed_by_selection" },
+    "recent": { "start": "2025-01-02", "end": "2026-08-28", "status": "consumed_veto_and_descriptive_only" }
+  },
+  "cost_gate": "Candidate annualized log-growth edge versus SPY must remain strictly positive in both development and validation at every 5/10/25 bp cost. Recent is reported but cannot rank or rescue the candidate.",
+  "schedule_gate": "At 5 bp, candidate annualized log-growth edge versus fixed-anchor SPY must remain strictly positive in both development and validation for every native candidate offset 0 through 20. Recent is descriptive only.",
+  "statistical_gate": {
+    "slice": "validation_only",
+    "benchmark_id": "spy_buy_hold",
+    "eligible_candidate_ids": [
+      "qqq_vs_spy_relative_regime_fully_invested",
+      "spy_core_qqq_sector_12_6",
+      "qqq_core_sector_12_6",
+      "qqq_defensive_dual_momentum",
+      "qqq_regime_defensive_rotation",
+      "equity_defensive_relative_strength",
+      "spy_qqq_defensive_sleeves"
+    ],
+    "cumulative_effective_trials": 100,
+    "deflated_sharpe_probability_minimum": 0.95,
+    "bootstrap_iterations_per_test": 2000,
+    "block_lengths_sessions": [5, 20, 60],
+    "methods": ["circular", "moving"],
+    "frozen_seeds": {
+      "circular": { "5": 20260905, "20": 20260920, "60": 20260960 },
+      "moving": { "5": 20261905, "20": 20261920, "60": 20261960 }
+    },
+    "familywise_fixed_candidate_p_value_maximum": 0.05,
+    "gate": "Validation DSR must be at least 0.95 and all six fixed-candidate familywise adjusted p-values must be at most 0.05. Development statistics may not be substituted or pooled."
+  },
+  "comparators": [
+    "spy_buy_hold",
+    "qqq_buy_hold",
+    "frozen_finly",
+    "spy_vol_target_15",
+    "static_spy_qqq_50_50_control"
+  ],
+  "static_growth_control": {
+    "role": "Separate explanatory control, excluded from the seven-candidate DSR and bootstrap family.",
+    "required_reporting": [
+      "standalone development and validation return and risk comparison",
+      "validation annual-origin 252/504/756-session comparison",
+      "mechanical target-allocation distinction"
+    ],
+    "consistent_financial_beat_definition": "Candidate log-growth edge must be strictly positive in development and validation, and for every 252/504/756 validation annual-origin family its median edge must be positive with at least 60% positive windows.",
+    "claim_rule": "If the consistent financial beat definition fails, alpha independent of static SPY/QQQ growth exposure must be explicitly rejected. Mechanical distinction is disclosure only and cannot satisfy or replace this financial claim test."
+  },
+  "recent_veto": "The already-consumed frozen veto must remain passed at the 5 bp discovery schedule: drawdown not below -20%, total return not below BIL, and drawdown not over five percentage points worse than SPY.",
+  "source_overlap": {
+    "artifact": "research/output/source_overlap_reconciliation.json",
+    "artifact_sha256": "f581f6c286540cf2f4b178450810993b2147628a10c85c8a9da181b50092001c",
+    "artifact_schema": "finly_generation4_source_overlap_reconciliation.v1",
+    "protocol_sha256": "306f49f6632ed58c3e9ea446d87c1c28fc0a0d13b188cfa276f83f7cbbb0652d",
+    "freeze_receipt_sha256": "467f0d2310c56c422c902c37542df521df19779ed15bd0f95f2d1a0e0dbae11d",
+    "result_known_at_robustness_refreeze": true,
+    "known_result_disposition": "FAIL_CLOSED",
+    "reference_provider": "Alpaca",
+    "required_symbols": [
+      "SPY", "BIL", "QQQ", "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"
+    ],
+    "scope_reason": "These are every symbol used by the fixed candidate, its SPY benchmark, and its BIL cash convention. The eight unused search-menu symbols are outside the fixed-candidate source gate.",
+    "required_overall_disposition": "PASS",
+    "fail_closed": true,
+    "runner_fetch_permitted": false
+  }
+}

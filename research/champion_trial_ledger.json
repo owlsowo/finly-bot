@@ -1,0 +1,98 @@
+{
+  "schema_version": "finly_champion_trial_ledger.v1",
+  "append_only_through": 92,
+  "counting_policy": "Conservative effective multiplicity count. It includes executed formulas, explicitly suggested but rejected formulas, selectable variants, an aborted implementation attempt, and the audited engine-correction rerun. Cost and schedule robustness settings are not selected and do not add trials unless later used for selection.",
+  "blocks": [
+    {
+      "range": "1-53",
+      "count": 53,
+      "status": "prior_declared_research",
+      "reference": "Existing Finly quantitative and options research before the champion search."
+    },
+    {
+      "range": "54-65",
+      "count": 12,
+      "status": "generation_1_executed_then_invalidated_by_engine_audit",
+      "ids": [
+        "multi_asset_trend_ensemble",
+        "equity_bond_cross_signal",
+        "defensive_sleeve_rotation",
+        "dual_horizon_volatility_finly",
+        "fixed_literature_model_ensemble",
+        "trend_spy_vol15",
+        "sector_top3_momentum",
+        "cross_asset_top3_momentum",
+        "equity_dual_momentum",
+        "sector_breadth_equity_rotation",
+        "equal_weight_expert_ensemble",
+        "online_mwu_expert_ensemble"
+      ]
+    },
+    {
+      "range": "66",
+      "count": 1,
+      "status": "aborted_pre_output_implementation_attempt",
+      "ids": ["leverage_cash_validator_bug_attempt"]
+    },
+    {
+      "range": "67-75",
+      "count": 9,
+      "status": "generation_2_executed_then_invalidated_by_engine_audit",
+      "ids": [
+        "qqq_regime_momentum_long_only",
+        "qqq_spy_regime_rotation",
+        "equity_relative_strength_always",
+        "equity_relative_strength_absolute",
+        "sector_top1_always",
+        "sector_top1_absolute",
+        "aegis_direction_proxy_spy",
+        "alphapilot_daily_gate_proxy",
+        "aegis_legacy_tqqq_regime_proxy"
+      ]
+    },
+    {
+      "range": "76-78",
+      "count": 3,
+      "status": "competitor_derived_suggestions_counted_but_not_selected",
+      "ids": [
+        "options_sniper_sma20_sma50_proxy",
+        "vibehedge_2_5pct_drawdown_brake",
+        "alphaswarm_technical_proxy"
+      ]
+    },
+    {
+      "range": "79-83",
+      "count": 5,
+      "status": "literature_suggestions_counted_but_not_selected",
+      "ids": [
+        "factor_momentum_breadth_reducer",
+        "sector_absorption_ratio_stress_reducer",
+        "faber_10_month_tactical_allocation",
+        "canary_breadth_overlay",
+        "fixed_stop_loss_crash_brake"
+      ]
+    },
+    {
+      "range": "84-91",
+      "count": 8,
+      "status": "generation_3_registry_suggested_before_execution",
+      "ids": [
+        "spy_core_industry_momentum_12_1",
+        "spy_core_industry_momentum_12_6",
+        "spy_core_residual_sector_momentum",
+        "spy_core_four_signal_sector_rank",
+        "spy_core_broad_equity_growth_rotation",
+        "spy_core_us_style_rotation",
+        "breadth_conditioned_spy_rsp_switch",
+        "panic_neutralized_industry_momentum"
+      ]
+    },
+    {
+      "range": "92",
+      "count": 1,
+      "status": "audited_engine_correction_rerun",
+      "ids": ["chronology_and_weight_drift_corrected_rerun"]
+    }
+  ],
+  "claim_boundary": "Counting an unexecuted suggestion is deliberately conservative. The ledger does not imply that all strategies were viable, independent, or fully evaluated."
+}

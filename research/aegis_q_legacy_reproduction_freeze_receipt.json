@@ -1,0 +1,33 @@
+{
+  "schema_version": "finly_aegis_q_legacy_reproduction_freeze_receipt.v1",
+  "status": "frozen_before_first_aegis_q_auxiliary_output",
+  "created_at": "2026-08-29T14:13:19.703Z",
+  "claim_boundary": {
+    "auxiliary_only": true,
+    "submitted_options_pnl": false,
+    "eligible_as_finly_champion": false,
+    "future_profitability_proven": false,
+    "apples_to_apples_with_finly": false,
+    "statement": "A match establishes reproducibility of the archived legacy equity metric bundle under the declared public-data and execution semantics. It does not reproduce the submitted AEGIS-Q options strategy, establish options P&L, prove future profitability, or provide an apples-to-apples financial comparison with Finly."
+  },
+  "files": {
+    "research/aegis_q_legacy_reproduction_protocol.json": "8d10d5a00c8c2a285039a8a8bc8ad0193749c3db2129730d2f829ce3cbe9fcbd",
+    "data/private/competitor_reproductions/aegis_q_alpaca_iex_split_sanitized_raw_bars.json": "17484cec726b5a0745d9fe614587f553d44216ffaf027f04c9c3704de9d1f587",
+    "data/private/competitor_reproductions/aegis_q_alpaca_iex_split_panel.json": "af1a3e3fe684d83ced9745d3c2f294fd7ee44236fee0408222a4b32f2bba5fa9",
+    "research/aegis_q_legacy_reproduction.mjs": "5e9ab0f50709cb90139690b9461f942ed16d4d7ac2760fea2adb93e0bacc6e2d",
+    "research/run_aegis_q_legacy_reproduction.mjs": "d4fdf59643259d7b9c3834834cef187879a9711adcfb4568b82595a50e9e6efd",
+    "tests/aegis_q_legacy_reproduction.test.mjs": "15c0743587d41ea4ced818afe621e46aff3dbdbb34c49284afa5eb281f0da3f3",
+    "tests/aegis_q_legacy_reproduction_runner.test.mjs": "cffe27f8cc9a3beb28c632ebdc315e7ec09ef1245e16b2ef912f4c87b88e851b",
+    "research/acquire_aegis_q_alpaca_split_panel.mjs": "3e1e0caba4bbd7df17ff0b72146d23d949c41dfa57f8a5a3945cd7092303dee4"
+  },
+  "validation_before_freeze": {
+    "synthetic_implementation_tests": "passed",
+    "synthetic_runner_tests": "passed",
+    "targeted_eslint": "passed",
+    "panel_schema_and_hash_check": "passed",
+    "split_only_provenance_check": "passed"
+  },
+  "aegis_q_auxiliary_results_seen_at_freeze": false,
+  "aegis_q_auxiliary_output_absent_at_freeze": true,
+  "market_fetch_permitted": false
+}

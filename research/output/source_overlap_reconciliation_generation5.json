@@ -1,0 +1,1244 @@
+{
+  "schema_version": "finly_generation5_source_overlap_reconciliation.v2",
+  "generated_at": "2026-08-29T11:42:13.181Z",
+  "authenticated_read_started_at": "2026-08-29T11:42:08.566Z",
+  "authenticated_read_completed_at": "2026-08-29T11:42:11.769Z",
+  "disposition": "FAIL_CLOSED",
+  "protocol_sha256": "88f000732851a59f56a218c791731bb913e8ec51cd461b7a9347da6ae1697be6",
+  "freeze_receipt_sha256": "3238a3bbb13f3c08073a81cb8bb1d2424ee42f8751d7e52f76ffdc07d98a3828",
+  "generation4_output_sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+  "generation4_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+  "generation4_private_panel_payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+  "generation5_lock": {
+    "results_seen_at_source_protocol_freeze": false,
+    "outcome_output_absent_at_source_protocol_freeze": true,
+    "required_symbols_export": "GENERATION5_REQUIRED_SYMBOLS",
+    "eligible_candidate_ids": [
+      "flex_top5_voladj_momentum_trend",
+      "sector_12_1_top3_individual_trend",
+      "qqq_vs_two_factor_residual_sector_basket",
+      "long_only_tsmom_ewma60"
+    ],
+    "files": {
+      "research/champion_search_generation5_protocol.json": "d2187039d1471dd4e27681d350355f917aec556f019c09f8155bb48c0509f10e",
+      "research/champion_trial_ledger_generation5.json": "eb3fa92618a5c5b72282295360cece394ec8b9449ec43c88d40d57f943227fd0",
+      "research/champion_engine.mjs": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e",
+      "research/champion_strategies.mjs": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d",
+      "research/champion_strategies_generation4.mjs": "a3e0124f2171773ca23c8a6e932dd1e3d5d5b265e7e198fdf21971cdaf5c4992",
+      "research/champion_strategies_generation5.mjs": "ed39a207d404c401a3735945d0e2559367dda28f0063a18c6daeeed5fc002c28",
+      "research/run_quant_champion_generation5.mjs": "5eb5f252b97a128fb73622ec5cfc0933e9f81e92def237cceba5cd62f1e24bb8",
+      "research/champion_statistics.mjs": "bc3d681771012f11ef27aeb2b7d61a1862d3d026818e4c3b623e041cf5a688de",
+      "tests/champion_engine.test.mjs": "a77ff77204e00b3be28e32e993ac9a699e580ca5548a9f864a8f19a7f9d9ef9d",
+      "tests/champion_generation4.test.mjs": "9a6d87f81d000fbcbf754dbcefacf68e25ff786a01cbbaac952cfd3786a469bc",
+      "tests/champion_generation5.test.mjs": "0310cfbb6defe07ff8279110f32ded2cd41b7ef7d7c704a8197e041c7145127e",
+      "tests/champion_statistics.test.mjs": "28479ac1fc43ef2593ce1e4782bb0e57cc1857035afc20686e4bd6234f918938",
+      "research/champion_search_generation4_protocol.json": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+      "research/champion_trial_ledger_generation4.json": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88",
+      "research/output/quant_champion_generation4.json": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+      "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+      "research/champion_search_generation5_freeze_receipt.json": "77eafc80d2d5eabec46e22d9193b9f4a8ab51eee199fdca10b1ef176b35351f0"
+    }
+  },
+  "stored_yahoo_source": {
+    "provider": "Yahoo Finance chart endpoint",
+    "field": "chart.result[0].indicators.adjclose[0].adjclose",
+    "snapshot": "exact hash-pinned Generation 4 private panel",
+    "start": "2007-05-30",
+    "end": "2026-08-27"
+  },
+  "alpaca_all_source": {
+    "provider": "Alpaca Market Data API",
+    "origin": "https://data.alpaca.markets",
+    "path": "/v2/stocks/bars",
+    "feed": "iex",
+    "adjustment": "all",
+    "adjustment_semantics": "forward/reverse splits, cash dividends, and spin-offs",
+    "timeframe": "1Day",
+    "start": "2007-05-30",
+    "end": "2026-08-27",
+    "page_count": 4,
+    "response_content_sha256": "4b34baffb3eb0fd9d2e447eb46bec9435095e79c4641d762360e2411ebd8d3db",
+    "raw_responses_persisted": false,
+    "request_headers_persisted": false,
+    "page_tokens_persisted": false,
+    "authenticated_read_only_get": true
+  },
+  "alpaca_split_source": {
+    "provider": "Alpaca Market Data API",
+    "origin": "https://data.alpaca.markets",
+    "path": "/v2/stocks/bars",
+    "feed": "iex",
+    "adjustment": "split",
+    "adjustment_semantics": "forward and reverse splits",
+    "timeframe": "1Day",
+    "start": "2007-05-30",
+    "end": "2026-08-27",
+    "page_count": 4,
+    "response_content_sha256": "edd48ae7476bbf0951a7fb8d0b3a45ce1de2663522f7e8e49a22bb8682dec349",
+    "raw_responses_persisted": false,
+    "request_headers_persisted": false,
+    "page_tokens_persisted": false,
+    "authenticated_read_only_get": true
+  },
+  "reconciliation": {
+    "thresholds": {
+      "minimum_common_sessions_per_symbol": 1250,
+      "minimum_yahoo_coverage_of_alpaca_dates": 0.99,
+      "risky_minimum_daily_log_return_correlation": 0.995,
+      "risky_maximum_annualized_log_return_tracking_error": 0.03,
+      "risky_maximum_median_absolute_daily_log_return_difference_bps": 5,
+      "risky_maximum_p99_absolute_daily_log_return_difference_bps": 50,
+      "bil_maximum_annualized_mean_log_return_difference_bps": 25,
+      "bil_maximum_annualized_log_return_tracking_error": 0.01,
+      "bil_maximum_median_absolute_daily_log_return_difference_bps": 1,
+      "bil_maximum_p99_absolute_daily_log_return_difference_bps": 5,
+      "candidate_minimum_exact_decision_agreement": 0.99,
+      "candidate_minimum_daily_log_return_correlation": 0.995,
+      "candidate_maximum_annualized_log_return_tracking_error": 0.02,
+      "candidate_maximum_absolute_edge_difference_bps_per_year": 50
+    },
+    "simulation_options": {
+      "cashSymbol": "BIL",
+      "lookbackSessions": 252,
+      "rebalanceIntervalSessions": 21,
+      "rebalanceAnchor": 0,
+      "oneWayCostBps": 5,
+      "annualBorrowSpread": 0.005,
+      "maximumRiskyGross": 1,
+      "terminalLiquidation": true
+    },
+    "per_symbol": {
+      "SPY": {
+        "symbol": "SPY",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2018-11-01",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1964,
+        "alpaca_all_sessions_in_overlap": 1531,
+        "common_sessions": 1531,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 0.7795315682,
+        "yahoo_only_date_count": 433,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1530,
+          "daily_log_return_correlation": 0.9986980644,
+          "annualized_log_return_tracking_error": 0.009496469,
+          "annualized_mean_log_return_difference_bps": 11.8307099895,
+          "median_absolute_daily_log_return_difference_bps": 1.3545689282,
+          "p99_absolute_daily_log_return_difference_bps": 9.1654768833,
+          "maximum_absolute_daily_log_return_difference_bps": 106.2127820581
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1531,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1530,
+            "daily_log_return_correlation": 0.996763602,
+            "annualized_log_return_tracking_error": 0.0157055784,
+            "annualized_mean_log_return_difference_bps": 193.1922667909,
+            "median_absolute_daily_log_return_difference_bps": 0.0589790799,
+            "p99_absolute_daily_log_return_difference_bps": 31.7547496183,
+            "maximum_absolute_daily_log_return_difference_bps": 348.5743589402
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "BIL": {
+        "symbol": "BIL",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1516,
+        "common_sessions": 1516,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 0.9908496732,
+        "yahoo_only_date_count": 14,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1515,
+          "daily_log_return_correlation": 0.7852826238,
+          "annualized_log_return_tracking_error": 0.0016053464,
+          "annualized_mean_log_return_difference_bps": 0.2889217619,
+          "median_absolute_daily_log_return_difference_bps": 0.8885450111,
+          "p99_absolute_daily_log_return_difference_bps": 2.5312381831,
+          "maximum_absolute_daily_log_return_difference_bps": 4.0247299095
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1516,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1515,
+            "daily_log_return_correlation": 0.0914299651,
+            "annualized_log_return_tracking_error": 0.0102040472,
+            "annualized_mean_log_return_difference_bps": 289.7842583857,
+            "median_absolute_daily_log_return_difference_bps": 0.3388051842,
+            "p99_absolute_daily_log_return_difference_bps": 40.4723793519,
+            "maximum_absolute_daily_log_return_difference_bps": 46.1064351965
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "BIL_NEAR_ZERO_RETURN",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "annualized_mean_log_return_difference": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "QQQ": {
+        "symbol": "QQQ",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9991771775,
+          "annualized_log_return_tracking_error": 0.0091822006,
+          "annualized_mean_log_return_difference_bps": 5.573842576,
+          "median_absolute_daily_log_return_difference_bps": 1.9203451988,
+          "p99_absolute_daily_log_return_difference_bps": 18.91864144,
+          "maximum_absolute_daily_log_return_difference_bps": 97.6093212414
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9998984917,
+            "annualized_log_return_tracking_error": 0.0032226908,
+            "annualized_mean_log_return_difference_bps": 61.713877371,
+            "median_absolute_daily_log_return_difference_bps": 0.0749699459,
+            "p99_absolute_daily_log_return_difference_bps": 12.6330660898,
+            "maximum_absolute_daily_log_return_difference_bps": 35.8450603563
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "IWM": {
+        "symbol": "IWM",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9993154765,
+          "annualized_log_return_tracking_error": 0.0082971841,
+          "annualized_mean_log_return_difference_bps": 0.088851617,
+          "median_absolute_daily_log_return_difference_bps": 2.2718394628,
+          "p99_absolute_daily_log_return_difference_bps": 14.2749313617,
+          "maximum_absolute_daily_log_return_difference_bps": 70.2908524402
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9996152247,
+            "annualized_log_return_tracking_error": 0.006237646,
+            "annualized_mean_log_return_difference_bps": 119.5739584822,
+            "median_absolute_daily_log_return_difference_bps": 0.133485961,
+            "p99_absolute_daily_log_return_difference_bps": 27.3057649502,
+            "maximum_absolute_daily_log_return_difference_bps": 51.967684615
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "EFA": {
+        "symbol": "EFA",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9991167865,
+          "annualized_log_return_tracking_error": 0.0068545733,
+          "annualized_mean_log_return_difference_bps": 0.1036511917,
+          "median_absolute_daily_log_return_difference_bps": 2.0171035068,
+          "p99_absolute_daily_log_return_difference_bps": 10.6051218629,
+          "maximum_absolute_daily_log_return_difference_bps": 77.6434817482
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9912953154,
+            "annualized_log_return_tracking_error": 0.0218152283,
+            "annualized_mean_log_return_difference_bps": 297.8439036817,
+            "median_absolute_daily_log_return_difference_bps": 0.3946119831,
+            "p99_absolute_daily_log_return_difference_bps": 1.7114020299,
+            "maximum_absolute_daily_log_return_difference_bps": 217.5699361086
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "EEM": {
+        "symbol": "EEM",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.999255911,
+          "annualized_log_return_tracking_error": 0.0075939385,
+          "annualized_mean_log_return_difference_bps": 0.7707246154,
+          "median_absolute_daily_log_return_difference_bps": 2.8099042289,
+          "p99_absolute_daily_log_return_difference_bps": 12.4275932824,
+          "maximum_absolute_daily_log_return_difference_bps": 51.8508430726
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9964444029,
+            "annualized_log_return_tracking_error": 0.0166868908,
+            "annualized_mean_log_return_difference_bps": 217.7675166234,
+            "median_absolute_daily_log_return_difference_bps": 0.631090291,
+            "p99_absolute_daily_log_return_difference_bps": 2.4655194164,
+            "maximum_absolute_daily_log_return_difference_bps": 188.6393919437
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "IEF": {
+        "symbol": "IEF",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9984731984,
+          "annualized_log_return_tracking_error": 0.0040171236,
+          "annualized_mean_log_return_difference_bps": 0.1585847106,
+          "median_absolute_daily_log_return_difference_bps": 1.238339398,
+          "p99_absolute_daily_log_return_difference_bps": 8.4619925818,
+          "maximum_absolute_daily_log_return_difference_bps": 28.2883780176
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9936644284,
+            "annualized_log_return_tracking_error": 0.0081101546,
+            "annualized_mean_log_return_difference_bps": 257.8664409921,
+            "median_absolute_daily_log_return_difference_bps": 0.3205479436,
+            "p99_absolute_daily_log_return_difference_bps": 31.2769303969,
+            "maximum_absolute_daily_log_return_difference_bps": 33.944912575
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "TLT": {
+        "symbol": "TLT",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9990992304,
+          "annualized_log_return_tracking_error": 0.0064782312,
+          "annualized_mean_log_return_difference_bps": 0.0604970664,
+          "median_absolute_daily_log_return_difference_bps": 2.1350867753,
+          "p99_absolute_daily_log_return_difference_bps": 13.5531058927,
+          "maximum_absolute_daily_log_return_difference_bps": 23.9080876775
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9980490453,
+            "annualized_log_return_tracking_error": 0.0094786521,
+            "annualized_mean_log_return_difference_bps": 312.0915126467,
+            "median_absolute_daily_log_return_difference_bps": 0.3215300345,
+            "p99_absolute_daily_log_return_difference_bps": 35.902337103,
+            "maximum_absolute_daily_log_return_difference_bps": 40.2120812378
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "GLD": {
+        "symbol": "GLD",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9997356413,
+          "annualized_log_return_tracking_error": 0.0042633639,
+          "annualized_mean_log_return_difference_bps": 0.0779355219,
+          "median_absolute_daily_log_return_difference_bps": 1.2121131883,
+          "p99_absolute_daily_log_return_difference_bps": 8.1228461578,
+          "maximum_absolute_daily_log_return_difference_bps": 31.1715306181
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 1,
+            "annualized_log_return_tracking_error": 0,
+            "annualized_mean_log_return_difference_bps": 0,
+            "median_absolute_daily_log_return_difference_bps": 0,
+            "p99_absolute_daily_log_return_difference_bps": 0,
+            "maximum_absolute_daily_log_return_difference_bps": 0
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "DBC": {
+        "symbol": "DBC",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1529,
+        "common_sessions": 1529,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 0.9993464052,
+        "yahoo_only_date_count": 1,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1528,
+          "daily_log_return_correlation": 0.9969708936,
+          "annualized_log_return_tracking_error": 0.0148848076,
+          "annualized_mean_log_return_difference_bps": 0.1169330481,
+          "median_absolute_daily_log_return_difference_bps": 3.9045715741,
+          "p99_absolute_daily_log_return_difference_bps": 34.4624241685,
+          "maximum_absolute_daily_log_return_difference_bps": 108.6937705835
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1529,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1528,
+            "daily_log_return_correlation": 0.9861324047,
+            "annualized_log_return_tracking_error": 0.0319904218,
+            "annualized_mean_log_return_difference_bps": 229.9277563814,
+            "median_absolute_daily_log_return_difference_bps": 1.2706597957,
+            "p99_absolute_daily_log_return_difference_bps": 5.8859997612,
+            "maximum_absolute_daily_log_return_difference_bps": 519.9986815886
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "VNQ": {
+        "symbol": "VNQ",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9984064132,
+          "annualized_log_return_tracking_error": 0.0105054926,
+          "annualized_mean_log_return_difference_bps": 0.410137294,
+          "median_absolute_daily_log_return_difference_bps": 2.9654908053,
+          "p99_absolute_daily_log_return_difference_bps": 18.1003436034,
+          "maximum_absolute_daily_log_return_difference_bps": 108.2502495195
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9945681952,
+            "annualized_log_return_tracking_error": 0.0194430778,
+            "annualized_mean_log_return_difference_bps": 376.8758080818,
+            "median_absolute_daily_log_return_difference_bps": 0.3496155659,
+            "p99_absolute_daily_log_return_difference_bps": 87.3458757622,
+            "maximum_absolute_daily_log_return_difference_bps": 158.9219744373
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "XLK": {
+        "symbol": "XLK",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9992224384,
+          "annualized_log_return_tracking_error": 0.0099299909,
+          "annualized_mean_log_return_difference_bps": 0.4766361318,
+          "median_absolute_daily_log_return_difference_bps": 2.7309491786,
+          "p99_absolute_daily_log_return_difference_bps": 17.0473616241,
+          "maximum_absolute_daily_log_return_difference_bps": 101.9736796108
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9998738606,
+            "annualized_log_return_tracking_error": 0.0039960799,
+            "annualized_mean_log_return_difference_bps": 75.7171707051,
+            "median_absolute_daily_log_return_difference_bps": 0.4150876302,
+            "p99_absolute_daily_log_return_difference_bps": 17.2077648459,
+            "maximum_absolute_daily_log_return_difference_bps": 28.171537339
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "XLF": {
+        "symbol": "XLF",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.998415312,
+          "annualized_log_return_tracking_error": 0.0106400121,
+          "annualized_mean_log_return_difference_bps": 1.0245508737,
+          "median_absolute_daily_log_return_difference_bps": 3.6845495554,
+          "p99_absolute_daily_log_return_difference_bps": 18.0982961306,
+          "maximum_absolute_daily_log_return_difference_bps": 85.4621651536
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9988656452,
+            "annualized_log_return_tracking_error": 0.0090028904,
+            "annualized_mean_log_return_difference_bps": 174.3718386895,
+            "median_absolute_daily_log_return_difference_bps": 0.7135971567,
+            "p99_absolute_daily_log_return_difference_bps": 39.9271089223,
+            "maximum_absolute_daily_log_return_difference_bps": 59.6428609963
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "XLE": {
+        "symbol": "XLE",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9991232351,
+          "annualized_log_return_tracking_error": 0.0116744638,
+          "annualized_mean_log_return_difference_bps": 0.1430318513,
+          "median_absolute_daily_log_return_difference_bps": 3.3548247365,
+          "p99_absolute_daily_log_return_difference_bps": 19.7803139894,
+          "maximum_absolute_daily_log_return_difference_bps": 113.9262119107
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9974859728,
+            "annualized_log_return_tracking_error": 0.0198007695,
+            "annualized_mean_log_return_difference_bps": 382.7661147204,
+            "median_absolute_daily_log_return_difference_bps": 0.9624103672,
+            "p99_absolute_daily_log_return_difference_bps": 82.8694362986,
+            "maximum_absolute_daily_log_return_difference_bps": 168.8930069226
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "XLY": {
+        "symbol": "XLY",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9992897747,
+          "annualized_log_return_tracking_error": 0.0086963744,
+          "annualized_mean_log_return_difference_bps": 0.7751258075,
+          "median_absolute_daily_log_return_difference_bps": 2.2854157538,
+          "p99_absolute_daily_log_return_difference_bps": 17.0852177411,
+          "maximum_absolute_daily_log_return_difference_bps": 86.2672653065
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9998375796,
+            "annualized_log_return_tracking_error": 0.0041585654,
+            "annualized_mean_log_return_difference_bps": 79.4346732445,
+            "median_absolute_daily_log_return_difference_bps": 0.440213773,
+            "p99_absolute_daily_log_return_difference_bps": 18.1840020808,
+            "maximum_absolute_daily_log_return_difference_bps": 30.9074869543
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "XLP": {
+        "symbol": "XLP",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9984236515,
+          "annualized_log_return_tracking_error": 0.0074995947,
+          "annualized_mean_log_return_difference_bps": 1.2595676761,
+          "median_absolute_daily_log_return_difference_bps": 2.372209896,
+          "p99_absolute_daily_log_return_difference_bps": 13.3460379082,
+          "maximum_absolute_daily_log_return_difference_bps": 62.1377576993
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9950886204,
+            "annualized_log_return_tracking_error": 0.0132306201,
+            "annualized_mean_log_return_difference_bps": 260.5897933538,
+            "median_absolute_daily_log_return_difference_bps": 0.4172133615,
+            "p99_absolute_daily_log_return_difference_bps": 64.3406904128,
+            "maximum_absolute_daily_log_return_difference_bps": 84.6146914554
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "XLI": {
+        "symbol": "XLI",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9993733315,
+          "annualized_log_return_tracking_error": 0.0062389871,
+          "annualized_mean_log_return_difference_bps": 0.1951804998,
+          "median_absolute_daily_log_return_difference_bps": 1.9164752033,
+          "p99_absolute_daily_log_return_difference_bps": 11.1701066164,
+          "maximum_absolute_daily_log_return_difference_bps": 57.603212207
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.999080522,
+            "annualized_log_return_tracking_error": 0.007558916,
+            "annualized_mean_log_return_difference_bps": 147.9714722279,
+            "median_absolute_daily_log_return_difference_bps": 0.2632465128,
+            "p99_absolute_daily_log_return_difference_bps": 32.6719517048,
+            "maximum_absolute_daily_log_return_difference_bps": 54.5355626236
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "XLB": {
+        "symbol": "XLB",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9991847999,
+          "annualized_log_return_tracking_error": 0.0077525267,
+          "annualized_mean_log_return_difference_bps": 1.0202740567,
+          "median_absolute_daily_log_return_difference_bps": 2.4398035851,
+          "p99_absolute_daily_log_return_difference_bps": 14.8280147366,
+          "maximum_absolute_daily_log_return_difference_bps": 69.8385659025
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9986404661,
+            "annualized_log_return_tracking_error": 0.0099907087,
+            "annualized_mean_log_return_difference_bps": 193.3295206233,
+            "median_absolute_daily_log_return_difference_bps": 0.92885861,
+            "p99_absolute_daily_log_return_difference_bps": 44.2113147068,
+            "maximum_absolute_daily_log_return_difference_bps": 70.1552677228
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "XLV": {
+        "symbol": "XLV",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.99821819,
+          "annualized_log_return_tracking_error": 0.0089008545,
+          "annualized_mean_log_return_difference_bps": 0.4021111103,
+          "median_absolute_daily_log_return_difference_bps": 2.2030038772,
+          "p99_absolute_daily_log_return_difference_bps": 13.7507674624,
+          "maximum_absolute_daily_log_return_difference_bps": 112.8290067984
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9985577965,
+            "annualized_log_return_tracking_error": 0.0079977608,
+            "annualized_mean_log_return_difference_bps": 158.9688031891,
+            "median_absolute_daily_log_return_difference_bps": 0.219210723,
+            "p99_absolute_daily_log_return_difference_bps": 39.2792176517,
+            "maximum_absolute_daily_log_return_difference_bps": 47.3752530403
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      },
+      "XLU": {
+        "symbol": "XLU",
+        "primary_comparison": "Yahoo adjusted close versus Alpaca IEX adjustment=all",
+        "overlap_start": "2020-07-27",
+        "overlap_end": "2026-08-27",
+        "yahoo_sessions_in_overlap": 1530,
+        "alpaca_all_sessions_in_overlap": 1530,
+        "common_sessions": 1530,
+        "yahoo_coverage_of_alpaca_dates": 1,
+        "alpaca_coverage_of_yahoo_dates": 1,
+        "yahoo_only_date_count": 0,
+        "alpaca_all_only_date_count": 0,
+        "primary_log_return_metrics": {
+          "observations": 1529,
+          "daily_log_return_correlation": 0.9988597549,
+          "annualized_log_return_tracking_error": 0.0082157861,
+          "annualized_mean_log_return_difference_bps": 1.0859743269,
+          "median_absolute_daily_log_return_difference_bps": 2.5748047529,
+          "p99_absolute_daily_log_return_difference_bps": 11.4744837317,
+          "maximum_absolute_daily_log_return_difference_bps": 87.710946995
+        },
+        "alpaca_split_diagnostic": {
+          "role": "Diagnostic only; no date or return is excluded from the primary comparison.",
+          "common_sessions": 1530,
+          "alpaca_all_only_date_count": 0,
+          "alpaca_split_only_date_count": 0,
+          "all_versus_split_log_return_metrics": {
+            "observations": 1529,
+            "daily_log_return_correlation": 0.9960021657,
+            "annualized_log_return_tracking_error": 0.0153834266,
+            "annualized_mean_log_return_difference_bps": 300.9335372606,
+            "median_absolute_daily_log_return_difference_bps": 1.1113648196,
+            "p99_absolute_daily_log_return_difference_bps": 72.7361372881,
+            "maximum_absolute_daily_log_return_difference_bps": 95.9775151151
+          },
+          "interpretation": "Alpaca all includes split, cash-dividend, and spin-off adjustments; split includes forward and reverse splits. Differences are adjustment-series diagnostics, not event labels or exclusion rules."
+        },
+        "gate_family": "RISKY_ETF",
+        "gates": {
+          "minimum_common_sessions": true,
+          "yahoo_covers_alpaca_dates": true,
+          "daily_log_return_correlation": true,
+          "annualized_log_return_tracking_error": true,
+          "median_absolute_daily_log_return_difference": true,
+          "p99_absolute_daily_log_return_difference": true
+        },
+        "passed": true
+      }
+    },
+    "candidate_comparison": {
+      "primary_comparison": "Stored Yahoo adjusted close versus fresh authenticated Alpaca IEX adjustment=all",
+      "common_panel_start": "2020-07-27",
+      "common_panel_end": "2026-08-27",
+      "common_panel_sessions": 1515,
+      "yahoo_full_panel_sessions_in_overlap": 1530,
+      "alpaca_full_panel_sessions_in_overlap": 1515,
+      "yahoo_coverage_of_alpaca_full_panel_dates": 1,
+      "eligible_candidate_ids": [
+        "flex_top5_voladj_momentum_trend",
+        "sector_12_1_top3_individual_trend",
+        "qqq_vs_two_factor_residual_sector_basket",
+        "long_only_tsmom_ewma60"
+      ],
+      "candidates": {
+        "flex_top5_voladj_momentum_trend": {
+          "id": "flex_top5_voladj_momentum_trend",
+          "common_panel_start": "2020-07-27",
+          "common_panel_end": "2026-08-27",
+          "common_panel_sessions": 1515,
+          "decision_comparison": {
+            "canonicalization": "Full CORE_SYMBOLS weight vector rounded to the engine's canonical 10 decimal places.",
+            "decision_count": 61,
+            "exact_decision_count": 61,
+            "exact_decision_agreement_fraction": 1,
+            "maximum_weight_l1_difference": 0
+          },
+          "return_comparison": {
+            "observations": 1261,
+            "daily_log_return_correlation": 0.9991505734,
+            "annualized_log_return_tracking_error": 0.0056487833,
+            "annualized_mean_log_return_difference_bps": 1.7673629724,
+            "median_absolute_daily_log_return_difference_bps": 1.179965983,
+            "p99_absolute_daily_log_return_difference_bps": 6.1965877604,
+            "maximum_absolute_daily_log_return_difference_bps": 70.5732311471
+          },
+          "candidate_vs_spy_edge": {
+            "yahoo_annualized_log_growth_edge": -0.0209423112,
+            "alpaca_annualized_log_growth_edge": -0.0208009989,
+            "absolute_edge_difference_bps_per_year": 1.4131225157
+          },
+          "gates": {
+            "exact_decision_agreement": true,
+            "daily_log_return_correlation": true,
+            "annualized_log_return_tracking_error": true,
+            "candidate_vs_spy_edge_same_sign": true,
+            "candidate_vs_spy_edge_difference": true
+          },
+          "passed": true
+        },
+        "sector_12_1_top3_individual_trend": {
+          "id": "sector_12_1_top3_individual_trend",
+          "common_panel_start": "2020-07-27",
+          "common_panel_end": "2026-08-27",
+          "common_panel_sessions": 1515,
+          "decision_comparison": {
+            "canonicalization": "Full CORE_SYMBOLS weight vector rounded to the engine's canonical 10 decimal places.",
+            "decision_count": 61,
+            "exact_decision_count": 61,
+            "exact_decision_agreement_fraction": 1,
+            "maximum_weight_l1_difference": 0
+          },
+          "return_comparison": {
+            "observations": 1261,
+            "daily_log_return_correlation": 0.9991496431,
+            "annualized_log_return_tracking_error": 0.0064877221,
+            "annualized_mean_log_return_difference_bps": 1.0740371399,
+            "median_absolute_daily_log_return_difference_bps": 1.6532873722,
+            "p99_absolute_daily_log_return_difference_bps": 9.0625620137,
+            "maximum_absolute_daily_log_return_difference_bps": 75.8530254034
+          },
+          "candidate_vs_spy_edge": {
+            "yahoo_annualized_log_growth_edge": 0.0076745136,
+            "alpaca_annualized_log_growth_edge": 0.0077464932,
+            "absolute_edge_difference_bps_per_year": 0.7197966832
+          },
+          "gates": {
+            "exact_decision_agreement": true,
+            "daily_log_return_correlation": true,
+            "annualized_log_return_tracking_error": true,
+            "candidate_vs_spy_edge_same_sign": true,
+            "candidate_vs_spy_edge_difference": true
+          },
+          "passed": true
+        },
+        "qqq_vs_two_factor_residual_sector_basket": {
+          "id": "qqq_vs_two_factor_residual_sector_basket",
+          "common_panel_start": "2020-07-27",
+          "common_panel_end": "2026-08-27",
+          "common_panel_sessions": 1515,
+          "decision_comparison": {
+            "canonicalization": "Full CORE_SYMBOLS weight vector rounded to the engine's canonical 10 decimal places.",
+            "decision_count": 61,
+            "exact_decision_count": 61,
+            "exact_decision_agreement_fraction": 1,
+            "maximum_weight_l1_difference": 0
+          },
+          "return_comparison": {
+            "observations": 1261,
+            "daily_log_return_correlation": 0.9992761943,
+            "annualized_log_return_tracking_error": 0.0081429459,
+            "annualized_mean_log_return_difference_bps": 6.3356216927,
+            "median_absolute_daily_log_return_difference_bps": 1.8089942194,
+            "p99_absolute_daily_log_return_difference_bps": 13.4580751151,
+            "maximum_absolute_daily_log_return_difference_bps": 85.6353312716
+          },
+          "candidate_vs_spy_edge": {
+            "yahoo_annualized_log_growth_edge": -0.0129870748,
+            "alpaca_annualized_log_growth_edge": -0.0123889367,
+            "absolute_edge_difference_bps_per_year": 5.981381236
+          },
+          "gates": {
+            "exact_decision_agreement": true,
+            "daily_log_return_correlation": true,
+            "annualized_log_return_tracking_error": true,
+            "candidate_vs_spy_edge_same_sign": true,
+            "candidate_vs_spy_edge_difference": true
+          },
+          "passed": true
+        },
+        "long_only_tsmom_ewma60": {
+          "id": "long_only_tsmom_ewma60",
+          "common_panel_start": "2020-07-27",
+          "common_panel_end": "2026-08-27",
+          "common_panel_sessions": 1515,
+          "decision_comparison": {
+            "canonicalization": "Full CORE_SYMBOLS weight vector rounded to the engine's canonical 10 decimal places.",
+            "decision_count": 61,
+            "exact_decision_count": 10,
+            "exact_decision_agreement_fraction": 0.1639344262,
+            "maximum_weight_l1_difference": 0.0165685697
+          },
+          "return_comparison": {
+            "observations": 1261,
+            "daily_log_return_correlation": 0.9990278695,
+            "annualized_log_return_tracking_error": 0.0062386994,
+            "annualized_mean_log_return_difference_bps": 1.7080984179,
+            "median_absolute_daily_log_return_difference_bps": 1.1774928045,
+            "p99_absolute_daily_log_return_difference_bps": 13.0980801339,
+            "maximum_absolute_daily_log_return_difference_bps": 65.0704222884
+          },
+          "candidate_vs_spy_edge": {
+            "yahoo_annualized_log_growth_edge": -0.0794371612,
+            "alpaca_annualized_log_growth_edge": -0.0796433951,
+            "absolute_edge_difference_bps_per_year": 2.0623388745
+          },
+          "gates": {
+            "exact_decision_agreement": false,
+            "daily_log_return_correlation": true,
+            "annualized_log_return_tracking_error": true,
+            "candidate_vs_spy_edge_same_sign": true,
+            "candidate_vs_spy_edge_difference": true
+          },
+          "passed": false
+        }
+      },
+      "passed": false
+    },
+    "passed": false,
+    "blocking_reasons": [
+      "long_only_tsmom_ewma60 failed one or more candidate source-concordance gates"
+    ],
+    "claim_boundary": "Designed after the Generation 4 FAIL_CLOSED result was observed. This is source concordance over already-seen history, not fresh out-of-sample evidence or proof of future profitability."
+  },
+  "limitations": [
+    "This v2 protocol was designed after the Generation 4 source-reconciliation failure was observed and is not fresh out-of-sample evidence.",
+    "The primary series are Yahoo adjusted close and Alpaca IEX adjustment=all; provider adjustment and market-close construction can still differ.",
+    "IEX represents one exchange rather than consolidated SIP data.",
+    "Alpaca adjustment=split is diagnostic only; no split/all difference removes a primary observation.",
+    "Both providers can revise historical adjusted data; only the Yahoo Generation 4 snapshot is immutable here.",
+    "A pass cannot prove future profitability or eliminate universe-selection, survivorship, growth-tilt, or multiple-testing bias."
+  ]
+}

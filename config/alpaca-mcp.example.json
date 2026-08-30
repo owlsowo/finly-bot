@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "alpaca-paper": {
+      "command": "uvx",
+      "args": ["alpaca-mcp-server==2.2.1"],
+      "env": {
+        "ALPACA_API_KEY": "REPLACE_LOCALLY_NEVER_COMMIT",
+        "ALPACA_SECRET_KEY": "REPLACE_LOCALLY_NEVER_COMMIT",
+        "ALPACA_PAPER_TRADE": "true",
+        "ALPACA_TOOLSETS": "account,trading,assets,stock-data,options-data,news,corporate-actions"
+      }
+    }
+  }
+}

@@ -1,0 +1,1413 @@
+{
+  "schema_version": "decision_receipt.v1",
+  "run_id": "decision_demo_spy_20260828_143005",
+  "created_at": "2026-08-28T18:30:05.000Z",
+  "mode": "paper",
+  "data_mode": "synthetic_replay",
+  "market": {
+    "underlying": "SPY",
+    "spot": 560,
+    "observed_at": "2026-08-28T18:30:03.200Z",
+    "quote_age_seconds": 1.8,
+    "option_feed": "indicative",
+    "feed_disclosure": "Synthetic fixture shaped like Alpaca indicative option data; not OPRA, NBBO, or a live quote.",
+    "history_mode": "synthetic_fixture",
+    "historical_log_returns": [
+      0.0036,
+      0.008803,
+      -0.000904,
+      -0.006754,
+      0.000113,
+      -0.000186,
+      -0.008773,
+      -0.004757,
+      0.006004,
+      0.003231,
+      -0.002466,
+      0.004318,
+      0.007293,
+      -0.003574,
+      -0.007681,
+      0.000126,
+      -0.000818,
+      -0.008183,
+      -0.002097,
+      0.007799,
+      0.00308,
+      -0.002397,
+      0.004348,
+      0.005234,
+      -0.006097,
+      -0.007999,
+      0.000688,
+      -0.000881,
+      -0.006996,
+      0.000627,
+      0.008999,
+      0.002266,
+      -0.002833,
+      0.003837,
+      0.00293,
+      -0.008152,
+      -0.007544,
+      0.001795,
+      -0.000503,
+      -0.005479,
+      0.003083,
+      0.009392,
+      0.000779,
+      -0.003651,
+      0.00302,
+      0.000702,
+      -0.009483,
+      -0.006269,
+      0.003323,
+      0.000097,
+      -0.00393,
+      0.004988,
+      0.008884,
+      -0.001265,
+      -0.004632,
+      0.002172,
+      -0.001162,
+      -0.009946,
+      -0.00426,
+      0.005045,
+      0.000655,
+      -0.002624,
+      0.006158,
+      0.007513,
+      -0.00364,
+      -0.005502,
+      0.001555,
+      -0.00246,
+      -0.009524,
+      -0.001727,
+      0.006672,
+      0.000911,
+      -0.001765,
+      0.006532,
+      0.005448,
+      -0.006044,
+      -0.005989,
+      0.001365,
+      -0.003103,
+      -0.008334,
+      0.001035,
+      0.007901,
+      0.000665,
+      -0.001448,
+      0.006178,
+      0.002957,
+      -0.00815,
+      -0.00587,
+      0.0017,
+      -0.003131,
+      -0.006602,
+      0.003689,
+      0.008476,
+      -0.000186,
+      -0.001647,
+      0.005281
+    ]
+  },
+  "intent": {
+    "schema_version": "finly_intent.v1",
+    "underlying": "SPY",
+    "direction": "bearish",
+    "direction_score": -0.828562,
+    "volatility_score": 0.174376,
+    "coverage": 0.878586,
+    "agreement": 1,
+    "active_weight": 0.878586,
+    "horizon_sessions": 5,
+    "source_families": [
+      "events",
+      "market",
+      "options",
+      "prediction_market"
+    ],
+    "evidence_root": "sha256:2a8f10585e14585c7ed1017e01b80699395ed425a05ac317869ebd53949c90d5"
+  },
+  "source_signals": [
+    {
+      "schema_version": "source_signal.v1",
+      "family": "market",
+      "underlying": "SPY",
+      "direction_score": -0.82,
+      "volatility_score": 0.18,
+      "quality": 0.98,
+      "freshness": 0.99,
+      "calibration": 0.95,
+      "independence": 0.98,
+      "evidence_ids": [
+        "sha256:2a9a1daf716868117218aadcb3f7d54f321fb2ce7c3fa54263fb2dfd2395e65b"
+      ],
+      "evidence": [
+        {
+          "schema_version": "evidence_record.v1",
+          "family": "market",
+          "underlying": "SPY",
+          "source_kind": "synthetic_fixture",
+          "source_uri": "urn:finly:synthetic:market:2026-08-28",
+          "origin_id": "finly.synthetic.market.v1",
+          "published_at": "2026-08-28T18:29:00.000Z",
+          "received_at": "2026-08-28T18:29:01.000Z",
+          "available_at": "2026-08-28T18:29:01.000Z",
+          "content_sha256": "sha256:9788c400e823e1d647484b859ab96ba89e64f1bdf62b8c01a1aa30dfb8031c45",
+          "duplicate_group": "sha256:7a44b25a024bfa440307dfb1fc5d8c2f1df3176cf6617c224be0f1fe37c3746c",
+          "evidence_id": "sha256:2a9a1daf716868117218aadcb3f7d54f321fb2ce7c3fa54263fb2dfd2395e65b"
+        }
+      ],
+      "explanation": "Five- and twenty-session momentum are negative; volume confirmation is modest."
+    },
+    {
+      "schema_version": "source_signal.v1",
+      "family": "options",
+      "underlying": "SPY",
+      "direction_score": -0.86,
+      "volatility_score": 0.22,
+      "quality": 0.98,
+      "freshness": 0.99,
+      "calibration": 0.95,
+      "independence": 0.98,
+      "evidence_ids": [
+        "sha256:17048ce70d010803c38b477e6b21454d89e1e408946de2080a0365f0e813bdd8"
+      ],
+      "evidence": [
+        {
+          "schema_version": "evidence_record.v1",
+          "family": "options",
+          "underlying": "SPY",
+          "source_kind": "synthetic_fixture",
+          "source_uri": "urn:finly:synthetic:options:2026-08-28",
+          "origin_id": "finly.synthetic.options.v1",
+          "published_at": "2026-08-28T18:29:00.000Z",
+          "received_at": "2026-08-28T18:29:01.000Z",
+          "available_at": "2026-08-28T18:29:01.000Z",
+          "content_sha256": "sha256:7a76941460d83da7d333a2cbe281d61e9b5c7c2c7e4cdc3cb5b5043378df1a81",
+          "duplicate_group": "sha256:ee58ef2829de212772d42462c57a2623109bbd4c790654705a3fd39110477688",
+          "evidence_id": "sha256:17048ce70d010803c38b477e6b21454d89e1e408946de2080a0365f0e813bdd8"
+        }
+      ],
+      "explanation": "Put skew and signed surface features lean bearish without a volatility shock."
+    },
+    {
+      "schema_version": "source_signal.v1",
+      "family": "events",
+      "underlying": "SPY",
+      "direction_score": -0.84,
+      "volatility_score": 0.14,
+      "quality": 0.96,
+      "freshness": 0.98,
+      "calibration": 0.92,
+      "independence": 0.96,
+      "evidence_ids": [
+        "sha256:844ea6e35be3b1694681a6a1f7d9ea98eefc191179c31a112586c52cfbe8e902"
+      ],
+      "evidence": [
+        {
+          "schema_version": "evidence_record.v1",
+          "family": "events",
+          "underlying": "SPY",
+          "source_kind": "synthetic_fixture",
+          "source_uri": "urn:finly:synthetic:events:2026-08-28",
+          "origin_id": "finly.synthetic.events.v1",
+          "published_at": "2026-08-28T18:29:00.000Z",
+          "received_at": "2026-08-28T18:29:01.000Z",
+          "available_at": "2026-08-28T18:29:01.000Z",
+          "content_sha256": "sha256:0f06e47be1243ff32d805e3c698111fdf7f0df6d38ce1f6ffd180fdfda089c9e",
+          "duplicate_group": "sha256:7709e3bd6aaeaec7be9cad67a604deb0aecf8dcdbae8561f9b2b7fd10e64db32",
+          "evidence_id": "sha256:844ea6e35be3b1694681a6a1f7d9ea98eefc191179c31a112586c52cfbe8e902"
+        }
+      ],
+      "explanation": "Timestamped macro-event fixture implies a short-horizon growth-risk tilt."
+    },
+    {
+      "schema_version": "source_signal.v1",
+      "family": "prediction_market",
+      "underlying": "SPY",
+      "direction_score": -0.72,
+      "volatility_score": 0.08,
+      "quality": 0.94,
+      "freshness": 0.96,
+      "calibration": 0.9,
+      "independence": 0.95,
+      "evidence_ids": [
+        "sha256:346bea13fed913c06634baa25606ad4e3ab59a936d3a81f4402d87537ceb32f3"
+      ],
+      "evidence": [
+        {
+          "schema_version": "evidence_record.v1",
+          "family": "prediction_market",
+          "underlying": "SPY",
+          "source_kind": "synthetic_fixture",
+          "source_uri": "urn:finly:synthetic:prediction_market:2026-08-28",
+          "origin_id": "finly.synthetic.prediction_market.v1",
+          "published_at": "2026-08-28T18:29:00.000Z",
+          "received_at": "2026-08-28T18:29:01.000Z",
+          "available_at": "2026-08-28T18:29:01.000Z",
+          "content_sha256": "sha256:d670a34a31ddc4fb4186562390a2c505cb782d7379855038ac701fa2e95f071c",
+          "duplicate_group": "sha256:1db4a523cd87500cd8b4b424f9cc43536641ac39058d56fdfb5801cf71849bfe",
+          "evidence_id": "sha256:346bea13fed913c06634baa25606ad4e3ab59a936d3a81f4402d87537ceb32f3"
+        }
+      ],
+      "explanation": "A semantically matched, liquid macro contract corroborates downside risk; capped at 5% base weight."
+    }
+  ],
+  "option_chain_hash": "sha256:43d8538591858358a53bd4adac775b3e7239298cd6a9e283c12c340db52f897a",
+  "compilation": {
+    "action": "BEAR_PUT_DEBIT_SPREAD",
+    "selected": {
+      "schema_version": "option_candidate.v1",
+      "action": "BEAR_PUT_DEBIT_SPREAD",
+      "underlying": "SPY",
+      "expiry": "2026-09-11",
+      "dte": 14,
+      "long_leg": {
+        "symbol": "SPY260911P00560000",
+        "type": "put",
+        "strike": 560,
+        "bid": 6.1,
+        "ask": 6.5,
+        "iv": 0.225,
+        "feed": "indicative",
+        "quote_age_seconds": 1.8,
+        "open_interest": 9800
+      },
+      "short_leg": {
+        "symbol": "SPY260911P00550000",
+        "type": "put",
+        "strike": 550,
+        "bid": 2.9,
+        "ask": 3.2,
+        "iv": 0.22,
+        "feed": "indicative",
+        "quote_age_seconds": 1.8,
+        "open_interest": 14400
+      },
+      "width": 10,
+      "entry_debit": 3.66,
+      "max_loss": 366,
+      "max_gain": 634,
+      "reward_risk": 1.7322,
+      "candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+      "model_results": [
+        {
+          "model": "tilted_implied_distribution",
+          "path_count": 2048,
+          "expected_value": 117.26,
+          "probability_profit": 0.6089,
+          "expected_shortfall_95": -352.09,
+          "standard_error": 6.52,
+          "lower_confidence_bound": 106.54
+        },
+        {
+          "model": "vol_scaled_block_bootstrap",
+          "path_count": 2048,
+          "expected_value": 105.38,
+          "probability_profit": 0.6289,
+          "expected_shortfall_95": -252.58,
+          "standard_error": 4.99,
+          "lower_confidence_bound": 97.18
+        }
+      ],
+      "conservative_ev": 97.18,
+      "probability_profit": 0.6089,
+      "expected_shortfall_95": -352.09,
+      "expected_shortfall_95_loss": 352.09,
+      "required_ev": 21.96,
+      "passes_ev": true,
+      "passes_probability": true
+    },
+    "candidates": [
+      {
+        "schema_version": "option_candidate.v1",
+        "action": "BEAR_PUT_DEBIT_SPREAD",
+        "underlying": "SPY",
+        "expiry": "2026-09-11",
+        "dte": 14,
+        "long_leg": {
+          "symbol": "SPY260911P00565000",
+          "type": "put",
+          "strike": 565,
+          "bid": 8.4,
+          "ask": 8.9,
+          "iv": 0.23,
+          "feed": "indicative",
+          "quote_age_seconds": 1.8,
+          "open_interest": 7600
+        },
+        "short_leg": {
+          "symbol": "SPY260911P00550000",
+          "type": "put",
+          "strike": 550,
+          "bid": 2.9,
+          "ask": 3.2,
+          "iv": 0.22,
+          "feed": "indicative",
+          "quote_age_seconds": 1.8,
+          "open_interest": 14400
+        },
+        "width": 15,
+        "entry_debit": 6.06,
+        "max_loss": 606,
+        "max_gain": 894,
+        "reward_risk": 1.4752,
+        "candidate_id": "sha256:6061da08fc9f88188bc54b8e28016d57f4c254bb74f8e9984de66894f7a74ab5",
+        "model_results": [
+          {
+            "model": "tilted_implied_distribution",
+            "path_count": 2048,
+            "expected_value": 186.59,
+            "probability_profit": 0.6328,
+            "expected_shortfall_95": -566.9,
+            "standard_error": 9.67,
+            "lower_confidence_bound": 170.68
+          },
+          {
+            "model": "vol_scaled_block_bootstrap",
+            "path_count": 2048,
+            "expected_value": 183.18,
+            "probability_profit": 0.6899,
+            "expected_shortfall_95": -370.55,
+            "standard_error": 7.47,
+            "lower_confidence_bound": 170.89
+          }
+        ],
+        "conservative_ev": 170.68,
+        "probability_profit": 0.6328,
+        "expected_shortfall_95": -566.9,
+        "expected_shortfall_95_loss": 566.9,
+        "required_ev": 36.36,
+        "passes_ev": true,
+        "passes_probability": true
+      },
+      {
+        "schema_version": "option_candidate.v1",
+        "action": "BEAR_PUT_DEBIT_SPREAD",
+        "underlying": "SPY",
+        "expiry": "2026-09-11",
+        "dte": 14,
+        "long_leg": {
+          "symbol": "SPY260911P00560000",
+          "type": "put",
+          "strike": 560,
+          "bid": 6.1,
+          "ask": 6.5,
+          "iv": 0.225,
+          "feed": "indicative",
+          "quote_age_seconds": 1.8,
+          "open_interest": 9800
+        },
+        "short_leg": {
+          "symbol": "SPY260911P00550000",
+          "type": "put",
+          "strike": 550,
+          "bid": 2.9,
+          "ask": 3.2,
+          "iv": 0.22,
+          "feed": "indicative",
+          "quote_age_seconds": 1.8,
+          "open_interest": 14400
+        },
+        "width": 10,
+        "entry_debit": 3.66,
+        "max_loss": 366,
+        "max_gain": 634,
+        "reward_risk": 1.7322,
+        "candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+        "model_results": [
+          {
+            "model": "tilted_implied_distribution",
+            "path_count": 2048,
+            "expected_value": 117.26,
+            "probability_profit": 0.6089,
+            "expected_shortfall_95": -352.09,
+            "standard_error": 6.52,
+            "lower_confidence_bound": 106.54
+          },
+          {
+            "model": "vol_scaled_block_bootstrap",
+            "path_count": 2048,
+            "expected_value": 105.38,
+            "probability_profit": 0.6289,
+            "expected_shortfall_95": -252.58,
+            "standard_error": 4.99,
+            "lower_confidence_bound": 97.18
+          }
+        ],
+        "conservative_ev": 97.18,
+        "probability_profit": 0.6089,
+        "expected_shortfall_95": -352.09,
+        "expected_shortfall_95_loss": 352.09,
+        "required_ev": 21.96,
+        "passes_ev": true,
+        "passes_probability": true
+      },
+      {
+        "schema_version": "option_candidate.v1",
+        "action": "BEAR_PUT_DEBIT_SPREAD",
+        "underlying": "SPY",
+        "expiry": "2026-09-11",
+        "dte": 14,
+        "long_leg": {
+          "symbol": "SPY260911P00555000",
+          "type": "put",
+          "strike": 555,
+          "bid": 4.2,
+          "ask": 4.6,
+          "iv": 0.222,
+          "feed": "indicative",
+          "quote_age_seconds": 1.8,
+          "open_interest": 11200
+        },
+        "short_leg": {
+          "symbol": "SPY260911P00550000",
+          "type": "put",
+          "strike": 550,
+          "bid": 2.9,
+          "ask": 3.2,
+          "iv": 0.22,
+          "feed": "indicative",
+          "quote_age_seconds": 1.8,
+          "open_interest": 14400
+        },
+        "width": 5,
+        "entry_debit": 1.76,
+        "max_loss": 176,
+        "max_gain": 324,
+        "reward_risk": 1.8409,
+        "candidate_id": "sha256:953a1d3379efbafe3ee56face1c9f131d7b96beeb7aac5de2b69042e94da54a0",
+        "model_results": [
+          {
+            "model": "tilted_implied_distribution",
+            "path_count": 2048,
+            "expected_value": 41.14,
+            "probability_profit": 0.5571,
+            "expected_shortfall_95": -174.15,
+            "standard_error": 3.25,
+            "lower_confidence_bound": 35.79
+          },
+          {
+            "model": "vol_scaled_block_bootstrap",
+            "path_count": 2048,
+            "expected_value": 30.83,
+            "probability_profit": 0.562,
+            "expected_shortfall_95": -136.75,
+            "standard_error": 2.43,
+            "lower_confidence_bound": 26.83
+          }
+        ],
+        "conservative_ev": 26.83,
+        "probability_profit": 0.5571,
+        "expected_shortfall_95": -174.15,
+        "expected_shortfall_95_loss": 174.15,
+        "required_ev": 10.56,
+        "passes_ev": true,
+        "passes_probability": true
+      }
+    ],
+    "rejected": [
+      {
+        "symbols": [
+          "SPY260911P00570000",
+          "SPY260911P00565000"
+        ],
+        "code": "REWARD_RISK"
+      },
+      {
+        "symbols": [
+          "SPY260911P00570000",
+          "SPY260911P00560000"
+        ],
+        "code": "REWARD_RISK"
+      },
+      {
+        "symbols": [
+          "SPY260911P00570000",
+          "SPY260911P00555000"
+        ],
+        "code": "REWARD_RISK"
+      },
+      {
+        "symbols": [
+          "SPY260911P00565000",
+          "SPY260911P00560000"
+        ],
+        "code": "REWARD_RISK"
+      },
+      {
+        "symbols": [
+          "SPY260911P00565000",
+          "SPY260911P00555000"
+        ],
+        "code": "REWARD_RISK"
+      },
+      {
+        "symbols": [
+          "SPY260911P00560000",
+          "SPY260911P00555000"
+        ],
+        "code": "REWARD_RISK"
+      }
+    ],
+    "reason": null
+  },
+  "source_removal": {
+    "base_direction": "bearish",
+    "variants": [
+      {
+        "removed_family": "events",
+        "direction": "bearish",
+        "direction_score": -0.825021,
+        "coverage": 0.670857,
+        "agreement": 1,
+        "stable_direction": true,
+        "trade_gate": {
+          "ok": true
+        },
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "compiled_candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+        "compiled_candidate_ev": 96.95,
+        "action_stable": true,
+        "fixed_candidate_ev": 96.95,
+        "fixed_candidate_passes": true
+      },
+      {
+        "removed_family": "market",
+        "direction": "bearish",
+        "direction_score": -0.83762,
+        "coverage": 0.426957,
+        "agreement": 1,
+        "stable_direction": true,
+        "trade_gate": {
+          "ok": true
+        },
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "compiled_candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+        "compiled_candidate_ev": 97.74,
+        "action_stable": true,
+        "fixed_candidate_ev": 97.74,
+        "fixed_candidate_passes": true
+      },
+      {
+        "removed_family": "options",
+        "direction": "bearish",
+        "direction_score": -0.820425,
+        "coverage": 0.697934,
+        "agreement": 1,
+        "stable_direction": true,
+        "trade_gate": {
+          "ok": true
+        },
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "compiled_candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+        "compiled_candidate_ev": 96.68,
+        "action_stable": true,
+        "fixed_candidate_ev": 96.68,
+        "fixed_candidate_passes": true
+      },
+      {
+        "removed_family": "prediction_market",
+        "direction": "bearish",
+        "direction_score": -0.833548,
+        "coverage": 0.840008,
+        "agreement": 1,
+        "stable_direction": true,
+        "trade_gate": {
+          "ok": true
+        },
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "compiled_candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+        "compiled_candidate_ev": 97.48,
+        "action_stable": true,
+        "fixed_candidate_ev": 97.48,
+        "fixed_candidate_passes": true
+      }
+    ],
+    "passed": true
+  },
+  "perturbations": {
+    "count": 32,
+    "base_direction": "bearish",
+    "direction_flips": 0,
+    "rejected_variants": 0,
+    "fifth_percentile_conservative_ev": 71.48,
+    "nonzero_direction_rate": 1,
+    "trade_rate": 1,
+    "same_structure_rate": 1,
+    "passed": true,
+    "rows": [
+      {
+        "run": 1,
+        "direction": "bearish",
+        "direction_score": -0.810109,
+        "conservative_ev": 112.09,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.001765,
+          "long_iv_fraction": -0.035789,
+          "short_iv_fraction": -0.036522,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.943871,
+          "rate": -0.00473,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 2,
+        "direction": "bearish",
+        "direction_score": -0.860877,
+        "conservative_ev": 113.27,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.001529,
+          "long_iv_fraction": -0.031579,
+          "short_iv_fraction": -0.033043,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.947742,
+          "rate": -0.004459,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 3,
+        "direction": "bearish",
+        "direction_score": -0.825773,
+        "conservative_ev": 109.66,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.001294,
+          "long_iv_fraction": -0.027368,
+          "short_iv_fraction": -0.029565,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.951613,
+          "rate": -0.004189,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 4,
+        "direction": "bearish",
+        "direction_score": -0.843114,
+        "conservative_ev": 108.99,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.001059,
+          "long_iv_fraction": -0.023158,
+          "short_iv_fraction": -0.026087,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.955484,
+          "rate": -0.003919,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 5,
+        "direction": "bearish",
+        "direction_score": -0.823764,
+        "conservative_ev": 106.3,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.000824,
+          "long_iv_fraction": -0.018947,
+          "short_iv_fraction": -0.022609,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.959355,
+          "rate": -0.003649,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 6,
+        "direction": "bearish",
+        "direction_score": -0.843866,
+        "conservative_ev": 105.81,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.000588,
+          "long_iv_fraction": -0.014737,
+          "short_iv_fraction": -0.01913,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.963226,
+          "rate": -0.003378,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 7,
+        "direction": "bearish",
+        "direction_score": -0.808823,
+        "conservative_ev": 102.29,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.000353,
+          "long_iv_fraction": -0.010526,
+          "short_iv_fraction": -0.015652,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.967097,
+          "rate": -0.003108,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 8,
+        "direction": "bearish",
+        "direction_score": -0.853198,
+        "conservative_ev": 103.16,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.000118,
+          "long_iv_fraction": -0.006316,
+          "short_iv_fraction": -0.012174,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.970968,
+          "rate": -0.002838,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 9,
+        "direction": "bearish",
+        "direction_score": -0.815436,
+        "conservative_ev": 99.55,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.000118,
+          "long_iv_fraction": -0.002105,
+          "short_iv_fraction": -0.008696,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.974839,
+          "rate": -0.002568,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 10,
+        "direction": "bearish",
+        "direction_score": -0.835798,
+        "conservative_ev": 99.12,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.000353,
+          "long_iv_fraction": 0.002105,
+          "short_iv_fraction": -0.005217,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.97871,
+          "rate": -0.002297,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 11,
+        "direction": "bearish",
+        "direction_score": -0.826312,
+        "conservative_ev": 97.06,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.000588,
+          "long_iv_fraction": 0.006316,
+          "short_iv_fraction": -0.001739,
+          "entry_debit_dollars": 0.0018,
+          "history_scale": 0.982581,
+          "rate": -0.002027,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 12,
+        "direction": "bearish",
+        "direction_score": -0.843323,
+        "conservative_ev": 96.15,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.000824,
+          "long_iv_fraction": 0.010526,
+          "short_iv_fraction": 0.001739,
+          "entry_debit_dollars": 0.0038,
+          "history_scale": 0.986452,
+          "rate": -0.001757,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 13,
+        "direction": "bearish",
+        "direction_score": -0.806046,
+        "conservative_ev": 91.66,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.001059,
+          "long_iv_fraction": 0.014737,
+          "short_iv_fraction": 0.005217,
+          "entry_debit_dollars": 0.0059,
+          "history_scale": 0.990323,
+          "rate": -0.001486,
+          "horizon_sessions": -1
+        }
+      },
+      {
+        "run": 14,
+        "direction": "bearish",
+        "direction_score": -0.843937,
+        "conservative_ev": 89.78,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.001294,
+          "long_iv_fraction": 0.018947,
+          "short_iv_fraction": 0.008696,
+          "entry_debit_dollars": 0.008,
+          "history_scale": 0.994194,
+          "rate": -0.001216,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 15,
+        "direction": "bearish",
+        "direction_score": -0.809126,
+        "conservative_ev": 85.82,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.001529,
+          "long_iv_fraction": 0.023158,
+          "short_iv_fraction": 0.012174,
+          "entry_debit_dollars": 0.01,
+          "history_scale": 0.998065,
+          "rate": -0.000946,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 16,
+        "direction": "bearish",
+        "direction_score": -0.839565,
+        "conservative_ev": 85.85,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.001765,
+          "long_iv_fraction": 0.027368,
+          "short_iv_fraction": 0.015652,
+          "entry_debit_dollars": 0.0121,
+          "history_scale": 1.001935,
+          "rate": -0.000676,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 17,
+        "direction": "bearish",
+        "direction_score": -0.820969,
+        "conservative_ev": 124.83,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.001986,
+          "long_iv_fraction": 0.031579,
+          "short_iv_fraction": 0.01913,
+          "entry_debit_dollars": 0.0142,
+          "history_scale": 1.005806,
+          "rate": -0.000405,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 18,
+        "direction": "bearish",
+        "direction_score": -0.846481,
+        "conservative_ev": 123.41,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.001751,
+          "long_iv_fraction": 0.035789,
+          "short_iv_fraction": 0.022609,
+          "entry_debit_dollars": 0.0162,
+          "history_scale": 1.009677,
+          "rate": -0.000135,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 19,
+        "direction": "bearish",
+        "direction_score": -0.811258,
+        "conservative_ev": 75.05,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.001516,
+          "long_iv_fraction": -0.039778,
+          "short_iv_fraction": 0.026087,
+          "entry_debit_dollars": 0.0183,
+          "history_scale": 1.013548,
+          "rate": 0.000135,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 20,
+        "direction": "bearish",
+        "direction_score": -0.854656,
+        "conservative_ev": 75.73,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.00128,
+          "long_iv_fraction": -0.035568,
+          "short_iv_fraction": 0.029565,
+          "entry_debit_dollars": 0.0204,
+          "history_scale": 1.017419,
+          "rate": 0.000405,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 21,
+        "direction": "bearish",
+        "direction_score": -0.817708,
+        "conservative_ev": 71.48,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.001045,
+          "long_iv_fraction": -0.031357,
+          "short_iv_fraction": 0.033043,
+          "entry_debit_dollars": 0.0224,
+          "history_scale": 1.02129,
+          "rate": 0.000676,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 22,
+        "direction": "bearish",
+        "direction_score": -0.838456,
+        "conservative_ev": 70.79,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.00081,
+          "long_iv_fraction": -0.027147,
+          "short_iv_fraction": 0.036522,
+          "entry_debit_dollars": 0.0245,
+          "history_scale": 1.025161,
+          "rate": 0.000946,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 23,
+        "direction": "bearish",
+        "direction_score": -0.820143,
+        "conservative_ev": 107.38,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.000574,
+          "long_iv_fraction": -0.022936,
+          "short_iv_fraction": -0.039849,
+          "entry_debit_dollars": 0.0266,
+          "history_scale": 1.029032,
+          "rate": 0.001216,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 24,
+        "direction": "bearish",
+        "direction_score": -0.847432,
+        "conservative_ev": 107.1,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.000339,
+          "long_iv_fraction": -0.018726,
+          "short_iv_fraction": -0.036371,
+          "entry_debit_dollars": 0.0287,
+          "history_scale": 1.032903,
+          "rate": 0.001486,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 25,
+        "direction": "bearish",
+        "direction_score": -0.809797,
+        "conservative_ev": 102.74,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": -0.000104,
+          "long_iv_fraction": -0.014515,
+          "short_iv_fraction": -0.032892,
+          "entry_debit_dollars": 0.0307,
+          "history_scale": 1.036774,
+          "rate": 0.001757,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 26,
+        "direction": "bearish",
+        "direction_score": -0.848786,
+        "conservative_ev": 103.21,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.000131,
+          "long_iv_fraction": -0.010305,
+          "short_iv_fraction": -0.029414,
+          "entry_debit_dollars": 0.0328,
+          "history_scale": 1.040645,
+          "rate": 0.002027,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 27,
+        "direction": "bearish",
+        "direction_score": -0.814133,
+        "conservative_ev": 99.09,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.000367,
+          "long_iv_fraction": -0.006094,
+          "short_iv_fraction": -0.025936,
+          "entry_debit_dollars": 0.0349,
+          "history_scale": 1.044516,
+          "rate": 0.002297,
+          "horizon_sessions": 0
+        }
+      },
+      {
+        "run": 28,
+        "direction": "bearish",
+        "direction_score": -0.830796,
+        "conservative_ev": 101.32,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.000602,
+          "long_iv_fraction": -0.001884,
+          "short_iv_fraction": -0.022457,
+          "entry_debit_dollars": 0.0369,
+          "history_scale": 1.048387,
+          "rate": 0.002568,
+          "horizon_sessions": 1
+        }
+      },
+      {
+        "run": 29,
+        "direction": "bearish",
+        "direction_score": -0.817012,
+        "conservative_ev": 102.13,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.000837,
+          "long_iv_fraction": 0.002327,
+          "short_iv_fraction": -0.018979,
+          "entry_debit_dollars": 0,
+          "history_scale": 1.052258,
+          "rate": 0.002838,
+          "horizon_sessions": 1
+        }
+      },
+      {
+        "run": 30,
+        "direction": "bearish",
+        "direction_score": -0.837667,
+        "conservative_ev": 101.62,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.001073,
+          "long_iv_fraction": 0.006537,
+          "short_iv_fraction": -0.015501,
+          "entry_debit_dollars": 0,
+          "history_scale": 1.056129,
+          "rate": 0.003108,
+          "horizon_sessions": 1
+        }
+      },
+      {
+        "run": 31,
+        "direction": "bearish",
+        "direction_score": -0.802343,
+        "conservative_ev": 94.85,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.001308,
+          "long_iv_fraction": 0.010748,
+          "short_iv_fraction": -0.012023,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.940125,
+          "rate": 0.003378,
+          "horizon_sessions": 1
+        }
+      },
+      {
+        "run": 32,
+        "direction": "bearish",
+        "direction_score": -0.855107,
+        "conservative_ev": 96.86,
+        "passes_ev": true,
+        "passes_probability": true,
+        "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+        "same_structure": true,
+        "shocks": {
+          "spot_fraction": 0.001543,
+          "long_iv_fraction": 0.014958,
+          "short_iv_fraction": -0.008544,
+          "entry_debit_dollars": 0,
+          "history_scale": 0.943996,
+          "rate": 0.003649,
+          "horizon_sessions": 1
+        }
+      }
+    ]
+  },
+  "certificate": {
+    "schema_version": "risk_certificate.v2",
+    "run_id": "decision_demo_spy_20260828_143005",
+    "created_at": "2026-08-28T18:30:05.000Z",
+    "expires_at": "2026-08-28T18:30:35.000Z",
+    "mode": "paper",
+    "data_mode": "synthetic_replay",
+    "authorization_scope": "synthetic_replay",
+    "signer_key_id": "sha256:d618101db4c9fe62ad43d5b6829cf72aeb70135c88197d9ba973a9efeeef7402",
+    "decision": "BEAR_PUT_DEBIT_SPREAD",
+    "proposed_decision": "BEAR_PUT_DEBIT_SPREAD",
+    "intent_sha256": "sha256:b033ce9f7bcb2ba1841d242238b3498c2b82dfa7ceab6b442ae89125b4db0493",
+    "candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+    "candidate_snapshot_sha256": "sha256:04ca5fe40c67f763c248721e8becc20a2619747eb5793b86ae4044775b89a916",
+    "desired_order_projection_sha256": "sha256:445e45c87b2b083e998f9b032ca0cff53dc8e178bd441e8c089121561dadea6c",
+    "policy_sha256": "sha256:1b464aaab4e2b3b93ba658241c92b6767e8b9fb0d0116bd79f5a0bfa02a2fe75",
+    "code_version": "demo-fixture-v1",
+    "evidence_root": "sha256:2a8f10585e14585c7ed1017e01b80699395ed425a05ac317869ebd53949c90d5",
+    "horizon_sessions": 5,
+    "account_snapshot_sha256": "sha256:076977a928bb063c33ffe352435b021cdfa01cc9f5d2d148e57dfbc408929919",
+    "market_snapshot_sha256": "sha256:36e12a2e67634035f9cd09d5b42b22df8d31480feda1307aec49ae987e59efa1",
+    "market_spot": 560,
+    "market_observed_at": "2026-08-28T18:30:03.200Z",
+    "option_feed": "indicative",
+    "quantity": 1,
+    "max_loss_per_contract": 366,
+    "reserved_max_loss": 366,
+    "max_entry_debit": 3.7600000000000002,
+    "account_equity": 100000,
+    "account_open_defined_risk": 0,
+    "conservative_ev": 97.18,
+    "probability_profit": 0.6089,
+    "expected_shortfall_95": -352.09,
+    "source_removal_summary": {
+      "base_direction": "bearish",
+      "variants": [
+        {
+          "removed_family": "events",
+          "direction": "bearish",
+          "direction_score": -0.825021,
+          "coverage": 0.670857,
+          "agreement": 1,
+          "stable_direction": true,
+          "trade_gate": {
+            "ok": true
+          },
+          "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+          "compiled_candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+          "compiled_candidate_ev": 96.95,
+          "action_stable": true,
+          "fixed_candidate_ev": 96.95,
+          "fixed_candidate_passes": true
+        },
+        {
+          "removed_family": "market",
+          "direction": "bearish",
+          "direction_score": -0.83762,
+          "coverage": 0.426957,
+          "agreement": 1,
+          "stable_direction": true,
+          "trade_gate": {
+            "ok": true
+          },
+          "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+          "compiled_candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+          "compiled_candidate_ev": 97.74,
+          "action_stable": true,
+          "fixed_candidate_ev": 97.74,
+          "fixed_candidate_passes": true
+        },
+        {
+          "removed_family": "options",
+          "direction": "bearish",
+          "direction_score": -0.820425,
+          "coverage": 0.697934,
+          "agreement": 1,
+          "stable_direction": true,
+          "trade_gate": {
+            "ok": true
+          },
+          "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+          "compiled_candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+          "compiled_candidate_ev": 96.68,
+          "action_stable": true,
+          "fixed_candidate_ev": 96.68,
+          "fixed_candidate_passes": true
+        },
+        {
+          "removed_family": "prediction_market",
+          "direction": "bearish",
+          "direction_score": -0.833548,
+          "coverage": 0.840008,
+          "agreement": 1,
+          "stable_direction": true,
+          "trade_gate": {
+            "ok": true
+          },
+          "compiled_action": "BEAR_PUT_DEBIT_SPREAD",
+          "compiled_candidate_id": "sha256:d97db2fe6f01f5601f21631365b7e8e6eb742ce3ead7c31e3f7d78e035859192",
+          "compiled_candidate_ev": 97.48,
+          "action_stable": true,
+          "fixed_candidate_ev": 97.48,
+          "fixed_candidate_passes": true
+        }
+      ],
+      "passed": true
+    },
+    "perturbation_summary": {
+      "count": 32,
+      "direction_flips": 0,
+      "rejected_variants": 0,
+      "fifth_percentile_conservative_ev": 71.48,
+      "nonzero_direction_rate": 1,
+      "trade_rate": 1,
+      "same_structure_rate": 1
+    },
+    "checks": {
+      "paper_endpoint_locked": true,
+      "account_fresh": true,
+      "account_not_blocked": true,
+      "option_feed_identified": true,
+      "quote_fresh": true,
+      "source_removal_stable": true,
+      "perturbations_stable": true,
+      "conservative_ev_positive": true,
+      "probability_gate": true,
+      "quantity_positive": true,
+      "aggregate_risk_cap": true,
+      "execution_transport_mcp": true
+    },
+    "certified": true,
+    "rejection_codes": [],
+    "nonce": "permit:1f05d030ae766cfeb5d0eaa6517278376463f34261d34901f5011db88635aa80",
+    "certificate_id": "sha256:bc69d7b2b9bdcbbe3d0c1cc2196b5b38e4dde8a58bc3b0c5df182001d8107e26",
+    "signature": "hmac-sha256:d381f2291692a928323dab97dc2943ad4fba7926efcb104409bb5a7cb24da757"
+  },
+  "alpaca_payload": {
+    "client_order_id": "finly-5c401ef9a7cf5a810dc5",
+    "order_class": "mleg",
+    "qty": "1",
+    "type": "limit",
+    "time_in_force": "day",
+    "limit_price": "3.66",
+    "legs": [
+      {
+        "symbol": "SPY260911P00560000",
+        "ratio_qty": "1",
+        "side": "buy",
+        "position_intent": "buy_to_open"
+      },
+      {
+        "symbol": "SPY260911P00550000",
+        "ratio_qty": "1",
+        "side": "sell",
+        "position_intent": "sell_to_open"
+      }
+    ],
+    "payload_sha256": "sha256:445e45c87b2b083e998f9b032ca0cff53dc8e178bd441e8c089121561dadea6c"
+  },
+  "disclaimer": "Educational paper-trading prototype. Not investment advice. Replay results and paper fills do not establish durable alpha.",
+  "receipt_id": "sha256:8efd8e74114aaf856c549c843542a2b6e7b9bab46a126962e3597cae85ccbffb"
+}

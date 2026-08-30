@@ -1,0 +1,482 @@
+{
+  "schema_version": "finly_aegis_q_legacy_reproduction_result.v1",
+  "status": "PUBLISHED_BUNDLE_NOT_REPRODUCED",
+  "comparison_role": "AUXILIARY_LEGACY_EQUITY_COMPARISON_ONLY",
+  "claim_boundary": {
+    "auxiliary_only": true,
+    "submitted_options_pnl": false,
+    "eligible_as_finly_champion": false,
+    "future_profitability_proven": false,
+    "apples_to_apples_with_finly": false,
+    "statement": "A match establishes reproducibility of the archived legacy equity metric bundle under the declared public-data and execution semantics. It does not reproduce the submitted AEGIS-Q options strategy, establish options P&L, prove future profitability, or provide an apples-to-apples financial comparison with Finly."
+  },
+  "source_pin": {
+    "reproduction_id": "aegis_q_legacy_equity_v1_pinned_76bb97e",
+    "pinned_commit": "76bb97e9200c41c519440bb64ea40d2161367627",
+    "license": "MIT",
+    "urls": {
+      "repository": "https://github.com/VicensPaneque/aegis-q/tree/76bb97e9200c41c519440bb64ea40d2161367627",
+      "parameters": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/config.py#L10-L27",
+      "strategy": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/strategy.py#L27-L59",
+      "backtest": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/backtest.py#L25-L205",
+      "published_metrics": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/reports/metrics.json",
+      "published_report": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/reports/BACKTEST_REPORT.md"
+    }
+  },
+  "native_comparison": {
+    "start": "2021-05-12",
+    "end": "2026-08-27",
+    "observations": 1330,
+    "warmup_sessions_before_start": 200,
+    "initial_capital": 100000,
+    "tolerances": {
+      "absolute": 1e-8,
+      "relative": 1e-10,
+      "integer_and_string_fields": "exact"
+    }
+  },
+  "execution": {
+    "signal_formation": "close_t",
+    "execution": "adjusted_open_t_plus_1",
+    "one_way_slippage_bps": 5,
+    "commission": 0,
+    "cash_return": 0,
+    "dividends": "excluded",
+    "rebalance_band_absolute_weight": 0.05,
+    "fractional_shares": true
+  },
+  "frozen_inputs": {
+    "protocol_sha256": "8d10d5a00c8c2a285039a8a8bc8ad0193749c3db2129730d2f829ce3cbe9fcbd",
+    "freeze_receipt_sha256": "2452703e2dc225792c9b0d87a60161601aeb48ea38e60508b62769018dde6c77",
+    "raw_bars_file_sha256": "17484cec726b5a0745d9fe614587f553d44216ffaf027f04c9c3704de9d1f587",
+    "panel_file_sha256": "af1a3e3fe684d83ced9745d3c2f294fd7ee44236fee0408222a4b32f2bba5fa9",
+    "implementation_sha256": "5e9ab0f50709cb90139690b9461f942ed16d4d7ac2760fea2adb93e0bacc6e2d",
+    "runner_sha256": "d4fdf59643259d7b9c3834834cef187879a9711adcfb4568b82595a50e9e6efd",
+    "implementation_test_sha256": "15c0743587d41ea4ced818afe621e46aff3dbdbb34c49284afa5eb281f0da3f3",
+    "runner_test_sha256": "cffe27f8cc9a3beb28c632ebdc315e7ec09ef1245e16b2ef912f4c87b88e851b",
+    "run_claim_sha256": "dd8e48dc98fb32fe9335dc37bfade3d8763832aafcf1c33101a52dc5f63f477b",
+    "normalized_panel_sha256": "220c19c570f364eed6318e90de44ba04d99a57ff947d52d0ff9d19d739e27215",
+    "selected_first_date": "2020-07-27",
+    "selected_last_date": "2026-08-27",
+    "selected_common_sessions": 1530
+  },
+  "metrics": {
+    "agent": {
+      "start": "2021-05-12",
+      "end": "2026-08-27",
+      "observations": 1330,
+      "ending_value": 269902.0105182633,
+      "profit": 169902.01051826333,
+      "total_return": 1.6990201051826332,
+      "cagr": 0.2063645010443793,
+      "annual_volatility": 0.29283859306703475,
+      "sharpe_0pct_cash": 0.7905225048023111,
+      "max_drawdown": -0.33647966214852676,
+      "best_day": 0.09560737518093809,
+      "worst_day": -0.09124750790766112,
+      "trade_events": 72,
+      "order_legs": 90,
+      "turnover_multiple": 114.74531311901066,
+      "estimated_slippage_dollars": 5735.853647271737
+    },
+    "QQQ": {
+      "start": "2021-05-12",
+      "end": "2026-08-27",
+      "observations": 1330,
+      "ending_value": 223980.6280268708,
+      "profit": 123980.6280268708,
+      "total_return": 1.239806280268708,
+      "cagr": 0.1645925682908902,
+      "annual_volatility": 0.2278721789696729,
+      "sharpe_0pct_cash": 0.7851299268978631,
+      "max_drawdown": -0.3710067047919542,
+      "best_day": 0.09141867346693289,
+      "worst_day": -0.06882230792049837
+    },
+    "TQQQ": {
+      "start": "2021-05-12",
+      "end": "2026-08-27",
+      "observations": 1330,
+      "ending_value": 317525.3192426244,
+      "profit": 217525.3192426244,
+      "total_return": 2.175253192426244,
+      "cagr": 0.24398036750205176,
+      "annual_volatility": 0.6828341192525701,
+      "sharpe_0pct_cash": 0.6634287637516886,
+      "max_drawdown": -0.8160124888492417,
+      "best_day": 0.24183673469387745,
+      "worst_day": -0.2050390964378801
+    }
+  },
+  "latest_signal": {
+    "bar_date": "2026-08-27",
+    "momentum": -0.019629166440106482,
+    "qqq_close": 721.2,
+    "realized_volatility": 0.18059419791631628,
+    "reason": "Risk-off because momentum confirmation is negative.",
+    "regime": "RISK_OFF",
+    "sma": 654.6724999999997,
+    "target_symbol": "CASH",
+    "target_weight": 0
+  },
+  "activity": {
+    "decisions": 1330,
+    "trade_events": 72,
+    "order_legs": 90,
+    "turnover_multiple": 114.74531311901066,
+    "estimated_slippage_dollars": 5735.853647271737
+  },
+  "published_bundle_verification": {
+    "verified": false,
+    "compared_fields": 40,
+    "failed_fields": [
+      "metrics.agent.annual_volatility",
+      "metrics.agent.cagr",
+      "metrics.agent.ending_value",
+      "metrics.agent.estimated_slippage_dollars",
+      "metrics.agent.max_drawdown",
+      "metrics.agent.profit",
+      "metrics.agent.sharpe_0pct_cash",
+      "metrics.agent.total_return",
+      "metrics.agent.turnover_multiple",
+      "metrics.agent.worst_day",
+      "metrics.TQQQ.annual_volatility",
+      "metrics.TQQQ.cagr",
+      "metrics.TQQQ.ending_value",
+      "metrics.TQQQ.max_drawdown",
+      "metrics.TQQQ.profit",
+      "metrics.TQQQ.sharpe_0pct_cash",
+      "metrics.TQQQ.total_return",
+      "metrics.TQQQ.worst_day"
+    ],
+    "checks": [
+      {
+        "path": "metrics.agent.annual_volatility",
+        "expected": 0.2927572090474777,
+        "actual": 0.29283859306703475,
+        "absolute_error": 0.00008138401955704033,
+        "tolerance": 1.0029275720904749e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.agent.best_day",
+        "expected": 0.09560737518093831,
+        "actual": 0.09560737518093809,
+        "absolute_error": 2.220446049250313e-16,
+        "tolerance": 1.0009560737518094e-8,
+        "passed": true
+      },
+      {
+        "path": "metrics.agent.cagr",
+        "expected": 0.2063201838796893,
+        "actual": 0.2063645010443793,
+        "absolute_error": 0.0000443171646899998,
+        "tolerance": 1.002063201838797e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.agent.end",
+        "expected": "2026-08-27",
+        "actual": "2026-08-27",
+        "absolute_error": null,
+        "tolerance": null,
+        "passed": true
+      },
+      {
+        "path": "metrics.agent.ending_value",
+        "expected": 269849.54101804015,
+        "actual": 269902.0105182633,
+        "absolute_error": 52.46950022317469,
+        "tolerance": 0.000026994954101804018,
+        "passed": false
+      },
+      {
+        "path": "metrics.agent.estimated_slippage_dollars",
+        "expected": 5735.090337632874,
+        "actual": 5735.853647271737,
+        "absolute_error": 0.7633096388626655,
+        "tolerance": 5.835090337632875e-7,
+        "passed": false
+      },
+      {
+        "path": "metrics.agent.max_drawdown",
+        "expected": -0.3364827079567,
+        "actual": -0.33647966214852676,
+        "absolute_error": 0.000003045808173229858,
+        "tolerance": 1.003364827079567e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.agent.observations",
+        "expected": 1330,
+        "actual": 1330,
+        "absolute_error": 0,
+        "tolerance": 0,
+        "passed": true
+      },
+      {
+        "path": "metrics.agent.order_legs",
+        "expected": 90,
+        "actual": 90,
+        "absolute_error": 0,
+        "tolerance": 0,
+        "passed": true
+      },
+      {
+        "path": "metrics.agent.profit",
+        "expected": 169849.54101804015,
+        "actual": 169902.01051826333,
+        "absolute_error": 52.46950022317469,
+        "tolerance": 0.00001699495410180402,
+        "passed": false
+      },
+      {
+        "path": "metrics.agent.sharpe_0pct_cash",
+        "expected": 0.790535550733135,
+        "actual": 0.7905225048023111,
+        "absolute_error": 0.000013045930823851748,
+        "tolerance": 1.0079053555073314e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.agent.start",
+        "expected": "2021-05-12",
+        "actual": "2021-05-12",
+        "absolute_error": null,
+        "tolerance": null,
+        "passed": true
+      },
+      {
+        "path": "metrics.agent.total_return",
+        "expected": 1.6984954101804015,
+        "actual": 1.6990201051826332,
+        "absolute_error": 0.0005246950022317343,
+        "tolerance": 1.016984954101804e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.agent.trade_events",
+        "expected": 72,
+        "actual": 72,
+        "absolute_error": 0,
+        "tolerance": 0,
+        "passed": true
+      },
+      {
+        "path": "metrics.agent.turnover_multiple",
+        "expected": 114.73004324276727,
+        "actual": 114.74531311901066,
+        "absolute_error": 0.015269876243394265,
+        "tolerance": 2.1473004324276728e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.agent.worst_day",
+        "expected": -0.0912016155854819,
+        "actual": -0.09124750790766112,
+        "absolute_error": 0.00004589232217921957,
+        "tolerance": 1.0009120161558549e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.QQQ.annual_volatility",
+        "expected": 0.22787217896967307,
+        "actual": 0.2278721789696729,
+        "absolute_error": 1.6653345369377348e-16,
+        "tolerance": 1.0022787217896967e-8,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.best_day",
+        "expected": 0.09141867346693289,
+        "actual": 0.09141867346693289,
+        "absolute_error": 0,
+        "tolerance": 1.0009141867346694e-8,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.cagr",
+        "expected": 0.1645925682908902,
+        "actual": 0.1645925682908902,
+        "absolute_error": 0,
+        "tolerance": 1.0016459256829089e-8,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.end",
+        "expected": "2026-08-27",
+        "actual": "2026-08-27",
+        "absolute_error": null,
+        "tolerance": null,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.ending_value",
+        "expected": 223980.6280268708,
+        "actual": 223980.6280268708,
+        "absolute_error": 0,
+        "tolerance": 0.000022408062802687082,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.max_drawdown",
+        "expected": -0.3710067047919542,
+        "actual": -0.3710067047919542,
+        "absolute_error": 0,
+        "tolerance": 1.0037100670479196e-8,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.observations",
+        "expected": 1330,
+        "actual": 1330,
+        "absolute_error": 0,
+        "tolerance": 0,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.profit",
+        "expected": 123980.6280268708,
+        "actual": 123980.6280268708,
+        "absolute_error": 0,
+        "tolerance": 0.000012408062802687081,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.sharpe_0pct_cash",
+        "expected": 0.7851299268978624,
+        "actual": 0.7851299268978631,
+        "absolute_error": 6.661338147750939e-16,
+        "tolerance": 1.0078512992689787e-8,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.start",
+        "expected": "2021-05-12",
+        "actual": "2021-05-12",
+        "absolute_error": null,
+        "tolerance": null,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.total_return",
+        "expected": 1.239806280268708,
+        "actual": 1.239806280268708,
+        "absolute_error": 0,
+        "tolerance": 1.0123980628026872e-8,
+        "passed": true
+      },
+      {
+        "path": "metrics.QQQ.worst_day",
+        "expected": -0.06882230792049837,
+        "actual": -0.06882230792049837,
+        "absolute_error": 0,
+        "tolerance": 1.000688223079205e-8,
+        "passed": true
+      },
+      {
+        "path": "metrics.TQQQ.annual_volatility",
+        "expected": 0.682827842961523,
+        "actual": 0.6828341192525701,
+        "absolute_error": 0.000006276291047102589,
+        "tolerance": 1.0068282784296152e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.TQQQ.best_day",
+        "expected": 0.24183673469387745,
+        "actual": 0.24183673469387745,
+        "absolute_error": 0,
+        "tolerance": 1.0024183673469388e-8,
+        "passed": true
+      },
+      {
+        "path": "metrics.TQQQ.cagr",
+        "expected": 0.2440062450542908,
+        "actual": 0.24398036750205176,
+        "absolute_error": 0.00002587755223903976,
+        "tolerance": 1.0024400624505429e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.TQQQ.end",
+        "expected": "2026-08-27",
+        "actual": "2026-08-27",
+        "absolute_error": null,
+        "tolerance": null,
+        "passed": true
+      },
+      {
+        "path": "metrics.TQQQ.ending_value",
+        "expected": 317560.277441374,
+        "actual": 317525.3192426244,
+        "absolute_error": 34.9581987496349,
+        "tolerance": 0.000031766027744137405,
+        "passed": false
+      },
+      {
+        "path": "metrics.TQQQ.max_drawdown",
+        "expected": -0.8160227462786419,
+        "actual": -0.8160124888492417,
+        "absolute_error": 0.000010257429400195583,
+        "tolerance": 1.0081602274627864e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.TQQQ.observations",
+        "expected": 1330,
+        "actual": 1330,
+        "absolute_error": 0,
+        "tolerance": 0,
+        "passed": true
+      },
+      {
+        "path": "metrics.TQQQ.profit",
+        "expected": 217560.27744137403,
+        "actual": 217525.3192426244,
+        "absolute_error": 34.9581987496349,
+        "tolerance": 0.000021766027744137406,
+        "passed": false
+      },
+      {
+        "path": "metrics.TQQQ.sharpe_0pct_cash",
+        "expected": 0.6634544889552761,
+        "actual": 0.6634287637516886,
+        "absolute_error": 0.00002572520358756769,
+        "tolerance": 1.0066345448895528e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.TQQQ.start",
+        "expected": "2021-05-12",
+        "actual": "2021-05-12",
+        "absolute_error": null,
+        "tolerance": null,
+        "passed": true
+      },
+      {
+        "path": "metrics.TQQQ.total_return",
+        "expected": 2.1756027744137403,
+        "actual": 2.175253192426244,
+        "absolute_error": 0.00034958198749635017,
+        "tolerance": 1.0217560277441375e-8,
+        "passed": false
+      },
+      {
+        "path": "metrics.TQQQ.worst_day",
+        "expected": -0.20512542078401574,
+        "actual": -0.2050390964378801,
+        "absolute_error": 0.00008632434613564666,
+        "tolerance": 1.0020512542078402e-8,
+        "passed": false
+      }
+    ],
+    "published_source_url": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/reports/metrics.json",
+    "claim_boundary": {
+      "eligible_as_finly_champion": false,
+      "submitted_options_pnl": false,
+      "comparison_role": "Auxiliary reproduction of a competitor's archived legacy equity strategy",
+      "panel_requirement": "A future runner must provide and hash-freeze a QQQ/TQQQ adjusted-open/close panel before observing outcomes"
+    }
+  }
+}

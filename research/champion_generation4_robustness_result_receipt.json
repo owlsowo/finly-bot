@@ -1,0 +1,16 @@
+{
+  "schema_version": "finly_champion_generation4_robustness_result_receipt.v1",
+  "created_at": "2026-08-29T11:07:00Z",
+  "fixed_candidate_id": "qqq_core_sector_12_6",
+  "disposition": "KEEP_V1_POST_SELECTION_ROBUSTNESS_FAILED",
+  "local_robustness_passes": false,
+  "source_overlap_passes": false,
+  "promotion_eligible": false,
+  "claim_boundary": "Local post-run integrity receipt only. It anchors the once-executed frozen robustness result and report; it is not a server timestamp or independent attestation.",
+  "files": {
+    "research/champion_generation4_robustness_protocol.json": "5e6138c71be81bba74f9ff7ed1ff80c3a71e975b721389c4d6dc66ee9d8f5881",
+    "research/champion_generation4_robustness_freeze_receipt.json": "bde1398b92ed71770766ebf98d3c41b51f302773d160bf44fda4a09238e4a31f",
+    "research/output/quant_champion_generation4_robustness.json": "6b8136da0c4d6b366763383a93d2e119cec2f5516761b6cb2d2c206eeefd3299",
+    "research/output/quant_champion_generation4_robustness_report.md": "b6ffbc95765296d187cafd3b9d27d656a6e939801e89cdcedb345e97e1263c6a"
+  }
+}

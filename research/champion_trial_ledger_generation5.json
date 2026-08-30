@@ -1,0 +1,34 @@
+{
+  "schema_version": "finly_champion_trial_ledger.v3",
+  "supersedes_for_later_runs": "research/champion_trial_ledger_generation4.json",
+  "append_only_through": 105,
+  "counting_policy": "Conservative effective multiplicity count. Executed formulas, suggested or rejected formulas, ineligible explanatory controls, diagnostics eligible for narrative comparison, aborted attempts, and audited reruns all count.",
+  "prior_ledger_sha256": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88",
+  "blocks": [
+    {
+      "range": "1-100",
+      "count": 100,
+      "status": "incorporated_by_hash_from_champion_trial_ledger_generation4.json"
+    },
+    {
+      "range": "101-105",
+      "count": 5,
+      "status": "generation_5_registered_before_execution",
+      "ids": [
+        "static_qqq_equal_sectors_control",
+        "flex_top5_voladj_momentum_trend",
+        "sector_12_1_top3_individual_trend",
+        "qqq_vs_two_factor_residual_sector_basket",
+        "long_only_tsmom_ewma60"
+      ],
+      "roles": {
+        "static_qqq_equal_sectors_control": "ineligible_growth_and_sector_control",
+        "flex_top5_voladj_momentum_trend": "eligible_candidate",
+        "sector_12_1_top3_individual_trend": "eligible_candidate",
+        "qqq_vs_two_factor_residual_sector_basket": "eligible_candidate",
+        "long_only_tsmom_ewma60": "eligible_candidate"
+      }
+    }
+  ],
+  "claim_boundary": "Every Generation 5 formula is chosen after all historical intervals and prior search failures were seen. Hash freezing makes the next execution reproducible but cannot turn it into a pristine holdout or prove future profitability."
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": "finly_generation6_alpaca_adjustment_all_panel_result_receipt.v2",
+  "authenticated_read_started_at": "2026-08-29T13:58:14.656Z",
+  "authenticated_read_completed_at": "2026-08-29T13:58:18.149Z",
+  "protocol_sha256": "b9c845970e85a00c7909130d8dbc3f807d7f293224f7fa51d469513d67fc9b8f",
+  "freeze_receipt_sha256": "01e594c193e4cc4df095645a44903fbe9ab759b8193a662154d33cd9cae297f8",
+  "run_claim_sha256": "3b5c4f9bf5d8f20a39e2dddbe7be6b90b09c58b4dff0e30fafecba2621e9ca93",
+  "request": {
+    "symbols": [
+      "SPY",
+      "BIL",
+      "QQQ",
+      "IWM",
+      "EFA",
+      "EEM",
+      "IEF",
+      "TLT",
+      "GLD",
+      "DBC",
+      "VNQ",
+      "XLK",
+      "XLF",
+      "XLE",
+      "XLY",
+      "XLP",
+      "XLI",
+      "XLB",
+      "XLV",
+      "XLU"
+    ],
+    "start": "2007-05-30",
+    "end": "2026-08-27",
+    "feed": "iex",
+    "adjustment": "all",
+    "timeframe": "1Day",
+    "asof": "2026-08-27",
+    "currency": "USD",
+    "sort": "asc",
+    "limit": 10000,
+    "minimum_common_sessions": 1250
+  },
+  "request_sha256": "e980c0a9e304a76c0b241910999b428d5608365d2ac5924364b8119c05b7db8a",
+  "response_content_sha256": "fbeffd55c25202fbc4fe30beee18d2bf3b0e16b8718d21b373f9f4280b18ba03",
+  "panel": {
+    "path": "data/private/champion_search/alpaca_adjustment_all_panel_generation6_aa2075c1989da7194f1de0f455fab83a4035ee878b5b410088d11aa39c0baaa2.json",
+    "payload_sha256": "aa2075c1989da7194f1de0f455fab83a4035ee878b5b410088d11aa39c0baaa2",
+    "schema_version": "finly_generation6_alpaca_adjustment_all_panel.v2",
+    "series_integrity_sha256": "703435c64439e3964173c96f5fd5031e6b22e6cb2d4b2f8a36283e143de05836",
+    "strategy_intersection_normalized_panel_sha256": "0b0ae32a660d8274b3bcfeb0c17b9391f386e3f1d941e13dd0dd5126e9eafb88",
+    "strategy_intersection_observations": 1515,
+    "strategy_intersection_start_date": "2020-07-27",
+    "strategy_intersection_end_date": "2026-08-27"
+  },
+  "security": {
+    "method": "GET",
+    "credentials_persisted": false,
+    "raw_responses_persisted": false,
+    "request_headers_persisted": false,
+    "page_tokens_persisted": false
+  },
+  "universe_boundary": {
+    "universe_as_of": "2026-08-27",
+    "construction": "Fixed 20-ETF CORE_SYMBOLS menu selected before this authenticated acquisition.",
+    "point_in_time_membership_dataset": false,
+    "delisted_or_failed_funds_included": false,
+    "survivorship_bias_present": true,
+    "permitted_use": "Cross-provider reconciliation and sensitivity analysis on the disclosed fixed ETF menu.",
+    "forbidden_inference": "The panel is not evidence for a survivorship-free investable universe or an unbiased historical asset-selection process."
+  },
+  "claim_boundary": "Authenticated Alpaca IEX adjustment=all data are preserved per symbol and separately intersected for deterministic strategy simulation. The current-survivor ETF menu is not a point-in-time universe, an independent holdout, strategy P&L, or evidence of future profitability."
+}

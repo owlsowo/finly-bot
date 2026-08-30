@@ -1,0 +1,155 @@
+{
+  "schema_version": "finly_champion_search_protocol.v1",
+  "frozen_before_first_candidate_run": true,
+  "research_status": "retrospective_candidate_discovery_not_prospective_alpha_proof",
+  "purpose": "Search for a causal, literature-grounded, long-only Finly shadow candidate that historically beats SPY net of a common execution and cost model without hiding leverage, a QQQ tilt, or data leakage.",
+  "claim_boundary": "The designer already knows broad market history and prior Finly results. No interval through 2026-08-28 is epistemically fresh. Passing historical gates earns SHADOW_ONLY; replacement requires a new prospective broker-reconciled record.",
+  "data": {
+    "provider": "Yahoo Finance chart endpoint adjusted close, one uniform frozen retrieval vintage",
+    "requested_start": "2007-05-25",
+    "requested_end": "2026-08-28",
+    "symbols": [
+      "SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ",
+      "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"
+    ],
+    "expected_common_start": "2007-05-30",
+    "warmup_sessions": 252,
+    "null_policy": "omit a date unless every symbol has a finite positive adjusted close; never forward fill",
+    "series_splicing": false,
+    "raw_response_persisted": false,
+    "revision_boundary": "Yahoo adjusted close is revised research data, not a point-in-time archive; every response and normalized series is fingerprinted."
+  },
+  "partitions": {
+    "development": { "start": "2008-06-02", "end": "2017-12-29" },
+    "validation_selection": { "start": "2018-01-02", "end": "2024-12-31" },
+    "consumed_recent_diagnostic": { "start": "2025-01-02", "end": "2026-08-28" },
+    "requested_2013_2015_slice": { "start": "2013-01-01", "end": "2015-12-31" },
+    "prospective_gate_c_start": "2026-08-31",
+    "prospective_gate_c_minimum_sessions": 756
+  },
+  "execution": {
+    "signal_timing": "signals use adjusted closes available after close t",
+    "rebalance_timing": "trade at adjusted close t+1",
+    "first_position_return": "new weights first earn the t+1 to t+2 adjusted close return",
+    "rebalance_interval_sessions": 21,
+    "base_one_way_cost_bps_per_absolute_traded_notional": 5,
+    "cost_stress_bps": [10, 25],
+    "initial_entry_charged": true,
+    "terminal_liquidation_charged": true,
+    "primary_gross_exposure_cap": 1,
+    "primary_long_only": true,
+    "residual_cash": "BIL adjusted-close total return",
+    "leverage_family": "SPY 1.5x is a diagnostic baseline only, financed by negative BIL plus a 50 bp annual spread; no leveraged strategy is eligible for champion promotion.",
+    "options_boundary": "No options candidate may be promoted without timestamped historical chains, bid/ask quotes, fees, assignment rules, and simultaneous multi-leg execution evidence."
+  },
+  "baselines": [
+    "bil_cash",
+    "spy_buy_hold",
+    "qqq_buy_hold",
+    "spy_levered_150",
+    "sixty_forty",
+    "spy_vol_target_15",
+    "frozen_finly"
+  ],
+  "candidate_registry": [
+    {
+      "id": "multi_asset_trend_ensemble",
+      "formula": "Every five sessions, score SPY/TLT/GLD by the positive fraction of 21/63/252-session BIL-excess trends, divide positive scores by trailing 20-session volatility, normalize, and scale down to a 10% trailing 63-session portfolio-volatility target."
+    },
+    {
+      "id": "equity_bond_cross_signal",
+      "formula": "Every 21 sessions, use 252-session SPY and TLT BIL-excess trend signs to cross-condition SPY/TLT signals, divide by trailing 20-session volatility, normalize, and scale down to 10% portfolio volatility."
+    },
+    {
+      "id": "defensive_sleeve_rotation",
+      "formula": "Every 21 sessions, retain frozen Finly's SPY weight and allocate its unused sleeve to the stronger of TLT/GLD only when that asset has positive 252-session BIL-excess momentum; then apply a 10% portfolio-volatility cap."
+    },
+    {
+      "id": "dual_horizon_volatility_finly",
+      "formula": "Every five sessions, retain frozen Finly's direction score but size it with the square root of an equal blend of trailing 20- and 63-session variance, capped at one."
+    },
+    {
+      "id": "fixed_literature_model_ensemble",
+      "formula": "Every five sessions, equal-weight the contemporaneous causal portfolio weights from frozen Finly, the multi-asset trend ensemble, and the equity-bond cross-signal; do not fit combination weights."
+    },
+    {
+      "id": "trend_spy_vol15",
+      "formula": "Mean positive vote of 63/126/252-session SPY-minus-BIL log returns multiplied by a 15% trailing-20-session volatility scale capped at 1."
+    },
+    {
+      "id": "sector_top3_momentum",
+      "formula": "Every 21 sessions rank the original nine sector SPDRs by mean 63/126/252-session BIL-excess log return, require positive mean and 252-session excess, hold the top three in inverse-63-session-volatility weights, then scale down to a 15% portfolio volatility target."
+    },
+    {
+      "id": "cross_asset_top3_momentum",
+      "formula": "Apply the same positive multi-horizon ranking to SPY/QQQ/IWM/EFA/EEM/VNQ/IEF/TLT/GLD/DBC, hold top three inverse-volatility weighted, then scale down to a 12% target."
+    },
+    {
+      "id": "equity_dual_momentum",
+      "formula": "Hold the strongest 252-session BIL-excess asset among SPY/QQQ/IWM/EFA/EEM when positive; otherwise hold the strongest positive asset among IEF/TLT/GLD or BIL, scaled down to 15% volatility."
+    },
+    {
+      "id": "sector_breadth_equity_rotation",
+      "formula": "Choose SPY or QQQ by 252-session BIL-excess momentum, require at least four of nine sectors above their own 200-session level, scale exposure smoothly with breadth and down to 15% volatility."
+    },
+    {
+      "id": "equal_weight_expert_ensemble",
+      "formula": "Average the contemporaneous causal weights of the five preceding experts and scale down to 15% portfolio volatility."
+    },
+    {
+      "id": "online_mwu_expert_ensemble",
+      "formula": "Combine the five experts with fixed-share multiplicative weights. At each rebalance update only from each expert's realized prior-period BIL-excess log return clipped to +/-10%, learning rate 1, and 5% shrinkage to uniform; then scale down to 15% portfolio volatility."
+    }
+  ],
+  "trial_accounting": {
+    "prior_declared_trials": 53,
+    "new_registered_primary_candidates": 12,
+    "minimum_cumulative_trials_before_sensitivities": 66,
+    "rule": "Every later formula, parameter, universe, manual rejection, LLM suggestion, bug-fixed rerun, cost, or schedule variant is appended before evaluation and included in deflated statistics."
+  },
+  "selection": {
+    "uses_recent_diagnostic": false,
+    "objective": "Among candidates passing development and validation gates, maximize the smaller annualized log-growth advantage over SPY; use BIL-excess Sharpe then drawdown as deterministic tie breakers.",
+    "recent_interval_role": "May veto a hard safety failure after selection; cannot improve score, rescue failure, or break a tie."
+  },
+  "historical_shadow_gates": {
+    "raw_return": [
+      "net annualized log growth exceeds SPY in development and validation",
+      "validation advantage is at least 0.50 percentage points per year after 5 bp one-way costs",
+      "median raw excess is positive in annual-origin 252/504/756-session families",
+      "at least 60% of windows in every family beat SPY"
+    ],
+    "risk": [
+      "candidate annualized volatility does not exceed SPY",
+      "candidate maximum drawdown is no worse than SPY by more than two percentage points",
+      "validation BIL-excess Sharpe exceeds frozen Finly and the long-only volatility-target baseline by at least 0.10",
+      "worst completed three-year BIL-excess log growth is positive",
+      "maximum drawdown is no worse than frozen Finly by over two points and never worse than 15%"
+    ],
+    "robustness": [
+      "conclusion sign survives 5/10/25 bp costs",
+      "conclusion sign survives all 21 rebalance offsets",
+      "Deflated-Sharpe probability is at least 0.95 using the cumulative trial count",
+      "shared circular-block familywise p-value is at most 0.05 at 5/20/60-session blocks"
+    ]
+  },
+  "dispositions": {
+    "historical_fail": "KEEP_V1",
+    "historical_pass": "SHADOW_ONLY",
+    "prospective_pass": "ELIGIBLE_FOR_REPLACEMENT_REVIEW"
+  },
+  "sources": [
+    { "title": "Time Series Momentum", "url": "https://doi.org/10.1016/j.jfineco.2011.11.003" },
+    { "title": "A Century of Evidence on Trend-Following Investing", "url": "https://www.aqr.com/Insights/Research/Journal-Article/A-Century-of-Evidence-on-Trend-Following-Investing" },
+    { "title": "Volatility-Managed Portfolios", "url": "https://www.nber.org/papers/w22208" },
+    { "title": "Do Industries Explain Momentum?", "url": "https://doi.org/10.1111/0022-1082.00146" },
+    { "title": "Global Tactical Cross-Asset Allocation", "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1079975" },
+    { "title": "Absolute Momentum", "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2244633" },
+    { "title": "Universal Portfolios", "url": "https://doi.org/10.1111/j.1467-9965.1991.tb00002.x" },
+    { "title": "The Deflated Sharpe Ratio", "url": "https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf" },
+    { "title": "A Reality Check for Data Snooping", "url": "https://users.ssc.wisc.edu/~behansen/718/White2000.pdf" },
+    { "title": "TradingAgents", "url": "https://arxiv.org/abs/2412.20138" },
+    { "title": "FinMem", "url": "https://arxiv.org/abs/2311.13743" },
+    { "title": "FinAgent", "url": "https://arxiv.org/abs/2402.18485" }
+  ]
+}

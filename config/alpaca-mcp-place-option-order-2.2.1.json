@@ -1,0 +1,29 @@
+{
+  "package": "alpaca-mcp-server",
+  "version": "2.2.1",
+  "tool": "place_option_order",
+  "parameters": {
+    "additionalProperties": false,
+    "properties": {
+      "qty": {"type": "string", "description": "Number of contracts. Required for both single-leg and\n multi-leg orders. For multi-leg, this is the strategy\n multiplier — each leg's ratio_qty is scaled by this\n value (e.g., qty=\"10\" with ratio_qty=\"2\" = 20\n contracts for that leg)."},
+      "type": {"default": "market", "type": "string", "description": "\"market\" or \"limit\"."},
+      "time_in_force": {"default": "day", "type": "string", "description": "\"day\" only. Options do not support other\n           values."},
+      "symbol": {"anyOf": [{"type": "string"}, {"type": "null"}], "default": null, "description": "OCC option symbol (e.g., \"AAPL250321C00150000\").\n    Required for single-leg."},
+      "side": {"anyOf": [{"type": "string"}, {"type": "null"}], "default": null, "description": "\"buy\" or \"sell\". Required for single-leg."},
+      "position_intent": {"anyOf": [{"type": "string"}, {"type": "null"}], "default": null, "description": "\"buy_to_open\", \"buy_to_close\", \"sell_to_open\",\n             or \"sell_to_close\". Clarifies whether the trade\n             opens or closes a position. Optional but\n             recommended."},
+      "limit_price": {"anyOf": [{"type": "string"}, {"type": "null"}], "default": null, "description": "Required for limit orders. For multi-leg, this is\n         the net debit/credit (positive = debit/cost,\n         negative = credit/proceeds)."},
+      "client_order_id": {"anyOf": [{"type": "string"}, {"type": "null"}], "default": null, "description": "Unique idempotency key. If the request times out,\n             you can safely retry with the same value — the API\n             will reject duplicates. Recommended for every order."},
+      "order_class": {"anyOf": [{"type": "string"}, {"type": "null"}], "default": null, "description": "Set to \"mleg\" for multi-leg orders. Automatically\n         inferred when legs are provided."},
+      "legs": {"anyOf": [{"items": {"additionalProperties": true, "type": "object"}, "type": "array"}, {"type": "null"}], "default": null, "description": "List of leg dicts for multi-leg orders (max 4). Each leg\n  requires \"symbol\" and \"ratio_qty\" (string). Optional\n  per-leg fields: \"side\" (\"buy\" or \"sell\") and\n  \"position_intent\"."}
+    },
+    "required": ["qty"],
+    "type": "object"
+  },
+  "annotations": {
+    "title": "Place Option Order",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+  }
+}

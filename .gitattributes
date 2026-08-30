@@ -1,0 +1,5 @@
+# These three byte-frozen receipts intentionally end with one blank line.
+# The extra newline is part of the forward-trial commitment hash.
+evidence/current_economic_decision.json whitespace=-blank-at-eof
+public/data/current_economic_decision.json whitespace=-blank-at-eof
+src/data/current_economic_decision.json whitespace=-blank-at-eof

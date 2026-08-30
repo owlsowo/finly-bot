@@ -1,0 +1,7 @@
+# Generation 5 source-reconciliation audit addendum
+
+The frozen v2 result remains `FAIL_CLOSED`. All 20 per-symbol gates passed, and three of four eligible candidates passed every candidate-level gate. `long_only_tsmom_ewma60` failed **only** the preregistered exact canonical decision-agreement gate: 10 of 61 allocation vectors matched exactly after ten-decimal canonicalization, below the 99% requirement. Its other four gates passed: daily return correlation was 0.999028, annualized tracking error was 0.624%, candidate-minus-SPY edge direction agreed, and the edge differed by 2.06 basis points per year. The maximum allocation-vector L1 difference was 0.01657.
+
+An independent no-network perturbation test reproduced this sensitivity without exposing credentials or refetching data. Continuous all-history EWMA inverse-volatility weights changed under tiny provider-specific return differences, while the three discrete strategies retained exact decisions. This supports a numerical path-sensitivity diagnosis, not a waiver: the frozen all-candidate rule still failed.
+
+The authenticated result was generated after the Generation 5 quantitative outcome. The source protocol and implementation were frozen before both results, so the negative is reproducible, but it is not pre-outcome or fresh out-of-sample validation. Raw bars and per-date allocation vectors were intentionally not persisted; the 51 mismatches therefore cannot be decomposed exactly between eligibility-threshold changes and continuous reweighting.

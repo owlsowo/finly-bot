@@ -1,0 +1,53 @@
+{
+  "schema_version": "finly_forward_trial1_bridge_source.v1",
+  "request_started_at": "2026-08-29T14:56:18.878Z",
+  "request_completed_at": "2026-08-29T14:56:19.841Z",
+  "provider": "Alpaca Market Data API",
+  "origin": "https://data.alpaca.markets",
+  "path": "/v2/stocks/bars",
+  "method": "GET",
+  "request": {
+    "symbols": ["SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ", "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"],
+    "start": "2026-08-28T00:00:00Z",
+    "end": "2026-08-29T00:00:00Z",
+    "timeframe": "1Day",
+    "feed": "iex",
+    "adjustment": "all",
+    "sort": "asc",
+    "limit": 10000,
+    "currency": "USD"
+  },
+  "response_content_sha256": "sha256:f4664ee79f78351baf0c937350accc21488e6fe4dcb78c34828a09415f165069",
+  "normalized_point": {
+    "date": "2026-08-28",
+    "closes": {
+      "SPY": 769.28,
+      "BIL": 91.655,
+      "QQQ": 716.44,
+      "IWM": 295.75,
+      "EFA": 107.715,
+      "EEM": 67.12,
+      "IEF": 92.86,
+      "TLT": 82.875,
+      "GLD": 408.84,
+      "DBC": 30.795,
+      "VNQ": 97.25,
+      "XLK": 185.63,
+      "XLF": 58.09,
+      "XLE": 62.66,
+      "XLY": 117.21,
+      "XLP": 85.42,
+      "XLI": 177.095,
+      "XLB": 53.17,
+      "XLV": 171.155,
+      "XLU": 42.72
+    }
+  },
+  "normalized_point_sha256": "sha256:6ee58a999f5b368ba819545cb116c0e875d0c1acd496f7ca034065d838283b0d",
+  "security": {
+    "credentials_persisted": false,
+    "headers_persisted": false,
+    "raw_response_persisted": false,
+    "page_tokens_persisted": false
+  }
+}

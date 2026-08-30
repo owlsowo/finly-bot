@@ -1,0 +1,436 @@
+{
+  "schema_version": "decision_receipt.v1",
+  "run_id": "decision_demo_spy_conflict_20260828_143505",
+  "created_at": "2026-08-28T18:35:05.000Z",
+  "mode": "paper",
+  "data_mode": "synthetic_replay",
+  "market": {
+    "underlying": "SPY",
+    "spot": 560,
+    "observed_at": "2026-08-28T18:30:03.200Z",
+    "quote_age_seconds": 1.8,
+    "option_feed": "indicative",
+    "feed_disclosure": "Synthetic fixture shaped like Alpaca indicative option data; not OPRA, NBBO, or a live quote.",
+    "history_mode": "synthetic_fixture",
+    "historical_log_returns": [
+      0.0036,
+      0.008803,
+      -0.000904,
+      -0.006754,
+      0.000113,
+      -0.000186,
+      -0.008773,
+      -0.004757,
+      0.006004,
+      0.003231,
+      -0.002466,
+      0.004318,
+      0.007293,
+      -0.003574,
+      -0.007681,
+      0.000126,
+      -0.000818,
+      -0.008183,
+      -0.002097,
+      0.007799,
+      0.00308,
+      -0.002397,
+      0.004348,
+      0.005234,
+      -0.006097,
+      -0.007999,
+      0.000688,
+      -0.000881,
+      -0.006996,
+      0.000627,
+      0.008999,
+      0.002266,
+      -0.002833,
+      0.003837,
+      0.00293,
+      -0.008152,
+      -0.007544,
+      0.001795,
+      -0.000503,
+      -0.005479,
+      0.003083,
+      0.009392,
+      0.000779,
+      -0.003651,
+      0.00302,
+      0.000702,
+      -0.009483,
+      -0.006269,
+      0.003323,
+      0.000097,
+      -0.00393,
+      0.004988,
+      0.008884,
+      -0.001265,
+      -0.004632,
+      0.002172,
+      -0.001162,
+      -0.009946,
+      -0.00426,
+      0.005045,
+      0.000655,
+      -0.002624,
+      0.006158,
+      0.007513,
+      -0.00364,
+      -0.005502,
+      0.001555,
+      -0.00246,
+      -0.009524,
+      -0.001727,
+      0.006672,
+      0.000911,
+      -0.001765,
+      0.006532,
+      0.005448,
+      -0.006044,
+      -0.005989,
+      0.001365,
+      -0.003103,
+      -0.008334,
+      0.001035,
+      0.007901,
+      0.000665,
+      -0.001448,
+      0.006178,
+      0.002957,
+      -0.00815,
+      -0.00587,
+      0.0017,
+      -0.003131,
+      -0.006602,
+      0.003689,
+      0.008476,
+      -0.000186,
+      -0.001647,
+      0.005281
+    ]
+  },
+  "intent": {
+    "schema_version": "finly_intent.v1",
+    "underlying": "SPY",
+    "direction": "neutral",
+    "direction_score": 0.169798,
+    "volatility_score": 0.174376,
+    "coverage": 0.878586,
+    "agreement": 0.630081,
+    "active_weight": 0.878586,
+    "horizon_sessions": 5,
+    "source_families": [
+      "events",
+      "market",
+      "options",
+      "prediction_market"
+    ],
+    "evidence_root": "sha256:2a8f10585e14585c7ed1017e01b80699395ed425a05ac317869ebd53949c90d5"
+  },
+  "source_signals": [
+    {
+      "schema_version": "source_signal.v1",
+      "family": "market",
+      "underlying": "SPY",
+      "direction_score": 0.72,
+      "volatility_score": 0.18,
+      "quality": 0.98,
+      "freshness": 0.99,
+      "calibration": 0.95,
+      "independence": 0.98,
+      "evidence_ids": [
+        "sha256:2a9a1daf716868117218aadcb3f7d54f321fb2ce7c3fa54263fb2dfd2395e65b"
+      ],
+      "evidence": [
+        {
+          "schema_version": "evidence_record.v1",
+          "family": "market",
+          "underlying": "SPY",
+          "source_kind": "synthetic_fixture",
+          "source_uri": "urn:finly:synthetic:market:2026-08-28",
+          "origin_id": "finly.synthetic.market.v1",
+          "published_at": "2026-08-28T18:29:00.000Z",
+          "received_at": "2026-08-28T18:29:01.000Z",
+          "available_at": "2026-08-28T18:29:01.000Z",
+          "content_sha256": "sha256:9788c400e823e1d647484b859ab96ba89e64f1bdf62b8c01a1aa30dfb8031c45",
+          "duplicate_group": "sha256:7a44b25a024bfa440307dfb1fc5d8c2f1df3176cf6617c224be0f1fe37c3746c",
+          "evidence_id": "sha256:2a9a1daf716868117218aadcb3f7d54f321fb2ce7c3fa54263fb2dfd2395e65b"
+        }
+      ],
+      "explanation": "Price trend is positive."
+    },
+    {
+      "schema_version": "source_signal.v1",
+      "family": "options",
+      "underlying": "SPY",
+      "direction_score": 0.2,
+      "volatility_score": 0.22,
+      "quality": 0.98,
+      "freshness": 0.99,
+      "calibration": 0.95,
+      "independence": 0.98,
+      "evidence_ids": [
+        "sha256:17048ce70d010803c38b477e6b21454d89e1e408946de2080a0365f0e813bdd8"
+      ],
+      "evidence": [
+        {
+          "schema_version": "evidence_record.v1",
+          "family": "options",
+          "underlying": "SPY",
+          "source_kind": "synthetic_fixture",
+          "source_uri": "urn:finly:synthetic:options:2026-08-28",
+          "origin_id": "finly.synthetic.options.v1",
+          "published_at": "2026-08-28T18:29:00.000Z",
+          "received_at": "2026-08-28T18:29:01.000Z",
+          "available_at": "2026-08-28T18:29:01.000Z",
+          "content_sha256": "sha256:7a76941460d83da7d333a2cbe281d61e9b5c7c2c7e4cdc3cb5b5043378df1a81",
+          "duplicate_group": "sha256:ee58ef2829de212772d42462c57a2623109bbd4c790654705a3fd39110477688",
+          "evidence_id": "sha256:17048ce70d010803c38b477e6b21454d89e1e408946de2080a0365f0e813bdd8"
+        }
+      ],
+      "explanation": "Options surface is weakly positive."
+    },
+    {
+      "schema_version": "source_signal.v1",
+      "family": "events",
+      "underlying": "SPY",
+      "direction_score": -0.88,
+      "volatility_score": 0.14,
+      "quality": 0.96,
+      "freshness": 0.98,
+      "calibration": 0.92,
+      "independence": 0.96,
+      "evidence_ids": [
+        "sha256:844ea6e35be3b1694681a6a1f7d9ea98eefc191179c31a112586c52cfbe8e902"
+      ],
+      "evidence": [
+        {
+          "schema_version": "evidence_record.v1",
+          "family": "events",
+          "underlying": "SPY",
+          "source_kind": "synthetic_fixture",
+          "source_uri": "urn:finly:synthetic:events:2026-08-28",
+          "origin_id": "finly.synthetic.events.v1",
+          "published_at": "2026-08-28T18:29:00.000Z",
+          "received_at": "2026-08-28T18:29:01.000Z",
+          "available_at": "2026-08-28T18:29:01.000Z",
+          "content_sha256": "sha256:0f06e47be1243ff32d805e3c698111fdf7f0df6d38ce1f6ffd180fdfda089c9e",
+          "duplicate_group": "sha256:7709e3bd6aaeaec7be9cad67a604deb0aecf8dcdbae8561f9b2b7fd10e64db32",
+          "evidence_id": "sha256:844ea6e35be3b1694681a6a1f7d9ea98eefc191179c31a112586c52cfbe8e902"
+        }
+      ],
+      "explanation": "Event evidence points in the opposite direction."
+    },
+    {
+      "schema_version": "source_signal.v1",
+      "family": "prediction_market",
+      "underlying": "SPY",
+      "direction_score": -0.76,
+      "volatility_score": 0.08,
+      "quality": 0.94,
+      "freshness": 0.96,
+      "calibration": 0.9,
+      "independence": 0.95,
+      "evidence_ids": [
+        "sha256:346bea13fed913c06634baa25606ad4e3ab59a936d3a81f4402d87537ceb32f3"
+      ],
+      "evidence": [
+        {
+          "schema_version": "evidence_record.v1",
+          "family": "prediction_market",
+          "underlying": "SPY",
+          "source_kind": "synthetic_fixture",
+          "source_uri": "urn:finly:synthetic:prediction_market:2026-08-28",
+          "origin_id": "finly.synthetic.prediction_market.v1",
+          "published_at": "2026-08-28T18:29:00.000Z",
+          "received_at": "2026-08-28T18:29:01.000Z",
+          "available_at": "2026-08-28T18:29:01.000Z",
+          "content_sha256": "sha256:d670a34a31ddc4fb4186562390a2c505cb782d7379855038ac701fa2e95f071c",
+          "duplicate_group": "sha256:1db4a523cd87500cd8b4b424f9cc43536641ac39058d56fdfb5801cf71849bfe",
+          "evidence_id": "sha256:346bea13fed913c06634baa25606ad4e3ab59a936d3a81f4402d87537ceb32f3"
+        }
+      ],
+      "explanation": "Prediction evidence conflicts with price state."
+    }
+  ],
+  "option_chain_hash": "sha256:43d8538591858358a53bd4adac775b3e7239298cd6a9e283c12c340db52f897a",
+  "compilation": {
+    "action": "NO_TRADE",
+    "selected": null,
+    "candidates": [],
+    "rejected": [
+      {
+        "code": "DIRECTION_BELOW_THRESHOLD"
+      }
+    ],
+    "reason": "NO_CANDIDATE_SURVIVED_CONSERVATIVE_GATES"
+  },
+  "source_removal": {
+    "base_direction": "neutral",
+    "variants": [
+      {
+        "removed_family": "events",
+        "direction": "bullish",
+        "direction_score": 0.494865,
+        "coverage": 0.670857,
+        "agreement": 0.924943,
+        "stable_direction": false,
+        "trade_gate": {
+          "ok": true
+        }
+      },
+      {
+        "removed_family": "market",
+        "direction": "bearish",
+        "direction_score": -0.412195,
+        "coverage": 0.426957,
+        "agreement": 0.85446,
+        "stable_direction": false,
+        "trade_gate": {
+          "ok": true
+        }
+      },
+      {
+        "removed_family": "options",
+        "direction": "neutral",
+        "direction_score": 0.161981,
+        "coverage": 0.697934,
+        "agreement": 0.605205,
+        "stable_direction": false,
+        "trade_gate": {
+          "ok": false,
+          "reason": "DIRECTION_BELOW_THRESHOLD"
+        }
+      },
+      {
+        "removed_family": "prediction_market",
+        "direction": "bullish",
+        "direction_score": 0.2125,
+        "coverage": 0.840008,
+        "agreement": 0.664032,
+        "stable_direction": false,
+        "trade_gate": {
+          "ok": true
+        }
+      }
+    ],
+    "passed": false
+  },
+  "perturbations": null,
+  "certificate": {
+    "schema_version": "risk_certificate.v2",
+    "run_id": "decision_demo_spy_conflict_20260828_143505",
+    "created_at": "2026-08-28T18:35:05.000Z",
+    "expires_at": "2026-08-28T18:35:35.000Z",
+    "mode": "paper",
+    "data_mode": "synthetic_replay",
+    "authorization_scope": "synthetic_replay",
+    "signer_key_id": "sha256:d618101db4c9fe62ad43d5b6829cf72aeb70135c88197d9ba973a9efeeef7402",
+    "decision": "NO_TRADE",
+    "proposed_decision": "NO_TRADE",
+    "intent_sha256": "sha256:c1267bdb802d8c1bb5d476a2c596e04b8a0ed8d14426c18bd2b756f271f77e90",
+    "candidate_id": null,
+    "candidate_snapshot_sha256": null,
+    "desired_order_projection_sha256": null,
+    "policy_sha256": "sha256:1b464aaab4e2b3b93ba658241c92b6767e8b9fb0d0116bd79f5a0bfa02a2fe75",
+    "code_version": "demo-fixture-v1",
+    "evidence_root": "sha256:2a8f10585e14585c7ed1017e01b80699395ed425a05ac317869ebd53949c90d5",
+    "horizon_sessions": 5,
+    "account_snapshot_sha256": "sha256:076977a928bb063c33ffe352435b021cdfa01cc9f5d2d148e57dfbc408929919",
+    "market_snapshot_sha256": "sha256:36e12a2e67634035f9cd09d5b42b22df8d31480feda1307aec49ae987e59efa1",
+    "market_spot": 560,
+    "market_observed_at": "2026-08-28T18:30:03.200Z",
+    "option_feed": "indicative",
+    "quantity": 0,
+    "max_loss_per_contract": 0,
+    "reserved_max_loss": 0,
+    "max_entry_debit": 0,
+    "account_equity": 100000,
+    "account_open_defined_risk": 0,
+    "conservative_ev": 0,
+    "probability_profit": 0,
+    "expected_shortfall_95": 0,
+    "source_removal_summary": {
+      "base_direction": "neutral",
+      "variants": [
+        {
+          "removed_family": "events",
+          "direction": "bullish",
+          "direction_score": 0.494865,
+          "coverage": 0.670857,
+          "agreement": 0.924943,
+          "stable_direction": false,
+          "trade_gate": {
+            "ok": true
+          }
+        },
+        {
+          "removed_family": "market",
+          "direction": "bearish",
+          "direction_score": -0.412195,
+          "coverage": 0.426957,
+          "agreement": 0.85446,
+          "stable_direction": false,
+          "trade_gate": {
+            "ok": true
+          }
+        },
+        {
+          "removed_family": "options",
+          "direction": "neutral",
+          "direction_score": 0.161981,
+          "coverage": 0.697934,
+          "agreement": 0.605205,
+          "stable_direction": false,
+          "trade_gate": {
+            "ok": false,
+            "reason": "DIRECTION_BELOW_THRESHOLD"
+          }
+        },
+        {
+          "removed_family": "prediction_market",
+          "direction": "bullish",
+          "direction_score": 0.2125,
+          "coverage": 0.840008,
+          "agreement": 0.664032,
+          "stable_direction": false,
+          "trade_gate": {
+            "ok": true
+          }
+        }
+      ],
+      "passed": false
+    },
+    "perturbation_summary": null,
+    "checks": {
+      "paper_endpoint_locked": true,
+      "account_fresh": true,
+      "account_not_blocked": true,
+      "option_feed_identified": true,
+      "quote_fresh": true,
+      "source_removal_stable": false,
+      "perturbations_stable": false,
+      "conservative_ev_positive": false,
+      "probability_gate": false,
+      "quantity_positive": false,
+      "aggregate_risk_cap": true,
+      "execution_transport_mcp": true
+    },
+    "certified": false,
+    "rejection_codes": [
+      "source_removal_stable",
+      "perturbations_stable",
+      "conservative_ev_positive",
+      "probability_gate",
+      "quantity_positive"
+    ],
+    "nonce": "permit:8998f8c2221c284b938c187dd62299cab530524bf4201b43d778eddcd76711e7",
+    "certificate_id": "sha256:c29ba61d557c4701659784b63e4aaec4c671dccba9d3f5b48e7bd566283158fa",
+    "signature": "hmac-sha256:446402f2c893b101fe643bfa4a3c0423adb9bd10f7c67369235deeca39c38049"
+  },
+  "alpaca_payload": null,
+  "disclaimer": "Educational paper-trading prototype. Not investment advice. Replay results and paper fills do not establish durable alpha.",
+  "receipt_id": "sha256:525948d56b01b7beaff646452cf04abd46476ba6ddf8ceadfff6982beb122201"
+}

@@ -1,0 +1,165 @@
+{
+  "schema_version": "finly_competitor_strategy_registry_generation6.v1",
+  "captured_at": "2026-08-29T12:34:00Z",
+  "purpose": "Freeze which public competitor mechanisms can and cannot enter Finly's Generation 6 quantitative comparison before any Generation 6 outcome is produced.",
+  "scope": {
+    "visible_submission_snapshot_count": 13,
+    "mechanism_registry_count": 9,
+    "complete_census": false,
+    "excluded_visible_projects": [
+      "Tissue Regeneration and Genetic Factor Navigator",
+      "A Continual Learning Agent",
+      "AlphaSwarm Sovereign",
+      "AlphaPilot AI"
+    ],
+    "exclusion_reason": "These four visible projects did not expose an additional frozen trading mechanism that could enter the pre-outcome Generation 6 financial comparison. Their omission from this mechanism registry is not a quality judgment and does not imply zero or inferior P&L.",
+    "claim_rule": "This is a nine-project mechanism subset from a thirteen-project visible snapshot, not a complete submission census. A final field refresh is required before submission."
+  },
+  "classification_definitions": {
+    "EXACT_SAME_PANEL": "The submitted trading strategy can be executed without semantic substitution on Finly's immutable daily adjusted-close ETF panel.",
+    "EXACT_AUXILIARY_PANEL": "A complete public rule can be reproduced only on a separately frozen panel or execution convention and cannot enter the primary ranking.",
+    "EXACT_SUBSTRATEGY_ONLY": "A bounded signal component is exact, but the submitted instrument-level P&L is not reproducible.",
+    "NORMALIZED_MECHANISM_PROXY": "A related mechanism can be tested only after a material adaptation; it is never labeled competitor P&L.",
+    "NOT_REPRODUCIBLE": "Public inputs are insufficient for a faithful historical P&L replay.",
+    "NOT_A_STRATEGY": "The project is evaluation infrastructure rather than a frozen trading rule."
+  },
+  "primary_tournament": {
+    "exact_same_panel_competitor_count": 0,
+    "exact_same_panel_competitor_ids": [],
+    "decision": "No competitor return series enters the immutable Generation 4 panel ranking. Missing competitor P&L remains unknown, never zero."
+  },
+  "projects": [
+    {
+      "id": "aegis-q",
+      "name": "AEGIS-Q",
+      "repository": "https://github.com/VicensPaneque/aegis-q",
+      "commit_sha": "76bb97e9200c41c519440bb64ea40d2161367627",
+      "submitted_options_classification": "NOT_REPRODUCIBLE",
+      "auxiliary_legacy_equity_classification": "EXACT_AUXILIARY_PANEL",
+      "auxiliary_rule": "At close t, risk-on when QQQ is above SMA200 and its 63-session return is positive. If off, hold zero-return cash; if on and QQQ RV20 <=25%, hold 70% TQQQ/30% cash; otherwise hold 100% QQQ. Execute at open t+1, rebalance on allocation change or five-percentage-point drift, and charge 5 bp per traded leg.",
+      "required_extension": "Split-consistent QQQ/TQQQ daily open and close data; zero-return cash; native next-open execution.",
+      "published_legacy_window": "2021-05-12/2026-08-27",
+      "published_legacy_metrics": {
+        "agent_cagr": 0.20632,
+        "agent_annualized_volatility": 0.29276,
+        "agent_sharpe": 0.7905,
+        "agent_maximum_drawdown": -0.33648,
+        "qqq_cagr": 0.16459,
+        "qqq_sharpe": 0.7851,
+        "qqq_maximum_drawdown": -0.37101,
+        "tqqq_cagr": 0.24401,
+        "tqqq_sharpe": 0.6635,
+        "tqqq_maximum_drawdown": -0.81602
+      },
+      "sources": [
+        "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/strategy.py",
+        "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/backtest.py",
+        "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/reports/metrics.json"
+      ]
+    },
+    {
+      "id": "options-sniper",
+      "name": "Options Sniper",
+      "repository": "https://github.com/public321-ai/option-sniper",
+      "commit_sha": "eebc95a574d42287a2266fb2db678fcef645f190",
+      "classification": "EXACT_SUBSTRATEGY_ONLY",
+      "exact_component": "Daily underlying direction and score from close, SMA20, SMA50, Wilder RSI14, and ROC5.",
+      "blocking_inputs": "Historical 14-45 DTE chains, quotes, open interest, deltas, spread fills, and lifecycle outcomes.",
+      "sources": [
+        "https://github.com/public321-ai/option-sniper/blob/eebc95a574d42287a2266fb2db678fcef645f190/lib/scanner.ts",
+        "https://github.com/public321-ai/option-sniper/blob/eebc95a574d42287a2266fb2db678fcef645f190/lib/agent.ts"
+      ]
+    },
+    {
+      "id": "pin-desk",
+      "name": "Pin Desk",
+      "repository": "https://github.com/anujsuthar08/Pin-desk",
+      "commit_sha": "292825c37d2ca86843821e9119ecec4d4f9d2c5b",
+      "classification": "NOT_REPRODUCIBLE",
+      "blocking_inputs": "Point-in-time option-chain open interest, quotes, gamma surfaces, expiry selection, and fills do not exist for unrecorded historical dates.",
+      "independently_reusable_mechanism": "Code owns order construction, sizing, and twelve risk gates; the model has bounded authority.",
+      "sources": [
+        "https://github.com/anujsuthar08/Pin-desk/blob/292825c37d2ca86843821e9119ecec4d4f9d2c5b/src/pindesk/gamma.py",
+        "https://github.com/anujsuthar08/Pin-desk/blob/292825c37d2ca86843821e9119ecec4d4f9d2c5b/src/pindesk/strategy.py",
+        "https://github.com/anujsuthar08/Pin-desk/blob/292825c37d2ca86843821e9119ecec4d4f9d2c5b/src/pindesk/risk.py"
+      ]
+    },
+    {
+      "id": "spy-sentinel-ai",
+      "name": "SPY Sentinel AI",
+      "repository": "https://github.com/ajennings1974/SPY-Sentinel-AI",
+      "commit_sha": "efd7eda6b19f10e2a7de0d130e7e335ad262d50",
+      "classification": "NORMALIZED_MECHANISM_PROXY",
+      "blocking_inputs": "Its initial exact rule uses five-minute bars and the repository reports no promoted strategy; eight tested strategies had zero survivors.",
+      "published_validation": "99 signals, 55 wins, 55.56% hit rate, 45.74%-64.95% interval, bootstrap return interval -1.68% to +2.65%; gate failed.",
+      "sources": [
+        "https://github.com/ajennings1974/SPY-Sentinel-AI/blob/efd7eda6b19f10e2a7de0d130e7e335ad262d50/SPY_SENTINEL_HACKATHON_CHECKPOINT.md",
+        "https://github.com/ajennings1974/SPY-Sentinel-AI/blob/efd7eda6b19f10e2a7de0d130e7e335ad262d50/spy_sentinel_statistical_validation.csv"
+      ]
+    },
+    {
+      "id": "newsflow-trader",
+      "name": "NewsFlow Trader",
+      "repository": "https://github.com/icohangar-ops/newsflow-trader",
+      "commit_sha": "36cfd8dbf49f9228fe2f475c84db5cbae2719beb",
+      "classification": "NOT_REPRODUCIBLE",
+      "blocking_inputs": "The implemented feed uses random mock headlines; no frozen point-in-time news archive, model state, cost model, or time exit is supplied.",
+      "sources": [
+        "https://github.com/icohangar-ops/newsflow-trader/blob/36cfd8dbf49f9228fe2f475c84db5cbae2719beb/mini-services/agent-service/src/news.ts",
+        "https://github.com/icohangar-ops/newsflow-trader/blob/36cfd8dbf49f9228fe2f475c84db5cbae2719beb/mini-services/agent-service/src/orchestrator.ts"
+      ]
+    },
+    {
+      "id": "vibehedge",
+      "name": "VibeHedge",
+      "repository": "https://github.com/ShinyDataTech/VibeHedge",
+      "commit_sha": "eaf8f7a1715d043bd5eaae78bd4b9db9ca314284",
+      "classification": "NOT_REPRODUCIBLE",
+      "blocking_inputs": "No published validation or P&L and the training preprocessor backward-fills rolling features, creating temporal leakage; option symbols and values are synthetic rather than historical listed-chain observations.",
+      "sources": [
+        "https://github.com/ShinyDataTech/VibeHedge/blob/eaf8f7a1715d043bd5eaae78bd4b9db9ca314284/training/processors.py",
+        "https://github.com/ShinyDataTech/VibeHedge/blob/eaf8f7a1715d043bd5eaae78bd4b9db9ca314284/src/options/options_lab.py"
+      ]
+    },
+    {
+      "id": "babil",
+      "name": "BABIL",
+      "repository": "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026",
+      "commit_sha": "9080b2a0d695bc5f733dc064926af7883a243441",
+      "classification": "NOT_REPRODUCIBLE",
+      "blocking_inputs": "One paper submission/cancellation probe and no historical option-chain or fill path.",
+      "independently_reusable_mechanism": "One-time authorization, immutable execution record, pre-execution revalidation, and kill switch.",
+      "sources": [
+        "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026/blob/9080b2a0d695bc5f733dc064926af7883a243441/ai_agent/proposal.py",
+        "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026/blob/9080b2a0d695bc5f733dc064926af7883a243441/babil_paper_execution.py"
+      ]
+    },
+    {
+      "id": "vega",
+      "name": "Vega",
+      "repository": "https://github.com/isquividet/vega",
+      "commit_sha": "263da012325f46c00a0396e03c8d068c496d6531",
+      "classification": "NOT_REPRODUCIBLE",
+      "blocking_inputs": "Contest-probability simulation and one frozen chain scenario are not a historical option P&L path.",
+      "published_scenario": "15.87% estimated top-three probability, -52.5% median return, 23.8% probability of profit, and -72.74% unchanged-SPY scenario.",
+      "sources": [
+        "https://github.com/isquividet/vega/blob/263da012325f46c00a0396e03c8d068c496d6531/EVIDENCE.md",
+        "https://github.com/isquividet/vega/blob/263da012325f46c00a0396e03c8d068c496d6531/tools/kickoff.py"
+      ]
+    },
+    {
+      "id": "odysseus",
+      "name": "Odysseus",
+      "repository": "https://github.com/thoonnadi2003/odysseus",
+      "commit_sha": "065a3d995e29762e5ba3ae706f1eb12e4ad64de0",
+      "classification": "NOT_A_STRATEGY",
+      "blocking_inputs": "The project is a research evaluation framework and publishes no frozen candidate rule or financial result.",
+      "independently_reusable_mechanism": "Hash-frozen data, formal strategy specifications, cost stress, validation, and walk-forward evaluation.",
+      "sources": [
+        "https://github.com/thoonnadi2003/odysseus/blob/065a3d995e29762e5ba3ae706f1eb12e4ad64de0/README.md",
+        "https://github.com/thoonnadi2003/odysseus/blob/065a3d995e29762e5ba3ae706f1eb12e4ad64de0/open/src/Odysseus.Application/EvaluationService.cs"
+      ]
+    }
+  ],
+  "claim_boundary": "Only an EXACT_SAME_PANEL submitted strategy may support a direct financial superiority claim. An auxiliary legacy strategy, exact signal ablation, proxy, scenario, test suite, or missing P&L cannot be relabeled as the submitted strategy's return."
+}

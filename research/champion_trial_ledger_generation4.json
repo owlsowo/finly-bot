@@ -1,0 +1,26 @@
+{
+  "schema_version": "finly_champion_trial_ledger.v2",
+  "supersedes_for_later_runs": "research/champion_trial_ledger.json",
+  "append_only_through": 100,
+  "counting_policy": "Conservative effective multiplicity count. Executed formulas, suggested/rejected formulas, diagnostics eligible for narrative comparison, aborted attempts, and audited reruns all count.",
+  "prior_ledger_sha256": "cbd88396b4bd5e0f2fa805584496b50451e023168d937bf0352708678576d604",
+  "blocks": [
+    { "range": "1-92", "count": 92, "status": "incorporated_by_hash_from_champion_trial_ledger.json" },
+    {
+      "range": "93-100",
+      "count": 8,
+      "status": "generation_4_registered_before_execution",
+      "ids": [
+        "static_spy_qqq_50_50_control",
+        "qqq_vs_spy_relative_regime_fully_invested",
+        "spy_core_qqq_sector_12_6",
+        "qqq_core_sector_12_6",
+        "qqq_defensive_dual_momentum",
+        "qqq_regime_defensive_rotation",
+        "equity_defensive_relative_strength",
+        "spy_qqq_defensive_sleeves"
+      ]
+    }
+  ],
+  "claim_boundary": "The static SPY/QQQ control counts because it may explain a candidate's apparent SPY outperformance, but it is ineligible to become Finly's agentic champion."
+}

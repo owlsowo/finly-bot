@@ -1,0 +1,192 @@
+{
+  "schema_version": "finly_aegis_q_legacy_reproduction_protocol.v1",
+  "status": "TEMPLATE_NOT_FROZEN",
+  "created_at": "__FILL_BEFORE_FREEZE__",
+  "frozen_before_first_output": false,
+  "purpose": "Reproduce, on a separately hash-frozen local public-data panel, the archived legacy AEGIS-Q QQQ/TQQQ equity backtest at its pinned source commit. This is an auxiliary competitor audit and not part of Finly champion selection.",
+  "claim_boundary": {
+    "auxiliary_only": true,
+    "submitted_options_pnl": false,
+    "eligible_as_finly_champion": false,
+    "future_profitability_proven": false,
+    "apples_to_apples_with_finly": false,
+    "statement": "A match establishes reproducibility of the archived legacy equity metric bundle under the declared public-data and execution semantics. It does not reproduce the submitted AEGIS-Q options strategy, establish options P&L, prove future profitability, or provide an apples-to-apples financial comparison with Finly."
+  },
+  "source_pin": {
+    "reproduction_id": "aegis_q_legacy_equity_v1_pinned_76bb97e",
+    "pinned_commit": "76bb97e9200c41c519440bb64ea40d2161367627",
+    "license": "MIT",
+    "urls": {
+      "repository": "https://github.com/VicensPaneque/aegis-q/tree/76bb97e9200c41c519440bb64ea40d2161367627",
+      "parameters": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/config.py#L10-L27",
+      "strategy": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/strategy.py#L27-L59",
+      "backtest": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/backtest.py#L25-L205",
+      "published_metrics": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/reports/metrics.json",
+      "published_report": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/reports/BACKTEST_REPORT.md"
+    }
+  },
+  "strategy": {
+    "parameters": {
+      "trend_window": 200,
+      "momentum_window": 63,
+      "volatility_window": 20,
+      "volatility_threshold": 0.25,
+      "tqqq_weight": 0.7,
+      "qqq_weight": 1,
+      "rebalance_band": 0.05,
+      "slippage_bps_one_way": 5,
+      "cash_return": 0
+    },
+    "native_semantics": {
+      "signal": "QQQ close > inclusive SMA200 and QQQ 63-session close return > 0",
+      "low_volatility_risk_on": "If annualized sample RV20 <= 25%, target 70% TQQQ and 30% zero-return cash",
+      "high_volatility_risk_on": "If annualized sample RV20 > 25%, target 100% QQQ",
+      "risk_off": "Hold zero-return cash",
+      "timing": "Form signal at close t and execute using split-adjusted open t+1",
+      "rebalance": "Trade when the selected asset changes or target-weight drift reaches five percentage points",
+      "friction": "Charge 5 bp one way for each traded leg; commission is zero",
+      "return_definition": "Split-adjusted price returns; dividends and cash interest excluded"
+    }
+  },
+  "data": {
+    "runner_market_fetch_permitted": false,
+    "symbols": ["QQQ", "TQQQ"],
+    "public_source": {
+      "provider": "__FILL_PUBLIC_PROVIDER_BEFORE_FREEZE__",
+      "url": "__FILL_PUBLIC_HTTPS_SOURCE_URL_BEFORE_FREEZE__",
+      "retrieved_at": "__FILL_BEFORE_FREEZE__",
+      "feed": "iex",
+      "timeframe": "1Day",
+      "adjustment": "split",
+      "request_start": "__FILL_DATE_AT_LEAST_200_COMMON_SESSIONS_BEFORE_2021_05_12__",
+      "request_end": "2026-08-27",
+      "raw_bars_path": "__FILL_LOCAL_RAW_BARS_PATH_BEFORE_FREEZE__",
+      "raw_bars_sha256": "__FILL_SHA256_BEFORE_FREEZE__",
+      "corporate_actions_applied_separately": false
+    },
+    "panel": {
+      "path": "__FILL_LOCAL_PANEL_PATH_BEFORE_FREEZE__",
+      "schema_version": "finly_aegis_q_public_adjusted_ohlc_panel.v1",
+      "file_sha256": "__FILL_SHA256_BEFORE_FREEZE__",
+      "normalized_panel_sha256": "__FILL_SHA256_BEFORE_FREEZE__"
+    },
+    "panel_semantics": {
+      "adjusted_ohlc": true,
+      "split_adjusted_price_only": true,
+      "dividends_excluded": true,
+      "total_return_adjustment": false,
+      "already_split_adjusted_input": true,
+      "forward_splits_applied_by_runner": false,
+      "required_fields": ["date", "symbol", "open", "high", "low", "close"],
+      "common_date_policy": "Exactly one QQQ and one TQQQ bar on every retained common session; no forward fill or provider splice.",
+      "warmup_policy": "Require at least 200 common sessions before 2021-05-12, select the last 200, then retain all 1,330 common sessions from 2021-05-12 through 2026-08-27.",
+      "minimum_available_common_sessions_before_native_start": 200,
+      "native_start": "2021-05-12",
+      "native_end": "2026-08-27",
+      "native_common_sessions": 1330
+    }
+  },
+  "execution": {
+    "signal_formation": "close_t",
+    "execution": "adjusted_open_t_plus_1",
+    "one_way_slippage_bps": 5,
+    "commission": 0,
+    "cash_return": 0,
+    "dividends": "excluded",
+    "rebalance_band_absolute_weight": 0.05,
+    "fractional_shares": true
+  },
+  "published_comparison": {
+    "start": "2021-05-12",
+    "end": "2026-08-27",
+    "observations": 1330,
+    "warmup_sessions_before_start": 200,
+    "initial_capital": 100000,
+    "tolerances": {
+      "absolute": 1e-8,
+      "relative": 1e-10,
+      "integer_and_string_fields": "exact"
+    },
+    "expected_metrics": {
+      "QQQ": {
+        "annual_volatility": 0.22787217896967307,
+        "best_day": 0.09141867346693289,
+        "cagr": 0.1645925682908902,
+        "end": "2026-08-27",
+        "ending_value": 223980.6280268708,
+        "max_drawdown": -0.3710067047919542,
+        "observations": 1330,
+        "profit": 123980.6280268708,
+        "sharpe_0pct_cash": 0.7851299268978624,
+        "start": "2021-05-12",
+        "total_return": 1.239806280268708,
+        "worst_day": -0.06882230792049837
+      },
+      "TQQQ": {
+        "annual_volatility": 0.682827842961523,
+        "best_day": 0.24183673469387745,
+        "cagr": 0.2440062450542908,
+        "end": "2026-08-27",
+        "ending_value": 317560.277441374,
+        "max_drawdown": -0.8160227462786419,
+        "observations": 1330,
+        "profit": 217560.27744137403,
+        "sharpe_0pct_cash": 0.6634544889552761,
+        "start": "2021-05-12",
+        "total_return": 2.1756027744137403,
+        "worst_day": -0.20512542078401574
+      },
+      "agent": {
+        "annual_volatility": 0.2927572090474777,
+        "best_day": 0.09560737518093831,
+        "cagr": 0.2063201838796893,
+        "end": "2026-08-27",
+        "ending_value": 269849.54101804015,
+        "estimated_slippage_dollars": 5735.090337632874,
+        "max_drawdown": -0.3364827079567,
+        "observations": 1330,
+        "order_legs": 90,
+        "profit": 169849.54101804015,
+        "sharpe_0pct_cash": 0.790535550733135,
+        "start": "2021-05-12",
+        "total_return": 1.6984954101804015,
+        "trade_events": 72,
+        "turnover_multiple": 114.73004324276727,
+        "worst_day": -0.0912016155854819
+      }
+    }
+  },
+  "frozen_code": {
+    "implementation": {
+      "path": "research/aegis_q_legacy_reproduction.mjs",
+      "sha256": "__FILL_SHA256_BEFORE_FREEZE__"
+    },
+    "runner": {
+      "path": "research/run_aegis_q_legacy_reproduction.mjs",
+      "sha256": "__FILL_SHA256_BEFORE_FREEZE__"
+    },
+    "implementation_test": {
+      "path": "tests/aegis_q_legacy_reproduction.test.mjs",
+      "sha256": "__FILL_SHA256_BEFORE_FREEZE__"
+    },
+    "runner_test": {
+      "path": "tests/aegis_q_legacy_reproduction_runner.test.mjs",
+      "sha256": "__FILL_SHA256_BEFORE_FREEZE__"
+    }
+  },
+  "first_run_policy": {
+    "run_claim_path": "research/aegis_q_legacy_reproduction_run_claim.json",
+    "lock_path": "research/.aegis_q_legacy_reproduction_run.lock",
+    "process_attestation_only": true,
+    "published_target_known_before_claim": true,
+    "crash_recovery": "Every artifact is write-once. Repeated official invocations under the same claim finish missing files or verify byte-identical files and reject conflicting bytes.",
+    "output_paths": [
+      "research/output/aegis_q_legacy_reproduction.json",
+      "research/output/aegis_q_legacy_reproduction_report.md",
+      "research/aegis_q_legacy_reproduction_result_receipt.json"
+    ],
+    "overwrite_permitted": false,
+    "later_mode": "--verify-existing",
+    "failure_policy": "Write the frozen mismatch honestly; never tune semantics or replace the panel after observing the outcome."
+  }
+}

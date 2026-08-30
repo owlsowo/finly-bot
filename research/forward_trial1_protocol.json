@@ -1,0 +1,304 @@
+{
+  "schema_version": "finly_forward_trial1_protocol.v2",
+  "trial_id": "finly_forward_trial_1",
+  "status": "FROZEN_TWO_PHASE_ZERO_ROW",
+  "freeze": {
+    "frozen_at": "2026-08-29T15:42:30.000Z",
+    "latest_market_observation_used": "2026-08-28",
+    "production_v1_observation_end": "2026-08-28",
+    "g4_shadow_observation_end": "2026-08-27",
+    "frozen_artifacts": [
+      {
+        "path": "lib/economic_research.mjs",
+        "sha256": "sha256:efde15977d43fb5556683ce7ba5ca7fe29fa82a1cc6acd9632d8f6e6fc5c1256",
+        "role": "production_v1_and_volatility_baseline_formula"
+      },
+      {
+        "path": "research/champion_strategies_generation4.mjs",
+        "sha256": "sha256:a3e0124f2171773ca23c8a6e932dd1e3d5d5b265e7e198fdf21971cdaf5c4992",
+        "role": "unchanged_g4_shadow_formula"
+      },
+      {
+        "path": "research/champion_engine.mjs",
+        "sha256": "sha256:e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e",
+        "role": "g4_signal_execution_and_weight_semantics"
+      },
+      {
+        "path": "lib/canonical.mjs",
+        "sha256": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904",
+        "role": "canonical_serialization_and_hash_semantics"
+      },
+      {
+        "path": "research/champion_strategies.mjs",
+        "sha256": "sha256:861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d",
+        "role": "core_and_sector_symbol_registries"
+      },
+      {
+        "path": "research/forward_trial1.mjs",
+        "sha256": "sha256:acd6b07f61a37624534c98472c315f732bf51bc4bdf50764cfacb4c0d8224528",
+        "role": "forward_trial_validation_and_accounting_engine"
+      },
+      {
+        "path": "research/run_forward_trial1.mjs",
+        "sha256": "sha256:26ab2123234e8172c421cd085a3ab3d050354344d4bbcb0af93c9402d0f16749",
+        "role": "fail_closed_verify_or_explicit_append_cli"
+      },
+      {
+        "path": "public/data/current_economic_decision.json",
+        "sha256": "sha256:cd5f617639c00a217c9536b7b970a7b81d410a4e8ee0c47f984d9314234ab9f2",
+        "role": "last_completed_production_v1_decision_used_at_freeze"
+      },
+      {
+        "path": "research/output/quant_champion_generation4.json",
+        "sha256": "sha256:af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+        "role": "g4_selection_and_panel_identity"
+      },
+      {
+        "path": "research/champion_search_generation4_result_receipt.json",
+        "sha256": "sha256:954cee350876bee9098c0af87a5c8df078ce24b7037b7ba7cb4ac1aaa3dd2f00",
+        "role": "g4_result_receipt"
+      },
+      {
+        "path": "research/alpaca_adjustment_all_panel_generation6_result_receipt.json",
+        "sha256": "sha256:0c20b09f65c26a51e599ca43d9488b0479f8902a990e2bb16d9393850d0dc739",
+        "role": "authenticated_seed_acquisition_receipt"
+      },
+      {
+        "path": "research/forward_trial1_bridge_2026-08-28.json",
+        "sha256": "sha256:ed63b5c4b27289d3b73e87c1377cec01e76c58506559d174ebd43420e66cbc31",
+        "role": "authenticated_adjustment_all_pretrial_bridge_point"
+      }
+    ]
+  },
+  "authorization_boundary": {
+    "default_mode": "VERIFY_ONLY",
+    "network_fetch_permitted": false,
+    "broker_reads_permitted": false,
+    "broker_mutation_permitted": false,
+    "signal_commitment_write_enabled": false,
+    "signal_commitment_write_requires_ack": true,
+    "settlement_write_enabled": false,
+    "credentials_may_be_persisted": false
+  },
+  "timing": {
+    "lifecycle": "Commit completed close t after its provider response is available; anchor commitment before queued close t+1; reconcile return from committed close t+1 to committed close t+2.",
+    "first_signal_session": "2026-08-31",
+    "first_return_start_session": "2026-09-01",
+    "commitment_deadline": "strictly before the queued execution close",
+    "commitment_cadence": "Each commitment signal session equals the prior commitment's queued execution session.",
+    "settlement_sources": "Settlement N is derived only from immutable commitments N, N+1, and N+2.",
+    "no_unsettled_outcome_dependency": true
+  },
+  "data_boundary": {
+    "provider": "Alpaca Market Data API",
+    "feed": "iex",
+    "adjustment": "all",
+    "currency": "USD",
+    "market_calendar": "XNYS_US_EQUITIES_RULES_V1",
+    "market_timezone": "America/New_York",
+    "regular_close_local_time": "16:00",
+    "availability_delay_minutes": 15,
+    "symbols": ["SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ", "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"],
+    "seed_sessions": 253,
+    "seed_start": "2025-08-26",
+    "seed_end": "2026-08-27",
+    "seed_normalized_sha256": "sha256:bf44b86ad84ae7f16ba4c25fbaf03219eb4277167143f701a380c93a335a5147",
+    "private_seed_artifact_path": "data/private/champion_search/alpaca_adjustment_all_panel_generation6_aa2075c1989da7194f1de0f455fab83a4035ee878b5b410088d11aa39c0baaa2.json",
+    "private_seed_artifact_sha256": "sha256:aa2075c1989da7194f1de0f455fab83a4035ee878b5b410088d11aa39c0baaa2",
+    "private_seed_redistributed": false,
+    "private_seed_required_for_production_commitment": true,
+    "bridge_session": "2026-08-28",
+    "bridge_artifact_path": "research/forward_trial1_bridge_2026-08-28.json",
+    "bridge_normalized_sha256": "sha256:6ee58a999f5b368ba819545cb116c0e875d0c1acd496f7ca034065d838283b0d",
+    "panel_construction": "TEST_ONLY mechanics bind a synthetic 253-session seed, the frozen 2026-08-28 bridge, and consecutive closes. Production construction is disabled until a vintage-stable corporate-action method and independently reconciled outcome-price lineage are implemented.",
+    "provider_signatures_available": false,
+    "production_market_data_method": "NOT_CONFIGURED_ZERO_ROW_FREEZE",
+    "corporate_action_reconciliation_ready": false,
+    "provider_outcome_price_reconciliation_ready": false,
+    "production_commitment_gate": "CLOSED_UNTIL_PRIVATE_SEED_CORPORATE_ACTION_AND_OUTCOME_PRICE_GATES_PASS"
+  },
+  "books": [
+    "finly_production_v1",
+    "g4_shadow_qqq_core_sector_12_6",
+    "benchmark_spy_buy_hold",
+    "benchmark_qqq_buy_hold",
+    "benchmark_spy_qqq_50_50",
+    "benchmark_bil_cash",
+    "benchmark_spy_vol_target_10"
+  ],
+  "formula_bindings": {
+    "finly_production_v1": {
+      "formula_id": "finly_production_v1",
+      "definition": "Frozen tsmom_ensemble_vol: equal-weight positive fraction of 21/63/252-session SPY-minus-BIL log trends multiplied by the unlevered 10% target over lagged 20-session SPY realized volatility; five-session cadence; residual in BIL.",
+      "source_files": [
+        {
+          "path": "lib/economic_research.mjs",
+          "sha256": "sha256:efde15977d43fb5556683ce7ba5ca7fe29fa82a1cc6acd9632d8f6e6fc5c1256"
+        },
+        {
+          "path": "lib/canonical.mjs",
+          "sha256": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904"
+        }
+      ],
+      "binding_sha256": "sha256:f25f2fae94e3337f0fb8d89763ef12fda04d7ee9ef06645b662f9265936626a3"
+    },
+    "g4_shadow_qqq_core_sector_12_6": {
+      "formula_id": "g4_shadow_qqq_core_sector_12_6",
+      "definition": "Unchanged G4 qqq_core_sector_12_6: fresh-start allocation at the first eligible signal, then 50% QQQ plus 50% equally divided among the top three sector ETFs ranked by 252-to-126-session (12-minus-6) log return; 21-session cadence; long-only gross one.",
+      "source_files": [
+        {
+          "path": "research/champion_strategies_generation4.mjs",
+          "sha256": "sha256:a3e0124f2171773ca23c8a6e932dd1e3d5d5b265e7e198fdf21971cdaf5c4992"
+        },
+        {
+          "path": "research/champion_engine.mjs",
+          "sha256": "sha256:e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e"
+        },
+        {
+          "path": "research/champion_strategies.mjs",
+          "sha256": "sha256:861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d"
+        }
+      ],
+      "binding_sha256": "sha256:11c92f0210b98ee39dbf210e1e22cfacc325dafb04668c6c178da85f61b03c60"
+    },
+    "benchmark_spy_buy_hold": {
+      "formula_id": "benchmark_spy_buy_hold",
+      "definition": "Static 100% SPY benchmark.",
+      "source_files": [
+        {
+          "path": "research/forward_trial1.mjs",
+          "sha256": "sha256:acd6b07f61a37624534c98472c315f732bf51bc4bdf50764cfacb4c0d8224528"
+        }
+      ],
+      "binding_sha256": "sha256:7b99c70969f07b02a59444261ae0899b73c47b4c8fc9a89482615ff852376d49"
+    },
+    "benchmark_qqq_buy_hold": {
+      "formula_id": "benchmark_qqq_buy_hold",
+      "definition": "Static 100% QQQ benchmark.",
+      "source_files": [
+        {
+          "path": "research/forward_trial1.mjs",
+          "sha256": "sha256:acd6b07f61a37624534c98472c315f732bf51bc4bdf50764cfacb4c0d8224528"
+        }
+      ],
+      "binding_sha256": "sha256:b422747bbe9bdec3835187a397e7a7a4298459edb46579637d306fdac71efbbb"
+    },
+    "benchmark_spy_qqq_50_50": {
+      "formula_id": "benchmark_spy_qqq_50_50",
+      "definition": "Target 50% SPY and 50% QQQ at the first settlement and every 21 accepted sessions thereafter; holdings drift between scheduled rebalances.",
+      "source_files": [
+        {
+          "path": "research/forward_trial1.mjs",
+          "sha256": "sha256:acd6b07f61a37624534c98472c315f732bf51bc4bdf50764cfacb4c0d8224528"
+        }
+      ],
+      "binding_sha256": "sha256:0adaf8ca56da0a5f24c92f2f6375fd47ede3b8993e3cfe92479061030545d60a"
+    },
+    "benchmark_bil_cash": {
+      "formula_id": "benchmark_bil_cash",
+      "definition": "Static 100% BIL cash-proxy benchmark.",
+      "source_files": [
+        {
+          "path": "research/forward_trial1.mjs",
+          "sha256": "sha256:acd6b07f61a37624534c98472c315f732bf51bc4bdf50764cfacb4c0d8224528"
+        }
+      ],
+      "binding_sha256": "sha256:c20ac75684330620d17e5df280650a721a2342bcdbb58a5084bd6824439be301"
+    },
+    "benchmark_spy_vol_target_10": {
+      "formula_id": "benchmark_spy_vol_target_10",
+      "definition": "Existing long-only SPY/BIL volatility baseline: min(1, 10% / lagged 20-session annualized SPY realized volatility), five-session cadence; residual in BIL.",
+      "source_files": [
+        {
+          "path": "lib/economic_research.mjs",
+          "sha256": "sha256:efde15977d43fb5556683ce7ba5ca7fe29fa82a1cc6acd9632d8f6e6fc5c1256"
+        },
+        {
+          "path": "lib/canonical.mjs",
+          "sha256": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904"
+        }
+      ],
+      "binding_sha256": "sha256:aa994de3dff084f908b6b17d98d029546b52aa81a1c3019ab56f0b75af089829"
+    }
+  },
+  "accounting": {
+    "initial_equity_per_book": 100000,
+    "initial_asset": "BIL",
+    "cost_bps_per_absolute_traded_notional": 5,
+    "reported_paper_fees_treatment": "RECORDED_SEPARATELY_NOT_DOUBLE_COUNTED",
+    "fractional_units": true
+  },
+  "inference": {
+    "engineering_only_through_settlement": 60,
+    "minimum_settlements": 252,
+    "primary_book": "finly_production_v1",
+    "primary_comparator": "benchmark_spy_buy_hold",
+    "primary_endpoint": "mean daily log-return difference after the common 5 bp turnover cost",
+    "null_hypothesis": "primary mean daily log-return difference is less than or equal to zero",
+    "test": "one-sided null-centered stationary block bootstrap",
+    "sample_definition": "The first 252 accepted daily settlements only; no rolling, best-window, or repeat confirmatory test.",
+    "bootstrap_seed_uint32": 20260829,
+    "bootstrap_resamples": 4999,
+    "expected_block_sessions": 20,
+    "p_value_construction": "(1 + count of null-centered bootstrap means greater than or equal to the observed mean) / 5000",
+    "alpha": 0.05,
+    "secondary_comparators": ["g4_shadow_qqq_core_sector_12_6", "benchmark_qqq_buy_hold", "benchmark_spy_qqq_50_50", "benchmark_bil_cash", "benchmark_spy_vol_target_10"],
+    "multiplicity": "Primary claim is SPY-only. All other comparator and metric results are descriptive; no confirmatory claim may be selected from them.",
+    "external_anchor_requirement": "ALL_FIRST_254_SIGNAL_COMMITMENTS_INDEPENDENTLY_VERIFIED_BEFORE_THEIR_EXECUTION_CLOSES"
+  },
+  "external_anchoring": {
+    "required": true,
+    "manifest_directory": "research/forward_trial1_anchor_manifests",
+    "accepted_future_mechanisms": ["public GitHub Actions/commit publication", "RFC 3161 or OpenTimestamps receipt", "trusted append service signature"],
+    "local_verifier_status": "NOT_CONFIGURED_ZERO_ROW_FREEZE",
+    "settlement_gate": "CLOSED_UNTIL_INDEPENDENT_ANCHOR_AND_OUTCOME_PRICE_VERIFIERS_ARE_CONFIGURED",
+    "inference_gate": "CLOSED_UNTIL_ALL_REQUIRED_PRE_EXECUTION_ANCHORS_AND_OUTCOME_PRICES_VERIFY",
+    "future_free_path": "A later version may verify a free public GitHub publication or cryptographic timestamp receipt without storing credentials.",
+    "forbidden_claim": "A local timestamp, hash chain, source label, or unverified manifest does not prove prospectivity or provider origin."
+  },
+  "genesis": {
+    "path": "research/forward_trial1_genesis.json",
+    "commitment_directory": "research/forward_trial1_signal_commitments",
+    "settlement_directory": "research/forward_trial1_ledger",
+    "initial_account_state": {
+      "finly_production_v1": {
+        "equity": 100000,
+        "weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 }
+      },
+      "g4_shadow_qqq_core_sector_12_6": {
+        "equity": 100000,
+        "weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 }
+      },
+      "benchmark_spy_buy_hold": {
+        "equity": 100000,
+        "weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 }
+      },
+      "benchmark_qqq_buy_hold": {
+        "equity": 100000,
+        "weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 }
+      },
+      "benchmark_spy_qqq_50_50": {
+        "equity": 100000,
+        "weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 }
+      },
+      "benchmark_bil_cash": {
+        "equity": 100000,
+        "weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 }
+      },
+      "benchmark_spy_vol_target_10": {
+        "equity": 100000,
+        "weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 }
+      }
+    },
+    "initial_commitment_state": {
+      "finly_production_v1": { "last_rebalance_signal_date": null, "sessions_since_last_rebalance": null, "last_committed_target_weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 } },
+      "g4_shadow_qqq_core_sector_12_6": { "last_rebalance_signal_date": null, "sessions_since_last_rebalance": null, "last_committed_target_weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 } },
+      "benchmark_spy_buy_hold": { "last_rebalance_signal_date": null, "sessions_since_last_rebalance": null, "last_committed_target_weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 } },
+      "benchmark_qqq_buy_hold": { "last_rebalance_signal_date": null, "sessions_since_last_rebalance": null, "last_committed_target_weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 } },
+      "benchmark_spy_qqq_50_50": { "last_rebalance_signal_date": null, "sessions_since_last_rebalance": null, "last_committed_target_weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 } },
+      "benchmark_bil_cash": { "last_rebalance_signal_date": null, "sessions_since_last_rebalance": null, "last_committed_target_weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 } },
+      "benchmark_spy_vol_target_10": { "last_rebalance_signal_date": null, "sessions_since_last_rebalance": null, "last_committed_target_weights": { "SPY": 0, "BIL": 1, "QQQ": 0, "IWM": 0, "EFA": 0, "EEM": 0, "IEF": 0, "TLT": 0, "GLD": 0, "DBC": 0, "VNQ": 0, "XLK": 0, "XLF": 0, "XLE": 0, "XLY": 0, "XLP": 0, "XLI": 0, "XLB": 0, "XLV": 0, "XLU": 0 } }
+    }
+  },
+  "claim_boundary": "The zero-row two-phase artifact freezes rules and exposes synthetic TEST_ONLY mechanics. It proves neither prospectivity nor live signal capture, Alpaca origin, execution, performance, future profit, or guaranteed alpha. Production commitments, settlements, and inference remain closed until the exact private seed, a vintage-stable corporate-action method, independent pre-execution anchors, and independently reconciled outcome-price lineage are all available."
+}

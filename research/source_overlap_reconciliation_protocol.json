@@ -1,0 +1,97 @@
+{
+  "schema_version": "finly_source_overlap_reconciliation_protocol.v1",
+  "status": "FROZEN_BEFORE_AUTHENTICATED_READ",
+  "frozen_at": "2026-08-29T10:54:22Z",
+  "objective": "Test whether the exact Yahoo adjusted-close snapshot used by Generation 4 is sufficiently concordant with authenticated Alpaca data for qqq_core_sector_12_6 source-robustness claims. This is not an independent out-of-sample profitability test.",
+  "generation4_lock": {
+    "selected_candidate_id": "qqq_core_sector_12_6",
+    "generation4_output_path": "research/output/quant_champion_generation4.json",
+    "generation4_output_sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+    "generation4_protocol_sha256": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "generation4_freeze_receipt_sha256": "c1b662533c31dc326ddb9ed4633b36081fbd0386652cf753cd6a2fc62c843a46",
+    "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+    "private_panel_payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014"
+  },
+  "symbols": [
+    "SPY",
+    "BIL",
+    "QQQ",
+    "XLK",
+    "XLF",
+    "XLE",
+    "XLY",
+    "XLP",
+    "XLI",
+    "XLB",
+    "XLV",
+    "XLU"
+  ],
+  "dates": {
+    "requested_start": "2007-05-30",
+    "requested_end": "2026-08-27",
+    "authenticated_overlap_rule": "For each symbol, use the later first date and earlier last date across the stored Yahoo series and authenticated Alpaca split-adjusted series. The fully common candidate panel uses the intersection across all symbols and both sources."
+  },
+  "sources": {
+    "yahoo": {
+      "snapshot": "Exact content-addressed Generation 4 private panel; no Yahoo redownload",
+      "field": "chart.result[0].indicators.adjclose[0].adjclose",
+      "semantics": "Adjusted close includes distributions and splits according to Yahoo's provider methodology; the stored response does not expose an independently auditable adjustment formula."
+    },
+    "alpaca_split": {
+      "origin": "https://data.alpaca.markets",
+      "path": "/v2/stocks/bars",
+      "method": "GET",
+      "field": "bars[symbol][].c",
+      "timeframe": "1Day",
+      "feed": "iex",
+      "adjustment": "split",
+      "role": "Primary price-feed fidelity series. IEX is a single-exchange feed, so exact close equality with Yahoo is not expected."
+    },
+    "alpaca_all": {
+      "origin": "https://data.alpaca.markets",
+      "path": "/v2/stocks/bars",
+      "method": "GET",
+      "field": "bars[symbol][].c",
+      "timeframe": "1Day",
+      "feed": "iex",
+      "adjustment": "all",
+      "role": "Identify distribution-adjustment intervals and provide the candidate-level total-return-like source-concordance diagnostic."
+    }
+  },
+  "alignment_and_null_policy": {
+    "timezone": "UTC date derived from each provider timestamp; stored Yahoo points already use YYYY-MM-DD",
+    "chronology": "Each source/symbol series must be strictly increasing with no duplicate dates and finite positive closes; any violation fails closed.",
+    "alignment": "Inner-join exact dates only. Never forward-fill, backward-fill, interpolate, splice, or substitute a missing value.",
+    "return_definition": "Natural log of close_t / close_t-1 on adjacent dates in the aligned common-date sequence.",
+    "distribution_interval_detection": "Mark an interval when absolute(Alpaca-all log return minus Alpaca-split log return) exceeds 0.01 basis point (0.000001 return units).",
+    "ordinary_session_fidelity_sample": "Exclude marked distribution-adjustment intervals from the Yahoo-adjusted versus Alpaca-split price-feed fidelity statistics. The output must disclose excluded count, fraction, all excluded dates in JSON, and at most ten example dates in Markdown.",
+    "reason_for_exclusion": "Yahoo adjusted close includes cash distributions while Alpaca split adjustment does not. Keeping those intervals in the price-feed gate would test different economic definitions rather than feed fidelity. The exclusion is frozen before authentication and may not exceed the cap below.",
+    "candidate_diagnostic": "Run the selected candidate and SPY on the exact fully common panel using stored Yahoo adjusted close and Alpaca adjustment=all separately."
+  },
+  "pass_thresholds": {
+    "minimum_common_sessions_per_symbol": 1000,
+    "minimum_date_coverage_each_direction": 0.95,
+    "distribution_interval_detection_difference_bps": 0.01,
+    "maximum_distribution_interval_exclusion_fraction": 0.08,
+    "minimum_ordinary_log_return_observations": 900,
+    "minimum_ordinary_log_return_correlation": 0.999,
+    "maximum_median_absolute_ordinary_log_return_difference_bps": 5,
+    "maximum_p99_absolute_ordinary_log_return_difference_bps": 50,
+    "minimum_full_panel_sessions": 1000,
+    "minimum_full_panel_yahoo_date_coverage": 0.95,
+    "minimum_exact_top_three_signal_agreement": 0.9,
+    "minimum_mean_top_three_jaccard": 0.95,
+    "minimum_candidate_daily_log_return_correlation": 0.999,
+    "maximum_candidate_annualized_log_return_tracking_error": 0.01,
+    "maximum_candidate_vs_spy_edge_difference_bps_per_year": 50
+  },
+  "decision_rule": {
+    "pass": "All per-symbol chronology, coverage, exclusion-cap, ordinary-session log-return gates, and all candidate-level gates pass.",
+    "fail": "Any missing source, malformed payload, chronology violation, pagination failure, threshold failure, hash mismatch, or incomplete run produces FAIL_CLOSED. A failure may not be relabeled as source validation.",
+    "claims_boundary": "A pass supports source concordance over authenticated overlap only. It does not establish future profitability, economic causality, or independence from universe-selection, survivorship, growth-tilt, or multiple-testing bias."
+  },
+  "security": {
+    "credentials": "Read only from ignored local environment variables and send only as Alpaca authentication headers.",
+    "persistence": "Never persist credentials, request headers, raw response bodies, or page tokens. Persist only hashes, aggregate metrics, dates, and source metadata."
+  }
+}

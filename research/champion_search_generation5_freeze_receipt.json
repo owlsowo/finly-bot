@@ -1,0 +1,42 @@
+{
+  "schema_version": "finly_champion_search_generation5_freeze_receipt.v1",
+  "status": "frozen_before_first_generation_5_output",
+  "created_at": "2026-08-29T11:28:04Z",
+  "independent_static_audit": "GO after formula/protocol identity, causal close-t to close-t+1 timing, fixed 21-session cadence, exact control weights, lookbacks, individual trend gates, residual-estimation windows, lagged EWMA weights, long-only gross caps, selection gates, recent vetoes, deterministic ties, source pins, and trial accounting were checked without executing Generation 5 outcomes.",
+  "claim_boundary": "This is a local timestamp, not an independent time authority. All market history, the Generation 1-4 results, and the themes used to design these formulas were already seen. The panel uses revised adjusted closes and a 2026-surviving ETF menu. Hash freezing makes the next execution reproducible but cannot create an untouched holdout, prove future profitability, or justify live capital.",
+  "files": {
+    "research/champion_search_generation5_protocol.json": "d2187039d1471dd4e27681d350355f917aec556f019c09f8155bb48c0509f10e",
+    "research/champion_trial_ledger_generation5.json": "eb3fa92618a5c5b72282295360cece394ec8b9449ec43c88d40d57f943227fd0",
+    "research/champion_engine.mjs": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e",
+    "research/champion_strategies.mjs": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d",
+    "research/champion_strategies_generation4.mjs": "a3e0124f2171773ca23c8a6e932dd1e3d5d5b265e7e198fdf21971cdaf5c4992",
+    "research/champion_strategies_generation5.mjs": "ed39a207d404c401a3735945d0e2559367dda28f0063a18c6daeeed5fc002c28",
+    "research/run_quant_champion_generation5.mjs": "5eb5f252b97a128fb73622ec5cfc0933e9f81e92def237cceba5cd62f1e24bb8",
+    "research/champion_statistics.mjs": "bc3d681771012f11ef27aeb2b7d61a1862d3d026818e4c3b623e041cf5a688de",
+    "tests/champion_engine.test.mjs": "a77ff77204e00b3be28e32e993ac9a699e580ca5548a9f864a8f19a7f9d9ef9d",
+    "tests/champion_generation4.test.mjs": "9a6d87f81d000fbcbf754dbcefacf68e25ff786a01cbbaac952cfd3786a469bc",
+    "tests/champion_generation5.test.mjs": "0310cfbb6defe07ff8279110f32ded2cd41b7ef7d7c704a8197e041c7145127e",
+    "tests/champion_statistics.test.mjs": "28479ac1fc43ef2593ce1e4782bb0e57cc1857035afc20686e4bd6234f918938",
+    "research/champion_search_generation4_protocol.json": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "research/champion_trial_ledger_generation4.json": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88",
+    "research/output/quant_champion_generation4.json": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+    "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014"
+  },
+  "frozen_generation_4_inputs": {
+    "protocol_sha256": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "trial_ledger_sha256": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88",
+    "output_sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+    "panel_payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+    "panel_normalized_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883"
+  },
+  "validation_before_freeze": {
+    "targeted_generation_5_tests": "12/12 passed",
+    "combined_engine_generation_4_generation_5_tests": "20/20 passed",
+    "targeted_eslint": "passed",
+    "syntax_and_json_checks": "passed"
+  },
+  "declared_cumulative_effective_trials": 105,
+  "generation_5_results_seen_at_freeze": false,
+  "generation_5_output_absent_at_freeze": true,
+  "market_fetch_permitted": false
+}

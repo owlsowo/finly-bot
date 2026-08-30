@@ -1,0 +1,93 @@
+{
+  "schema_version": "finly_fixture.v1",
+  "run_id": "decision_demo_spy_20260828_143005",
+  "decision_time": "2026-08-28T18:30:05.000Z",
+  "data_mode": "synthetic_replay",
+  "code_version": "demo-fixture-v1",
+  "horizon_sessions": 5,
+  "account": {
+    "mode": "paper",
+    "base_url": "https://paper-api.alpaca.markets",
+    "execution_transport": "mcp",
+    "equity": 100000,
+    "open_defined_risk": 0,
+    "age_seconds": 2,
+    "trading_blocked": false
+  },
+  "market": {
+    "underlying": "SPY",
+    "spot": 560,
+    "observed_at": "2026-08-28T18:30:03.200Z",
+    "quote_age_seconds": 1.8,
+    "option_feed": "indicative",
+    "feed_disclosure": "Synthetic fixture shaped like Alpaca indicative option data; not OPRA, NBBO, or a live quote.",
+    "history_mode": "synthetic_fixture",
+    "historical_log_returns": [0.0036,0.008803,-0.000904,-0.006754,0.000113,-0.000186,-0.008773,-0.004757,0.006004,0.003231,-0.002466,0.004318,0.007293,-0.003574,-0.007681,0.000126,-0.000818,-0.008183,-0.002097,0.007799,0.00308,-0.002397,0.004348,0.005234,-0.006097,-0.007999,0.000688,-0.000881,-0.006996,0.000627,0.008999,0.002266,-0.002833,0.003837,0.00293,-0.008152,-0.007544,0.001795,-0.000503,-0.005479,0.003083,0.009392,0.000779,-0.003651,0.00302,0.000702,-0.009483,-0.006269,0.003323,0.000097,-0.00393,0.004988,0.008884,-0.001265,-0.004632,0.002172,-0.001162,-0.009946,-0.00426,0.005045,0.000655,-0.002624,0.006158,0.007513,-0.00364,-0.005502,0.001555,-0.00246,-0.009524,-0.001727,0.006672,0.000911,-0.001765,0.006532,0.005448,-0.006044,-0.005989,0.001365,-0.003103,-0.008334,0.001035,0.007901,0.000665,-0.001448,0.006178,0.002957,-0.00815,-0.00587,0.0017,-0.003131,-0.006602,0.003689,0.008476,-0.000186,-0.001647,0.005281]
+  },
+  "signals": [
+    {
+      "schema_version": "source_signal.v1",
+      "family": "market",
+      "underlying": "SPY",
+      "direction_score": -0.82,
+      "volatility_score": 0.18,
+      "quality": 0.98,
+      "freshness": 0.99,
+      "calibration": 0.95,
+      "independence": 0.98,
+      "evidence_ids": ["sha256:2a9a1daf716868117218aadcb3f7d54f321fb2ce7c3fa54263fb2dfd2395e65b"],
+      "evidence": [{"schema_version":"evidence_record.v1","family":"market","underlying":"SPY","source_kind":"synthetic_fixture","source_uri":"urn:finly:synthetic:market:2026-08-28","origin_id":"finly.synthetic.market.v1","published_at":"2026-08-28T18:29:00.000Z","received_at":"2026-08-28T18:29:01.000Z","available_at":"2026-08-28T18:29:01.000Z","content_sha256":"sha256:9788c400e823e1d647484b859ab96ba89e64f1bdf62b8c01a1aa30dfb8031c45","duplicate_group":"sha256:7a44b25a024bfa440307dfb1fc5d8c2f1df3176cf6617c224be0f1fe37c3746c","evidence_id":"sha256:2a9a1daf716868117218aadcb3f7d54f321fb2ce7c3fa54263fb2dfd2395e65b"}],
+      "explanation": "Five- and twenty-session momentum are negative; volume confirmation is modest."
+    },
+    {
+      "schema_version": "source_signal.v1",
+      "family": "options",
+      "underlying": "SPY",
+      "direction_score": -0.86,
+      "volatility_score": 0.22,
+      "quality": 0.98,
+      "freshness": 0.99,
+      "calibration": 0.95,
+      "independence": 0.98,
+      "evidence_ids": ["sha256:17048ce70d010803c38b477e6b21454d89e1e408946de2080a0365f0e813bdd8"],
+      "evidence": [{"schema_version":"evidence_record.v1","family":"options","underlying":"SPY","source_kind":"synthetic_fixture","source_uri":"urn:finly:synthetic:options:2026-08-28","origin_id":"finly.synthetic.options.v1","published_at":"2026-08-28T18:29:00.000Z","received_at":"2026-08-28T18:29:01.000Z","available_at":"2026-08-28T18:29:01.000Z","content_sha256":"sha256:7a76941460d83da7d333a2cbe281d61e9b5c7c2c7e4cdc3cb5b5043378df1a81","duplicate_group":"sha256:ee58ef2829de212772d42462c57a2623109bbd4c790654705a3fd39110477688","evidence_id":"sha256:17048ce70d010803c38b477e6b21454d89e1e408946de2080a0365f0e813bdd8"}],
+      "explanation": "Put skew and signed surface features lean bearish without a volatility shock."
+    },
+    {
+      "schema_version": "source_signal.v1",
+      "family": "events",
+      "underlying": "SPY",
+      "direction_score": -0.84,
+      "volatility_score": 0.14,
+      "quality": 0.96,
+      "freshness": 0.98,
+      "calibration": 0.92,
+      "independence": 0.96,
+      "evidence_ids": ["sha256:844ea6e35be3b1694681a6a1f7d9ea98eefc191179c31a112586c52cfbe8e902"],
+      "evidence": [{"schema_version":"evidence_record.v1","family":"events","underlying":"SPY","source_kind":"synthetic_fixture","source_uri":"urn:finly:synthetic:events:2026-08-28","origin_id":"finly.synthetic.events.v1","published_at":"2026-08-28T18:29:00.000Z","received_at":"2026-08-28T18:29:01.000Z","available_at":"2026-08-28T18:29:01.000Z","content_sha256":"sha256:0f06e47be1243ff32d805e3c698111fdf7f0df6d38ce1f6ffd180fdfda089c9e","duplicate_group":"sha256:7709e3bd6aaeaec7be9cad67a604deb0aecf8dcdbae8561f9b2b7fd10e64db32","evidence_id":"sha256:844ea6e35be3b1694681a6a1f7d9ea98eefc191179c31a112586c52cfbe8e902"}],
+      "explanation": "Timestamped macro-event fixture implies a short-horizon growth-risk tilt."
+    },
+    {
+      "schema_version": "source_signal.v1",
+      "family": "prediction_market",
+      "underlying": "SPY",
+      "direction_score": -0.72,
+      "volatility_score": 0.08,
+      "quality": 0.94,
+      "freshness": 0.96,
+      "calibration": 0.90,
+      "independence": 0.95,
+      "evidence_ids": ["sha256:346bea13fed913c06634baa25606ad4e3ab59a936d3a81f4402d87537ceb32f3"],
+      "evidence": [{"schema_version":"evidence_record.v1","family":"prediction_market","underlying":"SPY","source_kind":"synthetic_fixture","source_uri":"urn:finly:synthetic:prediction_market:2026-08-28","origin_id":"finly.synthetic.prediction_market.v1","published_at":"2026-08-28T18:29:00.000Z","received_at":"2026-08-28T18:29:01.000Z","available_at":"2026-08-28T18:29:01.000Z","content_sha256":"sha256:d670a34a31ddc4fb4186562390a2c505cb782d7379855038ac701fa2e95f071c","duplicate_group":"sha256:1db4a523cd87500cd8b4b424f9cc43536641ac39058d56fdfb5801cf71849bfe","evidence_id":"sha256:346bea13fed913c06634baa25606ad4e3ab59a936d3a81f4402d87537ceb32f3"}],
+      "explanation": "A semantically matched, liquid macro contract corroborates downside risk; capped at 5% base weight."
+    }
+  ],
+  "option_chain": [
+    {"underlying":"SPY","symbol":"SPY260904P00570000","type":"put","expiry":"2026-09-04","strike":570,"bid":11.00,"ask":11.60,"iv":0.235,"dte":7,"feed":"indicative","quote_age_seconds":1.8,"open_interest":4200,"tradable":true},
+    {"underlying":"SPY","symbol":"SPY260904P00565000","type":"put","expiry":"2026-09-04","strike":565,"bid":8.40,"ask":8.90,"iv":0.230,"dte":7,"feed":"indicative","quote_age_seconds":1.8,"open_interest":7600,"tradable":true},
+    {"underlying":"SPY","symbol":"SPY260904P00560000","type":"put","expiry":"2026-09-04","strike":560,"bid":6.10,"ask":6.50,"iv":0.225,"dte":7,"feed":"indicative","quote_age_seconds":1.8,"open_interest":9800,"tradable":true},
+    {"underlying":"SPY","symbol":"SPY260904P00555000","type":"put","expiry":"2026-09-04","strike":555,"bid":4.20,"ask":4.60,"iv":0.222,"dte":7,"feed":"indicative","quote_age_seconds":1.8,"open_interest":11200,"tradable":true},
+    {"underlying":"SPY","symbol":"SPY260904P00550000","type":"put","expiry":"2026-09-04","strike":550,"bid":2.90,"ask":3.20,"iv":0.220,"dte":7,"feed":"indicative","quote_age_seconds":1.8,"open_interest":14400,"tradable":true},
+    {"underlying":"SPY","symbol":"SPY260904C00560000","type":"call","expiry":"2026-09-04","strike":560,"bid":6.00,"ask":6.40,"iv":0.215,"dte":7,"feed":"indicative","quote_age_seconds":1.8,"open_interest":8700,"tradable":true}
+  ]
+}

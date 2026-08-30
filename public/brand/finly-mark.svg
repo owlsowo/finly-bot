@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Finly bull-horn mark</title>
+  <desc id="desc">A flat bull-horn symbol framing the letter F.</desc>
+  <path d="M8 9c8 2 14 8 18 18-8-3-13-8-15-15-2 5-2 10 0 16-5-5-6-12-3-19Z" fill="#dce5dc" stroke="#102f4f" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M56 9c-8 2-14 8-18 18 8-3 13-8 15-15 2 5 2 10 0 16 5-5 6-12 3-19Z" fill="#dce5dc" stroke="#102f4f" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M20 25c3-5 7-7 12-7s9 2 12 7l-2 20c-3 7-6 10-10 12-4-2-7-5-10-12l-2-20Z" fill="#39745d" stroke="#102f4f" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M27 27h12v4h-7v6h6v4h-6v10h-5V27Z" fill="#f7f6f2"/>
+</svg>

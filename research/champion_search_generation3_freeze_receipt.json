@@ -1,0 +1,19 @@
+{
+  "schema_version": "finly_champion_search_generation3_freeze_receipt.v1",
+  "status": "frozen_before_first_generation_3_output",
+  "created_at": "2026-08-29T10:39:32Z",
+  "independent_static_audit": "GO after formula/protocol identity, lookbacks, queued chronology, boundary costs, membership, selection tie-breaks, vetoes, and null paths were checked without executing results.",
+  "claim_boundary": "This is a local timestamp, not an independent time authority. All market history and prior search results are seen. File hashes are reproducibility anchors; a retrospective pass can earn only shadow status.",
+  "files": {
+    "research/champion_search_generation3_protocol.json": "2f701cf0ba193191b15d7422df9bc11a09fb7dcb8ba5bc2e4de0804a3f8843c6",
+    "research/champion_trial_ledger.json": "cbd88396b4bd5e0f2fa805584496b50451e023168d937bf0352708678576d604",
+    "research/champion_engine.mjs": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e",
+    "research/champion_strategies.mjs": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d",
+    "research/champion_strategies_generation3.mjs": "55ccb9267e5480bf1da4719ea1f3eaea8cb53bb644de239dd7c835f35b64ec02",
+    "research/run_quant_champion_generation3.mjs": "3afafb999a66796b88511360fcab2e140b6408e5595a8ef03aee4cb0d88a0e3b",
+    "tests/champion_engine.test.mjs": "a77ff77204e00b3be28e32e993ac9a699e580ca5548a9f864a8f19a7f9d9ef9d",
+    "tests/champion_generation3.test.mjs": "bd9579ae2a539342d673c4d7d853b3a0446a6fd523bc69e921a3bb1d92cf4fe9"
+  },
+  "declared_cumulative_effective_trials": 92,
+  "generation_3_results_seen_at_freeze": false
+}

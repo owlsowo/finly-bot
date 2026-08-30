@@ -1,0 +1,16 @@
+{
+  "schema_version": "finly_champion_generation5_result_receipt.v1",
+  "created_at": "2026-08-29T11:42:29Z",
+  "disposition": "KEEP_V1",
+  "raw_spy_selected": null,
+  "growth_control_selected": null,
+  "claim_boundary": "Local post-run integrity receipt only. It anchors the once-executed frozen Generation 5 result and content-addressed private ledger. It is not a server timestamp, independent attestation, alpha claim, or future-profit evidence.",
+  "files": {
+    "research/champion_search_generation5_protocol.json": "d2187039d1471dd4e27681d350355f917aec556f019c09f8155bb48c0509f10e",
+    "research/champion_search_generation5_freeze_receipt.json": "77eafc80d2d5eabec46e22d9193b9f4a8ab51eee199fdca10b1ef176b35351f0",
+    "research/champion_trial_ledger_generation5.json": "eb3fa92618a5c5b72282295360cece394ec8b9449ec43c88d40d57f943227fd0",
+    "research/output/quant_champion_generation5.json": "7e750ce659f4589b0df073195965ae3152f80175c5b9b9eae8b3ab9df839f6a5",
+    "research/output/quant_champion_generation5_report.md": "228e579cea8afa54ecedab8f64cecea5aa83d0e6e506e67b498288d7a02efa03",
+    "data/private/champion_search/generation5_ledger_4054b1c86b88d63d84db6c341d2ab7d05059eb1bd5106c58583179176477afc3.json.gz": "4054b1c86b88d63d84db6c341d2ab7d05059eb1bd5106c58583179176477afc3"
+  }
+}

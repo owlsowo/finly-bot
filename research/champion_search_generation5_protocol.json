@@ -1,0 +1,224 @@
+{
+  "schema_version": "finly_champion_search_generation5_protocol.v1",
+  "status": "preregistered_before_first_generation_5_output",
+  "created_at": "2026-08-29T11:19:27Z",
+  "frozen_before_first_generation_5_output": true,
+  "known_prior_result": {
+    "generation_4_output_sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+    "generation_4_selected_candidate": "qqq_core_sector_12_6",
+    "generation_4_disposition_after_robustness": "KEEP_V1_POST_SELECTION_ROBUSTNESS_FAILED",
+    "generation_4_local_robustness_passed": false,
+    "generation_4_source_overlap_disposition": "FAIL_CLOSED",
+    "finding": "The Generation 4 candidate beat SPY across both selection slices and survived cost and schedule stress, but failed deflated/statistical evidence, failed the frozen consistency test against static growth exposure, trailed QQQ, and could not pass authenticated all-symbol source reconciliation."
+  },
+  "purpose": "Run exactly five counted, literature-pinned Generation 5 formulas on the immutable Generation 4 panel. The family separates raw SPY advancement from the harder QQQ/static-growth-control advancement and forbids any post-output parameter or menu change.",
+  "claim_boundary": "All market history, earlier search output, and the themes used to construct Generation 5 have been seen. Any pass is a retrospective model-comparison result only. It cannot establish future profitability, independent alpha, options profitability, or permission for live capital.",
+  "frozen_inputs": {
+    "generation_4_protocol": {
+      "path": "research/champion_search_generation4_protocol.json",
+      "sha256": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5"
+    },
+    "generation_4_trial_ledger": {
+      "path": "research/champion_trial_ledger_generation4.json",
+      "sha256": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88"
+    },
+    "generation_4_output": {
+      "path": "research/output/quant_champion_generation4.json",
+      "sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788"
+    },
+    "generation_4_private_panel": {
+      "path": "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json",
+      "payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+      "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+      "schema_version": "finly_generation4_private_panel.v1",
+      "common_start": "2007-05-30",
+      "common_end": "2026-08-27",
+      "common_sessions": 4843
+    },
+    "engine": {
+      "path": "research/champion_engine.mjs",
+      "sha256": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e"
+    },
+    "primary_strategies": {
+      "path": "research/champion_strategies.mjs",
+      "sha256": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d"
+    },
+    "generation_4_strategies": {
+      "path": "research/champion_strategies_generation4.mjs",
+      "sha256": "a3e0124f2171773ca23c8a6e932dd1e3d5d5b265e7e198fdf21971cdaf5c4992"
+    }
+  },
+  "data": {
+    "provider": "Hash-pinned saved Generation 4 Yahoo Finance adjusted-close panel",
+    "runner_market_fetch_permitted": false,
+    "symbols": [
+      "SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ",
+      "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"
+    ],
+    "warmup_sessions": 252,
+    "two_factor_residual_warmup_sessions": 756,
+    "null_policy": "Use the immutable common-date panel exactly as frozen. Never forward fill, splice providers, add symbols, or refetch data.",
+    "bias_boundary": "The adjusted-close series are revised and the 2026-surviving ETF menu, QQQ, formula family, horizons, trend filters, and development/validation dates were chosen after historical outcomes were known."
+  },
+  "execution": {
+    "signal_trade_return": "close-t information -> queued close-t+1 execution -> first t+1-to-t+2 return",
+    "rebalance_interval_sessions": 21,
+    "discovery_anchor": 0,
+    "base_one_way_cost_bps_per_absolute_traded_notional": 5,
+    "cost_stress_bps": [10, 25],
+    "long_only": true,
+    "maximum_risky_gross": 1,
+    "residual_cash_proxy": "BIL",
+    "standalone_boundaries": "Every scored slice starts from BIL, charges entry turnover at the slice boundary, and charges final risky liquidation.",
+    "deterministic_ties": "Every numeric rank uses alphabetical ticker order for exact ties; strict trend and relative comparisons send equality to BIL or the stated fallback."
+  },
+  "registered_formulas": [
+    {
+      "trial": 101,
+      "id": "static_qqq_equal_sectors_control",
+      "eligible": false,
+      "formula": "Every 21 sessions rebalance to 50% QQQ and 50% divided equally across XLK/XLF/XLE/XLY/XLP/XLI/XLB/XLV/XLU. This control isolates selection from a static QQQ-plus-sector allocation."
+    },
+    {
+      "trial": 102,
+      "id": "flex_top5_voladj_momentum_trend",
+      "eligible": true,
+      "formula": "Every 21 sessions rank all 19 non-BIL panel ETFs by 252-session adjusted-close total return divided by annualized standard deviation of the 252 simple daily returns ending t. The top five receive fixed 20% slots; each slot is invested only when its asset is strictly above its inclusive 210-session SMA at t, otherwise that slot remains in BIL."
+    },
+    {
+      "trial": 103,
+      "id": "sector_12_1_top3_individual_trend",
+      "eligible": true,
+      "formula": "Every 21 sessions rank the original nine sectors by log(P[t-21]/P[t-252]). The top three receive fixed one-third slots; each slot is invested only when that sector is strictly above its inclusive 210-session SMA at t, otherwise that slot remains in BIL."
+    },
+    {
+      "trial": 104,
+      "id": "qqq_vs_two_factor_residual_sector_basket",
+      "eligible": true,
+      "formula": "After 756 sessions, for each original sector fit excess log return on an intercept, SPY-minus-BIL, and QQQ-minus-SPY over daily return endpoints t-755 through t-252. Freeze those coefficients and score mean/sample-standard-deviation residuals over endpoints t-251 through t-21. Rank descending, take the top three, and hold them equally only when their mean 12-minus-1 BIL-excess log return is strictly above QQQ's; otherwise hold QQQ. Before complete history or on any invalid fit, hold QQQ."
+    },
+    {
+      "trial": 105,
+      "id": "long_only_tsmom_ewma60",
+      "eligible": true,
+      "formula": "Every 21 sessions admit SPY/IWM/EFA/EEM/IEF/TLT/GLD/DBC/VNQ whose 252-session log return is strictly above BIL's. Estimate each admitted asset's annualized volatility from all simple daily returns through t with normalized EWMA weights proportional to delta^lag, delta=60/61. Allocate inverse volatility and normalize risky gross to one; hold BIL when none qualifies or any required input is invalid."
+    }
+  ],
+  "trial_accounting": {
+    "ledger": "research/champion_trial_ledger_generation5.json",
+    "prior_cumulative_effective_trials": 100,
+    "generation_5_range": "101-105",
+    "cumulative_effective_trials": 105,
+    "counting_boundary": "The ineligible static control counts. Every registered formula counts even if it fails before selection; execution itself adds no further trial."
+  },
+  "partitions": {
+    "development": {
+      "start": "2008-06-02",
+      "end": "2017-12-29",
+      "status": "seen_and_consumed"
+    },
+    "validation": {
+      "start": "2018-01-02",
+      "end": "2024-12-31",
+      "status": "seen_and_consumed"
+    },
+    "recent_veto_only": {
+      "start": "2025-01-02",
+      "end": "2026-08-28",
+      "observed_end_expected": "2026-08-27",
+      "status": "seen_consumed_and_never_used_to_rank"
+    }
+  },
+  "comparators": [
+    "spy_buy_hold",
+    "qqq_buy_hold",
+    "static_spy_qqq_50_50_control",
+    "static_qqq_equal_sectors_control",
+    "qqq_core_sector_12_6",
+    "frozen_finly",
+    "spy_vol_target_15",
+    "bil_cash"
+  ],
+  "selection_tracks": {
+    "raw_spy": {
+      "candidate_ids": [
+        "flex_top5_voladj_momentum_trend",
+        "sector_12_1_top3_individual_trend",
+        "qqq_vs_two_factor_residual_sector_basket",
+        "long_only_tsmom_ewma60"
+      ],
+      "required": [
+        "development annualized log-growth edge versus SPY is strictly greater than 0.50 percentage points",
+        "validation annualized log-growth edge versus SPY is strictly greater than 0.50 percentage points",
+        "development maximum drawdown is no more than five percentage points worse than SPY",
+        "validation maximum drawdown is no more than five percentage points worse than SPY",
+        "the consumed recent hard-safety veto does not fire"
+      ],
+      "score": "minimum development/validation annualized log-growth edge versus SPY",
+      "label_if_selected": "RAW_SPY_ROBUSTNESS_PENDING"
+    },
+    "growth_control": {
+      "candidate_ids": [
+        "flex_top5_voladj_momentum_trend",
+        "sector_12_1_top3_individual_trend",
+        "qqq_vs_two_factor_residual_sector_basket",
+        "long_only_tsmom_ewma60"
+      ],
+      "required": [
+        "development and validation annualized log-growth edges versus QQQ are strictly positive",
+        "development and validation annualized log-growth edges versus static 50/50 SPY/QQQ are strictly positive",
+        "development and validation annualized log-growth edges versus static 50% QQQ plus equal sectors are strictly positive",
+        "the consumed recent hard-safety veto does not fire"
+      ],
+      "score": "minimum of the six qualifying development/validation growth-control edges",
+      "label_if_selected": "GROWTH_CONTROL_ROBUSTNESS_PENDING"
+    },
+    "shared_tie_breaks": [
+      "shallower validation maximum drawdown",
+      "lower validation annualized turnover",
+      "alphabetical candidate identifier"
+    ],
+    "recent_veto": "Veto when recent maximum drawdown is below -20%, recent total return trails BIL, or recent drawdown is over five percentage points worse than SPY. Recent history cannot rank, rescue, or break ties.",
+    "no_pass_disposition": "KEEP_V1"
+  },
+  "post_selection_robustness": [
+    "replay the selected formula without search and preserve positive qualifying edges at 5/10/25 bp one-way costs",
+    "preserve positive qualifying edges across all 21 native rebalance anchors",
+    "apply deflated paired Sharpe evidence using at least 105 effective trials",
+    "apply shared-path circular and moving block maximum-statistic tests at frozen 5/20/60-session block lengths",
+    "report comparisons to QQQ, both static growth controls, the Generation 4 candidate, frozen Finly, SPY volatility targeting, and BIL",
+    "require a separately preregistered authenticated source-overlap PASS for every symbol used by the selected candidate"
+  ],
+  "source_pins": [
+    {
+      "title": "The trend is our friend: Risk parity, momentum and trend following in global asset allocation",
+      "doi": "10.1016/j.jbef.2016.01.002",
+      "url": "https://doi.org/10.1016/j.jbef.2016.01.002"
+    },
+    {
+      "title": "Price and Momentum as Robust Tactical Approaches to Global Equity Investing",
+      "doi": "10.3905/joi.2010.19.3.080",
+      "url": "https://doi.org/10.3905/joi.2010.19.3.080"
+    },
+    {
+      "title": "Do Industries Explain Momentum?",
+      "doi": "10.1111/0022-1082.00146",
+      "url": "https://doi.org/10.1111/0022-1082.00146"
+    },
+    {
+      "title": "Residual Momentum",
+      "doi": "10.1016/j.jempfin.2011.01.003",
+      "url": "https://doi.org/10.1016/j.jempfin.2011.01.003"
+    },
+    {
+      "title": "Time Series Momentum",
+      "doi": "10.1016/j.jfineco.2011.11.003",
+      "url": "https://doi.org/10.1016/j.jfineco.2011.11.003"
+    },
+    {
+      "title": "Time series momentum and volatility scaling",
+      "doi": "10.1016/j.finmar.2016.05.003",
+      "url": "https://doi.org/10.1016/j.finmar.2016.05.003"
+    }
+  ]
+}

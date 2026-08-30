@@ -1,0 +1,304 @@
+{
+  "schema_version": "finly_economic_options_overlay_replay.v1",
+  "generated_at": "2026-08-28T18:30:05.000Z",
+  "scope": "PUBLIC_SYNTHETIC_NON_MUTATING_ARCHITECTURE_REPLAY",
+  "claim_boundary": "This artifact proves deterministic control flow and bounded option compilation, not historical or future options profitability.",
+  "economic_core": {
+    "bundle_sha256": "sha256:de56b227382ea380e55b0708f82be00666db3aaded64c38956e8f91e7589b039",
+    "base_decision_receipt_sha256": "sha256:3c3edee5d022c677f056e197675e6a5845c3b4cd00023c5b5304982e888c7538",
+    "committee_receipt_sha256": "sha256:a080fba73acdc74a64b144d8ccea8f5376cdd4a661717c42e1170a2b14fccefb",
+    "decision": "PROPOSE_REBALANCE",
+    "final_spy_weight": 1,
+    "mutation_requested": false
+  },
+  "branches": [
+    {
+      "name": "NO_MODEL_BASELINE",
+      "model_event_direction_score": null,
+      "decision_receipt_sha256": "sha256:86fe7b3056549dcfcbc00196c6374af6d6cc181ad646e44f074e82319eb9f237",
+      "intent": {
+        "schema_version": "finly_intent.v1",
+        "underlying": "SPY",
+        "direction": "bullish",
+        "direction_score": 0.957143,
+        "volatility_score": -0.114286,
+        "coverage": 1,
+        "agreement": 1,
+        "active_weight": 1,
+        "horizon_sessions": 5,
+        "source_families": [
+          "market",
+          "options"
+        ],
+        "evidence_root": "sha256:fdc6f316cff1cbaec413af074da318cfa71dc8dcae39628a9fbdc215002adde5"
+      },
+      "economic_direction_authority": {
+        "schema_version": "finly_economic_options_direction_authority.v1",
+        "decision": "ALLOW_BULLISH_DIRECTION_ONLY",
+        "direction": "bullish",
+        "maximum_direction_score": 1,
+        "authority_weight": 0.5,
+        "economic_bundle_sha256": "sha256:de56b227382ea380e55b0708f82be00666db3aaded64c38956e8f91e7589b039",
+        "economic_guard_receipt_sha256": "sha256:ec9d856f2a9a3d4143763beb198b5f2c535fdfc1c3079cff102437bb532c247e",
+        "reduction_only": true,
+        "broker_mutation_authorized": false,
+        "authority_sha256": "sha256:1c0e233fe43e798d024138918164b6bac25e905d28673a1d18ee2c9a9731401f"
+      },
+      "options_compilation": {
+        "action": "BULL_CALL_DEBIT_SPREAD",
+        "reason": null,
+        "selected_candidate": {
+          "candidate_id": "sha256:dcdaa0cd4a206c6cd222e2fc4fcb313734a93c225c6839245b4f674912c338d5",
+          "action": "BULL_CALL_DEBIT_SPREAD",
+          "underlying": "SPY",
+          "expiry": "2026-09-11",
+          "long_symbol": "SPY260911C00565000",
+          "short_symbol": "SPY260911C00570000",
+          "width": 5,
+          "entry_debit": 1.06,
+          "maximum_loss_per_contract": 106,
+          "maximum_gain_per_contract": 394,
+          "conservative_expected_value": 112.91,
+          "probability_profit": 0.7275
+        }
+      },
+      "stability": {
+        "source_removal_passed": true,
+        "perturbations_passed": true
+      },
+      "synthetic_certificate": {
+        "authorization_scope": "synthetic_replay",
+        "certified": true,
+        "decision": "BULL_CALL_DEBIT_SPREAD",
+        "quantity": 4,
+        "reserved_maximum_loss": 424,
+        "rejection_codes": [],
+        "certificate_id": "sha256:da9a75d87c49bfbde29634dce6c19b8c0323875558271ae0f0a917059ca31c6b"
+      },
+      "execution_boundary": {
+        "broker_mutation_requested": false,
+        "executor_invoked": false,
+        "broker_payload_published": false,
+        "synthetic_scope_is_rejected_by_paper_executor": true
+      }
+    },
+    {
+      "name": "SUPPORTIVE_MODEL_CANNOT_AMPLIFY",
+      "model_event_direction_score": 0.8,
+      "decision_receipt_sha256": "sha256:c3d2e43590b9f1ae2c936d0a40b8459ddbbbca8260e9ba286fa976b4a29ca36c",
+      "intent": {
+        "schema_version": "finly_intent.v1",
+        "underlying": "SPY",
+        "direction": "bullish",
+        "direction_score": 0.957143,
+        "volatility_score": -0.114286,
+        "coverage": 1,
+        "agreement": 1,
+        "active_weight": 1,
+        "horizon_sessions": 5,
+        "source_families": [
+          "events",
+          "market",
+          "options"
+        ],
+        "evidence_root": "sha256:05c060b9c78f08671f0db3b04fc69018de9be69a14715cac90600f20073e17ee"
+      },
+      "economic_direction_authority": {
+        "schema_version": "finly_economic_options_direction_authority.v1",
+        "decision": "ALLOW_BULLISH_DIRECTION_ONLY",
+        "direction": "bullish",
+        "maximum_direction_score": 1,
+        "authority_weight": 0.5,
+        "economic_bundle_sha256": "sha256:de56b227382ea380e55b0708f82be00666db3aaded64c38956e8f91e7589b039",
+        "economic_guard_receipt_sha256": "sha256:ec9d856f2a9a3d4143763beb198b5f2c535fdfc1c3079cff102437bb532c247e",
+        "reduction_only": true,
+        "broker_mutation_authorized": false,
+        "authority_sha256": "sha256:1c0e233fe43e798d024138918164b6bac25e905d28673a1d18ee2c9a9731401f"
+      },
+      "options_compilation": {
+        "action": "BULL_CALL_DEBIT_SPREAD",
+        "reason": null,
+        "selected_candidate": {
+          "candidate_id": "sha256:dcdaa0cd4a206c6cd222e2fc4fcb313734a93c225c6839245b4f674912c338d5",
+          "action": "BULL_CALL_DEBIT_SPREAD",
+          "underlying": "SPY",
+          "expiry": "2026-09-11",
+          "long_symbol": "SPY260911C00565000",
+          "short_symbol": "SPY260911C00570000",
+          "width": 5,
+          "entry_debit": 1.06,
+          "maximum_loss_per_contract": 106,
+          "maximum_gain_per_contract": 394,
+          "conservative_expected_value": 112.91,
+          "probability_profit": 0.7275
+        }
+      },
+      "stability": {
+        "source_removal_passed": true,
+        "perturbations_passed": true
+      },
+      "synthetic_certificate": {
+        "authorization_scope": "synthetic_replay",
+        "certified": true,
+        "decision": "BULL_CALL_DEBIT_SPREAD",
+        "quantity": 4,
+        "reserved_maximum_loss": 424,
+        "rejection_codes": [],
+        "certificate_id": "sha256:55f5bc977a651e813cfb626ab2b0be1957253f20391504adb70e036a723e7c52"
+      },
+      "execution_boundary": {
+        "broker_mutation_requested": false,
+        "executor_invoked": false,
+        "broker_payload_published": false,
+        "synthetic_scope_is_rejected_by_paper_executor": true
+      }
+    },
+    {
+      "name": "ADVERSE_MODEL_REDUCES",
+      "model_event_direction_score": -0.25,
+      "decision_receipt_sha256": "sha256:03da11b8565de9b6c57113afe1d8ff5d1a2b84fabbe69a9ddeafc7b9c3d56a78",
+      "intent": {
+        "schema_version": "finly_intent.v1",
+        "underlying": "SPY",
+        "direction": "bullish",
+        "direction_score": 0.717857,
+        "volatility_score": -0.114286,
+        "coverage": 1,
+        "agreement": 0.75,
+        "active_weight": 1,
+        "horizon_sessions": 5,
+        "source_families": [
+          "events",
+          "market",
+          "options"
+        ],
+        "evidence_root": "sha256:9b64c38431f8e8efb2b1b4e7c3721ffe86d0035ec285ade6d3cad67d8322befa"
+      },
+      "economic_direction_authority": {
+        "schema_version": "finly_economic_options_direction_authority.v1",
+        "decision": "ALLOW_BULLISH_DIRECTION_ONLY",
+        "direction": "bullish",
+        "maximum_direction_score": 1,
+        "authority_weight": 0.5,
+        "economic_bundle_sha256": "sha256:de56b227382ea380e55b0708f82be00666db3aaded64c38956e8f91e7589b039",
+        "economic_guard_receipt_sha256": "sha256:ec9d856f2a9a3d4143763beb198b5f2c535fdfc1c3079cff102437bb532c247e",
+        "reduction_only": true,
+        "broker_mutation_authorized": false,
+        "authority_sha256": "sha256:1c0e233fe43e798d024138918164b6bac25e905d28673a1d18ee2c9a9731401f"
+      },
+      "options_compilation": {
+        "action": "BULL_CALL_DEBIT_SPREAD",
+        "reason": null,
+        "selected_candidate": {
+          "candidate_id": "sha256:dcdaa0cd4a206c6cd222e2fc4fcb313734a93c225c6839245b4f674912c338d5",
+          "action": "BULL_CALL_DEBIT_SPREAD",
+          "underlying": "SPY",
+          "expiry": "2026-09-11",
+          "long_symbol": "SPY260911C00565000",
+          "short_symbol": "SPY260911C00570000",
+          "width": 5,
+          "entry_debit": 1.06,
+          "maximum_loss_per_contract": 106,
+          "maximum_gain_per_contract": 394,
+          "conservative_expected_value": 104.51,
+          "probability_profit": 0.707
+        }
+      },
+      "stability": {
+        "source_removal_passed": true,
+        "perturbations_passed": true
+      },
+      "synthetic_certificate": {
+        "authorization_scope": "synthetic_replay",
+        "certified": true,
+        "decision": "BULL_CALL_DEBIT_SPREAD",
+        "quantity": 4,
+        "reserved_maximum_loss": 424,
+        "rejection_codes": [],
+        "certificate_id": "sha256:e260eacd28a01cdba3f80b8c0ba5cd638470278ec53b32c53524fffa1ce3a1fb"
+      },
+      "execution_boundary": {
+        "broker_mutation_requested": false,
+        "executor_invoked": false,
+        "broker_payload_published": false,
+        "synthetic_scope_is_rejected_by_paper_executor": true
+      }
+    },
+    {
+      "name": "SEVERE_MODEL_VETOES",
+      "model_event_direction_score": -1,
+      "decision_receipt_sha256": "sha256:2e3675e921e5dd71e1ed0d5300b83afc9835b1de7cc6a0859add9da08ea05f08",
+      "intent": {
+        "schema_version": "finly_intent.v1",
+        "underlying": "SPY",
+        "direction": "neutral",
+        "direction_score": 0,
+        "volatility_score": -0.114286,
+        "coverage": 1,
+        "agreement": 0,
+        "active_weight": 1,
+        "horizon_sessions": 5,
+        "source_families": [
+          "events",
+          "market",
+          "options"
+        ],
+        "evidence_root": "sha256:156bf8c8aefb8e133c4ce3a9f2d1768170f6b5d8c295a9abf960dcf92059de56"
+      },
+      "economic_direction_authority": {
+        "schema_version": "finly_economic_options_direction_authority.v1",
+        "decision": "ALLOW_BULLISH_DIRECTION_ONLY",
+        "direction": "bullish",
+        "maximum_direction_score": 1,
+        "authority_weight": 0.5,
+        "economic_bundle_sha256": "sha256:de56b227382ea380e55b0708f82be00666db3aaded64c38956e8f91e7589b039",
+        "economic_guard_receipt_sha256": "sha256:ec9d856f2a9a3d4143763beb198b5f2c535fdfc1c3079cff102437bb532c247e",
+        "reduction_only": true,
+        "broker_mutation_authorized": false,
+        "authority_sha256": "sha256:1c0e233fe43e798d024138918164b6bac25e905d28673a1d18ee2c9a9731401f"
+      },
+      "options_compilation": {
+        "action": "NO_TRADE",
+        "reason": "NO_CANDIDATE_SURVIVED_CONSERVATIVE_GATES",
+        "selected_candidate": null
+      },
+      "stability": {
+        "source_removal_passed": false,
+        "perturbations_passed": false
+      },
+      "synthetic_certificate": {
+        "authorization_scope": "synthetic_replay",
+        "certified": false,
+        "decision": "NO_TRADE",
+        "quantity": 0,
+        "reserved_maximum_loss": 0,
+        "rejection_codes": [
+          "source_removal_stable",
+          "perturbations_stable",
+          "conservative_ev_positive",
+          "probability_gate",
+          "quantity_positive"
+        ],
+        "certificate_id": "sha256:1f4be55c603833a458fde2e069be7080dea3c3bce39c3a3d4dd6cbb059ce4aed"
+      },
+      "execution_boundary": {
+        "broker_mutation_requested": false,
+        "executor_invoked": false,
+        "broker_payload_published": false,
+        "synthetic_scope_is_rejected_by_paper_executor": true
+      }
+    }
+  ],
+  "checked_invariants": {
+    "economic_core_is_only_direction_authority": true,
+    "supportive_model_does_not_amplify_direction": true,
+    "supportive_model_does_not_change_volatility": true,
+    "adverse_model_reduces_direction": true,
+    "model_never_reverses_to_bearish": true,
+    "severe_model_vetoes_options": true,
+    "only_bullish_defined_risk_option_selected": true,
+    "selected_risk_never_exceeds_500_dollars": true,
+    "no_broker_mutation": true
+  },
+  "artifact_sha256": "sha256:b6787733b6c3c1b74bbd91549aaf22d8628ebc2ac7ce4df5269de85fee70c6f6"
+}

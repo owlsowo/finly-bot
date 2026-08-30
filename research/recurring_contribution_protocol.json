@@ -1,0 +1,51 @@
+{
+  "schema_version": "finly_recurring_contribution_protocol.v2",
+  "status": "amended_after_completeness_audit_before_release",
+  "created_at": "2026-08-29T12:18:00Z",
+  "amended_at": "2026-08-29T21:54:18Z",
+  "amendment": {
+    "prior_protocol_sha256": "3b018fc7452c1aac3296f1e738dfd000691e882f0732280f9b7730cb2bc3d8fc",
+    "reason": "The first local output included the still-open terminal month of August 2026 despite the frozen requirement to report only complete calendar-month windows. The correction removes that terminal month before recomputation; no strategy, cost, horizon, contribution, or benchmark choice changed.",
+    "selection_effect": "None. This analysis remains a retrospective transformation of the already-frozen Generation 4 allocation and is not used to promote a strategy."
+  },
+  "purpose": "Translate the already-frozen Generation 4 percentage-return ledgers into an equal-cash-flow student scenario without changing or selecting the strategy.",
+  "claim_boundary": "This is a retrospective cash-flow transformation of a consumed historical ETF allocation path. It is not a new holdout, an options backtest, a forecast, or evidence that a future three-month account will profit.",
+  "inputs": {
+    "candidate_id": "qqq_core_sector_12_6",
+    "benchmark_id": "spy_buy_hold",
+    "generation_4_output": {
+      "path": "research/output/quant_champion_generation4.json",
+      "sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788"
+    },
+    "generation_4_private_ledger": {
+      "path": "data/private/champion_search/generation4_ledger_6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1.json.gz",
+      "gzip_sha256": "6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1"
+    },
+    "cash_flow_module": {
+      "path": "research/recurring_contribution.mjs",
+      "sha256": "e30be28f244e2c6add6c0919a2c14a5faef3c1c10eec12cdcc9fe2482fa287a9"
+    },
+    "complete_month_wrapper": {
+      "path": "research/recurring_contribution_complete_months.mjs",
+      "sha256": "0a81157cb73b8e3ab9a341e8c4c84aee2331b9eb1b731afa545b612f9ad16aed"
+    }
+  },
+  "scenario": {
+    "minimum_start_date": "2013-01-01",
+    "horizons_calendar_months": [1, 3, 6, 12],
+    "monthly_contribution_usd": 300,
+    "fractional_etf_units": true,
+    "contribution_timing": "At the start of the first modeled return interval in each calendar month.",
+    "one_way_cost_bps": 5,
+    "entry_cost": "A fresh window starts in BIL and pays the engine's full L1 entry-turnover convention.",
+    "later_contribution_cost": "Every contribution after the first pays 5 bp on non-BIL purchases.",
+    "exit": "End-of-window mark to market; no terminal liquidation.",
+    "window_policy": "Evaluate every observably complete rolling calendar-month window; conservatively exclude the terminal month when a later Monday-through-Friday calendar date remains. Windows overlap and are not independent observations."
+  },
+  "reported_statistics": [
+    "fraction of windows in which candidate ending value exceeds SPY ending value",
+    "fraction of windows ending above gross contributions",
+    "mean, median, fifth percentile, ninety-fifth percentile, worst, and best candidate-minus-SPY ending value",
+    "latest completed path for every horizon"
+  ]
+}

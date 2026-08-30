@@ -1,0 +1,35 @@
+{
+  "schema_version": "finly_champion_generation6_result_receipt.v1",
+  "generated_at": "2026-08-29T14:07:58.793Z",
+  "execution_mode": "first_hash_frozen_generation_6_run",
+  "input_integrity": {
+    "protocol_sha256": "570c5a346289b5723e2ef19b27c51f6b12b4bd7f1d3d205b5b4c0108703991c9",
+    "trial_ledger_sha256": "f1b35f0b6ff50888b4ca7dbb6c1bb46258af081c09cf344d44adc88753991ecf",
+    "freeze_receipt_sha256": "a08e273ee97cbad298330d265a6a8ccde033c8b915731d9a0f5a10ede1b1c5fc",
+    "private_panel_payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+    "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+    "alpaca_panel_payload_sha256": "aa2075c1989da7194f1de0f455fab83a4035ee878b5b410088d11aa39c0baaa2",
+    "alpaca_series_integrity_sha256": "703435c64439e3964173c96f5fd5031e6b22e6cb2d4b2f8a36283e143de05836",
+    "alpaca_strategy_intersection_normalized_panel_sha256": "0b0ae32a660d8274b3bcfeb0c17b9391f386e3f1d941e13dd0dd5126e9eafb88",
+    "run_claim_sha256": "d48f2759041c0bbee3032b8b841b9cffe4119b442a24b4f3f07ca57b943ed5fe",
+    "generation_6_results_seen_at_freeze": false,
+    "generation_6_output_absent_at_freeze": true,
+    "no_market_fetch_performed": true
+  },
+  "files": {
+    "research/champion_generation6_run_claim.json": "d48f2759041c0bbee3032b8b841b9cffe4119b442a24b4f3f07ca57b943ed5fe",
+    "research/output/quant_champion_generation6.json": "028e0fdc69a8cb591a4d4fd6b6e4a20869d7a6296eb0650e643e3df23a4a3b9e",
+    "research/output/quant_champion_generation6_report.md": "3283d59c80aa1a498b11597a7147c949c1196b5d6917736d9aefd5f84e0b41f0",
+    "data/private/champion_search/generation6_ledger_143deb4dcec1d3647280bacbe2ed5b2f9ab4c2fc9a426bb0c11dccbb6263a182.json.gz": "143deb4dcec1d3647280bacbe2ed5b2f9ab4c2fc9a426bb0c11dccbb6263a182"
+  },
+  "selected_ids_before_post_selection_robustness": {
+    "primary_spy": null,
+    "growth_control_challenge": null
+  },
+  "track_statuses": {
+    "primary_spy": "NO_SPY_CHALLENGER",
+    "growth_control_challenge": "NO_GROWTH_CONTROL_CHALLENGER"
+  },
+  "disposition": "KEEP_G4_DESCRIPTIVE_BASELINE",
+  "claim_boundary": "Every historical interval, the original 105 trials, the Generation 4 and 5 outcomes, and the literature themes used to construct these formulas were already seen. Hash freezing and the official-run claim document this runner's process but cannot create a pristine holdout or cryptographically prove that no alternate local script previewed the readable panel. A pass is only a retrospective paper-challenger result; it cannot establish future profitability, independent alpha, exact options P&L, permission for live capital, or financial superiority over unreproducible competitor systems."
+}

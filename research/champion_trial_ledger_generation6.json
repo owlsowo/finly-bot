@@ -1,0 +1,44 @@
+{
+  "schema_version": "finly_champion_trial_ledger.v4",
+  "supersedes_for_later_runs": "research/champion_trial_ledger_generation5.json",
+  "append_only_through": 113,
+  "counting_policy": "Conservative effective multiplicity count. Executed formulas, suggested or rejected formulas, ineligible explanatory controls, diagnostics eligible for narrative comparison, aborted attempts, and audited reruns all count.",
+  "prior_ledger_sha256": "eb3fa92618a5c5b72282295360cece394ec8b9449ec43c88d40d57f943227fd0",
+  "blocks": [
+    {
+      "range": "1-105",
+      "count": 105,
+      "status": "incorporated_by_hash_from_champion_trial_ledger_generation5.json"
+    },
+    {
+      "range": "106-113",
+      "count": 8,
+      "status": "generation_6_registered_before_execution",
+      "ids": [
+        "faber_gtaa5_trend",
+        "g6_trend_guard_g4",
+        "g6_vol_target_g4",
+        "g6_breadth_scaled_g4",
+        "g6_residual_sector",
+        "g6_long_only_tsmom_1_3_12",
+        "g6_hrp_trend",
+        "g6_equal_evidence_ensemble"
+      ],
+      "roles": {
+        "faber_gtaa5_trend": "ineligible_literature_control",
+        "g6_trend_guard_g4": "eligible_candidate",
+        "g6_vol_target_g4": "eligible_candidate",
+        "g6_breadth_scaled_g4": "eligible_candidate",
+        "g6_residual_sector": "eligible_candidate",
+        "g6_long_only_tsmom_1_3_12": "eligible_candidate",
+        "g6_hrp_trend": "eligible_candidate",
+        "g6_equal_evidence_ensemble": "eligible_candidate"
+      }
+    }
+  ],
+  "not_counted_in_primary_family": {
+    "risk_matched_spy_paths": "Deterministically derived benchmark paths, one per candidate; not selectable formulas.",
+    "aegis_q_legacy_auxiliary": "External strategy replication on a different data and execution panel; never eligible for the Generation 6 primary selection."
+  },
+  "claim_boundary": "All Generation 6 formulas are chosen after all historical intervals, the 105 prior trials, and the Generation 4/5 outcomes were seen. Hash freezing prevents result-driven rewriting of this batch but cannot create a pristine holdout, prove alpha, establish options P&L, or predict future profitability."
+}

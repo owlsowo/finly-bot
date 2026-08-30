@@ -1,0 +1,168 @@
+{
+  "schema_version": "finly_champion_search_protocol.v2",
+  "frozen_before_first_generation_2_result": true,
+  "research_status": "retrospective_candidate_discovery_after_generation_1_failure",
+  "purpose": "Test one bounded family of public-information equity-growth and competitor-derived rules after the preregistered Generation 1 family failed to beat SPY in both development and validation.",
+  "claim_boundary": "Generation 1 results and broad market history are known, so no historical interval is fresh. Generation 2 may identify a historically supported SHADOW_ONLY policy; it cannot prove future profitability or reproduce an options strategy from daily ETF prices.",
+  "generation_1_result_seen": {
+    "protocol_sha256": "ecc482a1bd65601941d1c67775d852ab0fba43488b5d1a7c28d3073a2cf5801d",
+    "panel_sha256": "bff8cf19de33f6dfc511afee870d2ccd3c9da25c7a071888092707abecd80def",
+    "disposition": "KEEP_V1",
+    "selection": null
+  },
+  "data": {
+    "primary_provider": "Yahoo Finance chart endpoint adjusted close, one uniform retrieval vintage",
+    "requested_start": "2007-05-25",
+    "requested_end": "2026-08-28",
+    "primary_symbols": [
+      "SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ",
+      "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"
+    ],
+    "aegis_legacy_symbols": ["SPY", "BIL", "QQQ", "TQQQ"],
+    "warmup_sessions": 252,
+    "null_policy": "Use only dates common to every symbol in the applicable panel; never forward fill.",
+    "revision_boundary": "Adjusted close is a revised total-return research series, not a point-in-time archive. Hash every raw response and normalized panel.",
+    "survivorship_boundary": "Today-surviving ETFs and today-known universes create survivorship and universe-selection risk. No constituent-level claim is made."
+  },
+  "partitions": {
+    "development": { "start": "2008-06-02", "end": "2017-12-29" },
+    "validation_selection": { "start": "2018-01-02", "end": "2024-12-31" },
+    "consumed_recent_diagnostic": { "start": "2025-01-02", "end": "2026-08-28" },
+    "requested_2013_2015_slice": { "start": "2013-01-01", "end": "2015-12-31" },
+    "prospective_gate_c_start": "2026-08-31",
+    "prospective_gate_c_minimum_sessions": 756
+  },
+  "execution": {
+    "signal_timing": "Compute the signal from information available after adjusted close t.",
+    "rebalance_timing": "Apply the decision at adjusted close t+1.",
+    "first_position_return": "The new weights first earn the t+1 to t+2 adjusted-close return.",
+    "base_one_way_cost_bps_per_absolute_traded_notional": 5,
+    "required_cost_stress_bps": [10, 25],
+    "primary_long_only": true,
+    "primary_gross_exposure_cap": 1,
+    "residual_cash_proxy": "BIL adjusted-close total return",
+    "daily_rules": "Re-evaluate every eligible session.",
+    "five_session_rules": "Use the first of five native anchors in discovery; all five anchors are required before a historical pass.",
+    "monthly_rules": "Use a fixed 21-session cadence in discovery; all 21 native anchors are required before a historical pass.",
+    "initial_entry_and_terminal_treatment": "Identical engine and treatment for candidates and benchmarks; slice metrics represent a continuous live policy, while rolling-window robustness will explicitly rebase boundary costs."
+  },
+  "primary_baselines": [
+    "bil_cash",
+    "spy_buy_hold",
+    "qqq_buy_hold",
+    "spy_levered_150",
+    "spy_vol_target_15",
+    "frozen_finly"
+  ],
+  "candidate_registry": [
+    {
+      "id": "qqq_regime_momentum_long_only",
+      "formula": "Daily: hold 100% QQQ only if QQQ adjusted close is strictly above its inclusive trailing 200-session simple average and its 63-session log return is positive; otherwise hold BIL."
+    },
+    {
+      "id": "qqq_spy_regime_rotation",
+      "formula": "Every five sessions: for QQQ and SPY compute the mean 63/126/252-session BIL-excess log return. An asset is eligible only if above its inclusive SMA200 and its mean score is positive. Hold the higher-scoring eligible asset; hold BIL if neither qualifies."
+    },
+    {
+      "id": "equity_relative_strength_always",
+      "formula": "Every 21 sessions hold 100% of the strongest SPY/QQQ/IWM ETF by mean 63/126/252-session BIL-excess log return, without an absolute-momentum cash gate."
+    },
+    {
+      "id": "equity_relative_strength_absolute",
+      "formula": "Every 21 sessions hold 100% of the strongest SPY/QQQ/IWM ETF only if both its mean 63/126/252 score and 252-session BIL-excess log return are positive; otherwise hold BIL."
+    },
+    {
+      "id": "sector_top1_always",
+      "formula": "Every 21 sessions hold 100% of the strongest original-nine Sector SPDR by mean 63/126/252-session BIL-excess log return, without an absolute-momentum cash gate."
+    },
+    {
+      "id": "sector_top1_absolute",
+      "formula": "Every 21 sessions hold the strongest original-nine Sector SPDR only if its mean score and 252-session BIL-excess log return are positive; otherwise hold BIL."
+    },
+    {
+      "id": "aegis_direction_proxy_spy",
+      "formula": "Daily clean-room adaptation of the MIT AEGIS-Q deterministic fallback: assign +1/-1 to SPY 5-session return, 20-session return, distance from SMA50, and distance from SMA200; hold SPY when the sum is at least 2, otherwise BIL."
+    },
+    {
+      "id": "alphapilot_daily_gate_proxy",
+      "formula": "Daily clean-room proxy of AlphaPilot's public daily rule: hold SPY only when close>SMA20>SMA50, five-session simple return exceeds 1%, and sample standard deviation of the last ten daily returns is below 5%; otherwise BIL."
+    }
+  ],
+  "separate_diagnostics": [
+    {
+      "id": "aegis_legacy_tqqq_regime_proxy",
+      "eligible_for_primary_champion": false,
+      "formula": "Daily: if QQQ is above its inclusive SMA200 and 63-session momentum is positive, allocate 70% TQQQ/30% BIL when annualized 20-session QQQ volatility is at most 25%, otherwise 100% QQQ; hold BIL when the regime fails.",
+      "difference_from_source": "Uses adjusted-close signal and close-to-close execution with BIL return. The source used split-adjusted OHLC, prior-close signal to next-open execution, 5 bp one-way costs, and zero cash return. Therefore this is an implementation proxy, not an exact result reproduction."
+    }
+  ],
+  "trial_accounting": {
+    "cumulative_trials_after_generation_1": 66,
+    "new_generation_2_formulas": 9,
+    "minimum_cumulative_trials_before_sensitivities": 75,
+    "rule": "Every later formula, parameter, universe, manual rejection, LLM suggestion, bug-fixed rerun, cost, or schedule variant is appended before evaluation and counted in deflated statistics."
+  },
+  "selection": {
+    "recent_interval_used": false,
+    "primary_candidates_only": true,
+    "objective": "Among candidates passing all pre-robustness gates, maximize the smaller annualized log-growth advantage over SPY across development and validation; then break ties by validation BIL-excess Sharpe, drawdown, and identifier.",
+    "recent_interval_role": "May veto a hard safety failure after selection, but cannot improve a score, rescue a failure, or break a tie."
+  },
+  "historical_shadow_gates": {
+    "raw_return": [
+      "net annualized log growth exceeds SPY in development and validation",
+      "validation annualized log-growth advantage is at least 0.50 percentage points after base costs",
+      "median raw excess is positive in annual-origin 252/504/756-session families",
+      "at least 60% of windows in every horizon family beat SPY"
+    ],
+    "risk": [
+      "validation annualized volatility does not exceed SPY",
+      "validation drawdown is no worse than SPY by over two percentage points",
+      "validation BIL-excess Sharpe exceeds frozen Finly and SPY volatility targeting by at least 0.10",
+      "validation drawdown is no worse than frozen Finly by over two points and never worse than 15%"
+    ],
+    "robustness_after_preselection": [
+      "raw-return conclusion retains sign at 5/10/25 bp one-way costs",
+      "raw-return conclusion retains sign across every native rebalance anchor",
+      "Deflated-Sharpe probability is at least 0.95 using at least 75 trials",
+      "shared circular-block familywise p-value is at most 0.05 at 5/20/60-session blocks",
+      "authenticated Alpaca overlap reconciliation passes frozen tolerances for every used symbol"
+    ]
+  },
+  "sources": [
+    {
+      "title": "AEGIS-Q pinned MIT source",
+      "url": "https://github.com/VicensPaneque/aegis-q/tree/76bb97e9200c41c519440bb64ea40d2161367627"
+    },
+    {
+      "title": "AEGIS-Q deterministic options fallback",
+      "url": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/options.py#L135-L145"
+    },
+    {
+      "title": "AEGIS-Q legacy regime strategy",
+      "url": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/strategy.py#L27-L59"
+    },
+    {
+      "title": "AlphaPilot pinned public source",
+      "url": "https://github.com/ibrahimjatt1313-prog/AlphaPilot/tree/771edcbb9fea3d383d90e6427c550689e15b0816"
+    },
+    {
+      "title": "AlphaPilot daily rule",
+      "url": "https://github.com/ibrahimjatt1313-prog/AlphaPilot/blob/771edcbb9fea3d383d90e6427c550689e15b0816/strategies/signal_engine.py#L40-L104"
+    },
+    {
+      "title": "Time Series Momentum",
+      "url": "https://doi.org/10.1016/j.jfineco.2011.11.003"
+    },
+    {
+      "title": "Do Industries Explain Momentum?",
+      "url": "https://doi.org/10.1111/0022-1082.00146"
+    }
+  ],
+  "dispositions": {
+    "historical_fail": "KEEP_V1",
+    "historical_pass": "ROBUSTNESS_PENDING",
+    "robustness_pass": "SHADOW_ONLY",
+    "prospective_pass": "ELIGIBLE_FOR_REPLACEMENT_REVIEW"
+  }
+}

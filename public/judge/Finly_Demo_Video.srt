@@ -1,0 +1,179 @@
+1
+00:00:00,000 --> 00:00:04,084
+Most trading demos begin with a chart going up and to the right.
+
+2
+00:00:04,084 --> 00:00:06,912
+Ours does too. The difference is what happens next.
+
+3
+00:00:07,332 --> 00:00:14,046
+Finly's strongest retrospective nonproduction shadow combined a QQQ core with rotating sector momentum.
+
+4
+00:00:14,046 --> 00:00:20,760
+In the consumed ETF replay from 2 January 2013 through 27 August 2026,
+
+5
+00:00:20,760 --> 00:00:24,376
+with a modeled five-basis-point one-way turnover cost,
+
+6
+00:00:24,376 --> 00:00:30,574
+it recorded an 18.97 percent annualized return against 15.11 percent for SPY,
+
+7
+00:00:30,574 --> 00:00:33,156
+with a shallower maximum drawdown.
+
+8
+00:00:33,576 --> 00:00:36,691
+Finly still refused to promote it.
+
+9
+00:00:36,691 --> 00:00:40,324
+Its Deflated Sharpe probability was 3.75 percent,
+
+10
+00:00:40,324 --> 00:00:43,958
+the worst adjusted familywise p-value was 0.3718,
+
+11
+00:00:43,958 --> 00:00:47,592
+and the growth-control and source-overlap gates failed.
+
+12
+00:00:48,012 --> 00:00:50,080
+That refusal is the product.
+
+13
+00:00:50,080 --> 00:00:53,803
+AI may assess bounded evidence and explain a view.
+
+14
+00:00:53,803 --> 00:00:57,526
+Code still owns direction, horizon, spread construction, maximum loss,
+
+15
+00:00:57,526 --> 00:01:02,076
+and every Alpaca field. The llama does not get the keys.
+
+16
+00:01:02,496 --> 00:01:05,870
+Code removes evidence families, perturbs market inputs,
+
+17
+00:01:05,870 --> 00:01:09,726
+and recomputes the order. If the conclusion changes,
+
+18
+00:01:09,726 --> 00:01:14,064
+Finly fails closed. A plausible rationale is not permission.
+
+19
+00:01:14,484 --> 00:01:17,727
+Two synthetic receipts make the boundary visible.
+
+20
+00:01:17,727 --> 00:01:19,117
+With aligned evidence,
+
+21
+00:01:19,117 --> 00:01:23,286
+four source removals and thirty-two perturbations preserved the decision.
+
+22
+00:01:23,286 --> 00:01:26,992
+With conflicting evidence, removing one source changed it,
+
+23
+00:01:26,992 --> 00:01:29,772
+so the compiler returned no trade.
+
+24
+00:01:30,192 --> 00:01:32,179
+When a fixture survives,
+
+25
+00:01:32,179 --> 00:01:37,146
+code constructs a defined-risk bear-put spread and calculates the payoff.
+
+26
+00:01:37,146 --> 00:01:42,610
+Here, maximum loss is 366 dollars and maximum gain is 634.
+
+27
+00:01:42,610 --> 00:01:46,584
+The Alpaca-shaped payload is compiled but never transmitted.
+
+28
+00:01:47,004 --> 00:01:52,255
+The chart is an ETF replay, not options profit and loss.
+
+29
+00:01:52,255 --> 00:01:55,596
+The 113-item ledger includes controls, invalidated runs,
+
+30
+00:01:55,596 --> 00:01:57,983
+and reruns—not 113 independent strategies.
+
+31
+00:01:57,983 --> 00:02:00,369
+Seven later challengers promoted none.
+
+32
+00:02:00,369 --> 00:02:04,188
+Reporting the limits is part of the result.
+
+33
+00:02:04,608 --> 00:02:07,764
+G4 is not the production book.
+
+34
+00:02:07,764 --> 00:02:11,972
+Production Finly is the lower-risk time-series-momentum volatility ensemble.
+
+35
+00:02:11,972 --> 00:02:14,602
+In its now-consumed fixed holdout,
+
+36
+00:02:14,602 --> 00:02:19,862
+it returned 11.13 percent annualized against 19.19 percent for SPY,
+
+37
+00:02:19,862 --> 00:02:24,596
+with annualized volatility of 8.31 percent against 17.33 percent,
+
+38
+00:02:24,596 --> 00:02:30,908
+and a maximum drawdown of minus 5.79 percent against minus 18.76 percent.
+
+39
+00:02:30,908 --> 00:02:35,642
+Forward Trial One remains at zero of 252 settlements,
+
+40
+00:02:35,642 --> 00:02:38,798
+so there is no next-month inference.
+
+41
+00:02:38,798 --> 00:02:42,480
+Broker authority and performance inference remain disabled.
+
+42
+00:02:42,900 --> 00:02:45,420
+Finly's contribution is not a bigger forecast.
+
+43
+00:02:45,420 --> 00:02:49,380
+It is a smaller trust boundary: evidence may inform a trade,
+
+44
+00:02:49,380 --> 00:02:52,980
+but verified authority must permit it. The bull has horns.
+
+45
+00:02:52,980 --> 00:02:55,860
+The llama still does not get the keys.

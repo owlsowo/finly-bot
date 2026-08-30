@@ -1,0 +1,378 @@
+{
+  "schema_version": "finly_submission_quantitative_evidence_surface.v2",
+  "evidence_as_of": "2026-08-27",
+  "assessment": "RETROSPECTIVE_EVIDENCE_ONLY_NO_PROMOTED_REPLACEMENT_CHALLENGER",
+  "safe_claims": [
+    "Across the ledger's 113 conservatively counted effective research attempts, zero new challenger was promoted to replace frozen v1; this count includes controls, unexecuted or rejected suggestions, invalidated runs, an aborted attempt, and reruns, not 113 independent viable strategies.",
+    "In the consumed 2013-01-02 through 2026-08-27 retrospective replay, the G4 candidate recorded 18.97% annualized return versus 15.11% for SPY after the declared 5 bp one-way costs.",
+    "In that same consumed replay, the G4 candidate's maximum drawdown was -28.99% versus -33.72% for SPY.",
+    "With $300 contributed monthly, the G4 candidate exceeded SPY's ending balance in 62.6% of 1-month windows, 65.8% of 3-month windows, 69.0% of 6-month windows, 74.3% of 12-month windows; the one-month calendar windows do not overlap, longer horizons overlap heavily, and all summaries share one consumed path, so they are descriptive rather than independent trials.",
+    "The G4 robustness review rejected promotion: its deflated-Sharpe probability was 3.75%, and its worst adjusted familywise p-value was 37.18%.",
+    "G6 evaluated seven frozen challengers and selected none on either the primary SPY track or the separate growth-control track.",
+    "The core G4 formula, date partitions, and costs were committed before its run; the excess-Sharpe selection rule and later inference corrections changed afterward, so the current analysis is not described as fully preregistered.",
+    "The pinned AEGIS-Q replay is an auxiliary legacy-equity reproduction attempt only; it did not reproduce the published bundle exactly and does not represent the submitted options strategy.",
+    "All reported market intervals were already consumed; these artifacts do not establish future profitability or authorize live-capital use."
+  ],
+  "selection_audit": {
+    "research_attempt_accounting": {
+      "conservatively_counted_effective_research_attempts": 113,
+      "composition": [
+        {
+          "category": "prior_attempts",
+          "count": 53,
+          "detail": "53 prior research attempts"
+        },
+        {
+          "category": "invalidated_generation1",
+          "count": 12,
+          "detail": "12 invalidated G1 attempts"
+        },
+        {
+          "category": "aborted_attempt",
+          "count": 1,
+          "detail": "1 aborted attempt"
+        },
+        {
+          "category": "invalidated_generation2",
+          "count": 9,
+          "detail": "9 invalidated G2 attempts"
+        },
+        {
+          "category": "competitor_suggestions",
+          "count": 3,
+          "detail": "3 competitor suggestions"
+        },
+        {
+          "category": "literature_suggestions",
+          "count": 5,
+          "detail": "5 literature suggestions"
+        },
+        {
+          "category": "generation3_formulas",
+          "count": 8,
+          "detail": "8 G3 formulas"
+        },
+        {
+          "category": "correction_rerun",
+          "count": 1,
+          "detail": "1 correction rerun"
+        },
+        {
+          "category": "generation4",
+          "count": 8,
+          "detail": "8 G4 attempts: 7 eligible formulas and 1 control"
+        },
+        {
+          "category": "generation5",
+          "count": 5,
+          "detail": "5 G5 attempts: 4 eligible formulas and 1 control"
+        },
+        {
+          "category": "generation6",
+          "count": 8,
+          "detail": "8 G6 attempts: 7 eligible formulas and 1 control"
+        }
+      ],
+      "included_attempt_types": [
+        "controls",
+        "unexecuted or rejected suggestions",
+        "invalidated runs",
+        "an aborted attempt",
+        "reruns"
+      ],
+      "independent_viable_strategy_count": false,
+      "statement": "113 conservatively counted effective research attempts include controls, unexecuted or rejected suggestions, invalidated runs, an aborted attempt, and reruns; they are not 113 independent viable strategies."
+    },
+    "promoted_replacement_challenger_count": 0,
+    "generation4": {
+      "candidate_id": "qqq_core_sector_12_6",
+      "role": "DESCRIPTIVE_BASELINE_ONLY",
+      "selection_disposition": "RAW_RETURN_ROBUSTNESS_PENDING",
+      "robustness_disposition": "KEEP_V1_POST_SELECTION_ROBUSTNESS_FAILED",
+      "promotion_eligible": false
+    },
+    "generation6": {
+      "assessed_candidate_count": 7,
+      "primary_spy_selected_id": null,
+      "growth_control_selected_id": null,
+      "primary_spy_status": "NO_SPY_CHALLENGER",
+      "growth_control_status": "NO_GROWTH_CONTROL_CHALLENGER",
+      "disposition": "KEEP_G4_DESCRIPTIVE_BASELINE",
+      "robustness_disposition": "KEEP_PRIOR_CHAMPION_GENERATION6_ROBUSTNESS_FAILED"
+    }
+  },
+  "g4_consumed_2013_2026_replay": {
+    "candidate_id": "qqq_core_sector_12_6",
+    "benchmark_id": "spy_buy_hold",
+    "evidence_class": "CONSUMED_RETROSPECTIVE_REPLAY",
+    "execution": {
+      "signal_lookback_sessions": 252,
+      "rebalance_interval_sessions": 21,
+      "one_way_cost_bps": 5,
+      "annual_borrow_spread": 0.005,
+      "maximum_risky_gross": 1,
+      "terminal_liquidation": true
+    },
+    "candidate": {
+      "observations": 3434,
+      "start_date": "2013-01-02",
+      "end_date": "2026-08-27",
+      "total_return": 9.6710597833,
+      "annualized_return": 0.1897447215,
+      "annualized_volatility": 0.1800522692,
+      "cash_excess_sharpe": 0.96472738,
+      "maximum_drawdown": -0.2898521154,
+      "calmar_ratio": 0.6546259675,
+      "annualized_turnover_notional": 3.7758694199,
+      "positive_calendar_year_fraction": 0.8571428571
+    },
+    "spy": {
+      "observations": 3434,
+      "start_date": "2013-01-02",
+      "end_date": "2026-08-27",
+      "total_return": 5.8081746189,
+      "annualized_return": 0.1511474737,
+      "annualized_volatility": 0.1678686166,
+      "cash_excess_sharpe": 0.8255873371,
+      "maximum_drawdown": -0.3371726114,
+      "calmar_ratio": 0.4482792155,
+      "annualized_turnover_notional": 0.2201514269,
+      "positive_calendar_year_fraction": 0.8571428571
+    },
+    "candidate_minus_spy": {
+      "total_return": 3.8628851644,
+      "annualized_return": 0.0385972478,
+      "cash_excess_sharpe": 0.1391400429,
+      "maximum_drawdown": 0.047320496,
+      "annualized_turnover_notional": 3.555717993
+    }
+  },
+  "recurring_contribution_replay": {
+    "evidence_class": "OVERLAPPING_DESCRIPTIVE_WINDOWS",
+    "candidate_id": "qqq_core_sector_12_6",
+    "benchmark_id": "spy_buy_hold",
+    "monthly_contribution_usd": 300,
+    "one_way_cost_bps": 5,
+    "minimum_start_date": "2013-01-01",
+    "terminal_observation_date": "2026-08-27",
+    "terminal_month_excluded": true,
+    "horizons": {
+      "1": {
+        "horizon_months": 1,
+        "windows": 163,
+        "first_start_month": "2013-01",
+        "last_start_month": "2026-07",
+        "candidate_beat_spy_fraction": 0.6257668712,
+        "candidate_profitable_fraction": 0.6257668712,
+        "spy_profitable_fraction": 0.6809815951,
+        "mean_ending_value_advantage_usd": 0.81815915,
+        "median_ending_value_advantage_usd": 1.02808091,
+        "p05_ending_value_advantage_usd": -5.1755011,
+        "p95_ending_value_advantage_usd": 6.73207849,
+        "worst_ending_value_advantage_usd": -13.31073354,
+        "best_ending_value_advantage_usd": 14.66445103,
+        "mean_candidate_gain_usd": 4.26194647,
+        "mean_spy_gain_usd": 3.44378731,
+        "latest_window": {
+          "start_month": "2026-07",
+          "end_month": "2026-07",
+          "total_contributions_usd": 300,
+          "candidate_ending_value_usd": 286.49320933,
+          "spy_ending_value_usd": 299.80394287,
+          "ending_value_advantage_usd": -13.31073354,
+          "candidate_exceeded_spy": false
+        }
+      },
+      "3": {
+        "horizon_months": 3,
+        "windows": 161,
+        "first_start_month": "2013-01",
+        "last_start_month": "2026-05",
+        "candidate_beat_spy_fraction": 0.6583850932,
+        "candidate_profitable_fraction": 0.7826086957,
+        "spy_profitable_fraction": 0.7826086957,
+        "mean_ending_value_advantage_usd": 5.34636214,
+        "median_ending_value_advantage_usd": 5.39489107,
+        "p05_ending_value_advantage_usd": -17.21989521,
+        "p95_ending_value_advantage_usd": 27.33156721,
+        "worst_ending_value_advantage_usd": -30.30357161,
+        "best_ending_value_advantage_usd": 58.83704083,
+        "mean_candidate_gain_usd": 26.84196646,
+        "mean_spy_gain_usd": 21.49560432,
+        "latest_window": {
+          "start_month": "2026-05",
+          "end_month": "2026-07",
+          "total_contributions_usd": 900,
+          "candidate_ending_value_usd": 885.86433638,
+          "spy_ending_value_usd": 909.15599842,
+          "ending_value_advantage_usd": -23.29166204,
+          "candidate_exceeded_spy": false
+        }
+      },
+      "6": {
+        "horizon_months": 6,
+        "windows": 158,
+        "first_start_month": "2013-01",
+        "last_start_month": "2026-02",
+        "candidate_beat_spy_fraction": 0.6898734177,
+        "candidate_profitable_fraction": 0.8797468354,
+        "spy_profitable_fraction": 0.8227848101,
+        "mean_ending_value_advantage_usd": 18.83283546,
+        "median_ending_value_advantage_usd": 21.58829938,
+        "p05_ending_value_advantage_usd": -39.3244467,
+        "p95_ending_value_advantage_usd": 83.10843728,
+        "worst_ending_value_advantage_usd": -64.94082879,
+        "best_ending_value_advantage_usd": 155.594733,
+        "mean_candidate_gain_usd": 93.54840983,
+        "mean_spy_gain_usd": 74.71557437,
+        "latest_window": {
+          "start_month": "2026-02",
+          "end_month": "2026-07",
+          "total_contributions_usd": 1800,
+          "candidate_ending_value_usd": 1923.7538298,
+          "spy_ending_value_usd": 1908.16371195,
+          "ending_value_advantage_usd": 15.59011785,
+          "candidate_exceeded_spy": true
+        }
+      },
+      "12": {
+        "horizon_months": 12,
+        "windows": 152,
+        "first_start_month": "2013-01",
+        "last_start_month": "2025-08",
+        "candidate_beat_spy_fraction": 0.7434210526,
+        "candidate_profitable_fraction": 0.9078947368,
+        "spy_profitable_fraction": 0.875,
+        "mean_ending_value_advantage_usd": 69.07156542,
+        "median_ending_value_advantage_usd": 78.20084932,
+        "p05_ending_value_advantage_usd": -96.03563124,
+        "p95_ending_value_advantage_usd": 263.36741347,
+        "worst_ending_value_advantage_usd": -149.82638477,
+        "best_ending_value_advantage_usd": 366.2074682,
+        "mean_candidate_gain_usd": 349.10029317,
+        "mean_spy_gain_usd": 280.02872775,
+        "latest_window": {
+          "start_month": "2025-08",
+          "end_month": "2026-07",
+          "total_contributions_usd": 3600,
+          "candidate_ending_value_usd": 4087.0302826,
+          "spy_ending_value_usd": 3948.42397709,
+          "ending_value_advantage_usd": 138.60630551,
+          "candidate_exceeded_spy": true
+        }
+      }
+    },
+    "inference_boundary": "Only observably complete calendar months are included. Overlapping windows are descriptive and autocorrelated; their fractions are not independent probability estimates or forecasts."
+  },
+  "g4_falsification": {
+    "cost_sign_stable_at_5_10_25_bps": true,
+    "positive_spy_edges_at_all_21_rebalance_offsets": true,
+    "deflated_sharpe_probability": 0.037478432287,
+    "required_deflated_sharpe_probability": 0.95,
+    "worst_familywise_adjusted_p_value": 0.371814092954,
+    "maximum_permitted_familywise_p_value": 0.05,
+    "static_growth_control_independence_supported": false,
+    "authenticated_source_overlap_passed": false,
+    "promotion_eligible": false,
+    "interpretation": "Implementation and local sensitivity checks passed, but multiple-testing, static-growth-control independence, and authenticated source-overlap gates blocked promotion."
+  },
+  "aegis_q_auxiliary": {
+    "comparison_role": "AUXILIARY_LEGACY_EQUITY_COMPARISON_ONLY",
+    "status": "PUBLISHED_BUNDLE_NOT_REPRODUCED",
+    "apples_to_apples_with_finly": false,
+    "submitted_options_pnl_reproduced": false,
+    "eligible_for_finly_selection_or_rank": false,
+    "published_bundle_verified": false,
+    "native_window": {
+      "start": "2021-05-12",
+      "end": "2026-08-27",
+      "observations": 1330,
+      "warmup_sessions_before_start": 200,
+      "initial_capital": 100000,
+      "tolerances": {
+        "absolute": 1e-8,
+        "relative": 1e-10,
+        "integer_and_string_fields": "exact"
+      }
+    },
+    "replay_metrics": {
+      "legacy_agent": {
+        "cagr": 0.2063645010443793,
+        "annual_volatility": 0.29283859306703475,
+        "sharpe_0pct_cash": 0.7905225048023111,
+        "maximum_drawdown": -0.33647966214852676
+      },
+      "qqq": {
+        "cagr": 0.1645925682908902,
+        "annual_volatility": 0.2278721789696729,
+        "sharpe_0pct_cash": 0.7851299268978631,
+        "maximum_drawdown": -0.3710067047919542
+      },
+      "tqqq": {
+        "cagr": 0.24398036750205176,
+        "annual_volatility": 0.6828341192525701,
+        "sharpe_0pct_cash": 0.6634287637516886,
+        "maximum_drawdown": -0.8160124888492417
+      }
+    },
+    "inference_boundary": "This is a pinned legacy-equity reproduction attempt, not the submitted AEGIS-Q options strategy and not evidence for cross-project financial rank."
+  },
+  "public_claim_policy": {
+    "status": "BOUNDED_RETROSPECTIVE_LANGUAGE_ONLY",
+    "required_context": [
+      "state the exact historical window and cost assumptions",
+      "identify every interval as consumed retrospective evidence",
+      "state that zero new challenger was promoted to replace frozen v1 after robustness review",
+      "describe 113 conservatively counted effective research attempts with the complete composition and non-independence boundary",
+      "disclose that the core formula, partitions, and costs predated the run while the excess-Sharpe gate and later inference corrections did not",
+      "keep the AEGIS-Q reproduction outside direct rank comparisons"
+    ],
+    "disallowed_inferences": [
+      "stable benchmark superiority across future regimes",
+      "established future profit",
+      "categorical financial rank against unreproducible submissions"
+    ]
+  },
+  "source_integrity": {
+    "all_six_hashes_verified": true,
+    "artifact_count": 6,
+    "artifacts": [
+      {
+        "id": "generation4",
+        "path": "research/output/quant_champion_generation4.json",
+        "sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+        "schema_version": "finly_quant_champion_generation4.v1"
+      },
+      {
+        "id": "generation4_robustness",
+        "path": "research/output/quant_champion_generation4_robustness.json",
+        "sha256": "6b8136da0c4d6b366763383a93d2e119cec2f5516761b6cb2d2c206eeefd3299",
+        "schema_version": "finly_quant_champion_generation4_robustness.v1"
+      },
+      {
+        "id": "generation6",
+        "path": "research/output/quant_champion_generation6.json",
+        "sha256": "028e0fdc69a8cb591a4d4fd6b6e4a20869d7a6296eb0650e643e3df23a4a3b9e",
+        "schema_version": "finly_quant_champion_generation6.v1"
+      },
+      {
+        "id": "generation6_robustness",
+        "path": "research/output/quant_champion_generation6_robustness.json",
+        "sha256": "938eeed6f1dde418713c621231951e9509eb32da70b74e6c2e29be550da310fe",
+        "schema_version": "finly_quant_champion_generation6_robustness.v1"
+      },
+      {
+        "id": "recurring_contribution",
+        "path": "research/output/recurring_contribution_analysis.json",
+        "sha256": "a6f49a99dabe6d59e6b5acccf07678b8d7f09ca9c4d59af469eeeb5e6b0ee1f5",
+        "schema_version": "finly_recurring_contribution_analysis.v3"
+      },
+      {
+        "id": "aegis_q_auxiliary",
+        "path": "research/output/aegis_q_legacy_reproduction.json",
+        "sha256": "153c63138e6c9bcec6b8cee8443b00668d6abf31c91220c39445105464bd42a7",
+        "schema_version": "finly_aegis_q_legacy_reproduction_result.v1"
+      }
+    ]
+  }
+}

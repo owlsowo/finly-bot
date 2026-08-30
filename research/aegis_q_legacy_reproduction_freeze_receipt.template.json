@@ -1,0 +1,32 @@
+{
+  "schema_version": "finly_aegis_q_legacy_reproduction_freeze_receipt.v1",
+  "status": "TEMPLATE_NOT_FROZEN",
+  "created_at": "__FILL_BEFORE_FREEZE__",
+  "claim_boundary": {
+    "auxiliary_only": true,
+    "submitted_options_pnl": false,
+    "eligible_as_finly_champion": false,
+    "future_profitability_proven": false,
+    "apples_to_apples_with_finly": false,
+    "statement": "A match establishes reproducibility of the archived legacy equity metric bundle under the declared public-data and execution semantics. It does not reproduce the submitted AEGIS-Q options strategy, establish options P&L, prove future profitability, or provide an apples-to-apples financial comparison with Finly."
+  },
+  "files": {
+    "research/aegis_q_legacy_reproduction_protocol.json": "__FILL_SHA256_BEFORE_FREEZE__",
+    "__FILL_LOCAL_RAW_BARS_PATH_BEFORE_FREEZE__": "__FILL_SHA256_BEFORE_FREEZE__",
+    "__FILL_LOCAL_PANEL_PATH_BEFORE_FREEZE__": "__FILL_SHA256_BEFORE_FREEZE__",
+    "research/aegis_q_legacy_reproduction.mjs": "__FILL_SHA256_BEFORE_FREEZE__",
+    "research/run_aegis_q_legacy_reproduction.mjs": "__FILL_SHA256_BEFORE_FREEZE__",
+    "tests/aegis_q_legacy_reproduction.test.mjs": "__FILL_SHA256_BEFORE_FREEZE__",
+    "tests/aegis_q_legacy_reproduction_runner.test.mjs": "__FILL_SHA256_BEFORE_FREEZE__"
+  },
+  "validation_before_freeze": {
+    "synthetic_implementation_tests": "passed",
+    "synthetic_runner_tests": "passed",
+    "targeted_eslint": "passed",
+    "panel_schema_and_hash_check": "passed",
+    "split_only_provenance_check": "passed"
+  },
+  "aegis_q_auxiliary_results_seen_at_freeze": false,
+  "aegis_q_auxiliary_output_absent_at_freeze": true,
+  "market_fetch_permitted": false
+}

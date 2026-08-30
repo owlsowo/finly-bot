@@ -1,0 +1,133 @@
+{
+  "schema_version": "finly_current_economic_bundle.v1",
+  "generated_at": "2026-08-29T08:52:05.059Z",
+  "data": {
+    "provider": "Alpaca",
+    "feed": "sip",
+    "adjustment": "all",
+    "read_only": true,
+    "request_started_at": "2026-08-29T08:52:04.718Z",
+    "source_fetch_completed_at": "2026-08-29T08:52:05.059Z",
+    "daily_bar_timestamp_semantics": "session label only; availability is established by official close plus delay and authenticated fetch completion",
+    "daily_bar_availability_delay_minutes": 15,
+    "completed_session_boundary": {
+      "session_date": "2026-08-28",
+      "market_close_at": "2026-08-28T20:00:00.000Z",
+      "eligible_at": "2026-08-28T20:15:00.000Z"
+    },
+    "aligned_session_count": 2679,
+    "observed_start": "2016-01-04",
+    "observed_end": "2026-08-28",
+    "spy_bars_sha256": "sha256:fc9e309b819946f69f1d65b99fd368a367fe3d4308d9245cbaf45c0a4d64de0e",
+    "bil_bars_sha256": "sha256:5de8132f6a47b0d087a4544c4f52ea37cc5a98f2580fbcfc080ab1f5b2ca2239",
+    "raw_bars_embedded": false
+  },
+  "paper_account_boundary": {
+    "authenticated_read_succeeded": true,
+    "raw_account_embedded": false,
+    "raw_positions_embedded": false,
+    "supported_positions_only": true,
+    "current_spy_weight": 0,
+    "current_defensive_weight": 1,
+    "defensive_weight_includes_uninvested_paper_cash": true
+  },
+  "deterministic_decision": {
+    "schema_version": "finly_current_economic_decision.v1",
+    "protocol_sha256": "sha256:215505acbe654021c792321e1fcd1bc4045b88c361d035cda3771bb08febb3ee",
+    "policy_id": "tsmom_ensemble_vol",
+    "decision_timestamp": "2026-08-29T08:52:05.059Z",
+    "source_available_at": "2026-08-29T08:52:05.059Z",
+    "latest_observation": {
+      "session_date": "2026-08-28",
+      "spy_observed_at": "2026-08-28T04:00:00.000Z",
+      "bil_observed_at": "2026-08-28T04:00:00.000Z",
+      "aligned_session_count": 2679,
+      "timestamp_semantics": "daily bar timestamp is a session label, not an availability timestamp",
+      "completed_session_boundary": {
+        "session_date": "2026-08-28",
+        "market_close_at": "2026-08-28T20:00:00.000Z",
+        "eligible_at": "2026-08-28T20:15:00.000Z",
+        "availability_delay_minutes": 15
+      }
+    },
+    "point_in_time_controls": {
+      "future_observations_rejected": true,
+      "source_availability_precedes_decision": true,
+      "sessions_exactly_aligned": true,
+      "incomplete_current_session_rejected": true,
+      "daily_bar_timestamp_not_used_as_availability": true
+    },
+    "signal": {
+      "horizon_returns": [
+        {
+          "sessions": 21,
+          "spy_minus_bil_log_return": 0.033664298241
+        },
+        {
+          "sessions": 63,
+          "spy_minus_bil_log_return": 0.010670531015
+        },
+        {
+          "sessions": 252,
+          "spy_minus_bil_log_return": 0.147946570862
+        }
+      ],
+      "positive_trend_fraction": 1,
+      "realized_volatility_20_session_annualized": 0.10448257,
+      "volatility_target_scale": 0.95709742,
+      "indicated_spy_weight": 0.95709742,
+      "indicated_bil_weight": 0.04290258
+    },
+    "schedule": {
+      "rebalance_interval_sessions": 5,
+      "last_rebalance_date": null,
+      "sessions_since_last_rebalance": null,
+      "rebalance_due": true
+    },
+    "current_allocation": {
+      "spy_weight": 0,
+      "bil_weight": 1
+    },
+    "decision": "PROPOSE_REBALANCE",
+    "proposed_allocation": {
+      "spy_weight": 0.95709742,
+      "bil_weight": 0.04290258
+    },
+    "authorization": {
+      "scope": "allocation_research_only",
+      "broker_mutation_authorized": false,
+      "order_payload": null
+    },
+    "receipt_sha256": "sha256:3f8da179339bc1b040a3ef55462a228b93dd74e8de4b3a33a1401f2ff96cb08a"
+  },
+  "risk_committee_decision": {
+    "schema_version": "finly_economic_risk_committee_receipt.v1",
+    "base_receipt_sha256": "sha256:3f8da179339bc1b040a3ef55462a228b93dd74e8de4b3a33a1401f2ff96cb08a",
+    "decision_timestamp": "2026-08-29T08:52:05.059Z",
+    "assessed_at": "2026-08-29T08:52:05.059Z",
+    "disposition": "SCALE",
+    "reason_codes": [
+      "NO_AGENT_RISK_REDUCTION"
+    ],
+    "spy_exposure_multiplier": 1,
+    "base_spy_weight": 0.95709742,
+    "decision": "PROPOSE_REBALANCE",
+    "final_allocation": {
+      "spy_weight": 0.95709742,
+      "bil_weight": 0.04290258
+    },
+    "non_amplification": {
+      "constraint": "final SPY weight must not exceed the deterministic policy SPY weight",
+      "passed": true
+    },
+    "authorization": {
+      "scope": "allocation_research_only",
+      "broker_mutation_authorized": false,
+      "order_payload": null
+    },
+    "receipt_sha256": "sha256:2881b97648f4026240a863d2608801dd18280eab39ba52dc92d3c74ce83e0f7e"
+  },
+  "mutation_requested": false,
+  "artifact_sha256": "sha256:e7130036a26101b7d22073e30939b9272adbc37ac6f42e9b08aa9b4e0b6b6db9"
+}
+

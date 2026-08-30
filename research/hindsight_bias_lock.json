@@ -1,0 +1,37 @@
+{
+  "schema_version": "finly_hindsight_bias_lock.v1",
+  "cutoff_utc": "2026-08-29T11:54:51Z",
+  "last_consumed_market_date": "2026-08-27",
+  "historical_tuning_closed": true,
+  "historical_trial_count": 105,
+  "selected_shadow_candidate": "qqq_core_sector_12_6",
+  "promotion_status": "REJECTED",
+  "final_historical_disposition": "KEEP_V1",
+  "blocking_results": [
+    "validation_deflated_sharpe_probability_below_0.95",
+    "familywise_block_bootstrap_p_value_above_0.05",
+    "static_growth_control_consistency_failed",
+    "authenticated_source_reconciliation_failed_closed"
+  ],
+  "next_admissible_evidence": "Prospectively timestamped paper observations after the cutoff, using the frozen strategy without parameter changes.",
+  "forbidden_claims": [
+    "persistent_alpha",
+    "future_profitability",
+    "financial_superiority_to_every_competitor",
+    "independent_options_profitability"
+  ],
+  "artifacts": {
+    "research/champion_search_generation4_protocol.json": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "research/champion_search_generation4_freeze_receipt.json": "c1b662533c31dc326ddb9ed4633b36081fbd0386652cf753cd6a2fc62c843a46",
+    "research/output/quant_champion_generation4.json": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+    "research/champion_generation4_robustness_protocol.json": "5e6138c71be81bba74f9ff7ed1ff80c3a71e975b721389c4d6dc66ee9d8f5881",
+    "research/champion_generation4_robustness_freeze_receipt.json": "bde1398b92ed71770766ebf98d3c41b51f302773d160bf44fda4a09238e4a31f",
+    "research/output/quant_champion_generation4_robustness.json": "6b8136da0c4d6b366763383a93d2e119cec2f5516761b6cb2d2c206eeefd3299",
+    "research/champion_search_generation5_protocol.json": "d2187039d1471dd4e27681d350355f917aec556f019c09f8155bb48c0509f10e",
+    "research/champion_search_generation5_freeze_receipt.json": "77eafc80d2d5eabec46e22d9193b9f4a8ab51eee199fdca10b1ef176b35351f0",
+    "research/output/quant_champion_generation5.json": "7e750ce659f4589b0df073195965ae3152f80175c5b9b9eae8b3ab9df839f6a5",
+    "research/source_overlap_reconciliation_generation5_protocol.json": "88f000732851a59f56a218c791731bb913e8ec51cd461b7a9347da6ae1697be6",
+    "research/source_overlap_reconciliation_generation5_freeze_receipt.json": "3238a3bbb13f3c08073a81cb8bb1d2424ee42f8751d7e52f76ffdc07d98a3828",
+    "research/output/source_overlap_reconciliation_generation5.json": "b5a9aa1f1212429732aa83a350d7003d6c5ed0b7f8f76bccba3c2d69ef07b6d6"
+  }
+}

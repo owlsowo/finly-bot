@@ -1,0 +1,49 @@
+{
+  "schema_version": "finly_generation6_alpaca_adjustment_all_panel_run_claim.v1",
+  "status": "CLAIMED_IMMEDIATELY_BEFORE_AUTHENTICATED_GET",
+  "claimed_at": "2026-08-29T13:58:14.656Z",
+  "protocol_sha256": "b9c845970e85a00c7909130d8dbc3f807d7f293224f7fa51d469513d67fc9b8f",
+  "freeze_receipt_sha256": "01e594c193e4cc4df095645a44903fbe9ab759b8193a662154d33cd9cae297f8",
+  "request": {
+    "symbols": [
+      "SPY",
+      "BIL",
+      "QQQ",
+      "IWM",
+      "EFA",
+      "EEM",
+      "IEF",
+      "TLT",
+      "GLD",
+      "DBC",
+      "VNQ",
+      "XLK",
+      "XLF",
+      "XLE",
+      "XLY",
+      "XLP",
+      "XLI",
+      "XLB",
+      "XLV",
+      "XLU"
+    ],
+    "start": "2007-05-30",
+    "end": "2026-08-27",
+    "feed": "iex",
+    "adjustment": "all",
+    "timeframe": "1Day",
+    "asof": "2026-08-27",
+    "currency": "USD",
+    "sort": "asc",
+    "limit": 10000,
+    "minimum_common_sessions": 1250
+  },
+  "request_sha256": "e980c0a9e304a76c0b241910999b428d5608365d2ac5924364b8119c05b7db8a",
+  "security": {
+    "method": "GET",
+    "credentials_persisted": false,
+    "raw_responses_persisted": false,
+    "request_headers_persisted": false,
+    "page_tokens_persisted": false
+  }
+}

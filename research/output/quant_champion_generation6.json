@@ -1,0 +1,4310 @@
+{
+  "schema_version": "finly_quant_champion_generation6.v1",
+  "generated_at": "2026-08-29T14:07:58.793Z",
+  "disposition": "KEEP_G4_DESCRIPTIVE_BASELINE",
+  "track_statuses": {
+    "primary_spy": "NO_SPY_CHALLENGER",
+    "growth_control_challenge": "NO_GROWTH_CONTROL_CHALLENGER"
+  },
+  "claim_boundary": "Every historical interval, the original 105 trials, the Generation 4 and 5 outcomes, and the literature themes used to construct these formulas were already seen. Hash freezing and the official-run claim document this runner's process but cannot create a pristine holdout or cryptographically prove that no alternate local script previewed the readable panel. A pass is only a retrospective paper-challenger result; it cannot establish future profitability, independent alpha, exact options P&L, permission for live capital, or financial superiority over unreproducible competitor systems.",
+  "input_integrity": {
+    "protocol_sha256": "570c5a346289b5723e2ef19b27c51f6b12b4bd7f1d3d205b5b4c0108703991c9",
+    "trial_ledger_sha256": "f1b35f0b6ff50888b4ca7dbb6c1bb46258af081c09cf344d44adc88753991ecf",
+    "freeze_receipt_sha256": "a08e273ee97cbad298330d265a6a8ccde033c8b915731d9a0f5a10ede1b1c5fc",
+    "private_panel_payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+    "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+    "alpaca_panel_payload_sha256": "aa2075c1989da7194f1de0f455fab83a4035ee878b5b410088d11aa39c0baaa2",
+    "alpaca_series_integrity_sha256": "703435c64439e3964173c96f5fd5031e6b22e6cb2d4b2f8a36283e143de05836",
+    "alpaca_strategy_intersection_normalized_panel_sha256": "0b0ae32a660d8274b3bcfeb0c17b9391f386e3f1d941e13dd0dd5126e9eafb88",
+    "run_claim_sha256": "d48f2759041c0bbee3032b8b841b9cffe4119b442a24b4f3f07ca57b943ed5fe",
+    "generation_6_results_seen_at_freeze": false,
+    "generation_6_output_absent_at_freeze": true,
+    "no_market_fetch_performed": true
+  },
+  "dataset": {
+    "symbols": [
+      "SPY",
+      "BIL",
+      "QQQ",
+      "IWM",
+      "EFA",
+      "EEM",
+      "IEF",
+      "TLT",
+      "GLD",
+      "DBC",
+      "VNQ",
+      "XLK",
+      "XLF",
+      "XLE",
+      "XLY",
+      "XLP",
+      "XLI",
+      "XLB",
+      "XLV",
+      "XLU"
+    ],
+    "common_start": "2007-05-30",
+    "common_end": "2026-08-27",
+    "common_sessions": 4843,
+    "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+    "reused_private_panel_path": "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json",
+    "private_generation_6_ledger_filename": "generation6_ledger_143deb4dcec1d3647280bacbe2ed5b2f9ab4c2fc9a426bb0c11dccbb6263a182.json.gz",
+    "private_generation_6_ledger_gzip_sha256": "143deb4dcec1d3647280bacbe2ed5b2f9ab4c2fc9a426bb0c11dccbb6263a182"
+  },
+  "execution": {
+    "cashSymbol": "BIL",
+    "lookbackSessions": 252,
+    "rebalanceIntervalSessions": 21,
+    "rebalanceAnchor": 0,
+    "oneWayCostBps": 5,
+    "annualBorrowSpread": 0.005,
+    "maximumRiskyGross": 1,
+    "terminalLiquidation": true
+  },
+  "comparators": [
+    "spy_buy_hold",
+    "qqq_buy_hold",
+    "static_spy_qqq_50_50_control",
+    "static_qqq_equal_sectors_control",
+    "qqq_core_sector_12_6",
+    "frozen_finly",
+    "spy_vol_target_15",
+    "bil_cash",
+    "faber_gtaa5_trend"
+  ],
+  "strategy_metadata": {
+    "faber_gtaa5_trend": {
+      "role": "literature_control",
+      "eligible": false,
+      "mechanism": "Five fixed 20% SPY/EFA/IEF/VNQ/DBC slots; each slot is invested only above its inclusive SMA210 and otherwise remains in BIL.",
+      "parameters": {
+        "rebalance_interval_sessions": 21,
+        "symbols": [
+          "SPY",
+          "EFA",
+          "IEF",
+          "VNQ",
+          "DBC"
+        ],
+        "slot_weight": 0.2,
+        "inclusive_sma_sessions": 210
+      },
+      "source_pins": [
+        {
+          "title": "A Quantitative Approach to Tactical Asset Allocation",
+          "authors": "Mebane T. Faber",
+          "doi": "10.2139/ssrn.962461",
+          "url": "https://doi.org/10.2139/ssrn.962461"
+        }
+      ]
+    },
+    "g6_trend_guard_g4": {
+      "role": "candidate",
+      "eligible": true,
+      "mechanism": "Apply an inclusive SMA210 gate independently to the frozen G4 allocation's 50% QQQ sleeve and three fixed one-sixth 12-minus-6 sector sleeves; failed slots remain in BIL.",
+      "parameters": {
+        "rebalance_interval_sessions": 21,
+        "core_symbol": "QQQ",
+        "core_weight": 0.5,
+        "sector_count": 3,
+        "sector_slot_weight": 0.16666666666666666,
+        "momentum_start_sessions": 252,
+        "momentum_end_sessions": 126,
+        "inclusive_sma_sessions": 210
+      },
+      "source_pins": [
+        {
+          "title": "A Quantitative Approach to Tactical Asset Allocation",
+          "authors": "Mebane T. Faber",
+          "doi": "10.2139/ssrn.962461",
+          "url": "https://doi.org/10.2139/ssrn.962461"
+        },
+        {
+          "title": "Do Industries Explain Momentum?",
+          "authors": "Tobias J. Moskowitz, Mark Grinblatt",
+          "doi": "10.1111/0022-1082.00146",
+          "url": "https://doi.org/10.1111/0022-1082.00146"
+        }
+      ]
+    },
+    "g6_vol_target_g4": {
+      "role": "candidate",
+      "eligible": true,
+      "mechanism": "Scale the frozen G4 risky target by min(1, 10% divided by its static-target annualized volatility over the latest 22 daily returns); hold the residual in BIL.",
+      "parameters": {
+        "rebalance_interval_sessions": 21,
+        "annualized_volatility_target": 0.1,
+        "volatility_lookback_sessions": 22,
+        "maximum_risky_gross": 1
+      },
+      "source_pins": [
+        {
+          "title": "Volatility-Managed Portfolios",
+          "authors": "Alan Moreira, Tyler Muir",
+          "doi": "10.1111/jofi.12513",
+          "url": "https://doi.org/10.1111/jofi.12513"
+        }
+      ]
+    },
+    "g6_breadth_scaled_g4": {
+      "role": "candidate",
+      "eligible": true,
+      "mechanism": "Scale every frozen G4 risky sleeve by the fraction of the original nine sectors with positive 21-session excess log return over BIL; hold the residual in BIL.",
+      "parameters": {
+        "rebalance_interval_sessions": 21,
+        "breadth_horizon_sessions": 21,
+        "breadth_symbols": [
+          "XLK",
+          "XLF",
+          "XLE",
+          "XLY",
+          "XLP",
+          "XLI",
+          "XLB",
+          "XLV",
+          "XLU"
+        ],
+        "maximum_risky_gross": 1
+      },
+      "source_pins": [
+        {
+          "title": "Herding for profits: Market breadth and the cross-section of global equity returns",
+          "authors": "Adam Zaremba, Adam Szyszka, Andreas Karathanasopoulos, Mateusz Mikutowski",
+          "doi": "10.1016/j.econmod.2020.04.006",
+          "url": "https://doi.org/10.1016/j.econmod.2020.04.006"
+        }
+      ]
+    },
+    "g6_residual_sector": {
+      "role": "candidate",
+      "eligible": true,
+      "mechanism": "Fit each sector's SPY-minus-BIL and QQQ-minus-SPY betas with an intercept over the t-756..t-21 price-endpoint window; rank t-252..t-21 factor-stripped return sum divided by sample deviation without subtracting the intercept, then hold 50% SPY plus fixed one-sixth slots for up to three positive sectors.",
+      "parameters": {
+        "rebalance_interval_sessions": 21,
+        "minimum_signal_index": 756,
+        "regression_price_endpoint_start": -756,
+        "regression_price_endpoint_end": -21,
+        "score_price_endpoint_start": -252,
+        "score_price_endpoint_end": -21,
+        "subtract_fitted_intercept_in_score": false,
+        "core_symbol": "SPY",
+        "core_weight": 0.5,
+        "maximum_positive_sectors": 3,
+        "sector_slot_weight": 0.16666666666666666
+      },
+      "source_pins": [
+        {
+          "title": "Residual Momentum",
+          "authors": "David Blitz, Joop Huij, Martin Martens",
+          "doi": "10.1016/j.jempfin.2011.01.003",
+          "url": "https://doi.org/10.1016/j.jempfin.2011.01.003"
+        },
+        {
+          "title": "Do Industries Explain Momentum?",
+          "authors": "Tobias J. Moskowitz, Mark Grinblatt",
+          "doi": "10.1111/0022-1082.00146",
+          "url": "https://doi.org/10.1111/0022-1082.00146"
+        }
+      ]
+    },
+    "g6_long_only_tsmom_1_3_12": {
+      "role": "candidate",
+      "eligible": true,
+      "mechanism": "For each 21/63/252-session horizon, inverse-EWMA-volatility weight cross-asset ETFs with positive BIL-excess log return; average the three fully funded sleeves equally and leave empty sleeves in BIL.",
+      "parameters": {
+        "rebalance_interval_sessions": 21,
+        "horizons_sessions": [
+          21,
+          63,
+          252
+        ],
+        "universe": [
+          "SPY",
+          "QQQ",
+          "IWM",
+          "EFA",
+          "EEM",
+          "VNQ",
+          "IEF",
+          "TLT",
+          "GLD",
+          "DBC"
+        ],
+        "ewma_delta": 0.9836065573770492,
+        "horizon_sleeve_weight": 0.3333333333333333
+      },
+      "source_pins": [
+        {
+          "title": "Time Series Momentum",
+          "authors": "Tobias J. Moskowitz, Yao Hua Ooi, Lasse Heje Pedersen",
+          "doi": "10.1016/j.jfineco.2011.11.003",
+          "url": "https://doi.org/10.1016/j.jfineco.2011.11.003"
+        },
+        {
+          "title": "Time series momentum and volatility scaling",
+          "authors": "Abby Y. Kim, Yiuman Tse, John K. Wald",
+          "doi": "10.1016/j.finmar.2016.05.003",
+          "url": "https://doi.org/10.1016/j.finmar.2016.05.003"
+        }
+      ]
+    },
+    "g6_hrp_trend": {
+      "role": "candidate",
+      "eligible": true,
+      "mechanism": "Admit cross-asset ETFs only with positive 252-session BIL-excess momentum and price above inclusive SMA210, then allocate with deterministic single-linkage hierarchical risk parity from a 252-session covariance matrix.",
+      "parameters": {
+        "rebalance_interval_sessions": 21,
+        "universe": [
+          "SPY",
+          "QQQ",
+          "IWM",
+          "EFA",
+          "EEM",
+          "VNQ",
+          "IEF",
+          "TLT",
+          "GLD",
+          "DBC"
+        ],
+        "momentum_horizon_sessions": 252,
+        "inclusive_sma_sessions": 210,
+        "covariance_lookback_sessions": 252,
+        "linkage": "single",
+        "correlation_distance": "sqrt(0.5*(1-rho))",
+        "leaf_order": "deterministic_quasi_diagonal",
+        "allocation": "recursive_bisection_inverse_variance_cluster_variance",
+        "tie_break": "alphabetical",
+        "degenerate_covariance_policy": "fail_closed_to_bil_if_any_eligible_asset_variance_is_not_strictly_above_1e-20"
+      },
+      "source_pins": [
+        {
+          "title": "Building Diversified Portfolios that Outperform Out of Sample",
+          "authors": "Marcos Lopez de Prado",
+          "doi": "10.2139/ssrn.2708678",
+          "url": "https://doi.org/10.2139/ssrn.2708678"
+        }
+      ]
+    },
+    "g6_equal_evidence_ensemble": {
+      "role": "candidate",
+      "eligible": true,
+      "mechanism": "Equal 25% weight-vector blend of the trend-guard, residual-sector, 1/3/12 TSMOM, and HRP-trend candidates; before residual history is available, that quarter remains entirely in BIL.",
+      "parameters": {
+        "rebalance_interval_sessions": 21,
+        "component_weight": 0.25,
+        "components": [
+          "g6_trend_guard_g4",
+          "g6_residual_sector",
+          "g6_long_only_tsmom_1_3_12",
+          "g6_hrp_trend"
+        ],
+        "residual_component_before_756": "BIL"
+      },
+      "source_pins": [
+        {
+          "title": "Optimal Versus Naive Diversification: How Inefficient is the 1/N Portfolio Strategy?",
+          "authors": "Victor DeMiguel, Lorenzo Garlappi, Raman Uppal",
+          "doi": "10.1093/rfs/hhm075",
+          "url": "https://doi.org/10.1093/rfs/hhm075"
+        }
+      ]
+    }
+  },
+  "selection_thresholds": {
+    "minimum_spy_annualized_log_growth_edge": 0.005,
+    "minimum_cash_excess_sharpe_difference": 0,
+    "maximum_drawdown_disadvantage": 0.05,
+    "maximum_expected_shortfall_magnitude_ratio": 1.1,
+    "maximum_annualized_turnover_notional": 4,
+    "recent_absolute_maximum_drawdown_floor": -0.2
+  },
+  "metrics": {
+    "development": {
+      "bil_cash": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 0.0141958891,
+        "gross_total_return": 0.0141958891,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0014725869,
+        "annualized_volatility": 0.0058139708,
+        "cash_excess_sharpe": null,
+        "maximum_drawdown": -0.0077993869,
+        "maximum_drawdown_peak_date": "2008-09-29",
+        "maximum_drawdown_valley_date": "2015-12-09",
+        "calmar_ratio": 0.18880803,
+        "daily_expected_shortfall_p05": -0.0007833969,
+        "worst_day_return": -0.0039105664,
+        "cumulative_turnover_notional": 0,
+        "annualized_turnover_notional": 0,
+        "modeled_transaction_cost_simple_sum": 0,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0,
+        "maximum_risky_gross": 0,
+        "positive_calendar_year_fraction": 0.4,
+        "calendar_year_returns": {
+          "2008": 0.0075651569,
+          "2009": 0.0027087132,
+          "2010": -0.0004361829,
+          "2011": -0.000392227,
+          "2012": -0.0004362309,
+          "2013": -0.0008733625,
+          "2014": -0.0006555192,
+          "2015": -0.0013117879,
+          "2016": 0.001094368,
+          "2017": 0.0068912369
+        }
+      },
+      "spy_buy_hold": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 1.3284658871,
+        "gross_total_return": 1.3319914502,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0922418454,
+        "annualized_volatility": 0.2034087021,
+        "cash_excess_sharpe": 0.5252223648,
+        "maximum_drawdown": -0.5069913286,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2009-03-09",
+        "calmar_ratio": 0.1819396904,
+        "daily_expected_shortfall_p05": -0.0317018298,
+        "worst_day_return": -0.0984481489,
+        "cumulative_turnover_notional": 3,
+        "annualized_turnover_notional": 0.3131731566,
+        "modeled_transaction_cost_simple_sum": 0.0015,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.9,
+        "calendar_year_returns": {
+          "2008": -0.3454658675,
+          "2009": 0.2635169549,
+          "2010": 0.1505613709,
+          "2011": 0.0189503357,
+          "2012": 0.1599032013,
+          "2013": 0.3230776754,
+          "2014": 0.134637527,
+          "2015": 0.0123433784,
+          "2016": 0.1199788384,
+          "2017": 0.216443118
+        }
+      },
+      "qqq_buy_hold": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 2.424467913,
+        "gross_total_return": 2.4296636913,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.1371211474,
+        "annualized_volatility": 0.2089854838,
+        "cash_excess_sharpe": 0.7089541272,
+        "maximum_drawdown": -0.4936682823,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2008-11-20",
+        "calmar_ratio": 0.2777596867,
+        "daily_expected_shortfall_p05": -0.0321205691,
+        "worst_day_return": -0.0895570415,
+        "cumulative_turnover_notional": 3,
+        "annualized_turnover_notional": 0.3131731566,
+        "modeled_transaction_cost_simple_sum": 0.0015,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.9,
+        "calendar_year_returns": {
+          "2008": -0.4042422675,
+          "2009": 0.5468410637,
+          "2010": 0.201437626,
+          "2011": 0.0347577689,
+          "2012": 0.1811256163,
+          "2013": 0.3663414155,
+          "2014": 0.1918141713,
+          "2015": 0.0943592159,
+          "2016": 0.0709793143,
+          "2017": 0.3259677081
+        }
+      },
+      "spy_vol_target_15": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 1.4741747165,
+        "gross_total_return": 1.511788693,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0991845357,
+        "annualized_volatility": 0.1305412925,
+        "cash_excess_sharpe": 0.7745997936,
+        "maximum_drawdown": -0.272705978,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2009-03-09",
+        "calmar_ratio": 0.3637050293,
+        "daily_expected_shortfall_p05": -0.0197474328,
+        "worst_day_return": -0.0651234026,
+        "cumulative_turnover_notional": 30.1372165019,
+        "annualized_turnover_notional": 3.1460557409,
+        "modeled_transaction_cost_simple_sum": 0.0150686084,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.8769686995,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.8,
+        "calendar_year_returns": {
+          "2008": -0.1742900345,
+          "2009": 0.1666150253,
+          "2010": 0.1519490722,
+          "2011": -0.0276005119,
+          "2012": 0.1448570024,
+          "2013": 0.3134539576,
+          "2014": 0.1206792944,
+          "2015": 0.0131050127,
+          "2016": 0.1040876598,
+          "2017": 0.216443118
+        }
+      },
+      "frozen_finly": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 0.7501941844,
+        "gross_total_return": 0.8390123383,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0601712628,
+        "annualized_volatility": 0.0799183888,
+        "cash_excess_sharpe": 0.7533516811,
+        "maximum_drawdown": -0.1120870246,
+        "maximum_drawdown_peak_date": "2011-04-29",
+        "maximum_drawdown_valley_date": "2011-11-25",
+        "calmar_ratio": 0.536826301,
+        "daily_expected_shortfall_p05": -0.0128402373,
+        "worst_day_return": -0.0359092852,
+        "cumulative_turnover_notional": 99.0300300766,
+        "annualized_turnover_notional": 10.3378490387,
+        "modeled_transaction_cost_simple_sum": 0.0495150154,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.6082544812,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.7,
+        "calendar_year_returns": {
+          "2008": -0.0278582188,
+          "2009": 0.0906237625,
+          "2010": 0.0734083734,
+          "2011": -0.0347520532,
+          "2012": 0.0954715332,
+          "2013": 0.1814747275,
+          "2014": 0.0151618476,
+          "2015": -0.0111515728,
+          "2016": 0.0283974351,
+          "2017": 0.192411825
+        }
+      },
+      "static_spy_qqq_50_50_control": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 1.8417156261,
+        "gross_total_return": 1.8473871256,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.1151922886,
+        "annualized_volatility": 0.2023212665,
+        "cash_excess_sharpe": 0.6293279835,
+        "maximum_drawdown": -0.4973771996,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2009-03-09",
+        "calmar_ratio": 0.2315994556,
+        "daily_expected_shortfall_p05": -0.0314162605,
+        "worst_day_return": -0.0940220101,
+        "cumulative_turnover_notional": 3.9600741288,
+        "annualized_turnover_notional": 0.4133963051,
+        "modeled_transaction_cost_simple_sum": 0.0019800369,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.9,
+        "calendar_year_returns": {
+          "2008": -0.3750746798,
+          "2009": 0.3999930436,
+          "2010": 0.1762627828,
+          "2011": 0.0275578913,
+          "2012": 0.1711703355,
+          "2013": 0.3448413412,
+          "2014": 0.1632427028,
+          "2015": 0.0528018427,
+          "2016": 0.0959628616,
+          "2017": 0.2711945896
+        }
+      },
+      "qqq_core_sector_12_6": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 1.7170425061,
+        "gross_total_return": 1.768893385,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.1099816096,
+        "annualized_volatility": 0.1990727356,
+        "cash_excess_sharpe": 0.6132230882,
+        "maximum_drawdown": -0.4919705162,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2009-03-09",
+        "calmar_ratio": 0.2235532536,
+        "daily_expected_shortfall_p05": -0.0315073082,
+        "worst_day_return": -0.0943318983,
+        "cumulative_turnover_notional": 37.8379484698,
+        "annualized_turnover_notional": 3.9499432537,
+        "modeled_transaction_cost_simple_sum": 0.0189189741,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.9,
+        "calendar_year_returns": {
+          "2008": -0.3788211145,
+          "2009": 0.4040099944,
+          "2010": 0.1677974706,
+          "2011": 0.0475445679,
+          "2012": 0.1630462062,
+          "2013": 0.3430714637,
+          "2014": 0.1641274285,
+          "2015": 0.0863300751,
+          "2016": 0.0615717154,
+          "2017": 0.214399988
+        }
+      },
+      "static_qqq_equal_sectors_control": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 1.8314636564,
+        "gross_total_return": 1.8384897145,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.1147716178,
+        "annualized_volatility": 0.1979514165,
+        "cash_excess_sharpe": 0.6371586261,
+        "maximum_drawdown": -0.4990628041,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2009-03-09",
+        "calmar_ratio": 0.2299742976,
+        "daily_expected_shortfall_p05": -0.0310044751,
+        "worst_day_return": -0.092737664,
+        "cumulative_turnover_notional": 4.9322627465,
+        "annualized_turnover_notional": 0.5148840978,
+        "modeled_transaction_cost_simple_sum": 0.0024661313,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1.0000000004,
+        "positive_calendar_year_fraction": 0.9,
+        "calendar_year_returns": {
+          "2008": -0.374131341,
+          "2009": 0.4100060137,
+          "2010": 0.1816709682,
+          "2011": 0.0337398681,
+          "2012": 0.165199467,
+          "2013": 0.3374115703,
+          "2014": 0.1622568076,
+          "2015": 0.0394566995,
+          "2016": 0.1082760795,
+          "2017": 0.2588592521
+        }
+      },
+      "faber_gtaa5_trend": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 0.4236360753,
+        "gross_total_return": 0.446360923,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0375606234,
+        "annualized_volatility": 0.0861724728,
+        "cash_excess_sharpe": 0.45304306,
+        "maximum_drawdown": -0.1456669746,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2008-10-27",
+        "calmar_ratio": 0.2578527046,
+        "daily_expected_shortfall_p05": -0.0135532688,
+        "worst_day_return": -0.0478112276,
+        "cumulative_turnover_notional": 31.7020253494,
+        "annualized_turnover_notional": 3.309407783,
+        "modeled_transaction_cost_simple_sum": 0.015851013,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.6800904556,
+        "maximum_risky_gross": 1.0000000002,
+        "positive_calendar_year_fraction": 0.8,
+        "calendar_year_returns": {
+          "2008": -0.1054049906,
+          "2009": 0.1364012248,
+          "2010": 0.0666768909,
+          "2011": 0.0041362739,
+          "2012": 0.0633021451,
+          "2013": 0.0747565165,
+          "2014": 0.0494741588,
+          "2015": -0.0393986228,
+          "2016": 0.0352857455,
+          "2017": 0.0961583896
+        }
+      },
+      "g6_trend_guard_g4": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 1.1736233768,
+        "gross_total_return": 1.2405251685,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0844237574,
+        "annualized_volatility": 0.1288252115,
+        "cash_excess_sharpe": 0.6817125037,
+        "maximum_drawdown": -0.2153383321,
+        "maximum_drawdown_peak_date": "2015-07-20",
+        "maximum_drawdown_valley_date": "2016-06-27",
+        "calmar_ratio": 0.3920516916,
+        "daily_expected_shortfall_p05": -0.0208200369,
+        "worst_day_return": -0.0667734424,
+        "cumulative_turnover_notional": 60.6665651884,
+        "annualized_turnover_notional": 6.3330465731,
+        "modeled_transaction_cost_simple_sum": 0.0303332825,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.7854804581,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.5,
+        "calendar_year_returns": {
+          "2008": -0.0964139515,
+          "2009": 0.243744647,
+          "2010": -0.0246941949,
+          "2011": -0.0384955896,
+          "2012": 0.158262979,
+          "2013": 0.3203394427,
+          "2014": 0.1652125886,
+          "2015": -0.0124471403,
+          "2016": -0.0471816434,
+          "2017": 0.2300508288
+        }
+      },
+      "g6_vol_target_g4": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 1.1707767163,
+        "gross_total_return": 1.238670695,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0842754139,
+        "annualized_volatility": 0.1095748616,
+        "cash_excess_sharpe": 0.7751673129,
+        "maximum_drawdown": -0.2250101843,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2009-03-09",
+        "calmar_ratio": 0.3745404419,
+        "daily_expected_shortfall_p05": -0.0169021066,
+        "worst_day_return": -0.0377604369,
+        "cumulative_turnover_notional": 61.6119056651,
+        "annualized_turnover_notional": 6.4317316602,
+        "modeled_transaction_cost_simple_sum": 0.0308059533,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.7212288808,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.9,
+        "calendar_year_returns": {
+          "2008": -0.1774031619,
+          "2009": 0.1901825672,
+          "2010": 0.0882565865,
+          "2011": 0.0350586053,
+          "2012": 0.1196673624,
+          "2013": 0.2707963788,
+          "2014": 0.1034257382,
+          "2015": 0.002990236,
+          "2016": 0.037912419,
+          "2017": 0.2043501696
+        }
+      },
+      "g6_breadth_scaled_g4": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 0.5911188069,
+        "gross_total_return": 0.6788284744,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0496776437,
+        "annualized_volatility": 0.1158983047,
+        "cash_excess_sharpe": 0.4611067961,
+        "maximum_drawdown": -0.2340042684,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2009-03-16",
+        "calmar_ratio": 0.2122937503,
+        "daily_expected_shortfall_p05": -0.0194662938,
+        "worst_day_return": -0.0545095183,
+        "cumulative_turnover_notional": 107.3636614669,
+        "annualized_turnover_notional": 11.2078055881,
+        "modeled_transaction_cost_simple_sum": 0.0536818307,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.6376408031,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.5,
+        "calendar_year_returns": {
+          "2008": -0.1614223181,
+          "2009": 0.263069611,
+          "2010": -0.0166631531,
+          "2011": -0.0017124054,
+          "2012": 0.125164107,
+          "2013": 0.1842274405,
+          "2014": -0.0012205934,
+          "2015": -0.0351024466,
+          "2016": 0.0538910918,
+          "2017": 0.1307758583
+        }
+      },
+      "g6_residual_sector": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 1.6729762168,
+        "gross_total_return": 1.6993966143,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.1080885498,
+        "annualized_volatility": 0.1431265528,
+        "cash_excess_sharpe": 0.774343588,
+        "maximum_drawdown": -0.2856789742,
+        "maximum_drawdown_peak_date": "2008-06-05",
+        "maximum_drawdown_valley_date": "2009-03-09",
+        "calmar_ratio": 0.3783566855,
+        "daily_expected_shortfall_p05": -0.021974601,
+        "worst_day_return": -0.0612301151,
+        "cumulative_turnover_notional": 19.6765954614,
+        "annualized_turnover_notional": 2.0540605038,
+        "modeled_transaction_cost_simple_sum": 0.0098382976,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.8940328918,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.9,
+        "calendar_year_returns": {
+          "2008": -0.1813298975,
+          "2009": 0.1361661992,
+          "2010": 0.165671657,
+          "2011": 0.0398641766,
+          "2012": 0.1240519608,
+          "2013": 0.341960542,
+          "2014": 0.1396303384,
+          "2015": 0.0220783773,
+          "2016": 0.1126649571,
+          "2017": 0.2126981033
+        }
+      },
+      "g6_long_only_tsmom_1_3_12": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 0.9118238346,
+        "gross_total_return": 0.9714000633,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0699922682,
+        "annualized_volatility": 0.0933547963,
+        "cash_excess_sharpe": 0.7545441661,
+        "maximum_drawdown": -0.1872884414,
+        "maximum_drawdown_peak_date": "2015-01-26",
+        "maximum_drawdown_valley_date": "2016-01-20",
+        "calmar_ratio": 0.3737137628,
+        "daily_expected_shortfall_p05": -0.0135760626,
+        "worst_day_return": -0.029954538,
+        "cumulative_turnover_notional": 61.3823023985,
+        "annualized_turnover_notional": 6.4077631336,
+        "modeled_transaction_cost_simple_sum": 0.0306911511,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.9971090566,
+        "maximum_risky_gross": 1.0000000003,
+        "positive_calendar_year_fraction": 0.9,
+        "calendar_year_returns": {
+          "2008": 0.0004618618,
+          "2009": 0.0912365226,
+          "2010": 0.1242123421,
+          "2011": 0.1106914734,
+          "2012": 0.1086709204,
+          "2013": 0.1354803272,
+          "2014": 0.0426360995,
+          "2015": -0.0956273041,
+          "2016": 0.0214998141,
+          "2017": 0.1566072014
+        }
+      },
+      "g6_hrp_trend": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 0.723039126,
+        "gross_total_return": 0.7766199524,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0584420816,
+        "annualized_volatility": 0.0949160816,
+        "cash_excess_sharpe": 0.6309306401,
+        "maximum_drawdown": -0.1518259906,
+        "maximum_drawdown_peak_date": "2015-02-02",
+        "maximum_drawdown_valley_date": "2016-01-20",
+        "calmar_ratio": 0.3849280441,
+        "daily_expected_shortfall_p05": -0.0143795092,
+        "worst_day_return": -0.0363199762,
+        "cumulative_turnover_notional": 61.3052044602,
+        "annualized_turnover_notional": 6.3997147987,
+        "modeled_transaction_cost_simple_sum": 0.0306526019,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.9913007457,
+        "maximum_risky_gross": 1.0000000003,
+        "positive_calendar_year_fraction": 0.7,
+        "calendar_year_returns": {
+          "2008": 0.1344029021,
+          "2009": -0.0361514721,
+          "2010": 0.0313872975,
+          "2011": 0.1217957628,
+          "2012": 0.040863384,
+          "2013": 0.1151359611,
+          "2014": 0.0803048354,
+          "2015": -0.0307502832,
+          "2016": -0.0614561304,
+          "2017": 0.1940577072
+        }
+      },
+      "g6_equal_evidence_ensemble": {
+        "observations": 2414,
+        "start_date": "2008-06-02",
+        "end_date": "2017-12-29",
+        "total_return": 1.1891806977,
+        "gross_total_return": 1.2394011605,
+        "cash_total_return": 0.0141958891,
+        "annualized_return": 0.0852314106,
+        "annualized_volatility": 0.0898056749,
+        "cash_excess_sharpe": 0.9388058496,
+        "maximum_drawdown": -0.1408692725,
+        "maximum_drawdown_peak_date": "2015-07-17",
+        "maximum_drawdown_valley_date": "2016-01-20",
+        "calmar_ratio": 0.6050390481,
+        "daily_expected_shortfall_p05": -0.0138750861,
+        "worst_day_return": -0.034238284,
+        "cumulative_turnover_notional": 45.3973420518,
+        "annualized_turnover_notional": 4.7390763037,
+        "modeled_transaction_cost_simple_sum": 0.0226986715,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.8912262083,
+        "maximum_risky_gross": 1.0000000003,
+        "positive_calendar_year_fraction": 0.9,
+        "calendar_year_returns": {
+          "2008": 0.0109934584,
+          "2009": 0.0741227962,
+          "2010": 0.0799655726,
+          "2011": 0.0602741425,
+          "2012": 0.1085156272,
+          "2013": 0.2252444397,
+          "2014": 0.106557318,
+          "2015": -0.0280926821,
+          "2016": 0.0055034101,
+          "2017": 0.1986830794
+        }
+      }
+    },
+    "validation": {
+      "bil_cash": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 0.1655276423,
+        "gross_total_return": 0.1655276423,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.0221612547,
+        "annualized_volatility": 0.002463535,
+        "cash_excess_sharpe": null,
+        "maximum_drawdown": -0.0020851477,
+        "maximum_drawdown_peak_date": "2020-03-20",
+        "maximum_drawdown_valley_date": "2022-02-14",
+        "calmar_ratio": 10.6281463816,
+        "daily_expected_shortfall_p05": -0.0001640721,
+        "worst_day_return": -0.0003275438,
+        "cumulative_turnover_notional": 0,
+        "annualized_turnover_notional": 0,
+        "modeled_transaction_cost_simple_sum": 0,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0,
+        "maximum_risky_gross": 0,
+        "positive_calendar_year_fraction": 0.8571428571,
+        "calendar_year_returns": {
+          "2018": 0.0173735111,
+          "2019": 0.0203194474,
+          "2020": 0.003985907,
+          "2021": -0.0009838871,
+          "2022": 0.0140461633,
+          "2023": 0.0494484391,
+          "2024": 0.0519304966
+        }
+      },
+      "spy_buy_hold": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 1.4558665,
+        "gross_total_return": 1.4595415988,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.1372043175,
+        "annualized_volatility": 0.1945680985,
+        "cash_excess_sharpe": 0.6459958203,
+        "maximum_drawdown": -0.3371726114,
+        "maximum_drawdown_peak_date": "2020-02-19",
+        "maximum_drawdown_valley_date": "2020-03-23",
+        "calmar_ratio": 0.4069260458,
+        "daily_expected_shortfall_p05": -0.0298589744,
+        "worst_day_return": -0.1094235723,
+        "cumulative_turnover_notional": 3,
+        "annualized_turnover_notional": 0.4293015332,
+        "modeled_transaction_cost_simple_sum": 0.0015,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0466373725,
+          "2019": 0.3122388903,
+          "2020": 0.1833159959,
+          "2021": 0.2872874944,
+          "2022": -0.1817534894,
+          "2023": 0.2617577566,
+          "2024": 0.2482377034
+        }
+      },
+      "qqq_buy_hold": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 2.4358795413,
+        "gross_total_return": 2.4409947978,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.193183672,
+        "annualized_volatility": 0.2412231289,
+        "cash_excess_sharpe": 0.7625828296,
+        "maximum_drawdown": -0.3511872229,
+        "maximum_drawdown_peak_date": "2021-12-27",
+        "maximum_drawdown_valley_date": "2022-11-03",
+        "calmar_ratio": 0.550087416,
+        "daily_expected_shortfall_p05": -0.035825828,
+        "worst_day_return": -0.1197876539,
+        "cumulative_turnover_notional": 3,
+        "annualized_turnover_notional": 0.4293015332,
+        "modeled_transaction_cost_simple_sum": 0.0015,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0022439555,
+          "2019": 0.3896158281,
+          "2020": 0.48406147,
+          "2021": 0.2741969732,
+          "2022": -0.3257699416,
+          "2023": 0.5485557976,
+          "2024": 0.2551492825
+        }
+      },
+      "spy_vol_target_15": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 1.1511736262,
+        "gross_total_return": 1.1830197985,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.1158505428,
+        "annualized_volatility": 0.1377737993,
+        "cash_excess_sharpe": 0.7059591817,
+        "maximum_drawdown": -0.1988843172,
+        "maximum_drawdown_peak_date": "2022-01-03",
+        "maximum_drawdown_valley_date": "2022-09-30",
+        "calmar_ratio": 0.5825021523,
+        "daily_expected_shortfall_p05": -0.0215996013,
+        "worst_day_return": -0.044113815,
+        "cumulative_turnover_notional": 29.3845891387,
+        "annualized_turnover_notional": 4.2049497234,
+        "modeled_transaction_cost_simple_sum": 0.0146922942,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.8707679114,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0359618149,
+          "2019": 0.2490956777,
+          "2020": 0.1005804234,
+          "2021": 0.2675521386,
+          "2022": -0.1665481024,
+          "2023": 0.2358729746,
+          "2024": 0.243207243
+        }
+      },
+      "frozen_finly": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 0.5687774554,
+        "gross_total_return": 0.6289480146,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.0665591052,
+        "annualized_volatility": 0.0882875756,
+        "cash_excess_sharpe": 0.5266403929,
+        "maximum_drawdown": -0.0968336043,
+        "maximum_drawdown_peak_date": "2022-01-03",
+        "maximum_drawdown_valley_date": "2022-12-28",
+        "calmar_ratio": 0.6873554458,
+        "daily_expected_shortfall_p05": -0.0146409555,
+        "worst_day_return": -0.0418228158,
+        "cumulative_turnover_notional": 75.2866846796,
+        "annualized_turnover_notional": 10.7735630547,
+        "modeled_transaction_cost_simple_sum": 0.0376433425,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.583368283,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.8571428571,
+        "calendar_year_returns": {
+          "2018": 0.0062334929,
+          "2019": 0.0882902844,
+          "2020": 0.0517352118,
+          "2021": 0.163261038,
+          "2022": -0.0917660615,
+          "2023": 0.1320179349,
+          "2024": 0.1388936938
+        }
+      },
+      "static_spy_qqq_50_50_control": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 1.9259768842,
+        "gross_total_return": 1.9316043435,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.1660672628,
+        "annualized_volatility": 0.2141460336,
+        "cash_excess_sharpe": 0.7227561813,
+        "maximum_drawdown": -0.3081561215,
+        "maximum_drawdown_peak_date": "2020-02-19",
+        "maximum_drawdown_valley_date": "2020-03-23",
+        "calmar_ratio": 0.5389062598,
+        "daily_expected_shortfall_p05": -0.0324138319,
+        "worst_day_return": -0.1146591495,
+        "cumulative_turnover_notional": 3.8590252463,
+        "annualized_turnover_notional": 0.552228485,
+        "modeled_transaction_cost_simple_sum": 0.0019295129,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0242804638,
+          "2019": 0.3509216755,
+          "2020": 0.3272980379,
+          "2021": 0.2820170966,
+          "2022": -0.2559549463,
+          "2023": 0.399576084,
+          "2024": 0.2527306532
+        }
+      },
+      "qqq_core_sector_12_6": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 2.3370989794,
+        "gross_total_return": 2.3815601645,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.1882132309,
+        "annualized_volatility": 0.209946202,
+        "cash_excess_sharpe": 0.8225095403,
+        "maximum_drawdown": -0.2898521154,
+        "maximum_drawdown_peak_date": "2020-02-19",
+        "maximum_drawdown_valley_date": "2020-03-23",
+        "calmar_ratio": 0.6493422711,
+        "daily_expected_shortfall_p05": -0.0313111831,
+        "worst_day_return": -0.1131999694,
+        "cumulative_turnover_notional": 26.489653365,
+        "annualized_turnover_notional": 3.7906829347,
+        "modeled_transaction_cost_simple_sum": 0.0132448264,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0488475808,
+          "2019": 0.3952532737,
+          "2020": 0.2989979744,
+          "2021": 0.2525567605,
+          "2022": -0.0777865274,
+          "2023": 0.3106227988,
+          "2024": 0.2786475506
+        }
+      },
+      "static_qqq_equal_sectors_control": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 1.7658918571,
+        "gross_total_return": 1.7728019533,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.1567162648,
+        "annualized_volatility": 0.2044534202,
+        "cash_excess_sharpe": 0.707690604,
+        "maximum_drawdown": -0.3232733773,
+        "maximum_drawdown_peak_date": "2020-02-19",
+        "maximum_drawdown_valley_date": "2020-03-23",
+        "calmar_ratio": 0.4847793719,
+        "daily_expected_shortfall_p05": -0.0309742134,
+        "worst_day_return": -0.1175180699,
+        "cumulative_turnover_notional": 5.0115090143,
+        "annualized_turnover_notional": 0.7171495012,
+        "modeled_transaction_cost_simple_sum": 0.0025057546,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1.0000000004,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.03242483,
+          "2019": 0.3330097608,
+          "2020": 0.2827506691,
+          "2021": 0.2901225572,
+          "2022": -0.1957183087,
+          "2023": 0.3316568594,
+          "2024": 0.2098831259
+        }
+      },
+      "faber_gtaa5_trend": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 0.2570266144,
+        "gross_total_return": 0.2757312003,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.0332757686,
+        "annualized_volatility": 0.0801517946,
+        "cash_excess_sharpe": 0.175158119,
+        "maximum_drawdown": -0.1666465419,
+        "maximum_drawdown_peak_date": "2020-01-17",
+        "maximum_drawdown_valley_date": "2020-03-23",
+        "calmar_ratio": 0.1996787225,
+        "daily_expected_shortfall_p05": -0.0128623956,
+        "worst_day_return": -0.0474461319,
+        "cumulative_turnover_notional": 29.5438618384,
+        "annualized_turnover_notional": 4.2277417282,
+        "modeled_transaction_cost_simple_sum": 0.0147719309,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.6403988022,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.5714285714,
+        "calendar_year_returns": {
+          "2018": -0.0248410112,
+          "2019": 0.0986290454,
+          "2020": -0.0837853643,
+          "2021": 0.2241929351,
+          "2022": -0.0320838894,
+          "2023": 0.0397451441,
+          "2024": 0.0394563454
+        }
+      },
+      "g6_trend_guard_g4": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 1.7745765909,
+        "gross_total_return": 1.8267410846,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.1572353108,
+        "annualized_volatility": 0.1700378992,
+        "cash_excess_sharpe": 0.8155955523,
+        "maximum_drawdown": -0.2898521154,
+        "maximum_drawdown_peak_date": "2020-02-19",
+        "maximum_drawdown_valley_date": "2020-03-23",
+        "calmar_ratio": 0.5424673563,
+        "daily_expected_shortfall_p05": -0.0255398374,
+        "worst_day_return": -0.1131999694,
+        "cumulative_turnover_notional": 37.2738775207,
+        "annualized_turnover_notional": 5.3339109229,
+        "modeled_transaction_cost_simple_sum": 0.0186369387,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.79776241,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2018": 0.045636901,
+          "2019": 0.227699094,
+          "2020": 0.1196539181,
+          "2021": 0.2525567605,
+          "2022": 0.0160236193,
+          "2023": 0.1862821799,
+          "2024": 0.2786475506
+        }
+      },
+      "g6_vol_target_g4": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 1.1994094164,
+        "gross_total_return": 1.2493839493,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.1193970937,
+        "annualized_volatility": 0.1197226085,
+        "cash_excess_sharpe": 0.8195608036,
+        "maximum_drawdown": -0.139924544,
+        "maximum_drawdown_peak_date": "2018-08-29",
+        "maximum_drawdown_valley_date": "2018-12-24",
+        "calmar_ratio": 0.8532962861,
+        "daily_expected_shortfall_p05": -0.018493146,
+        "worst_day_return": -0.0407555902,
+        "cumulative_turnover_notional": 45.0088294752,
+        "annualized_turnover_notional": 6.4407865007,
+        "modeled_transaction_cost_simple_sum": 0.0225044145,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.6564225446,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0012955922,
+          "2019": 0.2486673336,
+          "2020": 0.0945142049,
+          "2021": 0.1663623981,
+          "2022": -0.0376616632,
+          "2023": 0.2269498853,
+          "2024": 0.17007268
+        }
+      },
+      "g6_breadth_scaled_g4": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 0.7965965636,
+        "gross_total_return": 0.8723966992,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.0874567813,
+        "annualized_volatility": 0.1149286025,
+        "cash_excess_sharpe": 0.5968267717,
+        "maximum_drawdown": -0.1720950162,
+        "maximum_drawdown_peak_date": "2018-08-29",
+        "maximum_drawdown_valley_date": "2018-12-24",
+        "calmar_ratio": 0.5081889252,
+        "daily_expected_shortfall_p05": -0.0192365696,
+        "worst_day_return": -0.0570340569,
+        "cumulative_turnover_notional": 82.6999001616,
+        "annualized_turnover_notional": 11.8343979788,
+        "modeled_transaction_cost_simple_sum": 0.04134995,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.5769982276,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0079818342,
+          "2019": 0.0970165011,
+          "2020": 0.2571495063,
+          "2021": 0.0798337719,
+          "2022": -0.1182160448,
+          "2023": 0.1394003729,
+          "2024": 0.2104180599
+        }
+      },
+      "g6_residual_sector": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 1.3032279973,
+        "gross_total_return": 1.3284591088,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.12680976,
+        "annualized_volatility": 0.1899902882,
+        "cash_excess_sharpe": 0.6084298485,
+        "maximum_drawdown": -0.3194554851,
+        "maximum_drawdown_peak_date": "2020-02-19",
+        "maximum_drawdown_valley_date": "2020-03-23",
+        "calmar_ratio": 0.3969559638,
+        "daily_expected_shortfall_p05": -0.0285916531,
+        "worst_day_return": -0.1079693031,
+        "cumulative_turnover_notional": 21.8158504671,
+        "annualized_turnover_notional": 3.1218593513,
+        "modeled_transaction_cost_simple_sum": 0.0109079247,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.9827355028,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0816562109,
+          "2019": 0.2949941083,
+          "2020": 0.1760755713,
+          "2021": 0.2711471091,
+          "2022": -0.0851411219,
+          "2023": 0.2148693904,
+          "2024": 0.1655988366
+        }
+      },
+      "g6_long_only_tsmom_1_3_12": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 0.2515268264,
+        "gross_total_return": 0.2870961838,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.0326276202,
+        "annualized_volatility": 0.1054811219,
+        "cash_excess_sharpe": 0.1494645761,
+        "maximum_drawdown": -0.2238953668,
+        "maximum_drawdown_peak_date": "2022-03-08",
+        "maximum_drawdown_valley_date": "2023-10-05",
+        "calmar_ratio": 0.1457270895,
+        "daily_expected_shortfall_p05": -0.016459882,
+        "worst_day_return": -0.0356629136,
+        "cumulative_turnover_notional": 56.0720658949,
+        "annualized_turnover_notional": 8.0239412865,
+        "modeled_transaction_cost_simple_sum": 0.0280360325,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.968162418,
+        "maximum_risky_gross": 1.0000000003,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0901016531,
+          "2019": 0.1293807413,
+          "2020": 0.1692983179,
+          "2021": 0.1032764366,
+          "2022": -0.1600478348,
+          "2023": 0.0438556445,
+          "2024": 0.0767186704
+        }
+      },
+      "g6_hrp_trend": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 0.0400035292,
+        "gross_total_return": 0.0669192657,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.005628772,
+        "annualized_volatility": 0.1226499709,
+        "cash_excess_sharpe": -0.0713905631,
+        "maximum_drawdown": -0.3192586802,
+        "maximum_drawdown_peak_date": "2022-03-08",
+        "maximum_drawdown_valley_date": "2023-10-27",
+        "calmar_ratio": 0.0176307565,
+        "daily_expected_shortfall_p05": -0.0204789448,
+        "worst_day_return": -0.067239509,
+        "cumulative_turnover_notional": 51.164546434,
+        "annualized_turnover_notional": 7.3216727435,
+        "modeled_transaction_cost_simple_sum": 0.0255822733,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.9165247019,
+        "maximum_risky_gross": 1.0000000002,
+        "positive_calendar_year_fraction": 0.5714285714,
+        "calendar_year_returns": {
+          "2018": -0.1427924732,
+          "2019": 0.0957134532,
+          "2020": 0.0810150762,
+          "2021": 0.2186737584,
+          "2022": -0.212662969,
+          "2023": -0.0054702994,
+          "2024": 0.073381726
+        }
+      },
+      "g6_equal_evidence_ensemble": {
+        "observations": 1761,
+        "start_date": "2018-01-02",
+        "end_date": "2024-12-31",
+        "total_return": 0.7352420354,
+        "gross_total_return": 0.7686443088,
+        "cash_total_return": 0.1655276423,
+        "annualized_return": 0.0820629996,
+        "annualized_volatility": 0.1241310166,
+        "cash_excess_sharpe": 0.5211328205,
+        "maximum_drawdown": -0.1915818121,
+        "maximum_drawdown_peak_date": "2020-02-19",
+        "maximum_drawdown_valley_date": "2020-03-23",
+        "calmar_ratio": 0.4283444167,
+        "daily_expected_shortfall_p05": -0.0191182858,
+        "worst_day_return": -0.0600176978,
+        "cumulative_turnover_notional": 38.1823804417,
+        "annualized_turnover_notional": 5.4639181552,
+        "modeled_transaction_cost_simple_sum": 0.0190911902,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.9161519991,
+        "maximum_risky_gross": 1.0000000003,
+        "positive_calendar_year_fraction": 0.7142857143,
+        "calendar_year_returns": {
+          "2018": -0.0681078062,
+          "2019": 0.1876010286,
+          "2020": 0.1439388362,
+          "2021": 0.2118995044,
+          "2022": -0.1095995183,
+          "2023": 0.107439223,
+          "2024": 0.1469622422
+        }
+      }
+    },
+    "recent_veto_only": {
+      "bil_cash": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.0657746372,
+        "gross_total_return": 0.0657746372,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.0395366299,
+        "annualized_volatility": 0.002007786,
+        "cash_excess_sharpe": null,
+        "maximum_drawdown": -0.0001094936,
+        "maximum_drawdown_peak_date": "2026-06-01",
+        "maximum_drawdown_valley_date": "2026-06-02",
+        "calmar_ratio": 361.0862175473,
+        "daily_expected_shortfall_p05": -0.0000060729,
+        "worst_day_return": -0.0001094936,
+        "cumulative_turnover_notional": 0,
+        "annualized_turnover_notional": 0,
+        "modeled_transaction_cost_simple_sum": 0,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0,
+        "maximum_risky_gross": 0,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.0414710621,
+          "2026": 0.023335814
+        }
+      },
+      "spy_buy_hold": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.3362096439,
+        "gross_total_return": 0.3382152401,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.192941983,
+        "annualized_volatility": 0.173533936,
+        "cash_excess_sharpe": 0.8781078868,
+        "maximum_drawdown": -0.1875522629,
+        "maximum_drawdown_peak_date": "2025-02-19",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.0287371637,
+        "daily_expected_shortfall_p05": -0.0239120358,
+        "worst_day_return": -0.0585429349,
+        "cumulative_turnover_notional": 3,
+        "annualized_turnover_notional": 1.8260869565,
+        "modeled_transaction_cost_simple_sum": 0.0015,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.1760107145,
+          "2026": 0.1362223383
+        }
+      },
+      "qqq_buy_hold": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.4189164027,
+        "gross_total_return": 0.4210404492,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.2373582237,
+        "annualized_volatility": 0.2269484009,
+        "cash_excess_sharpe": 0.8793183183,
+        "maximum_drawdown": -0.2276831155,
+        "maximum_drawdown_peak_date": "2025-02-19",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.0424937447,
+        "daily_expected_shortfall_p05": -0.0309880094,
+        "worst_day_return": -0.0621088289,
+        "cumulative_turnover_notional": 3,
+        "annualized_turnover_notional": 1.8260869565,
+        "modeled_transaction_cost_simple_sum": 0.0015,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.2065153908,
+          "2026": 0.1760450083
+        }
+      },
+      "spy_vol_target_15": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.227822168,
+        "gross_total_return": 0.2329409316,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.1330690403,
+        "annualized_volatility": 0.1365778006,
+        "cash_excess_sharpe": 0.6979737885,
+        "maximum_drawdown": -0.153039757,
+        "maximum_drawdown_peak_date": "2025-02-19",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 0.869506349,
+        "daily_expected_shortfall_p05": -0.0203231518,
+        "worst_day_return": -0.0413032001,
+        "cumulative_turnover_notional": 8.3117597012,
+        "annualized_turnover_notional": 5.059331992,
+        "modeled_transaction_cost_simple_sum": 0.0041558796,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.9276236415,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.0993275864,
+          "2026": 0.1168847059
+        }
+      },
+      "frozen_finly": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.1809863106,
+        "gross_total_return": 0.194453772,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.1065604256,
+        "annualized_volatility": 0.0831306073,
+        "cash_excess_sharpe": 0.7916935955,
+        "maximum_drawdown": -0.0583855421,
+        "maximum_drawdown_peak_date": "2025-02-19",
+        "maximum_drawdown_valley_date": "2025-04-21",
+        "calmar_ratio": 1.8251166607,
+        "daily_expected_shortfall_p05": -0.0127425146,
+        "worst_day_return": -0.0270278622,
+        "cumulative_turnover_notional": 22.6934345522,
+        "annualized_turnover_notional": 13.8133949448,
+        "modeled_transaction_cost_simple_sum": 0.0113467175,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.628283204,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.1087418024,
+          "2026": 0.065159001
+        }
+      },
+      "static_spy_qqq_50_50_control": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.3782600989,
+        "gross_total_return": 0.380433727,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.2156548456,
+        "annualized_volatility": 0.1977843419,
+        "cash_excess_sharpe": 0.8883598997,
+        "maximum_drawdown": -0.207805161,
+        "maximum_drawdown_peak_date": "2025-02-19",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.0377742527,
+        "daily_expected_shortfall_p05": -0.0273131207,
+        "worst_day_return": -0.0603154102,
+        "cumulative_turnover_notional": 3.1566460948,
+        "annualized_turnover_notional": 1.9214367534,
+        "modeled_transaction_cost_simple_sum": 0.001578323,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.1915342522,
+          "2026": 0.1567104314
+        }
+      },
+      "qqq_core_sector_12_6": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.4574135287,
+        "gross_total_return": 0.4644529238,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.2576857408,
+        "annualized_volatility": 0.1782598278,
+        "cash_excess_sharpe": 1.1562684568,
+        "maximum_drawdown": -0.1733055349,
+        "maximum_drawdown_peak_date": "2025-02-18",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.486886965,
+        "daily_expected_shortfall_p05": -0.0241280042,
+        "worst_day_return": -0.0596649429,
+        "cumulative_turnover_notional": 9.6445573769,
+        "annualized_turnover_notional": 5.8706001425,
+        "modeled_transaction_cost_simple_sum": 0.0048222787,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.1713664607,
+          "2026": 0.2441994693
+        }
+      },
+      "static_qqq_equal_sectors_control": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.3642743313,
+        "gross_total_return": 0.3666241678,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.2081311527,
+        "annualized_volatility": 0.1714491896,
+        "cash_excess_sharpe": 0.9606848245,
+        "maximum_drawdown": -0.1898458948,
+        "maximum_drawdown_peak_date": "2025-02-19",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.0963163199,
+        "daily_expected_shortfall_p05": -0.0237748686,
+        "worst_day_return": -0.0617955981,
+        "cumulative_turnover_notional": 3.4424915464,
+        "annualized_turnover_notional": 2.0954296369,
+        "modeled_transaction_cost_simple_sum": 0.001721246,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1.0000000004,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.1698255059,
+          "2026": 0.1662203674
+        }
+      },
+      "faber_gtaa5_trend": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.224623001,
+        "gross_total_return": 0.2296873695,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.131271082,
+        "annualized_volatility": 0.0757695162,
+        "cash_excess_sharpe": 1.1502684063,
+        "maximum_drawdown": -0.0846002054,
+        "maximum_drawdown_peak_date": "2025-02-20",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.5516638673,
+        "daily_expected_shortfall_p05": -0.0116862579,
+        "worst_day_return": -0.0281444761,
+        "cumulative_turnover_notional": 8.2598841328,
+        "annualized_turnover_notional": 5.0277555591,
+        "modeled_transaction_cost_simple_sum": 0.004129942,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.8308684027,
+        "maximum_risky_gross": 1.0000000002,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.0572897754,
+          "2026": 0.158266191
+        }
+      },
+      "g6_trend_guard_g4": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.3325595412,
+        "gross_total_return": 0.3413795846,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.1909573402,
+        "annualized_volatility": 0.1373190793,
+        "cash_excess_sharpe": 1.057465214,
+        "maximum_drawdown": -0.1101491507,
+        "maximum_drawdown_peak_date": "2025-02-19",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.7336251713,
+        "daily_expected_shortfall_p05": -0.0192582259,
+        "worst_day_return": -0.0409719287,
+        "cumulative_turnover_notional": 13.196627438,
+        "annualized_turnover_notional": 8.0327297449,
+        "modeled_transaction_cost_simple_sum": 0.0065983136,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.8312759163,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.0822862488,
+          "2026": 0.2312450082
+        }
+      },
+      "g6_vol_target_g4": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.2373473599,
+        "gross_total_return": 0.2460442561,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.138411454,
+        "annualized_volatility": 0.1140647575,
+        "cash_excess_sharpe": 0.8519711681,
+        "maximum_drawdown": -0.1226109351,
+        "maximum_drawdown_peak_date": "2025-02-18",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.1288671267,
+        "daily_expected_shortfall_p05": -0.016286528,
+        "worst_day_return": -0.03725457,
+        "cumulative_turnover_notional": 14.0227414765,
+        "annualized_turnover_notional": 8.5355817683,
+        "modeled_transaction_cost_simple_sum": 0.0070113709,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.6726205878,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.0865321481,
+          "2026": 0.1388041873
+        }
+      },
+      "g6_breadth_scaled_g4": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.2621789836,
+        "gross_total_return": 0.2747693611,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.1522636969,
+        "annualized_volatility": 0.0989329194,
+        "cash_excess_sharpe": 1.0886019571,
+        "maximum_drawdown": -0.098890316,
+        "maximum_drawdown_peak_date": "2025-02-18",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.5397230294,
+        "daily_expected_shortfall_p05": -0.0146494543,
+        "worst_day_return": -0.0320395228,
+        "cumulative_turnover_notional": 19.9373552527,
+        "annualized_turnover_notional": 12.1357814582,
+        "modeled_transaction_cost_simple_sum": 0.0099686777,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.5760597025,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.0901381301,
+          "2026": 0.1578156463
+        }
+      },
+      "g6_residual_sector": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.3002915155,
+        "gross_total_return": 0.3048045541,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.1733189793,
+        "annualized_volatility": 0.1518327684,
+        "cash_excess_sharpe": 0.8715883778,
+        "maximum_drawdown": -0.1702027064,
+        "maximum_drawdown_peak_date": "2025-02-19",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.0183091852,
+        "daily_expected_shortfall_p05": -0.020683928,
+        "worst_day_return": -0.0579834133,
+        "cumulative_turnover_notional": 6.9337131378,
+        "annualized_turnover_notional": 4.2205210404,
+        "modeled_transaction_cost_simple_sum": 0.0034668565,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.9900210853,
+        "maximum_risky_gross": 1.0000000001,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.1359989726,
+          "2026": 0.1446238482
+        }
+      },
+      "g6_long_only_tsmom_1_3_12": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.3440326661,
+        "gross_total_return": 0.3533679962,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.1971884042,
+        "annualized_volatility": 0.1127323398,
+        "cash_excess_sharpe": 1.3065305698,
+        "maximum_drawdown": -0.0964331749,
+        "maximum_drawdown_peak_date": "2025-02-18",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 2.0448191652,
+        "daily_expected_shortfall_p05": -0.016264825,
+        "worst_day_return": -0.034909094,
+        "cumulative_turnover_notional": 13.8834255709,
+        "annualized_turnover_notional": 8.4507807823,
+        "modeled_transaction_cost_simple_sum": 0.0069417128,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1.0000000002,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.1688499045,
+          "2026": 0.1498761825
+        }
+      },
+      "g6_hrp_trend": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.2468930069,
+        "gross_total_return": 0.2557123596,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.1437492198,
+        "annualized_volatility": 0.1068806174,
+        "cash_excess_sharpe": 0.94461365,
+        "maximum_drawdown": -0.1153659417,
+        "maximum_drawdown_peak_date": "2025-02-20",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.2460282272,
+        "daily_expected_shortfall_p05": -0.0158325717,
+        "worst_day_return": -0.0455235063,
+        "cumulative_turnover_notional": 14.1063218916,
+        "annualized_turnover_notional": 8.5864568036,
+        "modeled_transaction_cost_simple_sum": 0.007053161,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 1,
+        "maximum_risky_gross": 1.0000000002,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.1431530368,
+          "2026": 0.0907489782
+        }
+      },
+      "g6_equal_evidence_ensemble": {
+        "observations": 414,
+        "start_date": "2025-01-02",
+        "end_date": "2026-08-27",
+        "total_return": 0.3080420136,
+        "gross_total_return": 0.3152445301,
+        "cash_total_return": 0.0657746372,
+        "annualized_return": 0.1775710434,
+        "annualized_volatility": 0.1134589316,
+        "cash_excess_sharpe": 1.1530186075,
+        "maximum_drawdown": -0.1226622792,
+        "maximum_drawdown_peak_date": "2025-02-19",
+        "maximum_drawdown_valley_date": "2025-04-08",
+        "calmar_ratio": 1.4476418067,
+        "daily_expected_shortfall_p05": -0.0160455764,
+        "worst_day_return": -0.0416807204,
+        "cumulative_turnover_notional": 10.997171402,
+        "annualized_turnover_notional": 6.6939304186,
+        "modeled_transaction_cost_simple_sum": 0.0054985859,
+        "modeled_financing_spread_simple_sum": 0,
+        "average_risky_gross": 0.9555286076,
+        "maximum_risky_gross": 1.0000000003,
+        "positive_calendar_year_fraction": 1,
+        "calendar_year_returns": {
+          "2025": 0.1333901135,
+          "2026": 0.1540968974
+        }
+      }
+    }
+  },
+  "assessments": {
+    "g6_trend_guard_g4": {
+      "id": "g6_trend_guard_g4",
+      "annualized_log_growth_edges": {
+        "development": {
+          "spy_buy_hold": -0.0071835762,
+          "qqq_buy_hold": -0.0474510125,
+          "static_spy_qqq_50_50_control": -0.0279780995,
+          "static_qqq_equal_sectors_control": -0.0276008102
+        },
+        "validation": {
+          "spy_buy_hold": 0.0174609102,
+          "qqq_buy_hold": -0.0305912817,
+          "static_spy_qqq_50_50_control": -0.0076029655,
+          "static_qqq_equal_sectors_control": 0.000448623
+        }
+      },
+      "frozen_spy_minimum_edge_score": -0.0071835762,
+      "frozen_growth_control_minimum_edge_score": -0.0474510125,
+      "minimum_cash_excess_sharpe_difference": 0.1564901389,
+      "validation_maximum_drawdown": -0.2898521154,
+      "validation_annualized_turnover_notional": 5.3339109229,
+      "expected_shortfall": {
+        "development": {
+          "candidate_magnitude": 0.0208200369,
+          "benchmark_magnitude": 0.0317018298,
+          "magnitude_ratio": 0.6567455895,
+          "passes": true
+        },
+        "validation": {
+          "candidate_magnitude": 0.0255398374,
+          "benchmark_magnitude": 0.0298589744,
+          "magnitude_ratio": 0.8553487825,
+          "passes": true
+        }
+      },
+      "economic_gates": {
+        "development_spy_log_growth_edge_strictly_above_50bp": false,
+        "validation_spy_log_growth_edge_strictly_above_50bp": true,
+        "development_cash_excess_sharpe_not_below_spy": true,
+        "validation_cash_excess_sharpe_not_below_spy": true,
+        "development_drawdown_not_over_5pp_worse_than_spy": true,
+        "validation_drawdown_not_over_5pp_worse_than_spy": true,
+        "development_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "validation_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "development_annualized_turnover_not_over_four": false,
+        "validation_annualized_turnover_not_over_four": false,
+        "recent_hard_safety_veto_passes": true
+      },
+      "growth_control_gates": {
+        "development_edge_over_qqq_buy_hold_strictly_positive": false,
+        "validation_edge_over_qqq_buy_hold_strictly_positive": false,
+        "development_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "validation_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "development_edge_over_static_qqq_equal_sectors_control_strictly_positive": false,
+        "validation_edge_over_static_qqq_equal_sectors_control_strictly_positive": true
+      },
+      "eligible_for_spy_post_selection_robustness": false,
+      "eligible_for_growth_challenge_post_selection_robustness": false,
+      "recent_veto": {
+        "hard_safety_veto": false,
+        "reasons": [],
+        "metrics": {
+          "observations": 414,
+          "start_date": "2025-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 0.3325595412,
+          "gross_total_return": 0.3413795846,
+          "cash_total_return": 0.0657746372,
+          "annualized_return": 0.1909573402,
+          "annualized_volatility": 0.1373190793,
+          "cash_excess_sharpe": 1.057465214,
+          "maximum_drawdown": -0.1101491507,
+          "maximum_drawdown_peak_date": "2025-02-19",
+          "maximum_drawdown_valley_date": "2025-04-08",
+          "calmar_ratio": 1.7336251713,
+          "daily_expected_shortfall_p05": -0.0192582259,
+          "worst_day_return": -0.0409719287,
+          "cumulative_turnover_notional": 13.196627438,
+          "annualized_turnover_notional": 8.0327297449,
+          "modeled_transaction_cost_simple_sum": 0.0065983136,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 0.8312759163,
+          "maximum_risky_gross": 1.0000000001,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2025": 0.0822862488,
+            "2026": 0.2312450082
+          }
+        }
+      }
+    },
+    "g6_vol_target_g4": {
+      "id": "g6_vol_target_g4",
+      "annualized_log_growth_edges": {
+        "development": {
+          "spy_buy_hold": -0.0073203803,
+          "qqq_buy_hold": -0.0475878166,
+          "static_spy_qqq_50_50_control": -0.0281149036,
+          "static_qqq_equal_sectors_control": -0.0277376143
+        },
+        "validation": {
+          "spy_buy_hold": -0.0157826663,
+          "qqq_buy_hold": -0.0638348582,
+          "static_spy_qqq_50_50_control": -0.0408465419,
+          "static_qqq_equal_sectors_control": -0.0327949534
+        }
+      },
+      "frozen_spy_minimum_edge_score": -0.0157826663,
+      "frozen_growth_control_minimum_edge_score": -0.0638348582,
+      "minimum_cash_excess_sharpe_difference": 0.1735649833,
+      "validation_maximum_drawdown": -0.139924544,
+      "validation_annualized_turnover_notional": 6.4407865007,
+      "expected_shortfall": {
+        "development": {
+          "candidate_magnitude": 0.0169021066,
+          "benchmark_magnitude": 0.0317018298,
+          "magnitude_ratio": 0.5331587075,
+          "passes": true
+        },
+        "validation": {
+          "candidate_magnitude": 0.018493146,
+          "benchmark_magnitude": 0.0298589744,
+          "magnitude_ratio": 0.619349672,
+          "passes": true
+        }
+      },
+      "economic_gates": {
+        "development_spy_log_growth_edge_strictly_above_50bp": false,
+        "validation_spy_log_growth_edge_strictly_above_50bp": false,
+        "development_cash_excess_sharpe_not_below_spy": true,
+        "validation_cash_excess_sharpe_not_below_spy": true,
+        "development_drawdown_not_over_5pp_worse_than_spy": true,
+        "validation_drawdown_not_over_5pp_worse_than_spy": true,
+        "development_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "validation_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "development_annualized_turnover_not_over_four": false,
+        "validation_annualized_turnover_not_over_four": false,
+        "recent_hard_safety_veto_passes": true
+      },
+      "growth_control_gates": {
+        "development_edge_over_qqq_buy_hold_strictly_positive": false,
+        "validation_edge_over_qqq_buy_hold_strictly_positive": false,
+        "development_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "validation_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "development_edge_over_static_qqq_equal_sectors_control_strictly_positive": false,
+        "validation_edge_over_static_qqq_equal_sectors_control_strictly_positive": false
+      },
+      "eligible_for_spy_post_selection_robustness": false,
+      "eligible_for_growth_challenge_post_selection_robustness": false,
+      "recent_veto": {
+        "hard_safety_veto": false,
+        "reasons": [],
+        "metrics": {
+          "observations": 414,
+          "start_date": "2025-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 0.2373473599,
+          "gross_total_return": 0.2460442561,
+          "cash_total_return": 0.0657746372,
+          "annualized_return": 0.138411454,
+          "annualized_volatility": 0.1140647575,
+          "cash_excess_sharpe": 0.8519711681,
+          "maximum_drawdown": -0.1226109351,
+          "maximum_drawdown_peak_date": "2025-02-18",
+          "maximum_drawdown_valley_date": "2025-04-08",
+          "calmar_ratio": 1.1288671267,
+          "daily_expected_shortfall_p05": -0.016286528,
+          "worst_day_return": -0.03725457,
+          "cumulative_turnover_notional": 14.0227414765,
+          "annualized_turnover_notional": 8.5355817683,
+          "modeled_transaction_cost_simple_sum": 0.0070113709,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 0.6726205878,
+          "maximum_risky_gross": 1.0000000001,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2025": 0.0865321481,
+            "2026": 0.1388041873
+          }
+        }
+      }
+    },
+    "g6_breadth_scaled_g4": {
+      "id": "g6_breadth_scaled_g4",
+      "annualized_log_growth_edges": {
+        "development": {
+          "spy_buy_hold": -0.0397492119,
+          "qqq_buy_hold": -0.0800166481,
+          "static_spy_qqq_50_50_control": -0.0605437352,
+          "static_qqq_equal_sectors_control": -0.0601664458
+        },
+        "validation": {
+          "spy_buy_hold": -0.0447311555,
+          "qqq_buy_hold": -0.0927833475,
+          "static_spy_qqq_50_50_control": -0.0697950312,
+          "static_qqq_equal_sectors_control": -0.0617434427
+        }
+      },
+      "frozen_spy_minimum_edge_score": -0.0447311555,
+      "frozen_growth_control_minimum_edge_score": -0.0927833475,
+      "minimum_cash_excess_sharpe_difference": -0.0641155687,
+      "validation_maximum_drawdown": -0.1720950162,
+      "validation_annualized_turnover_notional": 11.8343979788,
+      "expected_shortfall": {
+        "development": {
+          "candidate_magnitude": 0.0194662938,
+          "benchmark_magnitude": 0.0317018298,
+          "magnitude_ratio": 0.6140432247,
+          "passes": true
+        },
+        "validation": {
+          "candidate_magnitude": 0.0192365696,
+          "benchmark_magnitude": 0.0298589744,
+          "magnitude_ratio": 0.6442474997,
+          "passes": true
+        }
+      },
+      "economic_gates": {
+        "development_spy_log_growth_edge_strictly_above_50bp": false,
+        "validation_spy_log_growth_edge_strictly_above_50bp": false,
+        "development_cash_excess_sharpe_not_below_spy": false,
+        "validation_cash_excess_sharpe_not_below_spy": false,
+        "development_drawdown_not_over_5pp_worse_than_spy": true,
+        "validation_drawdown_not_over_5pp_worse_than_spy": true,
+        "development_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "validation_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "development_annualized_turnover_not_over_four": false,
+        "validation_annualized_turnover_not_over_four": false,
+        "recent_hard_safety_veto_passes": true
+      },
+      "growth_control_gates": {
+        "development_edge_over_qqq_buy_hold_strictly_positive": false,
+        "validation_edge_over_qqq_buy_hold_strictly_positive": false,
+        "development_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "validation_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "development_edge_over_static_qqq_equal_sectors_control_strictly_positive": false,
+        "validation_edge_over_static_qqq_equal_sectors_control_strictly_positive": false
+      },
+      "eligible_for_spy_post_selection_robustness": false,
+      "eligible_for_growth_challenge_post_selection_robustness": false,
+      "recent_veto": {
+        "hard_safety_veto": false,
+        "reasons": [],
+        "metrics": {
+          "observations": 414,
+          "start_date": "2025-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 0.2621789836,
+          "gross_total_return": 0.2747693611,
+          "cash_total_return": 0.0657746372,
+          "annualized_return": 0.1522636969,
+          "annualized_volatility": 0.0989329194,
+          "cash_excess_sharpe": 1.0886019571,
+          "maximum_drawdown": -0.098890316,
+          "maximum_drawdown_peak_date": "2025-02-18",
+          "maximum_drawdown_valley_date": "2025-04-08",
+          "calmar_ratio": 1.5397230294,
+          "daily_expected_shortfall_p05": -0.0146494543,
+          "worst_day_return": -0.0320395228,
+          "cumulative_turnover_notional": 19.9373552527,
+          "annualized_turnover_notional": 12.1357814582,
+          "modeled_transaction_cost_simple_sum": 0.0099686777,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 0.5760597025,
+          "maximum_risky_gross": 1.0000000001,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2025": 0.0901381301,
+            "2026": 0.1578156463
+          }
+        }
+      }
+    },
+    "g6_residual_sector": {
+      "id": "g6_residual_sector",
+      "annualized_log_growth_edges": {
+        "development": {
+          "spy_buy_hold": 0.0144041808,
+          "qqq_buy_hold": -0.0258632555,
+          "static_spy_qqq_50_50_control": -0.0063903425,
+          "static_qqq_equal_sectors_control": -0.0060130532
+        },
+        "validation": {
+          "spy_buy_hold": -0.0091824788,
+          "qqq_buy_hold": -0.0572346707,
+          "static_spy_qqq_50_50_control": -0.0342463544,
+          "static_qqq_equal_sectors_control": -0.0261947659
+        }
+      },
+      "frozen_spy_minimum_edge_score": -0.0091824788,
+      "frozen_growth_control_minimum_edge_score": -0.0572346707,
+      "minimum_cash_excess_sharpe_difference": -0.0375659718,
+      "validation_maximum_drawdown": -0.3194554851,
+      "validation_annualized_turnover_notional": 3.1218593513,
+      "expected_shortfall": {
+        "development": {
+          "candidate_magnitude": 0.021974601,
+          "benchmark_magnitude": 0.0317018298,
+          "magnitude_ratio": 0.6931650677,
+          "passes": true
+        },
+        "validation": {
+          "candidate_magnitude": 0.0285916531,
+          "benchmark_magnitude": 0.0298589744,
+          "magnitude_ratio": 0.9575564357,
+          "passes": true
+        }
+      },
+      "economic_gates": {
+        "development_spy_log_growth_edge_strictly_above_50bp": true,
+        "validation_spy_log_growth_edge_strictly_above_50bp": false,
+        "development_cash_excess_sharpe_not_below_spy": true,
+        "validation_cash_excess_sharpe_not_below_spy": false,
+        "development_drawdown_not_over_5pp_worse_than_spy": true,
+        "validation_drawdown_not_over_5pp_worse_than_spy": true,
+        "development_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "validation_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "development_annualized_turnover_not_over_four": true,
+        "validation_annualized_turnover_not_over_four": true,
+        "recent_hard_safety_veto_passes": true
+      },
+      "growth_control_gates": {
+        "development_edge_over_qqq_buy_hold_strictly_positive": false,
+        "validation_edge_over_qqq_buy_hold_strictly_positive": false,
+        "development_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "validation_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "development_edge_over_static_qqq_equal_sectors_control_strictly_positive": false,
+        "validation_edge_over_static_qqq_equal_sectors_control_strictly_positive": false
+      },
+      "eligible_for_spy_post_selection_robustness": false,
+      "eligible_for_growth_challenge_post_selection_robustness": false,
+      "recent_veto": {
+        "hard_safety_veto": false,
+        "reasons": [],
+        "metrics": {
+          "observations": 414,
+          "start_date": "2025-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 0.3002915155,
+          "gross_total_return": 0.3048045541,
+          "cash_total_return": 0.0657746372,
+          "annualized_return": 0.1733189793,
+          "annualized_volatility": 0.1518327684,
+          "cash_excess_sharpe": 0.8715883778,
+          "maximum_drawdown": -0.1702027064,
+          "maximum_drawdown_peak_date": "2025-02-19",
+          "maximum_drawdown_valley_date": "2025-04-08",
+          "calmar_ratio": 1.0183091852,
+          "daily_expected_shortfall_p05": -0.020683928,
+          "worst_day_return": -0.0579834133,
+          "cumulative_turnover_notional": 6.9337131378,
+          "annualized_turnover_notional": 4.2205210404,
+          "modeled_transaction_cost_simple_sum": 0.0034668565,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 0.9900210853,
+          "maximum_risky_gross": 1.0000000001,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2025": 0.1359989726,
+            "2026": 0.1446238482
+          }
+        }
+      }
+    },
+    "g6_long_only_tsmom_1_3_12": {
+      "id": "g6_long_only_tsmom_1_3_12",
+      "annualized_log_growth_edges": {
+        "development": {
+          "spy_buy_hold": -0.0205809005,
+          "qqq_buy_hold": -0.0608483367,
+          "static_spy_qqq_50_50_control": -0.0413754238,
+          "static_qqq_equal_sectors_control": -0.0409981344
+        },
+        "validation": {
+          "spy_buy_hold": -0.0964662561,
+          "qqq_buy_hold": -0.144518448,
+          "static_spy_qqq_50_50_control": -0.1215301318,
+          "static_qqq_equal_sectors_control": -0.1134785433
+        }
+      },
+      "frozen_spy_minimum_edge_score": -0.0964662561,
+      "frozen_growth_control_minimum_edge_score": -0.144518448,
+      "minimum_cash_excess_sharpe_difference": -0.4965312442,
+      "validation_maximum_drawdown": -0.2238953668,
+      "validation_annualized_turnover_notional": 8.0239412865,
+      "expected_shortfall": {
+        "development": {
+          "candidate_magnitude": 0.0135760626,
+          "benchmark_magnitude": 0.0317018298,
+          "magnitude_ratio": 0.4282422398,
+          "passes": true
+        },
+        "validation": {
+          "candidate_magnitude": 0.016459882,
+          "benchmark_magnitude": 0.0298589744,
+          "magnitude_ratio": 0.551254098,
+          "passes": true
+        }
+      },
+      "economic_gates": {
+        "development_spy_log_growth_edge_strictly_above_50bp": false,
+        "validation_spy_log_growth_edge_strictly_above_50bp": false,
+        "development_cash_excess_sharpe_not_below_spy": true,
+        "validation_cash_excess_sharpe_not_below_spy": false,
+        "development_drawdown_not_over_5pp_worse_than_spy": true,
+        "validation_drawdown_not_over_5pp_worse_than_spy": true,
+        "development_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "validation_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "development_annualized_turnover_not_over_four": false,
+        "validation_annualized_turnover_not_over_four": false,
+        "recent_hard_safety_veto_passes": true
+      },
+      "growth_control_gates": {
+        "development_edge_over_qqq_buy_hold_strictly_positive": false,
+        "validation_edge_over_qqq_buy_hold_strictly_positive": false,
+        "development_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "validation_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "development_edge_over_static_qqq_equal_sectors_control_strictly_positive": false,
+        "validation_edge_over_static_qqq_equal_sectors_control_strictly_positive": false
+      },
+      "eligible_for_spy_post_selection_robustness": false,
+      "eligible_for_growth_challenge_post_selection_robustness": false,
+      "recent_veto": {
+        "hard_safety_veto": false,
+        "reasons": [],
+        "metrics": {
+          "observations": 414,
+          "start_date": "2025-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 0.3440326661,
+          "gross_total_return": 0.3533679962,
+          "cash_total_return": 0.0657746372,
+          "annualized_return": 0.1971884042,
+          "annualized_volatility": 0.1127323398,
+          "cash_excess_sharpe": 1.3065305698,
+          "maximum_drawdown": -0.0964331749,
+          "maximum_drawdown_peak_date": "2025-02-18",
+          "maximum_drawdown_valley_date": "2025-04-08",
+          "calmar_ratio": 2.0448191652,
+          "daily_expected_shortfall_p05": -0.016264825,
+          "worst_day_return": -0.034909094,
+          "cumulative_turnover_notional": 13.8834255709,
+          "annualized_turnover_notional": 8.4507807823,
+          "modeled_transaction_cost_simple_sum": 0.0069417128,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1.0000000002,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2025": 0.1688499045,
+            "2026": 0.1498761825
+          }
+        }
+      }
+    },
+    "g6_hrp_trend": {
+      "id": "g6_hrp_trend",
+      "annualized_log_growth_edges": {
+        "development": {
+          "spy_buy_hold": -0.0314342303,
+          "qqq_buy_hold": -0.0717016665,
+          "static_spy_qqq_50_50_control": -0.0522287536,
+          "static_qqq_equal_sectors_control": -0.0518514642
+        },
+        "validation": {
+          "spy_buy_hold": -0.1229599077,
+          "qqq_buy_hold": -0.1710120996,
+          "static_spy_qqq_50_50_control": -0.1480237834,
+          "static_qqq_equal_sectors_control": -0.1399721949
+        }
+      },
+      "frozen_spy_minimum_edge_score": -0.1229599077,
+      "frozen_growth_control_minimum_edge_score": -0.1710120996,
+      "minimum_cash_excess_sharpe_difference": -0.7173863834,
+      "validation_maximum_drawdown": -0.3192586802,
+      "validation_annualized_turnover_notional": 7.3216727435,
+      "expected_shortfall": {
+        "development": {
+          "candidate_magnitude": 0.0143795092,
+          "benchmark_magnitude": 0.0317018298,
+          "magnitude_ratio": 0.4535860955,
+          "passes": true
+        },
+        "validation": {
+          "candidate_magnitude": 0.0204789448,
+          "benchmark_magnitude": 0.0298589744,
+          "magnitude_ratio": 0.6858555999,
+          "passes": true
+        }
+      },
+      "economic_gates": {
+        "development_spy_log_growth_edge_strictly_above_50bp": false,
+        "validation_spy_log_growth_edge_strictly_above_50bp": false,
+        "development_cash_excess_sharpe_not_below_spy": true,
+        "validation_cash_excess_sharpe_not_below_spy": false,
+        "development_drawdown_not_over_5pp_worse_than_spy": true,
+        "validation_drawdown_not_over_5pp_worse_than_spy": true,
+        "development_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "validation_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "development_annualized_turnover_not_over_four": false,
+        "validation_annualized_turnover_not_over_four": false,
+        "recent_hard_safety_veto_passes": true
+      },
+      "growth_control_gates": {
+        "development_edge_over_qqq_buy_hold_strictly_positive": false,
+        "validation_edge_over_qqq_buy_hold_strictly_positive": false,
+        "development_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "validation_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "development_edge_over_static_qqq_equal_sectors_control_strictly_positive": false,
+        "validation_edge_over_static_qqq_equal_sectors_control_strictly_positive": false
+      },
+      "eligible_for_spy_post_selection_robustness": false,
+      "eligible_for_growth_challenge_post_selection_robustness": false,
+      "recent_veto": {
+        "hard_safety_veto": false,
+        "reasons": [],
+        "metrics": {
+          "observations": 414,
+          "start_date": "2025-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 0.2468930069,
+          "gross_total_return": 0.2557123596,
+          "cash_total_return": 0.0657746372,
+          "annualized_return": 0.1437492198,
+          "annualized_volatility": 0.1068806174,
+          "cash_excess_sharpe": 0.94461365,
+          "maximum_drawdown": -0.1153659417,
+          "maximum_drawdown_peak_date": "2025-02-20",
+          "maximum_drawdown_valley_date": "2025-04-08",
+          "calmar_ratio": 1.2460282272,
+          "daily_expected_shortfall_p05": -0.0158325717,
+          "worst_day_return": -0.0455235063,
+          "cumulative_turnover_notional": 14.1063218916,
+          "annualized_turnover_notional": 8.5864568036,
+          "modeled_transaction_cost_simple_sum": 0.007053161,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1.0000000002,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2025": 0.1431530368,
+            "2026": 0.0907489782
+          }
+        }
+      }
+    },
+    "g6_equal_evidence_ensemble": {
+      "id": "g6_equal_evidence_ensemble",
+      "annualized_log_growth_edges": {
+        "development": {
+          "spy_buy_hold": -0.0064390771,
+          "qqq_buy_hold": -0.0467065133,
+          "static_spy_qqq_50_50_control": -0.0272336004,
+          "static_qqq_equal_sectors_control": -0.026856311
+        },
+        "validation": {
+          "spy_buy_hold": -0.0497034936,
+          "qqq_buy_hold": -0.0977556855,
+          "static_spy_qqq_50_50_control": -0.0747673693,
+          "static_qqq_equal_sectors_control": -0.0667157808
+        }
+      },
+      "frozen_spy_minimum_edge_score": -0.0497034936,
+      "frozen_growth_control_minimum_edge_score": -0.0977556855,
+      "minimum_cash_excess_sharpe_difference": -0.1248629998,
+      "validation_maximum_drawdown": -0.1915818121,
+      "validation_annualized_turnover_notional": 5.4639181552,
+      "expected_shortfall": {
+        "development": {
+          "candidate_magnitude": 0.0138750861,
+          "benchmark_magnitude": 0.0317018298,
+          "magnitude_ratio": 0.4376746133,
+          "passes": true
+        },
+        "validation": {
+          "candidate_magnitude": 0.0191182858,
+          "benchmark_magnitude": 0.0298589744,
+          "magnitude_ratio": 0.6402860843,
+          "passes": true
+        }
+      },
+      "economic_gates": {
+        "development_spy_log_growth_edge_strictly_above_50bp": false,
+        "validation_spy_log_growth_edge_strictly_above_50bp": false,
+        "development_cash_excess_sharpe_not_below_spy": true,
+        "validation_cash_excess_sharpe_not_below_spy": false,
+        "development_drawdown_not_over_5pp_worse_than_spy": true,
+        "validation_drawdown_not_over_5pp_worse_than_spy": true,
+        "development_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "validation_expected_shortfall_magnitude_not_over_10pct_worse_than_spy": true,
+        "development_annualized_turnover_not_over_four": false,
+        "validation_annualized_turnover_not_over_four": false,
+        "recent_hard_safety_veto_passes": true
+      },
+      "growth_control_gates": {
+        "development_edge_over_qqq_buy_hold_strictly_positive": false,
+        "validation_edge_over_qqq_buy_hold_strictly_positive": false,
+        "development_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "validation_edge_over_static_spy_qqq_50_50_control_strictly_positive": false,
+        "development_edge_over_static_qqq_equal_sectors_control_strictly_positive": false,
+        "validation_edge_over_static_qqq_equal_sectors_control_strictly_positive": false
+      },
+      "eligible_for_spy_post_selection_robustness": false,
+      "eligible_for_growth_challenge_post_selection_robustness": false,
+      "recent_veto": {
+        "hard_safety_veto": false,
+        "reasons": [],
+        "metrics": {
+          "observations": 414,
+          "start_date": "2025-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 0.3080420136,
+          "gross_total_return": 0.3152445301,
+          "cash_total_return": 0.0657746372,
+          "annualized_return": 0.1775710434,
+          "annualized_volatility": 0.1134589316,
+          "cash_excess_sharpe": 1.1530186075,
+          "maximum_drawdown": -0.1226622792,
+          "maximum_drawdown_peak_date": "2025-02-19",
+          "maximum_drawdown_valley_date": "2025-04-08",
+          "calmar_ratio": 1.4476418067,
+          "daily_expected_shortfall_p05": -0.0160455764,
+          "worst_day_return": -0.0416807204,
+          "cumulative_turnover_notional": 10.997171402,
+          "annualized_turnover_notional": 6.6939304186,
+          "modeled_transaction_cost_simple_sum": 0.0054985859,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 0.9555286076,
+          "maximum_risky_gross": 1.0000000003,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2025": 0.1333901135,
+            "2026": 0.1540968974
+          }
+        }
+      }
+    }
+  },
+  "selection": {
+    "primary_spy_track": {
+      "objective": "Among candidates that pass every frozen SPY economic and safety gate, maximize the smaller development/validation annualized log-growth edge versus SPY.",
+      "ranked_candidate_ids": [
+        "g6_trend_guard_g4",
+        "g6_residual_sector",
+        "g6_vol_target_g4",
+        "g6_breadth_scaled_g4",
+        "g6_equal_evidence_ensemble",
+        "g6_long_only_tsmom_1_3_12",
+        "g6_hrp_trend"
+      ],
+      "selected_id_before_post_selection_robustness": null,
+      "tie_breaks": [
+        "larger minimum development/validation cash-excess Sharpe difference versus SPY",
+        "shallower validation maximum drawdown",
+        "lower validation annualized turnover",
+        "alphabetical candidate identifier"
+      ]
+    },
+    "growth_control_challenge_track": {
+      "objective": "Separately challenge QQQ and two static growth controls without making their higher-risk exposures a prerequisite for the primary SPY-improvement track.",
+      "ranked_candidate_ids": [
+        "g6_trend_guard_g4",
+        "g6_residual_sector",
+        "g6_vol_target_g4",
+        "g6_breadth_scaled_g4",
+        "g6_equal_evidence_ensemble",
+        "g6_long_only_tsmom_1_3_12",
+        "g6_hrp_trend"
+      ],
+      "selected_id_before_post_selection_robustness": null,
+      "tie_breaks": [
+        "larger minimum development/validation cash-excess Sharpe difference versus SPY",
+        "shallower validation maximum drawdown",
+        "lower validation annualized turnover",
+        "alphabetical candidate identifier"
+      ]
+    },
+    "objective": "Among candidates that pass every frozen SPY economic and safety gate, maximize the smaller development/validation annualized log-growth edge versus SPY.",
+    "ranked_candidate_ids": [
+      "g6_trend_guard_g4",
+      "g6_residual_sector",
+      "g6_vol_target_g4",
+      "g6_breadth_scaled_g4",
+      "g6_equal_evidence_ensemble",
+      "g6_long_only_tsmom_1_3_12",
+      "g6_hrp_trend"
+    ],
+    "selected_id_before_post_selection_robustness": null,
+    "tie_breaks": [
+      "larger minimum development/validation cash-excess Sharpe difference versus SPY",
+      "shallower validation maximum drawdown",
+      "lower validation annualized turnover",
+      "alphabetical candidate identifier"
+    ],
+    "recent_data_use": "Recent data can veto but never rank, rescue, or break a tie."
+  },
+  "diagnostics": {
+    "candidate_id": "g6_trend_guard_g4",
+    "promotion_candidate": false,
+    "primary_spy": {
+      "candidate_id": "g6_trend_guard_g4",
+      "promotion_candidate": false,
+      "rolling_session_comparisons": {
+        "spy_buy_hold": {
+          "construction": "Every overlapping window is independently rebased from BIL, charges a fresh 5 bp entry per absolute traded notional, removes any inherited full-sample terminal liquidation, and charges its own terminal liquidation.",
+          "inference_boundary": "Overlapping windows are autocorrelated descriptive evidence, not independent trials or p-values.",
+          "by_sessions": {
+            "252": {
+              "sessions": 252,
+              "windows": 4338,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2009-06-01",
+              "last_window_start": "2025-08-27",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4338,
+                "mean": -0.0174410177,
+                "minimum": -0.4558787783,
+                "p05": -0.1704252889,
+                "median": -0.0223576475,
+                "p95": 0.1584643562,
+                "maximum": 0.2720798583,
+                "positive_fraction": 0.3888888889
+              }
+            },
+            "504": {
+              "sessions": 504,
+              "windows": 4086,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2010-06-01",
+              "last_window_start": "2024-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4086,
+                "mean": -0.0389542293,
+                "minimum": -0.7603667433,
+                "p05": -0.2388630519,
+                "median": -0.0468176355,
+                "p95": 0.1922463995,
+                "maximum": 0.2982037534,
+                "positive_fraction": 0.3879099364
+              }
+            },
+            "756": {
+              "sessions": 756,
+              "windows": 3834,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2011-05-31",
+              "last_window_start": "2023-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 3834,
+                "mean": -0.0571189308,
+                "minimum": -0.8553481138,
+                "p05": -0.311496717,
+                "median": -0.0648103198,
+                "p95": 0.2255367677,
+                "maximum": 0.3337352227,
+                "positive_fraction": 0.3599374022
+              }
+            }
+          }
+        },
+        "qqq_buy_hold": {
+          "construction": "Every overlapping window is independently rebased from BIL, charges a fresh 5 bp entry per absolute traded notional, removes any inherited full-sample terminal liquidation, and charges its own terminal liquidation.",
+          "inference_boundary": "Overlapping windows are autocorrelated descriptive evidence, not independent trials or p-values.",
+          "by_sessions": {
+            "252": {
+              "sessions": 252,
+              "windows": 4338,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2009-06-01",
+              "last_window_start": "2025-08-27",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4338,
+                "mean": -0.0758064924,
+                "minimum": -0.5641567799,
+                "p05": -0.3323645422,
+                "median": -0.0691425594,
+                "p95": 0.1775091412,
+                "maximum": 0.3580073627,
+                "positive_fraction": 0.2056247118
+              }
+            },
+            "504": {
+              "sessions": 504,
+              "windows": 4086,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2010-06-01",
+              "last_window_start": "2024-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4086,
+                "mean": -0.1678226883,
+                "minimum": -0.9932541053,
+                "p05": -0.5286816824,
+                "median": -0.1461815501,
+                "p95": 0.2353887684,
+                "maximum": 0.4750398137,
+                "positive_fraction": 0.1544297602
+              }
+            },
+            "756": {
+              "sessions": 756,
+              "windows": 3834,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2011-05-31",
+              "last_window_start": "2023-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 3834,
+                "mean": -0.2704288336,
+                "minimum": -1.2821802705,
+                "p05": -0.6722920145,
+                "median": -0.3005132168,
+                "p95": 0.1945599176,
+                "maximum": 0.309522394,
+                "positive_fraction": 0.1671883151
+              }
+            }
+          }
+        },
+        "static_spy_qqq_50_50_control": {
+          "construction": "Every overlapping window is independently rebased from BIL, charges a fresh 5 bp entry per absolute traded notional, removes any inherited full-sample terminal liquidation, and charges its own terminal liquidation.",
+          "inference_boundary": "Overlapping windows are autocorrelated descriptive evidence, not independent trials or p-values.",
+          "by_sessions": {
+            "252": {
+              "sessions": 252,
+              "windows": 4338,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2009-06-01",
+              "last_window_start": "2025-08-27",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4338,
+                "mean": -0.0464311277,
+                "minimum": -0.5101298107,
+                "p05": -0.2054662774,
+                "median": -0.0410693984,
+                "p95": 0.1830580943,
+                "maximum": 0.2957419323,
+                "positive_fraction": 0.2724757953
+              }
+            },
+            "504": {
+              "sessions": 504,
+              "windows": 4086,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2010-06-01",
+              "last_window_start": "2024-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4086,
+                "mean": -0.1026605181,
+                "minimum": -0.8755051616,
+                "p05": -0.3290887457,
+                "median": -0.1056477469,
+                "p95": 0.2020484151,
+                "maximum": 0.3876318323,
+                "positive_fraction": 0.2087616251
+              }
+            },
+            "756": {
+              "sessions": 756,
+              "windows": 3834,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2011-05-31",
+              "last_window_start": "2023-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 3834,
+                "mean": -0.1624634933,
+                "minimum": -1.0630755652,
+                "p05": -0.439631236,
+                "median": -0.1862958712,
+                "p95": 0.1939592399,
+                "maximum": 0.3175546314,
+                "positive_fraction": 0.2290036515
+              }
+            }
+          }
+        },
+        "static_qqq_equal_sectors_control": {
+          "construction": "Every overlapping window is independently rebased from BIL, charges a fresh 5 bp entry per absolute traded notional, removes any inherited full-sample terminal liquidation, and charges its own terminal liquidation.",
+          "inference_boundary": "Overlapping windows are autocorrelated descriptive evidence, not independent trials or p-values.",
+          "by_sessions": {
+            "252": {
+              "sessions": 252,
+              "windows": 4338,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2009-06-01",
+              "last_window_start": "2025-08-27",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4338,
+                "mean": -0.0402417637,
+                "minimum": -0.5276805636,
+                "p05": -0.2025487567,
+                "median": -0.0298353551,
+                "p95": 0.1498122915,
+                "maximum": 0.2499654192,
+                "positive_fraction": 0.3146611342
+              }
+            },
+            "504": {
+              "sessions": 504,
+              "windows": 4086,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2010-06-01",
+              "last_window_start": "2024-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4086,
+                "mean": -0.0889989263,
+                "minimum": -0.9027239477,
+                "p05": -0.3268283182,
+                "median": -0.0714438643,
+                "p95": 0.1536510439,
+                "maximum": 0.2953841663,
+                "positive_fraction": 0.2775330396
+              }
+            },
+            "756": {
+              "sessions": 756,
+              "windows": 3834,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2011-05-31",
+              "last_window_start": "2023-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 3834,
+                "mean": -0.1418143182,
+                "minimum": -1.0978268653,
+                "p05": -0.4043557184,
+                "median": -0.1552823591,
+                "p95": 0.1891983344,
+                "maximum": 0.3264094741,
+                "positive_fraction": 0.2663015128
+              }
+            }
+          }
+        }
+      },
+      "causal_four_regime_evidence": {
+        "classification": "Before each scored return, compare compounded SPY and BIL returns over the prior 252 sessions and annualize SPY volatility over the prior 63; volatility strictly above 20% is high.",
+        "causality": "The current scored return is excluded from both regime signals. Regimes are descriptive and were specified after history was seen.",
+        "unclassified_warmup_observations": 252,
+        "regimes": {
+          "up_low_vol": {
+            "observations": 3329,
+            "candidate_total_return": 4.7390988711,
+            "spy_total_return": 3.0858535571,
+            "candidate_annualized_log_growth": 0.1322679952,
+            "spy_annualized_log_growth": 0.1065478297,
+            "candidate_minus_spy_annualized_log_growth": 0.0257201655,
+            "candidate_daily_win_fraction": 0.5259837789
+          },
+          "up_high_vol": {
+            "observations": 480,
+            "candidate_total_return": 0.0825589712,
+            "spy_total_return": 0.1708729945,
+            "candidate_annualized_log_growth": 0.0416470195,
+            "spy_annualized_log_growth": 0.0828185504,
+            "candidate_minus_spy_annualized_log_growth": -0.0411715308,
+            "candidate_daily_win_fraction": 0.4979166667
+          },
+          "down_low_vol": {
+            "observations": 180,
+            "candidate_total_return": 0.1997284929,
+            "spy_total_return": 0.2190578823,
+            "candidate_annualized_log_growth": 0.2549333854,
+            "spy_annualized_log_growth": 0.277309666,
+            "candidate_minus_spy_annualized_log_growth": -0.0223762806,
+            "candidate_daily_win_fraction": 0.4833333333
+          },
+          "down_high_vol": {
+            "observations": 348,
+            "candidate_total_return": 0.1946617175,
+            "spy_total_return": 0.8981647813,
+            "candidate_annualized_log_growth": 0.128797391,
+            "spy_annualized_log_growth": 0.464090959,
+            "candidate_minus_spy_annualized_log_growth": -0.335293568,
+            "candidate_daily_win_fraction": 0.4856321839
+          }
+        }
+      },
+      "concentration": {
+        "observations": 4589,
+        "time_weighted_average_weights": {
+          "SPY": 0,
+          "BIL": 0.2056749489,
+          "QQQ": 0.406332675,
+          "IWM": 0,
+          "EFA": 0,
+          "EEM": 0,
+          "IEF": 0,
+          "TLT": 0,
+          "GLD": 0,
+          "DBC": 0,
+          "VNQ": 0,
+          "XLK": 0.0649515673,
+          "XLF": 0.0466153269,
+          "XLE": 0.0257791015,
+          "XLY": 0.0525902948,
+          "XLP": 0.0380972443,
+          "XLI": 0.0449123082,
+          "XLB": 0.0256004465,
+          "XLV": 0.0453503545,
+          "XLU": 0.0440957321
+        },
+        "average_risky_gross": 0.7943250511,
+        "maximum_risky_gross": 1.0000000001,
+        "maximum_single_risky_position": {
+          "average": 0.422600071,
+          "p95": 0.5082728419,
+          "maximum": 0.5255343277
+        },
+        "conditional_risky_weight_hhi": {
+          "average": 0.3756451733,
+          "p95": 1,
+          "maximum": 1
+        },
+        "conditional_effective_risky_positions": {
+          "average": 2.4054893143,
+          "p05": 0,
+          "minimum": 0
+        },
+        "direct_qqq_plus_xlk_average_weight": 0.4712842423,
+        "boundary": "HHI and effective-position counts condition on non-cash gross and do not look through ETF holdings; direct QQQ plus XLK is not a technology look-through exposure."
+      },
+      "recurring_300_per_month": {
+        "candidate_id": "g6_trend_guard_g4",
+        "purpose": "Small-account fractional-ETF evidence only; this is not an options-P&L simulation.",
+        "comparisons": {
+          "spy_buy_hold": {
+            "schema_version": "finly_rolling_monthly_contributions.v1",
+            "contribution_timing": "Gross deposit at the start of the first modeled return interval in each calendar month.",
+            "cost_model": "Fresh-account entry uses the engine's full L1 turnover convention; later deposits pay one-way cost on non-BIL purchases; paths end mark-to-market without liquidation.",
+            "implementation_boundary": "Fractional ETF units; percentage-return paths remain the frozen causal ledgers; overlapping windows are descriptive and not independent probability estimates.",
+            "monthly_contribution": 300,
+            "one_way_cost_bps": 5,
+            "minimum_start_date": "2013-01-01",
+            "horizons": {
+              "1": {
+                "horizon_months": 1,
+                "summary": {
+                  "windows": 164,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-08",
+                  "candidate_beat_benchmark_fraction": 0.5548780488,
+                  "candidate_profitable_fraction": 0.6341463415,
+                  "benchmark_profitable_fraction": 0.6829268293,
+                  "mean_ending_value_advantage": -0.08017256,
+                  "median_ending_value_advantage": 0.56423865,
+                  "p05_ending_value_advantage": -12.4997475,
+                  "p95_ending_value_advantage": 10.65923571,
+                  "worst_ending_value_advantage": -48.23350803,
+                  "best_ending_value_advantage": 27.23280778,
+                  "mean_candidate_dollar_gain": 3.39969494,
+                  "mean_benchmark_dollar_gain": 3.47986751
+                },
+                "latest_window": {
+                  "start_month": "2026-08",
+                  "end_month": "2026-08",
+                  "start_date": "2026-08-03",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 300,
+                  "candidate_ending_value": 315.14073587,
+                  "benchmark_ending_value": 309.36093894,
+                  "ending_value_advantage": 5.77979693,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "3": {
+                "horizon_months": 3,
+                "summary": {
+                  "windows": 162,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-06",
+                  "candidate_beat_benchmark_fraction": 0.537037037,
+                  "candidate_profitable_fraction": 0.7222222222,
+                  "benchmark_profitable_fraction": 0.7839506173,
+                  "mean_ending_value_advantage": -0.23698875,
+                  "median_ending_value_advantage": 1.65295314,
+                  "p05_ending_value_advantage": -46.69550145,
+                  "p95_ending_value_advantage": 34.49134453,
+                  "worst_ending_value_advantage": -98.61460915,
+                  "best_ending_value_advantage": 114.46046574,
+                  "mean_candidate_dollar_gain": 21.28278199,
+                  "mean_benchmark_dollar_gain": 21.51977074
+                },
+                "latest_window": {
+                  "start_month": "2026-06",
+                  "end_month": "2026-08",
+                  "start_date": "2026-06-01",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 900,
+                  "candidate_ending_value": 919.17136323,
+                  "benchmark_ending_value": 925.41056487,
+                  "ending_value_advantage": -6.23920164,
+                  "candidate_beat_benchmark": false
+                }
+              },
+              "6": {
+                "horizon_months": 6,
+                "summary": {
+                  "windows": 159,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-03",
+                  "candidate_beat_benchmark_fraction": 0.5220125786,
+                  "candidate_profitable_fraction": 0.8176100629,
+                  "benchmark_profitable_fraction": 0.8238993711,
+                  "mean_ending_value_advantage": -0.61014074,
+                  "median_ending_value_advantage": 3.59885401,
+                  "p05_ending_value_advantage": -106.93961573,
+                  "p95_ending_value_advantage": 105.12765365,
+                  "worst_ending_value_advantage": -161.75162515,
+                  "best_ending_value_advantage": 258.57977584,
+                  "mean_candidate_dollar_gain": 74.53640423,
+                  "mean_benchmark_dollar_gain": 75.14654497
+                },
+                "latest_window": {
+                  "start_month": "2026-03",
+                  "end_month": "2026-08",
+                  "start_date": "2026-03-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 1800,
+                  "candidate_ending_value": 1968.7152397,
+                  "benchmark_ending_value": 1943.23989955,
+                  "ending_value_advantage": 25.47534015,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "12": {
+                "horizon_months": 12,
+                "summary": {
+                  "windows": 153,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2025-09",
+                  "candidate_beat_benchmark_fraction": 0.4836601307,
+                  "candidate_profitable_fraction": 0.8562091503,
+                  "benchmark_profitable_fraction": 0.8758169935,
+                  "mean_ending_value_advantage": -7.10846957,
+                  "median_ending_value_advantage": -2.35490865,
+                  "p05_ending_value_advantage": -257.86037535,
+                  "p95_ending_value_advantage": 296.66256757,
+                  "worst_ending_value_advantage": -461.98699837,
+                  "best_ending_value_advantage": 600.85937272,
+                  "mean_candidate_dollar_gain": 273.80446175,
+                  "mean_benchmark_dollar_gain": 280.91293132
+                },
+                "latest_window": {
+                  "start_month": "2025-09",
+                  "end_month": "2026-08",
+                  "start_date": "2025-09-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 3600,
+                  "candidate_ending_value": 4192.46648086,
+                  "benchmark_ending_value": 4015.3118736,
+                  "ending_value_advantage": 177.15460726,
+                  "candidate_beat_benchmark": true
+                }
+              }
+            }
+          },
+          "qqq_buy_hold": {
+            "schema_version": "finly_rolling_monthly_contributions.v1",
+            "contribution_timing": "Gross deposit at the start of the first modeled return interval in each calendar month.",
+            "cost_model": "Fresh-account entry uses the engine's full L1 turnover convention; later deposits pay one-way cost on non-BIL purchases; paths end mark-to-market without liquidation.",
+            "implementation_boundary": "Fractional ETF units; percentage-return paths remain the frozen causal ledgers; overlapping windows are descriptive and not independent probability estimates.",
+            "monthly_contribution": 300,
+            "one_way_cost_bps": 5,
+            "minimum_start_date": "2013-01-01",
+            "horizons": {
+              "1": {
+                "horizon_months": 1,
+                "summary": {
+                  "windows": 164,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-08",
+                  "candidate_beat_benchmark_fraction": 0.4207317073,
+                  "candidate_profitable_fraction": 0.6341463415,
+                  "benchmark_profitable_fraction": 0.6463414634,
+                  "mean_ending_value_advantage": -1.31776987,
+                  "median_ending_value_advantage": -1.3068424,
+                  "p05_ending_value_advantage": -14.54949312,
+                  "p95_ending_value_advantage": 14.08058927,
+                  "worst_ending_value_advantage": -55.05346674,
+                  "best_ending_value_advantage": 28.90339384,
+                  "mean_candidate_dollar_gain": 3.39969494,
+                  "mean_benchmark_dollar_gain": 4.71746482
+                },
+                "latest_window": {
+                  "start_month": "2026-08",
+                  "end_month": "2026-08",
+                  "start_date": "2026-08-03",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 300,
+                  "candidate_ending_value": 315.14073587,
+                  "benchmark_ending_value": 314.13305222,
+                  "ending_value_advantage": 1.00768365,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "3": {
+                "horizon_months": 3,
+                "summary": {
+                  "windows": 162,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-06",
+                  "candidate_beat_benchmark_fraction": 0.3456790123,
+                  "candidate_profitable_fraction": 0.7222222222,
+                  "benchmark_profitable_fraction": 0.7592592593,
+                  "mean_ending_value_advantage": -8.23481972,
+                  "median_ending_value_advantage": -6.93486538,
+                  "p05_ending_value_advantage": -69.85677452,
+                  "p95_ending_value_advantage": 52.90496923,
+                  "worst_ending_value_advantage": -157.28030631,
+                  "best_ending_value_advantage": 142.65928874,
+                  "mean_candidate_dollar_gain": 21.28278199,
+                  "mean_benchmark_dollar_gain": 29.51760171
+                },
+                "latest_window": {
+                  "start_month": "2026-06",
+                  "end_month": "2026-08",
+                  "start_date": "2026-06-01",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 900,
+                  "candidate_ending_value": 919.17136323,
+                  "benchmark_ending_value": 900.95048058,
+                  "ending_value_advantage": 18.22088265,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "6": {
+                "horizon_months": 6,
+                "summary": {
+                  "windows": 159,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-03",
+                  "candidate_beat_benchmark_fraction": 0.3018867925,
+                  "candidate_profitable_fraction": 0.8176100629,
+                  "benchmark_profitable_fraction": 0.8364779874,
+                  "mean_ending_value_advantage": -30.25802578,
+                  "median_ending_value_advantage": -31.35273271,
+                  "p05_ending_value_advantage": -188.89813718,
+                  "p95_ending_value_advantage": 162.32823563,
+                  "worst_ending_value_advantage": -335.04536412,
+                  "best_ending_value_advantage": 353.77262196,
+                  "mean_candidate_dollar_gain": 74.53640423,
+                  "mean_benchmark_dollar_gain": 104.79443002
+                },
+                "latest_window": {
+                  "start_month": "2026-03",
+                  "end_month": "2026-08",
+                  "start_date": "2026-03-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 1800,
+                  "candidate_ending_value": 1968.7152397,
+                  "benchmark_ending_value": 1957.01311338,
+                  "ending_value_advantage": 11.70212632,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "12": {
+                "horizon_months": 12,
+                "summary": {
+                  "windows": 153,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2025-09",
+                  "candidate_beat_benchmark_fraction": 0.2352941176,
+                  "candidate_profitable_fraction": 0.8562091503,
+                  "benchmark_profitable_fraction": 0.8562091503,
+                  "mean_ending_value_advantage": -121.04151705,
+                  "median_ending_value_advantage": -118.22417517,
+                  "p05_ending_value_advantage": -557.7616634,
+                  "p95_ending_value_advantage": 464.78930941,
+                  "worst_ending_value_advantage": -956.43041728,
+                  "best_ending_value_advantage": 884.83593952,
+                  "mean_candidate_dollar_gain": 273.80446175,
+                  "mean_benchmark_dollar_gain": 394.8459788
+                },
+                "latest_window": {
+                  "start_month": "2025-09",
+                  "end_month": "2026-08",
+                  "start_date": "2025-09-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 3600,
+                  "candidate_ending_value": 4192.46648086,
+                  "benchmark_ending_value": 4096.12463954,
+                  "ending_value_advantage": 96.34184132,
+                  "candidate_beat_benchmark": true
+                }
+              }
+            }
+          },
+          "static_spy_qqq_50_50_control": {
+            "schema_version": "finly_rolling_monthly_contributions.v1",
+            "contribution_timing": "Gross deposit at the start of the first modeled return interval in each calendar month.",
+            "cost_model": "Fresh-account entry uses the engine's full L1 turnover convention; later deposits pay one-way cost on non-BIL purchases; paths end mark-to-market without liquidation.",
+            "implementation_boundary": "Fractional ETF units; percentage-return paths remain the frozen causal ledgers; overlapping windows are descriptive and not independent probability estimates.",
+            "monthly_contribution": 300,
+            "one_way_cost_bps": 5,
+            "minimum_start_date": "2013-01-01",
+            "horizons": {
+              "1": {
+                "horizon_months": 1,
+                "summary": {
+                  "windows": 164,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-08",
+                  "candidate_beat_benchmark_fraction": 0.493902439,
+                  "candidate_profitable_fraction": 0.6341463415,
+                  "benchmark_profitable_fraction": 0.6585365854,
+                  "mean_ending_value_advantage": -0.70109408,
+                  "median_ending_value_advantage": -0.20828318,
+                  "p05_ending_value_advantage": -10.19158362,
+                  "p95_ending_value_advantage": 11.7361896,
+                  "worst_ending_value_advantage": -51.63989782,
+                  "best_ending_value_advantage": 27.53137845,
+                  "mean_candidate_dollar_gain": 3.39969494,
+                  "mean_benchmark_dollar_gain": 4.10078902
+                },
+                "latest_window": {
+                  "start_month": "2026-08",
+                  "end_month": "2026-08",
+                  "start_date": "2026-08-03",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 300,
+                  "candidate_ending_value": 315.14073587,
+                  "benchmark_ending_value": 311.69623749,
+                  "ending_value_advantage": 3.44449838,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "3": {
+                "horizon_months": 3,
+                "summary": {
+                  "windows": 162,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-06",
+                  "candidate_beat_benchmark_fraction": 0.4012345679,
+                  "candidate_profitable_fraction": 0.7222222222,
+                  "benchmark_profitable_fraction": 0.7777777778,
+                  "mean_ending_value_advantage": -4.23940903,
+                  "median_ending_value_advantage": -3.08094297,
+                  "p05_ending_value_advantage": -53.87307858,
+                  "p95_ending_value_advantage": 37.94736666,
+                  "worst_ending_value_advantage": -127.62426973,
+                  "best_ending_value_advantage": 128.67670439,
+                  "mean_candidate_dollar_gain": 21.28278199,
+                  "mean_benchmark_dollar_gain": 25.52219102
+                },
+                "latest_window": {
+                  "start_month": "2026-06",
+                  "end_month": "2026-08",
+                  "start_date": "2026-06-01",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 900,
+                  "candidate_ending_value": 919.17136323,
+                  "benchmark_ending_value": 912.98880942,
+                  "ending_value_advantage": 6.18255381,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "6": {
+                "horizon_months": 6,
+                "summary": {
+                  "windows": 159,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-03",
+                  "candidate_beat_benchmark_fraction": 0.3710691824,
+                  "candidate_profitable_fraction": 0.8176100629,
+                  "benchmark_profitable_fraction": 0.8364779874,
+                  "mean_ending_value_advantage": -15.41102024,
+                  "median_ending_value_advantage": -10.38638703,
+                  "p05_ending_value_advantage": -138.24878872,
+                  "p95_ending_value_advantage": 106.11943039,
+                  "worst_ending_value_advantage": -242.47530535,
+                  "best_ending_value_advantage": 306.59567773,
+                  "mean_candidate_dollar_gain": 74.53640423,
+                  "mean_benchmark_dollar_gain": 89.94742447
+                },
+                "latest_window": {
+                  "start_month": "2026-03",
+                  "end_month": "2026-08",
+                  "start_date": "2026-03-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 1800,
+                  "candidate_ending_value": 1968.7152397,
+                  "benchmark_ending_value": 1950.2628941,
+                  "ending_value_advantage": 18.4523456,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "12": {
+                "horizon_months": 12,
+                "summary": {
+                  "windows": 153,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2025-09",
+                  "candidate_beat_benchmark_fraction": 0.3464052288,
+                  "candidate_profitable_fraction": 0.8562091503,
+                  "benchmark_profitable_fraction": 0.862745098,
+                  "mean_ending_value_advantage": -63.73298555,
+                  "median_ending_value_advantage": -50.75640833,
+                  "p05_ending_value_advantage": -384.24208749,
+                  "p95_ending_value_advantage": 345.35864727,
+                  "worst_ending_value_advantage": -528.86922452,
+                  "best_ending_value_advantage": 744.90663018,
+                  "mean_candidate_dollar_gain": 273.80446175,
+                  "mean_benchmark_dollar_gain": 337.5374473
+                },
+                "latest_window": {
+                  "start_month": "2025-09",
+                  "end_month": "2026-08",
+                  "start_date": "2025-09-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 3600,
+                  "candidate_ending_value": 4192.46648086,
+                  "benchmark_ending_value": 4056.98335437,
+                  "ending_value_advantage": 135.48312649,
+                  "candidate_beat_benchmark": true
+                }
+              }
+            }
+          },
+          "static_qqq_equal_sectors_control": {
+            "schema_version": "finly_rolling_monthly_contributions.v1",
+            "contribution_timing": "Gross deposit at the start of the first modeled return interval in each calendar month.",
+            "cost_model": "Fresh-account entry uses the engine's full L1 turnover convention; later deposits pay one-way cost on non-BIL purchases; paths end mark-to-market without liquidation.",
+            "implementation_boundary": "Fractional ETF units; percentage-return paths remain the frozen causal ledgers; overlapping windows are descriptive and not independent probability estimates.",
+            "monthly_contribution": 300,
+            "one_way_cost_bps": 5,
+            "minimum_start_date": "2013-01-01",
+            "horizons": {
+              "1": {
+                "horizon_months": 1,
+                "summary": {
+                  "windows": 164,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-08",
+                  "candidate_beat_benchmark_fraction": 0.487804878,
+                  "candidate_profitable_fraction": 0.6341463415,
+                  "benchmark_profitable_fraction": 0.6768292683,
+                  "mean_ending_value_advantage": -0.51556408,
+                  "median_ending_value_advantage": -0.02607652,
+                  "p05_ending_value_advantage": -11.64246339,
+                  "p95_ending_value_advantage": 9.87566085,
+                  "worst_ending_value_advantage": -52.38776557,
+                  "best_ending_value_advantage": 28.20442297,
+                  "mean_candidate_dollar_gain": 3.39969494,
+                  "mean_benchmark_dollar_gain": 3.91525903
+                },
+                "latest_window": {
+                  "start_month": "2026-08",
+                  "end_month": "2026-08",
+                  "start_date": "2026-08-03",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 300,
+                  "candidate_ending_value": 315.14073587,
+                  "benchmark_ending_value": 310.37307231,
+                  "ending_value_advantage": 4.76766356,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "3": {
+                "horizon_months": 3,
+                "summary": {
+                  "windows": 162,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-06",
+                  "candidate_beat_benchmark_fraction": 0.4567901235,
+                  "candidate_profitable_fraction": 0.7222222222,
+                  "benchmark_profitable_fraction": 0.7901234568,
+                  "mean_ending_value_advantage": -3.04262412,
+                  "median_ending_value_advantage": -2.06904474,
+                  "p05_ending_value_advantage": -52.28998369,
+                  "p95_ending_value_advantage": 33.64674339,
+                  "worst_ending_value_advantage": -120.43946123,
+                  "best_ending_value_advantage": 122.89023472,
+                  "mean_candidate_dollar_gain": 21.28278199,
+                  "mean_benchmark_dollar_gain": 24.32540611
+                },
+                "latest_window": {
+                  "start_month": "2026-06",
+                  "end_month": "2026-08",
+                  "start_date": "2026-06-01",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 900,
+                  "candidate_ending_value": 919.17136323,
+                  "benchmark_ending_value": 915.13792429,
+                  "ending_value_advantage": 4.03343894,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "6": {
+                "horizon_months": 6,
+                "summary": {
+                  "windows": 159,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-03",
+                  "candidate_beat_benchmark_fraction": 0.4339622642,
+                  "candidate_profitable_fraction": 0.8176100629,
+                  "benchmark_profitable_fraction": 0.8490566038,
+                  "mean_ending_value_advantage": -11.07897919,
+                  "median_ending_value_advantage": -5.95814413,
+                  "p05_ending_value_advantage": -126.87578411,
+                  "p95_ending_value_advantage": 81.58673485,
+                  "worst_ending_value_advantage": -213.27545621,
+                  "best_ending_value_advantage": 272.07072026,
+                  "mean_candidate_dollar_gain": 74.53640423,
+                  "mean_benchmark_dollar_gain": 85.61538343
+                },
+                "latest_window": {
+                  "start_month": "2026-03",
+                  "end_month": "2026-08",
+                  "start_date": "2026-03-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 1800,
+                  "candidate_ending_value": 1968.7152397,
+                  "benchmark_ending_value": 1928.01707151,
+                  "ending_value_advantage": 40.69816819,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "12": {
+                "horizon_months": 12,
+                "summary": {
+                  "windows": 153,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2025-09",
+                  "candidate_beat_benchmark_fraction": 0.385620915,
+                  "candidate_profitable_fraction": 0.8562091503,
+                  "benchmark_profitable_fraction": 0.8823529412,
+                  "mean_ending_value_advantage": -46.90840128,
+                  "median_ending_value_advantage": -33.93142274,
+                  "p05_ending_value_advantage": -376.320088,
+                  "p95_ending_value_advantage": 241.6159428,
+                  "worst_ending_value_advantage": -440.07585146,
+                  "best_ending_value_advantage": 624.75603352,
+                  "mean_candidate_dollar_gain": 273.80446175,
+                  "mean_benchmark_dollar_gain": 320.71286303
+                },
+                "latest_window": {
+                  "start_month": "2025-09",
+                  "end_month": "2026-08",
+                  "start_date": "2025-09-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 3600,
+                  "candidate_ending_value": 4192.46648086,
+                  "benchmark_ending_value": 4044.28485025,
+                  "ending_value_advantage": 148.18163061,
+                  "candidate_beat_benchmark": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "growth_control_challenge": {
+      "shared_with_primary_spy": true,
+      "candidate_id": "g6_trend_guard_g4",
+      "promotion_candidate": false,
+      "rolling_session_comparisons": {
+        "spy_buy_hold": {
+          "construction": "Every overlapping window is independently rebased from BIL, charges a fresh 5 bp entry per absolute traded notional, removes any inherited full-sample terminal liquidation, and charges its own terminal liquidation.",
+          "inference_boundary": "Overlapping windows are autocorrelated descriptive evidence, not independent trials or p-values.",
+          "by_sessions": {
+            "252": {
+              "sessions": 252,
+              "windows": 4338,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2009-06-01",
+              "last_window_start": "2025-08-27",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4338,
+                "mean": -0.0174410177,
+                "minimum": -0.4558787783,
+                "p05": -0.1704252889,
+                "median": -0.0223576475,
+                "p95": 0.1584643562,
+                "maximum": 0.2720798583,
+                "positive_fraction": 0.3888888889
+              }
+            },
+            "504": {
+              "sessions": 504,
+              "windows": 4086,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2010-06-01",
+              "last_window_start": "2024-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4086,
+                "mean": -0.0389542293,
+                "minimum": -0.7603667433,
+                "p05": -0.2388630519,
+                "median": -0.0468176355,
+                "p95": 0.1922463995,
+                "maximum": 0.2982037534,
+                "positive_fraction": 0.3879099364
+              }
+            },
+            "756": {
+              "sessions": 756,
+              "windows": 3834,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2011-05-31",
+              "last_window_start": "2023-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 3834,
+                "mean": -0.0571189308,
+                "minimum": -0.8553481138,
+                "p05": -0.311496717,
+                "median": -0.0648103198,
+                "p95": 0.2255367677,
+                "maximum": 0.3337352227,
+                "positive_fraction": 0.3599374022
+              }
+            }
+          }
+        },
+        "qqq_buy_hold": {
+          "construction": "Every overlapping window is independently rebased from BIL, charges a fresh 5 bp entry per absolute traded notional, removes any inherited full-sample terminal liquidation, and charges its own terminal liquidation.",
+          "inference_boundary": "Overlapping windows are autocorrelated descriptive evidence, not independent trials or p-values.",
+          "by_sessions": {
+            "252": {
+              "sessions": 252,
+              "windows": 4338,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2009-06-01",
+              "last_window_start": "2025-08-27",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4338,
+                "mean": -0.0758064924,
+                "minimum": -0.5641567799,
+                "p05": -0.3323645422,
+                "median": -0.0691425594,
+                "p95": 0.1775091412,
+                "maximum": 0.3580073627,
+                "positive_fraction": 0.2056247118
+              }
+            },
+            "504": {
+              "sessions": 504,
+              "windows": 4086,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2010-06-01",
+              "last_window_start": "2024-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4086,
+                "mean": -0.1678226883,
+                "minimum": -0.9932541053,
+                "p05": -0.5286816824,
+                "median": -0.1461815501,
+                "p95": 0.2353887684,
+                "maximum": 0.4750398137,
+                "positive_fraction": 0.1544297602
+              }
+            },
+            "756": {
+              "sessions": 756,
+              "windows": 3834,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2011-05-31",
+              "last_window_start": "2023-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 3834,
+                "mean": -0.2704288336,
+                "minimum": -1.2821802705,
+                "p05": -0.6722920145,
+                "median": -0.3005132168,
+                "p95": 0.1945599176,
+                "maximum": 0.309522394,
+                "positive_fraction": 0.1671883151
+              }
+            }
+          }
+        },
+        "static_spy_qqq_50_50_control": {
+          "construction": "Every overlapping window is independently rebased from BIL, charges a fresh 5 bp entry per absolute traded notional, removes any inherited full-sample terminal liquidation, and charges its own terminal liquidation.",
+          "inference_boundary": "Overlapping windows are autocorrelated descriptive evidence, not independent trials or p-values.",
+          "by_sessions": {
+            "252": {
+              "sessions": 252,
+              "windows": 4338,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2009-06-01",
+              "last_window_start": "2025-08-27",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4338,
+                "mean": -0.0464311277,
+                "minimum": -0.5101298107,
+                "p05": -0.2054662774,
+                "median": -0.0410693984,
+                "p95": 0.1830580943,
+                "maximum": 0.2957419323,
+                "positive_fraction": 0.2724757953
+              }
+            },
+            "504": {
+              "sessions": 504,
+              "windows": 4086,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2010-06-01",
+              "last_window_start": "2024-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4086,
+                "mean": -0.1026605181,
+                "minimum": -0.8755051616,
+                "p05": -0.3290887457,
+                "median": -0.1056477469,
+                "p95": 0.2020484151,
+                "maximum": 0.3876318323,
+                "positive_fraction": 0.2087616251
+              }
+            },
+            "756": {
+              "sessions": 756,
+              "windows": 3834,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2011-05-31",
+              "last_window_start": "2023-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 3834,
+                "mean": -0.1624634933,
+                "minimum": -1.0630755652,
+                "p05": -0.439631236,
+                "median": -0.1862958712,
+                "p95": 0.1939592399,
+                "maximum": 0.3175546314,
+                "positive_fraction": 0.2290036515
+              }
+            }
+          }
+        },
+        "static_qqq_equal_sectors_control": {
+          "construction": "Every overlapping window is independently rebased from BIL, charges a fresh 5 bp entry per absolute traded notional, removes any inherited full-sample terminal liquidation, and charges its own terminal liquidation.",
+          "inference_boundary": "Overlapping windows are autocorrelated descriptive evidence, not independent trials or p-values.",
+          "by_sessions": {
+            "252": {
+              "sessions": 252,
+              "windows": 4338,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2009-06-01",
+              "last_window_start": "2025-08-27",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4338,
+                "mean": -0.0402417637,
+                "minimum": -0.5276805636,
+                "p05": -0.2025487567,
+                "median": -0.0298353551,
+                "p95": 0.1498122915,
+                "maximum": 0.2499654192,
+                "positive_fraction": 0.3146611342
+              }
+            },
+            "504": {
+              "sessions": 504,
+              "windows": 4086,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2010-06-01",
+              "last_window_start": "2024-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 4086,
+                "mean": -0.0889989263,
+                "minimum": -0.9027239477,
+                "p05": -0.3268283182,
+                "median": -0.0714438643,
+                "p95": 0.1536510439,
+                "maximum": 0.2953841663,
+                "positive_fraction": 0.2775330396
+              }
+            },
+            "756": {
+              "sessions": 756,
+              "windows": 3834,
+              "first_window_start": "2008-06-02",
+              "first_window_end": "2011-05-31",
+              "last_window_start": "2023-08-23",
+              "last_window_end": "2026-08-27",
+              "candidate_minus_benchmark": {
+                "count": 3834,
+                "mean": -0.1418143182,
+                "minimum": -1.0978268653,
+                "p05": -0.4043557184,
+                "median": -0.1552823591,
+                "p95": 0.1891983344,
+                "maximum": 0.3264094741,
+                "positive_fraction": 0.2663015128
+              }
+            }
+          }
+        }
+      },
+      "causal_four_regime_evidence": {
+        "classification": "Before each scored return, compare compounded SPY and BIL returns over the prior 252 sessions and annualize SPY volatility over the prior 63; volatility strictly above 20% is high.",
+        "causality": "The current scored return is excluded from both regime signals. Regimes are descriptive and were specified after history was seen.",
+        "unclassified_warmup_observations": 252,
+        "regimes": {
+          "up_low_vol": {
+            "observations": 3329,
+            "candidate_total_return": 4.7390988711,
+            "spy_total_return": 3.0858535571,
+            "candidate_annualized_log_growth": 0.1322679952,
+            "spy_annualized_log_growth": 0.1065478297,
+            "candidate_minus_spy_annualized_log_growth": 0.0257201655,
+            "candidate_daily_win_fraction": 0.5259837789
+          },
+          "up_high_vol": {
+            "observations": 480,
+            "candidate_total_return": 0.0825589712,
+            "spy_total_return": 0.1708729945,
+            "candidate_annualized_log_growth": 0.0416470195,
+            "spy_annualized_log_growth": 0.0828185504,
+            "candidate_minus_spy_annualized_log_growth": -0.0411715308,
+            "candidate_daily_win_fraction": 0.4979166667
+          },
+          "down_low_vol": {
+            "observations": 180,
+            "candidate_total_return": 0.1997284929,
+            "spy_total_return": 0.2190578823,
+            "candidate_annualized_log_growth": 0.2549333854,
+            "spy_annualized_log_growth": 0.277309666,
+            "candidate_minus_spy_annualized_log_growth": -0.0223762806,
+            "candidate_daily_win_fraction": 0.4833333333
+          },
+          "down_high_vol": {
+            "observations": 348,
+            "candidate_total_return": 0.1946617175,
+            "spy_total_return": 0.8981647813,
+            "candidate_annualized_log_growth": 0.128797391,
+            "spy_annualized_log_growth": 0.464090959,
+            "candidate_minus_spy_annualized_log_growth": -0.335293568,
+            "candidate_daily_win_fraction": 0.4856321839
+          }
+        }
+      },
+      "concentration": {
+        "observations": 4589,
+        "time_weighted_average_weights": {
+          "SPY": 0,
+          "BIL": 0.2056749489,
+          "QQQ": 0.406332675,
+          "IWM": 0,
+          "EFA": 0,
+          "EEM": 0,
+          "IEF": 0,
+          "TLT": 0,
+          "GLD": 0,
+          "DBC": 0,
+          "VNQ": 0,
+          "XLK": 0.0649515673,
+          "XLF": 0.0466153269,
+          "XLE": 0.0257791015,
+          "XLY": 0.0525902948,
+          "XLP": 0.0380972443,
+          "XLI": 0.0449123082,
+          "XLB": 0.0256004465,
+          "XLV": 0.0453503545,
+          "XLU": 0.0440957321
+        },
+        "average_risky_gross": 0.7943250511,
+        "maximum_risky_gross": 1.0000000001,
+        "maximum_single_risky_position": {
+          "average": 0.422600071,
+          "p95": 0.5082728419,
+          "maximum": 0.5255343277
+        },
+        "conditional_risky_weight_hhi": {
+          "average": 0.3756451733,
+          "p95": 1,
+          "maximum": 1
+        },
+        "conditional_effective_risky_positions": {
+          "average": 2.4054893143,
+          "p05": 0,
+          "minimum": 0
+        },
+        "direct_qqq_plus_xlk_average_weight": 0.4712842423,
+        "boundary": "HHI and effective-position counts condition on non-cash gross and do not look through ETF holdings; direct QQQ plus XLK is not a technology look-through exposure."
+      },
+      "recurring_300_per_month": {
+        "candidate_id": "g6_trend_guard_g4",
+        "purpose": "Small-account fractional-ETF evidence only; this is not an options-P&L simulation.",
+        "comparisons": {
+          "spy_buy_hold": {
+            "schema_version": "finly_rolling_monthly_contributions.v1",
+            "contribution_timing": "Gross deposit at the start of the first modeled return interval in each calendar month.",
+            "cost_model": "Fresh-account entry uses the engine's full L1 turnover convention; later deposits pay one-way cost on non-BIL purchases; paths end mark-to-market without liquidation.",
+            "implementation_boundary": "Fractional ETF units; percentage-return paths remain the frozen causal ledgers; overlapping windows are descriptive and not independent probability estimates.",
+            "monthly_contribution": 300,
+            "one_way_cost_bps": 5,
+            "minimum_start_date": "2013-01-01",
+            "horizons": {
+              "1": {
+                "horizon_months": 1,
+                "summary": {
+                  "windows": 164,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-08",
+                  "candidate_beat_benchmark_fraction": 0.5548780488,
+                  "candidate_profitable_fraction": 0.6341463415,
+                  "benchmark_profitable_fraction": 0.6829268293,
+                  "mean_ending_value_advantage": -0.08017256,
+                  "median_ending_value_advantage": 0.56423865,
+                  "p05_ending_value_advantage": -12.4997475,
+                  "p95_ending_value_advantage": 10.65923571,
+                  "worst_ending_value_advantage": -48.23350803,
+                  "best_ending_value_advantage": 27.23280778,
+                  "mean_candidate_dollar_gain": 3.39969494,
+                  "mean_benchmark_dollar_gain": 3.47986751
+                },
+                "latest_window": {
+                  "start_month": "2026-08",
+                  "end_month": "2026-08",
+                  "start_date": "2026-08-03",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 300,
+                  "candidate_ending_value": 315.14073587,
+                  "benchmark_ending_value": 309.36093894,
+                  "ending_value_advantage": 5.77979693,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "3": {
+                "horizon_months": 3,
+                "summary": {
+                  "windows": 162,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-06",
+                  "candidate_beat_benchmark_fraction": 0.537037037,
+                  "candidate_profitable_fraction": 0.7222222222,
+                  "benchmark_profitable_fraction": 0.7839506173,
+                  "mean_ending_value_advantage": -0.23698875,
+                  "median_ending_value_advantage": 1.65295314,
+                  "p05_ending_value_advantage": -46.69550145,
+                  "p95_ending_value_advantage": 34.49134453,
+                  "worst_ending_value_advantage": -98.61460915,
+                  "best_ending_value_advantage": 114.46046574,
+                  "mean_candidate_dollar_gain": 21.28278199,
+                  "mean_benchmark_dollar_gain": 21.51977074
+                },
+                "latest_window": {
+                  "start_month": "2026-06",
+                  "end_month": "2026-08",
+                  "start_date": "2026-06-01",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 900,
+                  "candidate_ending_value": 919.17136323,
+                  "benchmark_ending_value": 925.41056487,
+                  "ending_value_advantage": -6.23920164,
+                  "candidate_beat_benchmark": false
+                }
+              },
+              "6": {
+                "horizon_months": 6,
+                "summary": {
+                  "windows": 159,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-03",
+                  "candidate_beat_benchmark_fraction": 0.5220125786,
+                  "candidate_profitable_fraction": 0.8176100629,
+                  "benchmark_profitable_fraction": 0.8238993711,
+                  "mean_ending_value_advantage": -0.61014074,
+                  "median_ending_value_advantage": 3.59885401,
+                  "p05_ending_value_advantage": -106.93961573,
+                  "p95_ending_value_advantage": 105.12765365,
+                  "worst_ending_value_advantage": -161.75162515,
+                  "best_ending_value_advantage": 258.57977584,
+                  "mean_candidate_dollar_gain": 74.53640423,
+                  "mean_benchmark_dollar_gain": 75.14654497
+                },
+                "latest_window": {
+                  "start_month": "2026-03",
+                  "end_month": "2026-08",
+                  "start_date": "2026-03-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 1800,
+                  "candidate_ending_value": 1968.7152397,
+                  "benchmark_ending_value": 1943.23989955,
+                  "ending_value_advantage": 25.47534015,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "12": {
+                "horizon_months": 12,
+                "summary": {
+                  "windows": 153,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2025-09",
+                  "candidate_beat_benchmark_fraction": 0.4836601307,
+                  "candidate_profitable_fraction": 0.8562091503,
+                  "benchmark_profitable_fraction": 0.8758169935,
+                  "mean_ending_value_advantage": -7.10846957,
+                  "median_ending_value_advantage": -2.35490865,
+                  "p05_ending_value_advantage": -257.86037535,
+                  "p95_ending_value_advantage": 296.66256757,
+                  "worst_ending_value_advantage": -461.98699837,
+                  "best_ending_value_advantage": 600.85937272,
+                  "mean_candidate_dollar_gain": 273.80446175,
+                  "mean_benchmark_dollar_gain": 280.91293132
+                },
+                "latest_window": {
+                  "start_month": "2025-09",
+                  "end_month": "2026-08",
+                  "start_date": "2025-09-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 3600,
+                  "candidate_ending_value": 4192.46648086,
+                  "benchmark_ending_value": 4015.3118736,
+                  "ending_value_advantage": 177.15460726,
+                  "candidate_beat_benchmark": true
+                }
+              }
+            }
+          },
+          "qqq_buy_hold": {
+            "schema_version": "finly_rolling_monthly_contributions.v1",
+            "contribution_timing": "Gross deposit at the start of the first modeled return interval in each calendar month.",
+            "cost_model": "Fresh-account entry uses the engine's full L1 turnover convention; later deposits pay one-way cost on non-BIL purchases; paths end mark-to-market without liquidation.",
+            "implementation_boundary": "Fractional ETF units; percentage-return paths remain the frozen causal ledgers; overlapping windows are descriptive and not independent probability estimates.",
+            "monthly_contribution": 300,
+            "one_way_cost_bps": 5,
+            "minimum_start_date": "2013-01-01",
+            "horizons": {
+              "1": {
+                "horizon_months": 1,
+                "summary": {
+                  "windows": 164,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-08",
+                  "candidate_beat_benchmark_fraction": 0.4207317073,
+                  "candidate_profitable_fraction": 0.6341463415,
+                  "benchmark_profitable_fraction": 0.6463414634,
+                  "mean_ending_value_advantage": -1.31776987,
+                  "median_ending_value_advantage": -1.3068424,
+                  "p05_ending_value_advantage": -14.54949312,
+                  "p95_ending_value_advantage": 14.08058927,
+                  "worst_ending_value_advantage": -55.05346674,
+                  "best_ending_value_advantage": 28.90339384,
+                  "mean_candidate_dollar_gain": 3.39969494,
+                  "mean_benchmark_dollar_gain": 4.71746482
+                },
+                "latest_window": {
+                  "start_month": "2026-08",
+                  "end_month": "2026-08",
+                  "start_date": "2026-08-03",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 300,
+                  "candidate_ending_value": 315.14073587,
+                  "benchmark_ending_value": 314.13305222,
+                  "ending_value_advantage": 1.00768365,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "3": {
+                "horizon_months": 3,
+                "summary": {
+                  "windows": 162,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-06",
+                  "candidate_beat_benchmark_fraction": 0.3456790123,
+                  "candidate_profitable_fraction": 0.7222222222,
+                  "benchmark_profitable_fraction": 0.7592592593,
+                  "mean_ending_value_advantage": -8.23481972,
+                  "median_ending_value_advantage": -6.93486538,
+                  "p05_ending_value_advantage": -69.85677452,
+                  "p95_ending_value_advantage": 52.90496923,
+                  "worst_ending_value_advantage": -157.28030631,
+                  "best_ending_value_advantage": 142.65928874,
+                  "mean_candidate_dollar_gain": 21.28278199,
+                  "mean_benchmark_dollar_gain": 29.51760171
+                },
+                "latest_window": {
+                  "start_month": "2026-06",
+                  "end_month": "2026-08",
+                  "start_date": "2026-06-01",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 900,
+                  "candidate_ending_value": 919.17136323,
+                  "benchmark_ending_value": 900.95048058,
+                  "ending_value_advantage": 18.22088265,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "6": {
+                "horizon_months": 6,
+                "summary": {
+                  "windows": 159,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-03",
+                  "candidate_beat_benchmark_fraction": 0.3018867925,
+                  "candidate_profitable_fraction": 0.8176100629,
+                  "benchmark_profitable_fraction": 0.8364779874,
+                  "mean_ending_value_advantage": -30.25802578,
+                  "median_ending_value_advantage": -31.35273271,
+                  "p05_ending_value_advantage": -188.89813718,
+                  "p95_ending_value_advantage": 162.32823563,
+                  "worst_ending_value_advantage": -335.04536412,
+                  "best_ending_value_advantage": 353.77262196,
+                  "mean_candidate_dollar_gain": 74.53640423,
+                  "mean_benchmark_dollar_gain": 104.79443002
+                },
+                "latest_window": {
+                  "start_month": "2026-03",
+                  "end_month": "2026-08",
+                  "start_date": "2026-03-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 1800,
+                  "candidate_ending_value": 1968.7152397,
+                  "benchmark_ending_value": 1957.01311338,
+                  "ending_value_advantage": 11.70212632,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "12": {
+                "horizon_months": 12,
+                "summary": {
+                  "windows": 153,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2025-09",
+                  "candidate_beat_benchmark_fraction": 0.2352941176,
+                  "candidate_profitable_fraction": 0.8562091503,
+                  "benchmark_profitable_fraction": 0.8562091503,
+                  "mean_ending_value_advantage": -121.04151705,
+                  "median_ending_value_advantage": -118.22417517,
+                  "p05_ending_value_advantage": -557.7616634,
+                  "p95_ending_value_advantage": 464.78930941,
+                  "worst_ending_value_advantage": -956.43041728,
+                  "best_ending_value_advantage": 884.83593952,
+                  "mean_candidate_dollar_gain": 273.80446175,
+                  "mean_benchmark_dollar_gain": 394.8459788
+                },
+                "latest_window": {
+                  "start_month": "2025-09",
+                  "end_month": "2026-08",
+                  "start_date": "2025-09-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 3600,
+                  "candidate_ending_value": 4192.46648086,
+                  "benchmark_ending_value": 4096.12463954,
+                  "ending_value_advantage": 96.34184132,
+                  "candidate_beat_benchmark": true
+                }
+              }
+            }
+          },
+          "static_spy_qqq_50_50_control": {
+            "schema_version": "finly_rolling_monthly_contributions.v1",
+            "contribution_timing": "Gross deposit at the start of the first modeled return interval in each calendar month.",
+            "cost_model": "Fresh-account entry uses the engine's full L1 turnover convention; later deposits pay one-way cost on non-BIL purchases; paths end mark-to-market without liquidation.",
+            "implementation_boundary": "Fractional ETF units; percentage-return paths remain the frozen causal ledgers; overlapping windows are descriptive and not independent probability estimates.",
+            "monthly_contribution": 300,
+            "one_way_cost_bps": 5,
+            "minimum_start_date": "2013-01-01",
+            "horizons": {
+              "1": {
+                "horizon_months": 1,
+                "summary": {
+                  "windows": 164,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-08",
+                  "candidate_beat_benchmark_fraction": 0.493902439,
+                  "candidate_profitable_fraction": 0.6341463415,
+                  "benchmark_profitable_fraction": 0.6585365854,
+                  "mean_ending_value_advantage": -0.70109408,
+                  "median_ending_value_advantage": -0.20828318,
+                  "p05_ending_value_advantage": -10.19158362,
+                  "p95_ending_value_advantage": 11.7361896,
+                  "worst_ending_value_advantage": -51.63989782,
+                  "best_ending_value_advantage": 27.53137845,
+                  "mean_candidate_dollar_gain": 3.39969494,
+                  "mean_benchmark_dollar_gain": 4.10078902
+                },
+                "latest_window": {
+                  "start_month": "2026-08",
+                  "end_month": "2026-08",
+                  "start_date": "2026-08-03",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 300,
+                  "candidate_ending_value": 315.14073587,
+                  "benchmark_ending_value": 311.69623749,
+                  "ending_value_advantage": 3.44449838,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "3": {
+                "horizon_months": 3,
+                "summary": {
+                  "windows": 162,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-06",
+                  "candidate_beat_benchmark_fraction": 0.4012345679,
+                  "candidate_profitable_fraction": 0.7222222222,
+                  "benchmark_profitable_fraction": 0.7777777778,
+                  "mean_ending_value_advantage": -4.23940903,
+                  "median_ending_value_advantage": -3.08094297,
+                  "p05_ending_value_advantage": -53.87307858,
+                  "p95_ending_value_advantage": 37.94736666,
+                  "worst_ending_value_advantage": -127.62426973,
+                  "best_ending_value_advantage": 128.67670439,
+                  "mean_candidate_dollar_gain": 21.28278199,
+                  "mean_benchmark_dollar_gain": 25.52219102
+                },
+                "latest_window": {
+                  "start_month": "2026-06",
+                  "end_month": "2026-08",
+                  "start_date": "2026-06-01",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 900,
+                  "candidate_ending_value": 919.17136323,
+                  "benchmark_ending_value": 912.98880942,
+                  "ending_value_advantage": 6.18255381,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "6": {
+                "horizon_months": 6,
+                "summary": {
+                  "windows": 159,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-03",
+                  "candidate_beat_benchmark_fraction": 0.3710691824,
+                  "candidate_profitable_fraction": 0.8176100629,
+                  "benchmark_profitable_fraction": 0.8364779874,
+                  "mean_ending_value_advantage": -15.41102024,
+                  "median_ending_value_advantage": -10.38638703,
+                  "p05_ending_value_advantage": -138.24878872,
+                  "p95_ending_value_advantage": 106.11943039,
+                  "worst_ending_value_advantage": -242.47530535,
+                  "best_ending_value_advantage": 306.59567773,
+                  "mean_candidate_dollar_gain": 74.53640423,
+                  "mean_benchmark_dollar_gain": 89.94742447
+                },
+                "latest_window": {
+                  "start_month": "2026-03",
+                  "end_month": "2026-08",
+                  "start_date": "2026-03-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 1800,
+                  "candidate_ending_value": 1968.7152397,
+                  "benchmark_ending_value": 1950.2628941,
+                  "ending_value_advantage": 18.4523456,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "12": {
+                "horizon_months": 12,
+                "summary": {
+                  "windows": 153,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2025-09",
+                  "candidate_beat_benchmark_fraction": 0.3464052288,
+                  "candidate_profitable_fraction": 0.8562091503,
+                  "benchmark_profitable_fraction": 0.862745098,
+                  "mean_ending_value_advantage": -63.73298555,
+                  "median_ending_value_advantage": -50.75640833,
+                  "p05_ending_value_advantage": -384.24208749,
+                  "p95_ending_value_advantage": 345.35864727,
+                  "worst_ending_value_advantage": -528.86922452,
+                  "best_ending_value_advantage": 744.90663018,
+                  "mean_candidate_dollar_gain": 273.80446175,
+                  "mean_benchmark_dollar_gain": 337.5374473
+                },
+                "latest_window": {
+                  "start_month": "2025-09",
+                  "end_month": "2026-08",
+                  "start_date": "2025-09-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 3600,
+                  "candidate_ending_value": 4192.46648086,
+                  "benchmark_ending_value": 4056.98335437,
+                  "ending_value_advantage": 135.48312649,
+                  "candidate_beat_benchmark": true
+                }
+              }
+            }
+          },
+          "static_qqq_equal_sectors_control": {
+            "schema_version": "finly_rolling_monthly_contributions.v1",
+            "contribution_timing": "Gross deposit at the start of the first modeled return interval in each calendar month.",
+            "cost_model": "Fresh-account entry uses the engine's full L1 turnover convention; later deposits pay one-way cost on non-BIL purchases; paths end mark-to-market without liquidation.",
+            "implementation_boundary": "Fractional ETF units; percentage-return paths remain the frozen causal ledgers; overlapping windows are descriptive and not independent probability estimates.",
+            "monthly_contribution": 300,
+            "one_way_cost_bps": 5,
+            "minimum_start_date": "2013-01-01",
+            "horizons": {
+              "1": {
+                "horizon_months": 1,
+                "summary": {
+                  "windows": 164,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-08",
+                  "candidate_beat_benchmark_fraction": 0.487804878,
+                  "candidate_profitable_fraction": 0.6341463415,
+                  "benchmark_profitable_fraction": 0.6768292683,
+                  "mean_ending_value_advantage": -0.51556408,
+                  "median_ending_value_advantage": -0.02607652,
+                  "p05_ending_value_advantage": -11.64246339,
+                  "p95_ending_value_advantage": 9.87566085,
+                  "worst_ending_value_advantage": -52.38776557,
+                  "best_ending_value_advantage": 28.20442297,
+                  "mean_candidate_dollar_gain": 3.39969494,
+                  "mean_benchmark_dollar_gain": 3.91525903
+                },
+                "latest_window": {
+                  "start_month": "2026-08",
+                  "end_month": "2026-08",
+                  "start_date": "2026-08-03",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 300,
+                  "candidate_ending_value": 315.14073587,
+                  "benchmark_ending_value": 310.37307231,
+                  "ending_value_advantage": 4.76766356,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "3": {
+                "horizon_months": 3,
+                "summary": {
+                  "windows": 162,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-06",
+                  "candidate_beat_benchmark_fraction": 0.4567901235,
+                  "candidate_profitable_fraction": 0.7222222222,
+                  "benchmark_profitable_fraction": 0.7901234568,
+                  "mean_ending_value_advantage": -3.04262412,
+                  "median_ending_value_advantage": -2.06904474,
+                  "p05_ending_value_advantage": -52.28998369,
+                  "p95_ending_value_advantage": 33.64674339,
+                  "worst_ending_value_advantage": -120.43946123,
+                  "best_ending_value_advantage": 122.89023472,
+                  "mean_candidate_dollar_gain": 21.28278199,
+                  "mean_benchmark_dollar_gain": 24.32540611
+                },
+                "latest_window": {
+                  "start_month": "2026-06",
+                  "end_month": "2026-08",
+                  "start_date": "2026-06-01",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 900,
+                  "candidate_ending_value": 919.17136323,
+                  "benchmark_ending_value": 915.13792429,
+                  "ending_value_advantage": 4.03343894,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "6": {
+                "horizon_months": 6,
+                "summary": {
+                  "windows": 159,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2026-03",
+                  "candidate_beat_benchmark_fraction": 0.4339622642,
+                  "candidate_profitable_fraction": 0.8176100629,
+                  "benchmark_profitable_fraction": 0.8490566038,
+                  "mean_ending_value_advantage": -11.07897919,
+                  "median_ending_value_advantage": -5.95814413,
+                  "p05_ending_value_advantage": -126.87578411,
+                  "p95_ending_value_advantage": 81.58673485,
+                  "worst_ending_value_advantage": -213.27545621,
+                  "best_ending_value_advantage": 272.07072026,
+                  "mean_candidate_dollar_gain": 74.53640423,
+                  "mean_benchmark_dollar_gain": 85.61538343
+                },
+                "latest_window": {
+                  "start_month": "2026-03",
+                  "end_month": "2026-08",
+                  "start_date": "2026-03-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 1800,
+                  "candidate_ending_value": 1968.7152397,
+                  "benchmark_ending_value": 1928.01707151,
+                  "ending_value_advantage": 40.69816819,
+                  "candidate_beat_benchmark": true
+                }
+              },
+              "12": {
+                "horizon_months": 12,
+                "summary": {
+                  "windows": 153,
+                  "first_start_month": "2013-01",
+                  "last_start_month": "2025-09",
+                  "candidate_beat_benchmark_fraction": 0.385620915,
+                  "candidate_profitable_fraction": 0.8562091503,
+                  "benchmark_profitable_fraction": 0.8823529412,
+                  "mean_ending_value_advantage": -46.90840128,
+                  "median_ending_value_advantage": -33.93142274,
+                  "p05_ending_value_advantage": -376.320088,
+                  "p95_ending_value_advantage": 241.6159428,
+                  "worst_ending_value_advantage": -440.07585146,
+                  "best_ending_value_advantage": 624.75603352,
+                  "mean_candidate_dollar_gain": 273.80446175,
+                  "mean_benchmark_dollar_gain": 320.71286303
+                },
+                "latest_window": {
+                  "start_month": "2025-09",
+                  "end_month": "2026-08",
+                  "start_date": "2025-09-02",
+                  "end_date": "2026-08-27",
+                  "total_contributions": 3600,
+                  "candidate_ending_value": 4192.46648086,
+                  "benchmark_ending_value": 4044.28485025,
+                  "ending_value_advantage": 148.18163061,
+                  "candidate_beat_benchmark": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

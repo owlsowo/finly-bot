@@ -1,0 +1,21 @@
+{
+  "schema_version": "finly_champion_search_generation4_freeze_receipt.v1",
+  "status": "frozen_before_first_generation_4_output",
+  "created_at": "2026-08-29T10:48:09Z",
+  "independent_static_audit": "GO after formula/protocol identity, lookbacks, queued chronology, boundary costs, rolling windows, selection tracks, deterministic ties, recent vetoes, trial accounting, null paths, gross caps, and survivorship disclosures were checked without executing results.",
+  "claim_boundary": "This is a local timestamp, not an independent time authority. All market history and prior search results are seen. The fixed 2026 ETF menu has fund-survival and universe-selection hindsight, including QQQ as an ex-post winner. File hashes are reproducibility anchors; a retrospective pass can earn only shadow status.",
+  "files": {
+    "research/champion_search_generation4_protocol.json": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "research/champion_trial_ledger_generation4.json": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88",
+    "research/champion_engine.mjs": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e",
+    "research/champion_strategies.mjs": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d",
+    "research/champion_strategies_generation4.mjs": "a3e0124f2171773ca23c8a6e932dd1e3d5d5b265e7e198fdf21971cdaf5c4992",
+    "research/run_quant_champion_generation4.mjs": "eabef990f4319a7f314bfe4826dce2d1cc6ff5e2991bea57342f9bcb56afde82",
+    "research/champion_statistics.mjs": "bc3d681771012f11ef27aeb2b7d61a1862d3d026818e4c3b623e041cf5a688de",
+    "tests/champion_engine.test.mjs": "a77ff77204e00b3be28e32e993ac9a699e580ca5548a9f864a8f19a7f9d9ef9d",
+    "tests/champion_generation4.test.mjs": "9a6d87f81d000fbcbf754dbcefacf68e25ff786a01cbbaac952cfd3786a469bc",
+    "tests/champion_statistics.test.mjs": "28479ac1fc43ef2593ce1e4782bb0e57cc1857035afc20686e4bd6234f918938"
+  },
+  "declared_cumulative_effective_trials": 100,
+  "generation_4_results_seen_at_freeze": false
+}

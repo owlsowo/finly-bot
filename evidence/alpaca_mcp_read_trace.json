@@ -1,0 +1,24 @@
+{
+  "account_id_redacted": true,
+  "authenticated_network_call": true,
+  "checked_at": "2026-08-29T00:09:10.101791Z",
+  "mcp_protocol_version": "2025-11-25",
+  "mutation_requested": false,
+  "paper": true,
+  "protocol_transport": "stdio",
+  "raw_response_sha256": "sha256:03b0d0e720de3c4b3a48d9926a86d0b11d939bb2647b0bdd3387c9c07306be65",
+  "redaction": "Raw response, account identifiers, balances, buying power, and credentials are not serialized.",
+  "safe_account_summary": {
+    "account_blocked": false,
+    "options_approved_level": 3,
+    "options_trading_level": 3,
+    "required_starting_balance_matches": true,
+    "status": "ACTIVE",
+    "trading_blocked": false
+  },
+  "server": "alpaca-mcp-server",
+  "server_version": "2.2.1",
+  "status": "AUTHENTICATED_MCP_READ_SUCCEEDED",
+  "tool": "get_account_info",
+  "tool_schema_sha256": "sha256:c8a1ac469a826ea3547ac220c7bbfdcd6b58080d4ec596ff2a0149c5ccb9b699"
+}

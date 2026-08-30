@@ -1,0 +1,32 @@
+{
+  "schema_version": "finly_champion_generation4_robustness_freeze_receipt.v1",
+  "status": "frozen_before_first_post_selection_robustness_output",
+  "created_at": "2026-08-29T11:04:58Z",
+  "robustness_results_seen_at_freeze": false,
+  "source_result_known_at_refreeze": true,
+  "known_source_result_disposition": "FAIL_CLOSED",
+  "claim_boundary": "This local receipt refreezes the post-selection protocol and executable definitions after the Generation 4 candidate and authenticated source-reconciliation failure were known, but before any robustness output was executed. The known source failure is hash-pinned and cannot be rescued by this runner. This is a reproducibility anchor, not an independent timestamp authority.",
+  "files": {
+    "research/champion_generation4_robustness_protocol.json": "5e6138c71be81bba74f9ff7ed1ff80c3a71e975b721389c4d6dc66ee9d8f5881",
+    "research/run_quant_champion_generation4_robustness.mjs": "016380efc855f3dcf8af00f3ab6dd28e918c5eb06163e3285d87e25e1238e116",
+    "tests/champion_generation4_robustness.test.mjs": "332479bf29ef0928527dd222f3309ae82ba1c5c1fcf5fd36d72353ea637b96e6",
+    "research/champion_engine.mjs": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e",
+    "research/champion_strategies.mjs": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d",
+    "research/champion_strategies_generation4.mjs": "a3e0124f2171773ca23c8a6e932dd1e3d5d5b265e7e198fdf21971cdaf5c4992",
+    "research/champion_statistics.mjs": "bc3d681771012f11ef27aeb2b7d61a1862d3d026818e4c3b623e041cf5a688de",
+    "research/output/quant_champion_generation4.json": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+    "research/champion_search_generation4_protocol.json": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "research/champion_trial_ledger_generation4.json": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88",
+    "research/champion_search_generation4_freeze_receipt.json": "c1b662533c31dc326ddb9ed4633b36081fbd0386652cf753cd6a2fc62c843a46",
+    "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+    "data/private/champion_search/generation4_ledger_6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1.json.gz": "6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1",
+    "research/source_overlap_reconciliation_protocol.json": "306f49f6632ed58c3e9ea446d87c1c28fc0a0d13b188cfa276f83f7cbbb0652d",
+    "research/source_overlap_reconciliation_freeze_receipt.json": "467f0d2310c56c422c902c37542df521df19779ed15bd0f95f2d1a0e0dbae11d",
+    "research/output/source_overlap_reconciliation.json": "f581f6c286540cf2f4b178450810993b2147628a10c85c8a9da181b50092001c"
+  },
+  "fixed_candidate_id": "qqq_core_sector_12_6",
+  "validation_only_statistics": true,
+  "declared_cumulative_effective_trials": 100,
+  "bootstrap_iterations_per_test": 2000,
+  "market_fetch_permitted": false
+}

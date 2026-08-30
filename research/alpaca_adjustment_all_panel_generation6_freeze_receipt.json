@@ -1,0 +1,16 @@
+{
+  "schema_version": "finly_generation6_alpaca_adjustment_all_panel_freeze_receipt.v2",
+  "frozen_at": "2026-08-29T13:57:14.000Z",
+  "frozen_before_authenticated_read": true,
+  "authenticated_read_started_at_freeze": false,
+  "run_claim_absent_at_freeze": true,
+  "result_receipt_absent_at_freeze": true,
+  "panel_artifacts_absent_at_freeze": true,
+  "files": {
+    "research/alpaca_adjustment_all_panel_generation6_protocol.json": "b9c845970e85a00c7909130d8dbc3f807d7f293224f7fa51d469513d67fc9b8f",
+    "research/persist_alpaca_adjustment_all_panel_generation6.mjs": "b33e44f5cb3b39b2ffad3a93dd17d56490008c0ca18efee41e8c5c0dfc0fcf9e",
+    "research/champion_engine.mjs": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e",
+    "research/champion_strategies.mjs": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d",
+    "tests/alpaca_adjustment_all_panel_generation6.test.mjs": "8fb4ad85dd6e388eb0e606ed36d6c4aeb36c492a5a1aaa9a7923ae988e58081d"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "finly_source_overlap_reconciliation_result_receipt.v1",
+  "created_at": "2026-08-29T11:05:30Z",
+  "disposition": "FAIL_CLOSED",
+  "claim_boundary": "Local post-run integrity receipt only. It anchors the frozen protocol, freeze receipt, generated result, and report; it is not a server timestamp or independent attestation.",
+  "files": {
+    "research/source_overlap_reconciliation_protocol.json": "306f49f6632ed58c3e9ea446d87c1c28fc0a0d13b188cfa276f83f7cbbb0652d",
+    "research/source_overlap_reconciliation_freeze_receipt.json": "467f0d2310c56c422c902c37542df521df19779ed15bd0f95f2d1a0e0dbae11d",
+    "research/output/source_overlap_reconciliation.json": "f581f6c286540cf2f4b178450810993b2147628a10c85c8a9da181b50092001c",
+    "research/output/source_overlap_reconciliation_report.md": "3b8d6927c8c8f0e38490c5c5e30a72d586b84d7de333c84b9e4b748eb039628c"
+  },
+  "audit_addendum": "research/source_overlap_reconciliation_audit_addendum.md"
+}

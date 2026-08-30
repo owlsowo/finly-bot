@@ -1,0 +1,114 @@
+{
+  "schema_version": "finly_champion_search_generation3_protocol.v1",
+  "frozen_before_first_generation_3_output": true,
+  "known_prior_result": {
+    "corrected_generation_1_2_protocol_sha256": "35d67bc6f7d540efeab8af1ca02712dc5e8873bd84580e793f1dbc6999b4f557",
+    "corrected_panel_sha256": "b4d1932e421637a04348ca6947b53a866dd6b4a791a60a384889f5ed1bd93db0",
+    "disposition": "KEEP_V1",
+    "selected_id": null
+  },
+  "purpose": "Test the already-counted eight-formula Generation 3 equity-growth family, which retains full long-only equity participation to address the cash drag observed in prior rounds.",
+  "claim_boundary": "Generation 3 was suggested after earlier outputs were seen, and all market history is known. A passing result is retrospective SHADOW_ONLY after robustness, never future-profit proof.",
+  "data": {
+    "provider": "Yahoo Finance chart endpoint adjusted close",
+    "requested_start": "2007-05-25",
+    "requested_end": "2026-08-28",
+    "symbols": [
+      "SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ",
+      "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU",
+      "VWO", "RSP", "VUG", "VTV", "VO", "VB"
+    ],
+    "warmup_sessions": 252,
+    "residual_strategy_warmup_sessions": 756,
+    "null_policy": "Use only dates common to every symbol; never forward fill or splice pre-inception history.",
+    "bias_boundary": "The fixed 2026 ETF menu creates fund-survival and menu-selection hindsight, particularly for QQQ."
+  },
+  "execution": {
+    "signal_timing": "signal from adjusted closes known after close t",
+    "trade_timing": "queue to close t+1; first earn t+1-to-t+2",
+    "cadence": "fixed 21-session reviews with discovery anchor zero",
+    "base_one_way_cost_bps_per_absolute_traded_notional": 5,
+    "cost_stress_bps": [10, 25],
+    "long_only": true,
+    "gross_cap": 1,
+    "residual_cash": "BIL",
+    "standalone_boundaries": "charge cash-to-first-weights entry and final risky liquidation in every slice and annual-origin window"
+  },
+  "candidate_registry": [
+    {
+      "id": "spy_core_industry_momentum_12_1",
+      "formula": "Every 21 sessions hold 50% SPY and equal weights in the top three original-nine sector ETFs by log(P[t-21]/P[t-252])."
+    },
+    {
+      "id": "spy_core_industry_momentum_12_6",
+      "formula": "Every 21 sessions hold 50% SPY and equal weights in the top three original-nine sectors by log(P[t-126]/P[t-252])."
+    },
+    {
+      "id": "spy_core_residual_sector_momentum",
+      "formula": "After 756 sessions, fit each sector's alpha/beta to SPY on 504 daily log returns ending t-252, score mean/stdev of market-model residuals over return endpoints t-251 through t-21, then hold 50% SPY plus the top three sectors equally. Hold SPY before full history exists."
+    },
+    {
+      "id": "spy_core_four_signal_sector_rank",
+      "formula": "After 756 sessions, sort each of 12-1 momentum, 12-6 momentum, residual-sector momentum, and adjusted-close proximity to the trailing 252-session high in descending order with alphabetical ticker tie-breaks; map ordinal positions to (8-index)/8, average those four ordinal-percentile scores, and hold 50% SPY plus the top three sectors equally. Hold SPY before full history exists."
+    },
+    {
+      "id": "spy_core_broad_equity_growth_rotation",
+      "formula": "Hold 50% SPY plus 25% each in the top two of SPY/QQQ/IWM/EFA/VWO/VNQ by 12-1 momentum; if SPY is selected its weights add."
+    },
+    {
+      "id": "spy_core_us_style_rotation",
+      "formula": "Hold 50% SPY plus 25% each in the top two of VUG/VTV/VO/VB by 12-1 momentum."
+    },
+    {
+      "id": "breadth_conditioned_spy_rsp_switch",
+      "formula": "Hold RSP when at least six of the nine original sectors are strictly above their inclusive SMA200; otherwise hold SPY."
+    },
+    {
+      "id": "panic_neutralized_industry_momentum",
+      "formula": "Use the 50%-SPY 12-1 sector policy, except hold 100% SPY when SPY 504-session momentum is negative and annualized 20-session volatility exceeds the 80th percentile of its prior 252 completed estimates."
+    }
+  ],
+  "trial_accounting": {
+    "ledger": "research/champion_trial_ledger.json",
+    "cumulative_effective_trials": 92,
+    "generation_3_ids_already_counted": "84-91",
+    "no_new_trial_added_by_execution": true
+  },
+  "selection": {
+    "partitions": {
+      "development": { "start": "2008-06-02", "end": "2017-12-29" },
+      "validation": { "start": "2018-01-02", "end": "2024-12-31" },
+      "recent_veto_only": { "start": "2025-01-02", "end": "2026-08-28" }
+    },
+    "objective": "Maximize the smaller development/validation annualized log-growth edge among candidates passing every pre-robustness gate; break an exact robust-score tie by higher validation annualized log-growth edge, then alphabetical identifier. Recent history cannot rank or break ties.",
+    "recent_hard_safety_veto": "After selection only, veto if 2025-2026 standalone maximum drawdown is below -20%, total return trails BIL, or drawdown is over five percentage points worse than SPY."
+  },
+  "historical_shadow_gates": {
+    "raw": [
+      "annualized log growth exceeds SPY in development and validation",
+      "validation edge is at least 50 bp/year",
+      "median validation edge is positive in 252/504/756-session annual-origin families",
+      "at least 60% of each validation window family beats SPY"
+    ],
+    "risk": [
+      "validation volatility does not exceed SPY",
+      "validation drawdown is within two points of SPY",
+      "validation BIL-excess Sharpe exceeds frozen Finly and the 15% SPY volatility-target baseline by at least 0.10",
+      "validation drawdown is within two points of frozen Finly and no worse than 15%"
+    ],
+    "post_selection": [
+      "survives 5/10/25 bp costs and all 21 anchors",
+      "DSR probability at least 0.95 using 92 trials",
+      "fixed-candidate familywise p-value at most 0.05 for circular and moving 5/20/60-session blocks",
+      "authenticated data overlap passes"
+    ]
+  },
+  "sources": [
+    { "title": "Do Industries Explain Momentum?", "url": "https://doi.org/10.1111/0022-1082.00146" },
+    { "title": "Is Momentum Really Momentum?", "url": "https://doi.org/10.1016/j.jfineco.2011.05.003" },
+    { "title": "Residual Momentum", "url": "https://doi.org/10.1016/j.jempfin.2011.01.003" },
+    { "title": "The 52-Week High and Momentum Investing", "url": "https://www.jstor.org/stable/3694820" },
+    { "title": "Returns to Buying Winners and Selling Losers", "url": "https://doi.org/10.1111/j.1540-6261.1993.tb04702.x" },
+    { "title": "Momentum Crashes", "url": "https://doi.org/10.1016/j.jfineco.2015.12.002" }
+  ]
+}

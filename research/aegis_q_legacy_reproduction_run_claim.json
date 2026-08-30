@@ -1,0 +1,28 @@
+{
+  "schema_version": "finly_aegis_q_legacy_reproduction_run_claim.v1",
+  "status": "claimed_before_first_official_aegis_q_auxiliary_computation",
+  "generated_at": "2026-08-29T14:13:26.950Z",
+  "official_runner_results_seen_before_claim": false,
+  "known_output_files_absent_before_claim": true,
+  "published_target_metrics_known_before_claim": true,
+  "process_attestation_boundary": "This claim attests only that the official AEGIS-Q auxiliary runner persisted this claim before its own first local reproduction computation. The published target metrics, local panel, engine, and formulas are readable, so this is not cryptographic proof of an unseen outcome.",
+  "claim_boundary": {
+    "auxiliary_only": true,
+    "submitted_options_pnl": false,
+    "eligible_as_finly_champion": false,
+    "future_profitability_proven": false,
+    "apples_to_apples_with_finly": false,
+    "statement": "A match establishes reproducibility of the archived legacy equity metric bundle under the declared public-data and execution semantics. It does not reproduce the submitted AEGIS-Q options strategy, establish options P&L, prove future profitability, or provide an apples-to-apples financial comparison with Finly."
+  },
+  "frozen_inputs": {
+    "protocol_sha256": "8d10d5a00c8c2a285039a8a8bc8ad0193749c3db2129730d2f829ce3cbe9fcbd",
+    "freeze_receipt_sha256": "2452703e2dc225792c9b0d87a60161601aeb48ea38e60508b62769018dde6c77",
+    "raw_bars_file_sha256": "17484cec726b5a0745d9fe614587f553d44216ffaf027f04c9c3704de9d1f587",
+    "panel_file_sha256": "af1a3e3fe684d83ced9745d3c2f294fd7ee44236fee0408222a4b32f2bba5fa9",
+    "implementation_sha256": "5e9ab0f50709cb90139690b9461f942ed16d4d7ac2760fea2adb93e0bacc6e2d",
+    "runner_sha256": "d4fdf59643259d7b9c3834834cef187879a9711adcfb4568b82595a50e9e6efd",
+    "implementation_test_sha256": "15c0743587d41ea4ced818afe621e46aff3dbdbb34c49284afa5eb281f0da3f3",
+    "runner_test_sha256": "cffe27f8cc9a3beb28c632ebdc315e7ec09ef1245e16b2ef912f4c87b88e851b"
+  },
+  "recovery_boundary": "Repeated official invocations may only complete missing artifacts or verify byte-identical artifacts bound to this claim. They never replace conflicting bytes."
+}

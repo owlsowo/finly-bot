@@ -1,0 +1,938 @@
+{
+  "schema_version": "finly_champion_search_generation6_protocol.v1",
+  "status": "preregistered_before_first_generation_6_output",
+  "created_at": "2026-08-29T14:02:46.000Z",
+  "frozen_before_first_generation_6_output": true,
+  "maximum_permitted_status": "RETROSPECTIVE_PAPER_CHALLENGER",
+  "purpose": "Execute one bounded, literature-pinned Generation 6 challenger tournament on the immutable Generation 4 panel. The primary track asks whether a candidate clears predeclared SPY growth and risk gates; a separate non-vetoing challenge asks whether it also clears QQQ and static growth controls.",
+  "claim_boundary": "Every historical interval, the original 105 trials, the Generation 4 and 5 outcomes, and the literature themes used to construct these formulas were already seen. Hash freezing and the official-run claim document this runner's process but cannot create a pristine holdout or cryptographically prove that no alternate local script previewed the readable panel. A pass is only a retrospective paper-challenger result; it cannot establish future profitability, independent alpha, exact options P&L, permission for live capital, or financial superiority over unreproducible competitor systems.",
+  "known_prior_results": {
+    "cumulative_effective_trials_before_generation_6": 105,
+    "generation_4_selected_candidate": "qqq_core_sector_12_6",
+    "generation_4_post_selection_disposition": "KEEP_V1_POST_SELECTION_ROBUSTNESS_FAILED",
+    "generation_5_disposition": "KEEP_V1",
+    "generation_5_qualifying_candidates": 0,
+    "original_historical_tuning_lock_remains_controlling": true
+  },
+  "frozen_inputs": {
+    "generation_5_trial_ledger": {
+      "path": "research/champion_trial_ledger_generation5.json",
+      "sha256": "eb3fa92618a5c5b72282295360cece394ec8b9449ec43c88d40d57f943227fd0"
+    },
+    "generation_4_protocol": {
+      "path": "research/champion_search_generation4_protocol.json",
+      "sha256": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5"
+    },
+    "generation_4_output": {
+      "path": "research/output/quant_champion_generation4.json",
+      "sha256": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788"
+    },
+    "generation_4_robustness_output": {
+      "path": "research/output/quant_champion_generation4_robustness.json",
+      "sha256": "6b8136da0c4d6b366763383a93d2e119cec2f5516761b6cb2d2c206eeefd3299"
+    },
+    "generation_5_protocol": {
+      "path": "research/champion_search_generation5_protocol.json",
+      "sha256": "d2187039d1471dd4e27681d350355f917aec556f019c09f8155bb48c0509f10e"
+    },
+    "generation_5_freeze_receipt": {
+      "path": "research/champion_search_generation5_freeze_receipt.json",
+      "sha256": "77eafc80d2d5eabec46e22d9193b9f4a8ab51eee199fdca10b1ef176b35351f0"
+    },
+    "generation_5_output": {
+      "path": "research/output/quant_champion_generation5.json",
+      "sha256": "7e750ce659f4589b0df073195965ae3152f80175c5b9b9eae8b3ab9df839f6a5"
+    },
+    "generation_5_source_protocol": {
+      "path": "research/source_overlap_reconciliation_generation5_protocol.json",
+      "sha256": "88f000732851a59f56a218c791731bb913e8ec51cd461b7a9347da6ae1697be6"
+    },
+    "generation_5_source_output": {
+      "path": "research/output/source_overlap_reconciliation_generation5.json",
+      "sha256": "b5a9aa1f1212429732aa83a350d7003d6c5ed0b7f8f76bccba3c2d69ef07b6d6"
+    },
+    "hindsight_bias_lock_markdown": {
+      "path": "research/HINDSIGHT_BIAS_LOCK.md",
+      "sha256": "eeacd1a122a0b9e826687a13d9dc9774c5d981cfe00a56196aa8f75c72f38ca4"
+    },
+    "hindsight_bias_lock_json": {
+      "path": "research/hindsight_bias_lock.json",
+      "sha256": "c4969b01c906a4a0f12775b3cdfde4a731f104014e29b95a1b42b8d856bf0cbe"
+    },
+    "hindsight_bias_lock_addendum": {
+      "path": "research/HINDSIGHT_BIAS_LOCK_ADDENDUM.md",
+      "sha256": "74add454ff19cbd498101b702e76d3bfc74fb25f4a125a34604beadd9c0a96f8"
+    },
+    "engine": {
+      "path": "research/champion_engine.mjs",
+      "sha256": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e"
+    },
+    "statistics": {
+      "path": "research/champion_statistics.mjs",
+      "sha256": "bc3d681771012f11ef27aeb2b7d61a1862d3d026818e4c3b623e041cf5a688de"
+    },
+    "recurring_contribution": {
+      "path": "research/recurring_contribution.mjs",
+      "sha256": "e30be28f244e2c6add6c0919a2c14a5faef3c1c10eec12cdcc9fe2482fa287a9"
+    },
+    "primary_strategies": {
+      "path": "research/champion_strategies.mjs",
+      "sha256": "861474c77f9d061db79bb445fea1ad908604bd4e6f2ac6677a6df6e1c881cb8d"
+    },
+    "generation_4_strategies": {
+      "path": "research/champion_strategies_generation4.mjs",
+      "sha256": "a3e0124f2171773ca23c8a6e932dd1e3d5d5b265e7e198fdf21971cdaf5c4992"
+    },
+    "generation_5_strategies": {
+      "path": "research/champion_strategies_generation5.mjs",
+      "sha256": "ed39a207d404c401a3735945d0e2559367dda28f0063a18c6daeeed5fc002c28"
+    },
+    "generation_6_strategies": {
+      "path": "research/champion_strategies_generation6.mjs",
+      "sha256": "f3a6b87df3c07223d3f4d959f54c13d278755837e2d153afb9cb397635f2c15b"
+    },
+    "generation_6_robustness_helper": {
+      "path": "research/champion_generation6_robustness.mjs",
+      "sha256": "a3cce0a77537495d9599b5a7c58da9d0f052c67bcbfa65b3626a655add2144ba"
+    },
+    "generation_6_growth_statistics": {
+      "path": "research/champion_generation6_growth_statistics.mjs",
+      "sha256": "96fad5e5b3c2edba2eb20275be99ba65fa47e8b441534c9600bddfac66c0dbf4"
+    },
+    "generation_6_runner": {
+      "path": "research/run_quant_champion_generation6.mjs",
+      "sha256": "cc5eb08363f9b1a89384578a1ec7f5857793ad31cff778cf141fc0ffac591946"
+    },
+    "generation_6_robustness_runner": {
+      "path": "research/run_quant_champion_generation6_robustness.mjs",
+      "sha256": "cb2f2fa0588a4183defd296edd44f4a6c897b9aa791735912509de0337dddd3d"
+    },
+    "generation_6_source_reconciliation": {
+      "path": "research/source_overlap_reconciliation_generation6.mjs",
+      "sha256": "5f5e7223586f7c605b6ea9a8bc1087e915a378899c93859166dff93f1af48393"
+    },
+    "generation_6_source_runner": {
+      "path": "research/run_source_overlap_reconciliation_generation6.mjs",
+      "sha256": "9b7953b31a209ebb9ab26653cb3aa3a189e3be34d9788f520036b7e89921625a"
+    },
+    "generation_5_source_reconciliation_code": {
+      "path": "research/source_overlap_reconciliation_generation5.mjs",
+      "sha256": "d1b135ed7e9d8b538ef9aa73fbf99a2becededd60d18a99adafc1fdaf88e3ac9"
+    },
+    "generation_6_alpaca_acquisition_protocol": {
+      "path": "research/alpaca_adjustment_all_panel_generation6_protocol.json",
+      "sha256": "b9c845970e85a00c7909130d8dbc3f807d7f293224f7fa51d469513d67fc9b8f"
+    },
+    "generation_6_alpaca_acquisition_freeze_receipt": {
+      "path": "research/alpaca_adjustment_all_panel_generation6_freeze_receipt.json",
+      "sha256": "01e594c193e4cc4df095645a44903fbe9ab759b8193a662154d33cd9cae297f8"
+    },
+    "generation_6_alpaca_acquisition_run_claim": {
+      "path": "research/alpaca_adjustment_all_panel_generation6_run_claim.json",
+      "sha256": "3b5c4f9bf5d8f20a39e2dddbe7be6b90b09c58b4dff0e30fafecba2621e9ca93"
+    },
+    "generation_6_alpaca_acquisition_result_receipt": {
+      "path": "research/alpaca_adjustment_all_panel_generation6_result_receipt.json",
+      "sha256": "0c20b09f65c26a51e599ca43d9488b0479f8902a990e2bb16d9393850d0dc739"
+    },
+    "generation_6_alpaca_all_panel": {
+      "path": "data/private/champion_search/alpaca_adjustment_all_panel_generation6_aa2075c1989da7194f1de0f455fab83a4035ee878b5b410088d11aa39c0baaa2.json",
+      "payload_sha256": "aa2075c1989da7194f1de0f455fab83a4035ee878b5b410088d11aa39c0baaa2",
+      "schema_version": "finly_generation6_alpaca_adjustment_all_panel.v2",
+      "role": "preacquired_authenticated_cross_provider_reconciliation_only",
+      "adjustment": "all",
+      "request": {
+        "symbols": ["SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ", "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"],
+        "start": "2007-05-30",
+        "end": "2026-08-27",
+        "feed": "iex",
+        "adjustment": "all",
+        "timeframe": "1Day",
+        "asof": "2026-08-27",
+        "currency": "USD",
+        "sort": "asc",
+        "limit": 10000,
+        "minimum_common_sessions": 1250
+      },
+      "series_integrity_sha256": "703435c64439e3964173c96f5fd5031e6b22e6cb2d4b2f8a36283e143de05836",
+      "strategy_intersection_normalized_panel_sha256": "0b0ae32a660d8274b3bcfeb0c17b9391f386e3f1d941e13dd0dd5126e9eafb88",
+      "strategy_intersection_observations": 1515,
+      "strategy_intersection_start_date": "2020-07-27",
+      "strategy_intersection_end_date": "2026-08-27"
+    },
+    "competitor_registry": {
+      "path": "research/competitor_strategy_registry_generation6.json",
+      "sha256": "abf1b63fdfd0d6972ea5cdbed81bbf9211a6ebe55d1d1bec89e7f2d9cc7d28f1"
+    },
+    "generation_4_private_panel": {
+      "path": "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json",
+      "payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+      "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+      "schema_version": "finly_generation4_private_panel.v1",
+      "common_start": "2007-05-30",
+      "common_end": "2026-08-27",
+      "common_sessions": 4843
+    }
+  },
+  "data": {
+    "provider": "Hash-pinned saved Yahoo Finance revised adjusted-close Generation 4 panel",
+    "runner_market_fetch_permitted": false,
+    "symbols": [
+      "SPY",
+      "BIL",
+      "QQQ",
+      "IWM",
+      "EFA",
+      "EEM",
+      "IEF",
+      "TLT",
+      "GLD",
+      "DBC",
+      "VNQ",
+      "XLK",
+      "XLF",
+      "XLE",
+      "XLY",
+      "XLP",
+      "XLI",
+      "XLB",
+      "XLV",
+      "XLU"
+    ],
+    "schema_version": "finly_generation4_private_panel.v1",
+    "payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+    "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+    "common_start": "2007-05-30",
+    "common_end": "2026-08-27",
+    "common_sessions": 4843,
+    "null_policy": "Use the immutable common-date panel exactly as frozen. Never forward fill, splice providers, add symbols, delete inconvenient dates, or refetch data.",
+    "bias_boundary": "Adjusted closes are revised; the ETF menu contains 2026 survivors; QQQ and technology exposure are ex-post obvious; all partitions are already consumed."
+  },
+  "execution": {
+    "signal_trade_return": "close-t information -> queued close-t+1 execution -> first t+1-to-t+2 return",
+    "lookback_sessions": 252,
+    "rebalance_interval_sessions": 21,
+    "rebalance_anchor": 0,
+    "base_one_way_cost_bps_per_absolute_traded_notional": 5,
+    "cost_stress_levels_bps": [
+      5,
+      10,
+      25
+    ],
+    "long_only": true,
+    "maximum_risky_gross": 1,
+    "residual_cash_proxy": "BIL",
+    "annual_borrow_spread": 0.005,
+    "terminal_liquidation": true,
+    "standalone_boundaries": "Every selection slice starts from BIL, replaces inherited boundary costs with a fresh entry cost, and charges final risky liquidation.",
+    "deterministic_ties": "Exact numeric ties use alphabetical ticker order; invalid or degenerate inputs fail closed to BIL or the registered fallback."
+  },
+  "registered_formulas": [
+    {
+      "trial": 106,
+      "id": "faber_gtaa5_trend",
+      "eligible": false,
+      "metadata": {
+        "role": "literature_control",
+        "eligible": false,
+        "mechanism": "Five fixed 20% SPY/EFA/IEF/VNQ/DBC slots; each slot is invested only above its inclusive SMA210 and otherwise remains in BIL.",
+        "parameters": {
+          "rebalance_interval_sessions": 21,
+          "symbols": [
+            "SPY",
+            "EFA",
+            "IEF",
+            "VNQ",
+            "DBC"
+          ],
+          "slot_weight": 0.2,
+          "inclusive_sma_sessions": 210
+        },
+        "source_pins": [
+          {
+            "title": "A Quantitative Approach to Tactical Asset Allocation",
+            "authors": "Mebane T. Faber",
+            "doi": "10.2139/ssrn.962461",
+            "url": "https://doi.org/10.2139/ssrn.962461"
+          }
+        ]
+      }
+    },
+    {
+      "trial": 107,
+      "id": "g6_trend_guard_g4",
+      "eligible": true,
+      "metadata": {
+        "role": "candidate",
+        "eligible": true,
+        "mechanism": "Apply an inclusive SMA210 gate independently to the frozen G4 allocation's 50% QQQ sleeve and three fixed one-sixth 12-minus-6 sector sleeves; failed slots remain in BIL.",
+        "parameters": {
+          "rebalance_interval_sessions": 21,
+          "core_symbol": "QQQ",
+          "core_weight": 0.5,
+          "sector_count": 3,
+          "sector_slot_weight": 0.16666666666666666,
+          "momentum_start_sessions": 252,
+          "momentum_end_sessions": 126,
+          "inclusive_sma_sessions": 210
+        },
+        "source_pins": [
+          {
+            "title": "A Quantitative Approach to Tactical Asset Allocation",
+            "authors": "Mebane T. Faber",
+            "doi": "10.2139/ssrn.962461",
+            "url": "https://doi.org/10.2139/ssrn.962461"
+          },
+          {
+            "title": "Do Industries Explain Momentum?",
+            "authors": "Tobias J. Moskowitz, Mark Grinblatt",
+            "doi": "10.1111/0022-1082.00146",
+            "url": "https://doi.org/10.1111/0022-1082.00146"
+          }
+        ]
+      }
+    },
+    {
+      "trial": 108,
+      "id": "g6_vol_target_g4",
+      "eligible": true,
+      "metadata": {
+        "role": "candidate",
+        "eligible": true,
+        "mechanism": "Scale the frozen G4 risky target by min(1, 10% divided by its static-target annualized volatility over the latest 22 daily returns); hold the residual in BIL.",
+        "parameters": {
+          "rebalance_interval_sessions": 21,
+          "annualized_volatility_target": 0.1,
+          "volatility_lookback_sessions": 22,
+          "maximum_risky_gross": 1
+        },
+        "source_pins": [
+          {
+            "title": "Volatility-Managed Portfolios",
+            "authors": "Alan Moreira, Tyler Muir",
+            "doi": "10.1111/jofi.12513",
+            "url": "https://doi.org/10.1111/jofi.12513"
+          }
+        ]
+      }
+    },
+    {
+      "trial": 109,
+      "id": "g6_breadth_scaled_g4",
+      "eligible": true,
+      "metadata": {
+        "role": "candidate",
+        "eligible": true,
+        "mechanism": "Scale every frozen G4 risky sleeve by the fraction of the original nine sectors with positive 21-session excess log return over BIL; hold the residual in BIL.",
+        "parameters": {
+          "rebalance_interval_sessions": 21,
+          "breadth_horizon_sessions": 21,
+          "breadth_symbols": [
+            "XLK",
+            "XLF",
+            "XLE",
+            "XLY",
+            "XLP",
+            "XLI",
+            "XLB",
+            "XLV",
+            "XLU"
+          ],
+          "maximum_risky_gross": 1
+        },
+        "source_pins": [
+          {
+            "title": "Herding for profits: Market breadth and the cross-section of global equity returns",
+            "authors": "Adam Zaremba, Adam Szyszka, Andreas Karathanasopoulos, Mateusz Mikutowski",
+            "doi": "10.1016/j.econmod.2020.04.006",
+            "url": "https://doi.org/10.1016/j.econmod.2020.04.006"
+          }
+        ]
+      }
+    },
+    {
+      "trial": 110,
+      "id": "g6_residual_sector",
+      "eligible": true,
+      "metadata": {
+        "role": "candidate",
+        "eligible": true,
+        "mechanism": "Fit each sector's SPY-minus-BIL and QQQ-minus-SPY betas with an intercept over the t-756..t-21 price-endpoint window; rank t-252..t-21 factor-stripped return sum divided by sample deviation without subtracting the intercept, then hold 50% SPY plus fixed one-sixth slots for up to three positive sectors.",
+        "parameters": {
+          "rebalance_interval_sessions": 21,
+          "minimum_signal_index": 756,
+          "regression_price_endpoint_start": -756,
+          "regression_price_endpoint_end": -21,
+          "score_price_endpoint_start": -252,
+          "score_price_endpoint_end": -21,
+          "subtract_fitted_intercept_in_score": false,
+          "core_symbol": "SPY",
+          "core_weight": 0.5,
+          "maximum_positive_sectors": 3,
+          "sector_slot_weight": 0.16666666666666666
+        },
+        "source_pins": [
+          {
+            "title": "Residual Momentum",
+            "authors": "David Blitz, Joop Huij, Martin Martens",
+            "doi": "10.1016/j.jempfin.2011.01.003",
+            "url": "https://doi.org/10.1016/j.jempfin.2011.01.003"
+          },
+          {
+            "title": "Do Industries Explain Momentum?",
+            "authors": "Tobias J. Moskowitz, Mark Grinblatt",
+            "doi": "10.1111/0022-1082.00146",
+            "url": "https://doi.org/10.1111/0022-1082.00146"
+          }
+        ]
+      }
+    },
+    {
+      "trial": 111,
+      "id": "g6_long_only_tsmom_1_3_12",
+      "eligible": true,
+      "metadata": {
+        "role": "candidate",
+        "eligible": true,
+        "mechanism": "For each 21/63/252-session horizon, inverse-EWMA-volatility weight cross-asset ETFs with positive BIL-excess log return; average the three fully funded sleeves equally and leave empty sleeves in BIL.",
+        "parameters": {
+          "rebalance_interval_sessions": 21,
+          "horizons_sessions": [
+            21,
+            63,
+            252
+          ],
+          "universe": [
+            "SPY",
+            "QQQ",
+            "IWM",
+            "EFA",
+            "EEM",
+            "VNQ",
+            "IEF",
+            "TLT",
+            "GLD",
+            "DBC"
+          ],
+          "ewma_delta": 0.9836065573770492,
+          "horizon_sleeve_weight": 0.3333333333333333
+        },
+        "source_pins": [
+          {
+            "title": "Time Series Momentum",
+            "authors": "Tobias J. Moskowitz, Yao Hua Ooi, Lasse Heje Pedersen",
+            "doi": "10.1016/j.jfineco.2011.11.003",
+            "url": "https://doi.org/10.1016/j.jfineco.2011.11.003"
+          },
+          {
+            "title": "Time series momentum and volatility scaling",
+            "authors": "Abby Y. Kim, Yiuman Tse, John K. Wald",
+            "doi": "10.1016/j.finmar.2016.05.003",
+            "url": "https://doi.org/10.1016/j.finmar.2016.05.003"
+          }
+        ]
+      }
+    },
+    {
+      "trial": 112,
+      "id": "g6_hrp_trend",
+      "eligible": true,
+      "metadata": {
+        "role": "candidate",
+        "eligible": true,
+        "mechanism": "Admit cross-asset ETFs only with positive 252-session BIL-excess momentum and price above inclusive SMA210, then allocate with deterministic single-linkage hierarchical risk parity from a 252-session covariance matrix.",
+        "parameters": {
+          "rebalance_interval_sessions": 21,
+          "universe": [
+            "SPY",
+            "QQQ",
+            "IWM",
+            "EFA",
+            "EEM",
+            "VNQ",
+            "IEF",
+            "TLT",
+            "GLD",
+            "DBC"
+          ],
+          "momentum_horizon_sessions": 252,
+          "inclusive_sma_sessions": 210,
+          "covariance_lookback_sessions": 252,
+          "linkage": "single",
+          "correlation_distance": "sqrt(0.5*(1-rho))",
+          "leaf_order": "deterministic_quasi_diagonal",
+          "allocation": "recursive_bisection_inverse_variance_cluster_variance",
+          "tie_break": "alphabetical",
+          "degenerate_covariance_policy": "fail_closed_to_bil_if_any_eligible_asset_variance_is_not_strictly_above_1e-20"
+        },
+        "source_pins": [
+          {
+            "title": "Building Diversified Portfolios that Outperform Out of Sample",
+            "authors": "Marcos Lopez de Prado",
+            "doi": "10.2139/ssrn.2708678",
+            "url": "https://doi.org/10.2139/ssrn.2708678"
+          }
+        ]
+      }
+    },
+    {
+      "trial": 113,
+      "id": "g6_equal_evidence_ensemble",
+      "eligible": true,
+      "metadata": {
+        "role": "candidate",
+        "eligible": true,
+        "mechanism": "Equal 25% weight-vector blend of the trend-guard, residual-sector, 1/3/12 TSMOM, and HRP-trend candidates; before residual history is available, that quarter remains entirely in BIL.",
+        "parameters": {
+          "rebalance_interval_sessions": 21,
+          "component_weight": 0.25,
+          "components": [
+            "g6_trend_guard_g4",
+            "g6_residual_sector",
+            "g6_long_only_tsmom_1_3_12",
+            "g6_hrp_trend"
+          ],
+          "residual_component_before_756": "BIL"
+        },
+        "source_pins": [
+          {
+            "title": "Optimal Versus Naive Diversification: How Inefficient is the 1/N Portfolio Strategy?",
+            "authors": "Victor DeMiguel, Lorenzo Garlappi, Raman Uppal",
+            "doi": "10.1093/rfs/hhm075",
+            "url": "https://doi.org/10.1093/rfs/hhm075"
+          }
+        ]
+      }
+    }
+  ],
+  "trial_accounting": {
+    "ledger": "research/champion_trial_ledger_generation6.json",
+    "prior_cumulative_effective_trials": 105,
+    "generation_6_range": "106-113",
+    "cumulative_effective_trials": 113,
+    "counting_boundary": "The ineligible Faber control and all seven candidates count before execution. No failed formula is removed; diagnostics derived without selecting new formulas add no trial."
+  },
+  "partitions": {
+    "development": {
+      "start": "2008-06-02",
+      "end": "2017-12-29",
+      "status": "seen_and_consumed"
+    },
+    "validation": {
+      "start": "2018-01-02",
+      "end": "2024-12-31",
+      "status": "seen_and_consumed"
+    },
+    "recent_veto_only": {
+      "start": "2025-01-02",
+      "end": "2026-08-27",
+      "status": "seen_consumed_and_never_used_to_rank"
+    }
+  },
+  "comparators": [
+    "spy_buy_hold",
+    "qqq_buy_hold",
+    "static_spy_qqq_50_50_control",
+    "static_qqq_equal_sectors_control",
+    "qqq_core_sector_12_6",
+    "frozen_finly",
+    "spy_vol_target_15",
+    "bil_cash",
+    "faber_gtaa5_trend"
+  ],
+  "selection_tracks": {
+    "primary_spy": {
+      "candidate_ids": [
+        "g6_trend_guard_g4",
+        "g6_vol_target_g4",
+        "g6_breadth_scaled_g4",
+        "g6_residual_sector",
+        "g6_long_only_tsmom_1_3_12",
+        "g6_hrp_trend",
+        "g6_equal_evidence_ensemble"
+      ],
+      "benchmark_id": "spy_buy_hold",
+      "pending_label": "SPY_CHALLENGER_ROBUSTNESS_PENDING",
+      "required": [
+        "development and validation annualized log-growth edge versus SPY each strictly exceed 0.50 percentage points",
+        "development and validation cash-excess Sharpe differences versus SPY are nonnegative",
+        "development and validation maximum drawdown are no more than five percentage points worse than SPY",
+        "development and validation daily p05 expected-shortfall magnitude is no more than 1.10 times SPY",
+        "development and validation annualized turnover notional is at most 4.0",
+        "the recent veto does not fire"
+      ],
+      "score": "maximum of the minimum development/validation SPY annualized log-growth edge, followed by shared frozen tie-breaks"
+    },
+    "growth_control_challenge": {
+      "candidate_ids": [
+        "g6_trend_guard_g4",
+        "g6_vol_target_g4",
+        "g6_breadth_scaled_g4",
+        "g6_residual_sector",
+        "g6_long_only_tsmom_1_3_12",
+        "g6_hrp_trend",
+        "g6_equal_evidence_ensemble"
+      ],
+      "benchmark_ids": [
+        "qqq_buy_hold",
+        "static_spy_qqq_50_50_control",
+        "static_qqq_equal_sectors_control"
+      ],
+      "pending_label": "GROWTH_CONTROL_CHALLENGER_ROBUSTNESS_PENDING",
+      "can_veto_primary_spy": false,
+      "required": [
+        "all primary-SPY economic and safety gates pass",
+        "development and validation annualized log-growth edges versus QQQ are strictly positive",
+        "development and validation annualized log-growth edges versus static 50/50 SPY/QQQ are strictly positive",
+        "development and validation annualized log-growth edges versus static 50% QQQ plus equal sectors are strictly positive"
+      ],
+      "score": "maximum of the minimum six development/validation growth-control edges, followed by shared frozen tie-breaks"
+    }
+  },
+  "selection": {
+    "thresholds": {
+      "minimum_spy_annualized_log_growth_edge": 0.005,
+      "minimum_cash_excess_sharpe_difference": 0,
+      "maximum_drawdown_disadvantage": 0.05,
+      "maximum_expected_shortfall_magnitude_ratio": 1.1,
+      "maximum_annualized_turnover_notional": 4,
+      "recent_absolute_maximum_drawdown_floor": -0.2
+    },
+    "shared_tie_breaks": [
+      "higher minimum development/validation cash-excess Sharpe difference",
+      "shallower validation maximum drawdown",
+      "lower validation annualized turnover notional",
+      "alphabetical candidate identifier"
+    ],
+    "recent_veto": "Veto when recent maximum drawdown is below -20%, recent total return trails BIL, or recent drawdown is over five percentage points worse than SPY. Recent history cannot rank, rescue, or break ties.",
+    "no_pass_disposition": "KEEP_G4_DESCRIPTIVE_BASELINE"
+  },
+  "diagnostics": {
+    "regime_specification": {
+      "trendLookbackSessions": 252,
+      "volatilityLookbackSessions": 63,
+      "highVolatilityAnnualizedThreshold": 0.2
+    },
+    "recurring_contribution": {
+      "monthly_contribution": 300,
+      "horizons_months": [
+        1,
+        3,
+        6,
+        12
+      ],
+      "minimum_start_date": "2013-01-01",
+      "one_way_cost_bps": 5,
+      "fractional_units": true,
+      "terminal_sale": false
+    },
+    "rolling_horizons_sessions": [
+      252,
+      504,
+      756
+    ],
+    "interpretation_boundary": "Rolling and recurring-contribution windows overlap and are descriptive. Concentration is direct ETF weight, not constituent look-through. Diagnostics cannot promote a candidate."
+  },
+  "post_selection_robustness": {
+    "status": "preregistered_before_generation_6_selection_output",
+    "blocking_for_champion_claim": true,
+    "cost_sensitivity": {
+      "cost_levels_bps": [
+        5,
+        10,
+        25
+      ],
+      "required_slices": [
+        "development",
+        "validation"
+      ],
+      "minimum_spy_edge": 0
+    },
+    "anchor_sensitivity": {
+      "rebalance_anchors": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "one_way_cost_bps": 5,
+      "required_slices": [
+        "development",
+        "validation"
+      ],
+      "minimum_spy_edge": 0
+    },
+    "statistical_validation": {
+      "slice": "validation",
+      "benchmark_id": "spy_buy_hold",
+      "candidate_family": [
+        "g6_trend_guard_g4",
+        "g6_vol_target_g4",
+        "g6_breadth_scaled_g4",
+        "g6_residual_sector",
+        "g6_long_only_tsmom_1_3_12",
+        "g6_hrp_trend",
+        "g6_equal_evidence_ensemble"
+      ],
+      "cumulative_effective_trials": 113,
+      "bootstrap_iterations_per_test": 4999,
+      "block_lengths_sessions": [
+        5,
+        20,
+        60
+      ],
+      "methods": [
+        "circular",
+        "moving"
+      ],
+      "frozen_seeds": {
+        "circular": {
+          "5": 20260905,
+          "20": 20260920,
+          "60": 20260960
+        },
+        "moving": {
+          "5": 20261905,
+          "20": 20261920,
+          "60": 20261960
+        }
+      },
+      "deflated_sharpe_probability_minimum": 0.95,
+      "cumulative_familywise_p_value_maximum": 0.05
+    },
+    "growth_control_joint_statistical_validation": {
+      "slice": "validation",
+      "specification": {
+        "candidate_ids": [
+          "g6_trend_guard_g4",
+          "g6_vol_target_g4",
+          "g6_breadth_scaled_g4",
+          "g6_residual_sector",
+          "g6_long_only_tsmom_1_3_12",
+          "g6_hrp_trend",
+          "g6_equal_evidence_ensemble"
+        ],
+        "control_ids": [
+          "qqq_buy_hold",
+          "static_spy_qqq_50_50_control",
+          "static_qqq_equal_sectors_control"
+        ],
+        "cumulative_effective_trials": 113,
+        "bootstrap_iterations_per_test": 4999,
+        "block_lengths_sessions": [
+          5,
+          20,
+          60
+        ],
+        "methods": [
+          "circular",
+          "moving"
+        ],
+        "frozen_seeds": {
+          "circular": {
+            "5": 20260905,
+            "20": 20260920,
+            "60": 20260960
+          },
+          "moving": {
+            "5": 20261905,
+            "20": 20261920,
+            "60": 20261960
+          }
+        },
+        "familywise_alpha": 0.05
+      },
+      "all_six_tests_required": true,
+      "cumulative_familywise_p_value_maximum": 0.05
+    },
+    "causal_volatility_matched_spy": {
+      "specification": {
+        "lookback_sessions": 63,
+        "rebalance_interval_sessions": 21,
+        "minimum_spy_weight": 0,
+        "maximum_spy_weight": 1.5,
+        "base_one_way_cost_bps": 5,
+        "annual_borrow_spread": 0.005,
+        "realized_volatility_ratio_minimum": 0.9,
+        "realized_volatility_ratio_maximum": 1.1
+      },
+      "required_slices": [
+        "development",
+        "validation"
+      ],
+      "minimum_annualized_log_growth_edge": 0,
+      "realized_volatility_ratio_required": [
+        0.9,
+        1.1
+      ]
+    },
+    "annual_origin_validation": {
+      "slice": "validation",
+      "horizons_sessions": [
+        252,
+        504,
+        756
+      ],
+      "minimum_median_edge": 0,
+      "minimum_positive_window_fraction": 0.6
+    },
+    "source_reconciliation": {
+      "combined_artifact_required": true,
+      "runner_market_fetch_permitted": false,
+      "g5_overall_disposition_inherited": false,
+      "all_20_core_symbols_required": true,
+      "symbols": [
+        "SPY",
+        "BIL",
+        "QQQ",
+        "IWM",
+        "EFA",
+        "EEM",
+        "IEF",
+        "TLT",
+        "GLD",
+        "DBC",
+        "VNQ",
+        "XLK",
+        "XLF",
+        "XLE",
+        "XLY",
+        "XLP",
+        "XLI",
+        "XLB",
+        "XLV",
+        "XLU"
+      ],
+      "thresholds": {
+        "minimum_common_sessions_per_symbol": 1250,
+        "minimum_yahoo_coverage_of_alpaca_dates": 0.99,
+        "risky_minimum_daily_log_return_correlation": 0.995,
+        "risky_maximum_annualized_log_return_tracking_error": 0.03,
+        "risky_maximum_median_absolute_daily_log_return_difference_bps": 5,
+        "risky_maximum_p99_absolute_daily_log_return_difference_bps": 50,
+        "bil_maximum_annualized_mean_log_return_difference_bps": 25,
+        "bil_maximum_annualized_log_return_tracking_error": 0.01,
+        "bil_maximum_median_absolute_daily_log_return_difference_bps": 1,
+        "bil_maximum_p99_absolute_daily_log_return_difference_bps": 5,
+        "candidate_minimum_exact_discrete_or_rank_state_agreement": 0.99,
+        "candidate_maximum_mean_target_weight_l1_difference": 0.02,
+        "candidate_maximum_p99_target_weight_l1_difference": 0.1,
+        "candidate_minimum_daily_log_return_correlation": 0.995,
+        "candidate_maximum_annualized_log_return_tracking_error": 0.02,
+        "candidate_maximum_absolute_edge_difference_bps_per_year": 50
+      },
+      "simulation_options": {
+        "cashSymbol": "BIL",
+        "lookbackSessions": 252,
+        "rebalanceIntervalSessions": 21,
+        "rebalanceAnchor": 0,
+        "oneWayCostBps": 5,
+        "annualBorrowSpread": 0.005,
+        "maximumRiskyGross": 1,
+        "terminalLiquidation": true
+      },
+      "candidate_required_symbols": {
+        "g6_trend_guard_g4": ["BIL", "QQQ", "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"],
+        "g6_vol_target_g4": ["BIL", "QQQ", "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"],
+        "g6_breadth_scaled_g4": ["BIL", "QQQ", "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"],
+        "g6_residual_sector": ["SPY", "BIL", "QQQ", "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"],
+        "g6_long_only_tsmom_1_3_12": ["SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ"],
+        "g6_hrp_trend": ["SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ"],
+        "g6_equal_evidence_ensemble": ["SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ", "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"]
+      },
+      "preacquired_alpaca_panel": {
+        "schema_version": "finly_generation6_alpaca_adjustment_all_panel.v2",
+        "payload_sha256": "aa2075c1989da7194f1de0f455fab83a4035ee878b5b410088d11aa39c0baaa2",
+        "series_integrity_sha256": "703435c64439e3964173c96f5fd5031e6b22e6cb2d4b2f8a36283e143de05836",
+        "strategy_intersection_normalized_panel_sha256": "0b0ae32a660d8274b3bcfeb0c17b9391f386e3f1d941e13dd0dd5126e9eafb88",
+        "strategy_intersection_start_date": "2020-07-27",
+        "strategy_intersection_end_date": "2026-08-27",
+        "strategy_intersection_observations": 1515,
+        "full_history_certified": false,
+        "permitted_role": "RECENT_CROSS_PROVIDER_RECONCILIATION_ONLY"
+      }
+    },
+    "no_pass_disposition": "KEEP_G4_DESCRIPTIVE_BASELINE"
+  },
+  "competitor_evaluation": {
+    "registry_path": "research/competitor_strategy_registry_generation6.json",
+    "visible_projects_at_last_census": 13,
+    "reproducible_mechanism_records": 9,
+    "exact_same_panel_reproductions": 0,
+    "boundary": "Missing competitor P&L is unknown, not zero. Finly may compare disclosed mechanisms and evidence completeness, but may not fabricate a same-panel financial leaderboard.",
+    "final_refresh_required_before_submission": true
+  },
+  "source_pins": [
+    {
+      "title": "A Quantitative Approach to Tactical Asset Allocation",
+      "authors": "Mebane T. Faber",
+      "doi": "10.2139/ssrn.962461",
+      "url": "https://doi.org/10.2139/ssrn.962461"
+    },
+    {
+      "title": "Do Industries Explain Momentum?",
+      "authors": "Tobias J. Moskowitz, Mark Grinblatt",
+      "doi": "10.1111/0022-1082.00146",
+      "url": "https://doi.org/10.1111/0022-1082.00146"
+    },
+    {
+      "title": "Volatility-Managed Portfolios",
+      "authors": "Alan Moreira, Tyler Muir",
+      "doi": "10.1111/jofi.12513",
+      "url": "https://doi.org/10.1111/jofi.12513"
+    },
+    {
+      "title": "Herding for profits: Market breadth and the cross-section of global equity returns",
+      "authors": "Adam Zaremba, Adam Szyszka, Andreas Karathanasopoulos, Mateusz Mikutowski",
+      "doi": "10.1016/j.econmod.2020.04.006",
+      "url": "https://doi.org/10.1016/j.econmod.2020.04.006"
+    },
+    {
+      "title": "Residual Momentum",
+      "authors": "David Blitz, Joop Huij, Martin Martens",
+      "doi": "10.1016/j.jempfin.2011.01.003",
+      "url": "https://doi.org/10.1016/j.jempfin.2011.01.003"
+    },
+    {
+      "title": "Time Series Momentum",
+      "authors": "Tobias J. Moskowitz, Yao Hua Ooi, Lasse Heje Pedersen",
+      "doi": "10.1016/j.jfineco.2011.11.003",
+      "url": "https://doi.org/10.1016/j.jfineco.2011.11.003"
+    },
+    {
+      "title": "Time series momentum and volatility scaling",
+      "authors": "Abby Y. Kim, Yiuman Tse, John K. Wald",
+      "doi": "10.1016/j.finmar.2016.05.003",
+      "url": "https://doi.org/10.1016/j.finmar.2016.05.003"
+    },
+    {
+      "title": "Building Diversified Portfolios that Outperform Out of Sample",
+      "authors": "Marcos Lopez de Prado",
+      "doi": "10.2139/ssrn.2708678",
+      "url": "https://doi.org/10.2139/ssrn.2708678"
+    },
+    {
+      "title": "Optimal Versus Naive Diversification: How Inefficient is the 1/N Portfolio Strategy?",
+      "authors": "Victor DeMiguel, Lorenzo Garlappi, Raman Uppal",
+      "doi": "10.1093/rfs/hhm075",
+      "url": "https://doi.org/10.1093/rfs/hhm075"
+    }
+  ]
+}

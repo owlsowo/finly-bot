@@ -1,0 +1,19 @@
+{
+  "schema_version": "finly_champion_search_generation4_result_receipt.v1",
+  "captured_immediately_after_declared_first_execution": true,
+  "timestamp_boundary": "The execution time is a local process timestamp, not an independent time authority; first-execution status is a project assertion supported by the pre-result freeze receipt and filesystem ordering.",
+  "generated_at": "2026-08-29T10:48:40.751Z",
+  "frozen_protocol_sha256": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+  "frozen_trial_ledger_sha256": "85cba766da161a2589ae2f811917e273f75b5a1e4199fdb964801ec3a8e7af88",
+  "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+  "files": {
+    "research/output/quant_champion_generation4.json": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+    "research/output/quant_champion_generation4_report.md": "8f39c6be2672dfd79da2f6f60ff10fef38f909180f3a966e3104bfeca608e9b7",
+    "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+    "data/private/champion_search/generation4_ledger_6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1.json.gz": "6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1"
+  },
+  "raw_selected_before_robustness": "qqq_core_sector_12_6",
+  "balanced_selected_before_robustness": null,
+  "disposition": "RAW_RETURN_ROBUSTNESS_PENDING",
+  "claim_boundary": "The selected rule passed the preregistered raw SPY gates and recent veto, but it is not yet a champion or an alpha claim. It trailed QQQ total return in development and validation and trailed the static 50/50 SPY/QQQ control in development. Post-selection robustness and source reconciliation remain mandatory."
+}

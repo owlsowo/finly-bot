@@ -1,0 +1,265 @@
+{
+  "schema_version": "finly_submission_claims_lock.v1",
+  "status": "LOCKED_FOR_QUALITATIVE_REBUILD",
+  "evidence_as_of": "2026-08-27",
+  "central_distinction": "Finly separates finding a plausible trade from earning authority to risk capital.",
+  "judge_proposition": "Judge Finly on whether its controlled-delegation architecture can refuse attractive but insufficient evidence, not on an unsupported promise of future profit.",
+  "retrospective_result": {
+    "evidence_class": "CONSUMED_RETROSPECTIVE_ETF_REPLAY",
+    "candidate": "G4 qqq_core_sector_12_6 shadow",
+    "window": {
+      "start": "2013-01-02",
+      "end": "2026-08-27"
+    },
+    "one_way_cost_bps": 5,
+    "candidate_total_return": 9.6710597833,
+    "spy_total_return": 5.8081746189,
+    "candidate_annualized_return": 0.1897447215,
+    "spy_annualized_return": 0.1511474737,
+    "candidate_annualized_volatility": 0.1800522692,
+    "spy_annualized_volatility": 0.1678686166,
+    "candidate_maximum_drawdown": -0.2898521154,
+    "spy_maximum_drawdown": -0.3371726114,
+    "candidate_annualized_turnover": 3.7758694199,
+    "spy_annualized_turnover": 0.2201514269,
+    "promotion_status": "NOT_PROMOTED_DESCRIPTIVE_ONLY",
+    "boundary": "Consumed adjusted-close ETF replay selected after viewing history; descriptive only, not promoted, not an options P&L, and not a forecast."
+  },
+  "falsification": {
+    "deflated_sharpe_probability": 0.037478432287,
+    "required_deflated_sharpe_probability": 0.95,
+    "worst_familywise_adjusted_p_value": 0.371814092954,
+    "maximum_permitted_familywise_p_value": 0.05,
+    "cost_sign_stable_at_5_10_25_bps": true,
+    "all_21_offsets_positive_spy_edges": true,
+    "growth_control_independence_supported": false,
+    "authenticated_source_overlap_passed": false,
+    "replacement_challengers_promoted": 0,
+    "generation6_challengers_assessed": 7,
+    "generation6_primary_selected_id": null,
+    "generation6_growth_selected_id": null
+  },
+  "research_attempt_accounting": {
+    "conservatively_counted_effective_attempts": 113,
+    "composition": [
+      {
+        "category": "prior_attempts",
+        "count": 53,
+        "detail": "53 prior research attempts"
+      },
+      {
+        "category": "invalidated_generation1",
+        "count": 12,
+        "detail": "12 invalidated G1 attempts"
+      },
+      {
+        "category": "aborted_attempt",
+        "count": 1,
+        "detail": "1 aborted attempt"
+      },
+      {
+        "category": "invalidated_generation2",
+        "count": 9,
+        "detail": "9 invalidated G2 attempts"
+      },
+      {
+        "category": "competitor_suggestions",
+        "count": 3,
+        "detail": "3 competitor suggestions"
+      },
+      {
+        "category": "literature_suggestions",
+        "count": 5,
+        "detail": "5 literature suggestions"
+      },
+      {
+        "category": "generation3_formulas",
+        "count": 8,
+        "detail": "8 G3 formulas"
+      },
+      {
+        "category": "correction_rerun",
+        "count": 1,
+        "detail": "1 correction rerun"
+      },
+      {
+        "category": "generation4",
+        "count": 8,
+        "detail": "8 G4 attempts: 7 eligible formulas and 1 control"
+      },
+      {
+        "category": "generation5",
+        "count": 5,
+        "detail": "5 G5 attempts: 4 eligible formulas and 1 control"
+      },
+      {
+        "category": "generation6",
+        "count": 8,
+        "detail": "8 G6 attempts: 7 eligible formulas and 1 control"
+      }
+    ],
+    "includes_nonindependent_or_unexecuted_items": true,
+    "exact_claim": "Across the ledger's 113 conservatively counted effective attempts, zero new challenger was promoted to replace frozen v1."
+  },
+  "hindsight_boundary": {
+    "core_formula_partitions_and_costs_committed_before_run": true,
+    "excess_sharpe_gate_and_later_inference_corrections_changed_after_initial_output": true,
+    "fully_preregistered_claim_permitted": false,
+    "all_historical_intervals_consumed": true
+  },
+  "production_policy": {
+    "policy_id": "tsmom_ensemble_vol",
+    "evidence_class": "FIXED_2025_2026_HISTORICAL_HOLDOUT_NOW_CONSUMED",
+    "distinct_from_g4_shadow": true,
+    "definition": "Frozen tsmom_ensemble_vol: equal-weight positive fraction of 21/63/252-session SPY-minus-BIL log trends multiplied by the unlevered 10% target over lagged 20-session SPY realized volatility; five-session cadence; residual in BIL.",
+    "window": {
+      "start": "2025-01-02",
+      "end": "2026-08-28",
+      "observations": 415
+    },
+    "candidate": {
+      "total_return": 0.18986739,
+      "annualized_return": 0.11133479,
+      "annualized_volatility": 0.08309429,
+      "maximum_drawdown": -0.05788285
+    },
+    "spy": {
+      "total_return": 0.33523656,
+      "annualized_return": 0.19190757,
+      "annualized_volatility": 0.17332678,
+      "maximum_drawdown": -0.18755706
+    },
+    "interpretation": "The frozen production policy reduced volatility and drawdown in the fixed holdout but underperformed SPY's raw total and annualized return. It has zero forward observations, so the holdout does not support a claim that it is more likely than not to beat SPY next month.",
+    "latest_research_proposal": {
+      "spy_weight": 0.95709742,
+      "bil_weight": 0.04290258,
+      "paper_account_spy_weight_before_proposal": 0,
+      "paper_account_defensive_weight_before_proposal": 1,
+      "broker_mutation_authorized": false,
+      "mutation_requested": false
+    }
+  },
+  "forward_trial": {
+    "schema_version": "finly_forward_trial1_protocol.v2",
+    "phase": "FROZEN_TWO_PHASE_ZERO_ROW",
+    "commitments": 0,
+    "settlements": 0,
+    "books": [
+      "finly_production_v1",
+      "g4_shadow_qqq_core_sector_12_6",
+      "benchmark_spy_buy_hold",
+      "benchmark_qqq_buy_hold",
+      "benchmark_spy_qqq_50_50",
+      "benchmark_bil_cash",
+      "benchmark_spy_vol_target_10"
+    ],
+    "first_signal_session": "2026-08-31",
+    "minimum_settlements_for_primary_calculation": 252,
+    "production_commitment_enabled": false,
+    "production_settlement_enabled": false,
+    "performance_inference_enabled": false,
+    "broker_authority": false,
+    "private_seed_redistributed": false,
+    "corporate_action_reconciliation_ready": false,
+    "outcome_price_reconciliation_ready": false,
+    "independent_anchor_verifier_configured": false,
+    "exact_safe_claim": "Forward Trial 1 is a clean-clone-verifiable, locally hash-bound, zero-row, two-phase protocol. It records no signal commitments or settlements, carries no broker authority, and keeps production commitment, settlement, and performance inference disabled. Its synthetic TEST_ONLY path demonstrates the frozen schema and accounting mechanics; it does not prove prospectivity, provider origin, execution, performance, or future profit."
+  },
+  "options_and_broker_boundary": {
+    "historical_g4_is_options_pnl": false,
+    "historical_g4_is_etf_allocation_replay": true,
+    "options_contribution": "Deterministic defined-risk order compilation and authorization boundary.",
+    "authenticated_read_only_paper_account_check": true,
+    "order_submitted_or_filled_as_evidence": false,
+    "live_capital_authorized": false
+  },
+  "public_claim_policy": {
+    "safe_lines": [
+      "The consumed retrospective G4 replay recorded a higher annualized return and a shallower maximum drawdown than SPY under the declared assumptions, but failed promotion.",
+      "Finly refused to promote its strongest historical chart after multiple-testing, growth-control independence, and source-validation gates failed.",
+      "Forward Trial 1 begins at zero commitments and zero settlements, with performance inference disabled.",
+      "The historical ETF replay is not an options P&L, and no broker order or fill is claimed as performance evidence.",
+      "The production policy is distinct from G4: in its now-consumed fixed holdout it underperformed SPY's raw return while reducing volatility and drawdown, and it has zero forward observations."
+    ],
+    "forbidden_lines": [
+      "Finly consistently outperforms SPY.",
+      "Finly is proven profitable.",
+      "Forward results are independently validated.",
+      "The historical replay proves options profitability.",
+      "Finly is fully preregistered.",
+      "Finly is the best-performing submission.",
+      "Production Finly is more likely than not to beat SPY next month."
+    ]
+  },
+  "figure": {
+    "path": "public/figures/g4_wealth_drawdown.png",
+    "data_path": "public/data/g4_wealth_drawdown.json",
+    "observations": 3434,
+    "required_visible_boundary": "Consumed adjusted-close ETF replay selected after viewing history; descriptive only, not promoted, not an options P&L, and not a forecast."
+  },
+  "source_integrity": {
+    "all_hashes_verified": true,
+    "artifacts": [
+      {
+        "id": "quantitative_evidence",
+        "path": "research/output/submission_quantitative_evidence_surface.json",
+        "sha256": "e69236a8b313bb42a9add625c0a90ce0ed678c8a81da259ef0399b8afb2da4db"
+      },
+      {
+        "id": "wealth_drawdown_data",
+        "path": "public/data/g4_wealth_drawdown.json",
+        "sha256": "cbd5d1a3d794148623326aa62f65feb460345a1b182e0170e7025f791fed5b8e"
+      },
+      {
+        "id": "wealth_drawdown_figure",
+        "path": "public/figures/g4_wealth_drawdown.png",
+        "sha256": "2e9a788c25a08b1b51d2958c7c603eedf0b2881b8030c3d34b4d898dd37adbca"
+      },
+      {
+        "id": "forward_engine",
+        "path": "research/forward_trial1.mjs",
+        "sha256": "acd6b07f61a37624534c98472c315f732bf51bc4bdf50764cfacb4c0d8224528"
+      },
+      {
+        "id": "forward_runner",
+        "path": "research/run_forward_trial1.mjs",
+        "sha256": "26ab2123234e8172c421cd085a3ab3d050354344d4bbcb0af93c9402d0f16749"
+      },
+      {
+        "id": "forward_protocol",
+        "path": "research/forward_trial1_protocol.json",
+        "sha256": "502436b0fdb850d24cd3503dd808a512aca1774b119ca7185b6a06f7288f17b9"
+      },
+      {
+        "id": "forward_genesis",
+        "path": "research/forward_trial1_genesis.json",
+        "sha256": "42f10290b3ce301a2cee8d72f181a522e694aa38cf394e9f896a24bade26990c"
+      },
+      {
+        "id": "forward_bridge",
+        "path": "research/forward_trial1_bridge_2026-08-28.json",
+        "sha256": "ed63b5c4b27289d3b73e87c1377cec01e76c58506559d174ebd43420e66cbc31"
+      },
+      {
+        "id": "forward_documentation",
+        "path": "research/FORWARD_TRIAL1.md",
+        "sha256": "72056b07f19d3eb3f8360f0e7d558b1338d8f6337c24dc86dc4eafb92e360648"
+      },
+      {
+        "id": "forward_tests",
+        "path": "tests/forward_trial1.test.mjs",
+        "sha256": "553fc7d4989db3a437b0436a332cd0de8e2032abce4cff1b1b20f0c6be05c531"
+      },
+      {
+        "id": "production_economic_research",
+        "path": "public/data/economic_research.json",
+        "sha256": "8e4411ec5475da81c24ef5b3f3e73f46a42b66284e2a0dff368f8b70f9fa982b"
+      },
+      {
+        "id": "current_economic_decision",
+        "path": "public/data/current_economic_decision.json",
+        "sha256": "cd5f617639c00a217c9536b7b970a7b81d410a4e8ee0c47f984d9314234ab9f2"
+      }
+    ]
+  }
+}

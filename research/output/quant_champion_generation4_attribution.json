@@ -1,0 +1,1552 @@
+{
+  "schema_version": "finly_generation4_selected_candidate_attribution.v1",
+  "generated_at": "2026-08-29T11:02:32.992Z",
+  "boundary": {
+    "classification": "post_selection_descriptive_diagnostic",
+    "fixed_candidate_id": "qqq_core_sector_12_6",
+    "may_change_candidate_selection": false,
+    "creates_new_validation_gate": false,
+    "fresh_out_of_sample_evidence": false,
+    "statement": "The candidate was selected before this diagnostic. This output can explain exposures and failure modes but cannot alter the frozen search, selection, or trial count."
+  },
+  "frozen_inputs": {
+    "panel_filename": "generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json",
+    "panel_payload_sha256": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+    "normalized_panel_sha256": "bef945fb53d56801d0d9f99d23a641d2ee7a7c14c515ddb3fec1acc79451e883",
+    "panel_protocol_sha256": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "panel_points": 4843,
+    "panel_start": "2007-05-30",
+    "panel_end": "2026-08-27",
+    "ledger_filename": "generation4_ledger_6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1.json.gz",
+    "ledger_gzip_sha256": "6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1",
+    "ledger_uncompressed_sha256": "e0fe07a783249b1277d993eabf78451bf6f8de7f5c3742178e328cf57e898926",
+    "selected_row_count": 4589,
+    "selected_row_start": "2008-06-02",
+    "selected_row_end": "2026-08-27"
+  },
+  "alignment": {
+    "observations": 4589,
+    "first_execution_return_date": "2008-06-02",
+    "last_execution_return_date": "2026-08-27",
+    "aligned": true
+  },
+  "sector_selection": {
+    "executed_rebalance_decisions": 219,
+    "sector_slots": 657,
+    "expected_sectors_per_decision": 3,
+    "by_sector": {
+      "XLK": {
+        "selected_decisions": 98,
+        "decision_frequency": 0.4474885845,
+        "share_of_sector_slots": 0.1491628615
+      },
+      "XLF": {
+        "selected_decisions": 69,
+        "decision_frequency": 0.3150684932,
+        "share_of_sector_slots": 0.1050228311
+      },
+      "XLE": {
+        "selected_decisions": 59,
+        "decision_frequency": 0.2694063927,
+        "share_of_sector_slots": 0.0898021309
+      },
+      "XLY": {
+        "selected_decisions": 89,
+        "decision_frequency": 0.4063926941,
+        "share_of_sector_slots": 0.1354642314
+      },
+      "XLP": {
+        "selected_decisions": 71,
+        "decision_frequency": 0.3242009132,
+        "share_of_sector_slots": 0.1080669711
+      },
+      "XLI": {
+        "selected_decisions": 68,
+        "decision_frequency": 0.3105022831,
+        "share_of_sector_slots": 0.103500761
+      },
+      "XLB": {
+        "selected_decisions": 51,
+        "decision_frequency": 0.2328767123,
+        "share_of_sector_slots": 0.0776255708
+      },
+      "XLV": {
+        "selected_decisions": 73,
+        "decision_frequency": 0.3333333333,
+        "share_of_sector_slots": 0.1111111111
+      },
+      "XLU": {
+        "selected_decisions": 79,
+        "decision_frequency": 0.3607305936,
+        "share_of_sector_slots": 0.1202435312
+      }
+    },
+    "denominator_note": "Decision frequency divides by executed rebalance decisions; slot share divides by three sector slots per decision."
+  },
+  "weights": {
+    "time_weighted_realized_start_of_return_weights": {
+      "SPY": 0,
+      "BIL": 0,
+      "QQQ": 0.500138639,
+      "IWM": 0,
+      "EFA": 0,
+      "EEM": 0,
+      "IEF": 0,
+      "TLT": 0,
+      "GLD": 0,
+      "DBC": 0,
+      "VNQ": 0,
+      "XLK": 0.0748933652,
+      "XLF": 0.052710318,
+      "XLE": 0.0447329257,
+      "XLY": 0.0678058121,
+      "XLP": 0.0541737851,
+      "XLI": 0.051788979,
+      "XLB": 0.0385103526,
+      "XLV": 0.0552456908,
+      "XLU": 0.0600001326
+    },
+    "decision_weighted_target_weights": {
+      "SPY": 0,
+      "BIL": 0,
+      "QQQ": 0.5,
+      "IWM": 0,
+      "EFA": 0,
+      "EEM": 0,
+      "IEF": 0,
+      "TLT": 0,
+      "GLD": 0,
+      "DBC": 0,
+      "VNQ": 0,
+      "XLK": 0.0745814308,
+      "XLF": 0.0525114155,
+      "XLE": 0.0449010655,
+      "XLY": 0.0677321157,
+      "XLP": 0.0540334856,
+      "XLI": 0.0517503805,
+      "XLB": 0.0388127854,
+      "XLV": 0.0555555556,
+      "XLU": 0.0601217656
+    },
+    "direct_concentration_proxies": {
+      "average_qqq_weight": 0.500138639,
+      "average_xlk_weight": 0.0748933652,
+      "average_qqq_plus_xlk_direct_weight": 0.5750320042,
+      "average_risky_weight_hhi": 0.3335152091,
+      "effective_direct_positions_from_average_hhi": 2.998364011,
+      "overlap_caveat": "QQQ is itself a diversified Nasdaq-100 fund with material technology exposure; QQQ plus XLK is a direct-position proxy, not a look-through industry weight."
+    }
+  },
+  "gross_return_contributions": {
+    "method": "Beginning-gross-wealth times start-of-return weight times asset return; additive contributions reconcile to compounded gross return.",
+    "by_asset": {
+      "SPY": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "BIL": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "QQQ": {
+        "initial_capital_return_contribution": 6.3711896826,
+        "share_of_total_gross_return": 0.5011974442
+      },
+      "IWM": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "EFA": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "EEM": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "IEF": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "TLT": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "GLD": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "DBC": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "VNQ": {
+        "initial_capital_return_contribution": 0,
+        "share_of_total_gross_return": 0
+      },
+      "XLK": {
+        "initial_capital_return_contribution": 2.0137650392,
+        "share_of_total_gross_return": 0.1584152947
+      },
+      "XLF": {
+        "initial_capital_return_contribution": 0.5024544032,
+        "share_of_total_gross_return": 0.0395261914
+      },
+      "XLE": {
+        "initial_capital_return_contribution": 0.8203443792,
+        "share_of_total_gross_return": 0.0645333959
+      },
+      "XLY": {
+        "initial_capital_return_contribution": 0.850281782,
+        "share_of_total_gross_return": 0.0668884584
+      },
+      "XLP": {
+        "initial_capital_return_contribution": 0.1862754779,
+        "share_of_total_gross_return": 0.0146535887
+      },
+      "XLI": {
+        "initial_capital_return_contribution": 0.8781497882,
+        "share_of_total_gross_return": 0.0690807293
+      },
+      "XLB": {
+        "initial_capital_return_contribution": 0.2549778195,
+        "share_of_total_gross_return": 0.0200581426
+      },
+      "XLV": {
+        "initial_capital_return_contribution": 0.5332349672,
+        "share_of_total_gross_return": 0.0419475822
+      },
+      "XLU": {
+        "initial_capital_return_contribution": 0.3012623712,
+        "share_of_total_gross_return": 0.0236991736
+      }
+    },
+    "grouped_initial_capital_return_contribution": {
+      "qqq_core": 6.3711896826,
+      "selected_sector_satellite": 6.3407460278,
+      "direct_qqq_plus_xlk": 8.3849547218,
+      "other": 0
+    },
+    "compounded_gross_total_return": 12.711935698,
+    "summed_asset_contributions": 12.7119357104,
+    "reconciliation_error": 1.23e-8,
+    "caveat": "This is gross portfolio arithmetic, before trading costs; QQQ and XLK are separate positions but have overlapping underlying technology exposure."
+  },
+  "turnover_and_costs": {
+    "observations": 4589,
+    "executed_rebalance_decisions": 219,
+    "cumulative_turnover_notional_including_terminal_liquidation": 67.9721592115,
+    "cumulative_strategy_turnover_notional_excluding_terminal_liquidation": 66.9721592115,
+    "annualized_turnover_notional_including_terminal_liquidation": 3.732618026,
+    "average_turnover_per_executed_rebalance_excluding_terminal_liquidation": 0.3058089462,
+    "rebalance_turnover_distribution_excluding_terminal_liquidation": {
+      "count": 219,
+      "mean": 0.3058089462,
+      "standard_deviation": 0.2691882925,
+      "minimum": 0.0024584713,
+      "p05": 0.0066241652,
+      "p25": 0.0305754141,
+      "median": 0.3397694505,
+      "p75": 0.3526998447,
+      "p95": 0.6793174475,
+      "maximum": 2,
+      "positive_fraction": 1,
+      "tie_fraction": 0
+    },
+    "modeled_transaction_cost_simple_sum": 0.0339860792,
+    "terminal_liquidation_notional": 1,
+    "terminal_liquidation_cost": 0.0005,
+    "transaction_cost_simple_sum_excluding_terminal_liquidation": 0.0334860792,
+    "compounded_gross_total_return": 12.711935698,
+    "compounded_net_total_return": 12.254106734,
+    "compounded_return_gap_gross_minus_net": 0.457828964,
+    "caveat": "Simple-sum costs are fractions of contemporaneous portfolio value; the gross-minus-net compounded return gap also includes compounding interactions."
+  },
+  "standalone_summaries": {
+    "requested_2013_2015": {
+      "requested_start": "2013-01-01",
+      "requested_end": "2015-12-31",
+      "observed_start": "2013-01-02",
+      "observed_end": "2015-12-31",
+      "standalone_boundary_costs_bps_one_way": 5,
+      "metrics": {
+        "qqq_core_sector_12_6": {
+          "observations": 756,
+          "start_date": "2013-01-02",
+          "end_date": "2015-12-31",
+          "total_return": 0.6959882827,
+          "gross_total_return": 0.7077942746,
+          "cash_total_return": -0.0028380923,
+          "annualized_return": 0.1925436452,
+          "annualized_volatility": 0.1350331196,
+          "cash_excess_sharpe": 1.3781829108,
+          "maximum_drawdown": -0.1093759804,
+          "maximum_drawdown_peak_date": "2015-07-20",
+          "maximum_drawdown_valley_date": "2015-08-25",
+          "calmar_ratio": 1.7603832623,
+          "daily_expected_shortfall_p05": -0.0193672067,
+          "worst_day_return": -0.0383592729,
+          "cumulative_turnover_notional": 13.9570856059,
+          "annualized_turnover_notional": 4.6523618686,
+          "modeled_transaction_cost_simple_sum": 0.0069785427,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1.0000000001,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2013": 0.3417762589,
+            "2014": 0.1641274285,
+            "2015": 0.0857809613
+          }
+        },
+        "spy_buy_hold": {
+          "observations": 756,
+          "start_date": "2013-01-02",
+          "end_date": "2015-12-31",
+          "total_return": 0.517495061,
+          "gross_total_return": 0.519743629,
+          "cash_total_return": -0.0028380923,
+          "annualized_return": 0.1491474617,
+          "annualized_volatility": 0.127400725,
+          "cash_excess_sharpe": 1.162181797,
+          "maximum_drawdown": -0.1191024374,
+          "maximum_drawdown_peak_date": "2015-07-20",
+          "maximum_drawdown_valley_date": "2015-08-25",
+          "calmar_ratio": 1.2522620431,
+          "daily_expected_shortfall_p05": -0.0187542076,
+          "worst_day_return": -0.0421069634,
+          "cumulative_turnover_notional": 3,
+          "annualized_turnover_notional": 1,
+          "modeled_transaction_cost_simple_sum": 0.0015,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2013": 0.3217876604,
+            "2014": 0.134637527,
+            "2015": 0.0118320921
+          }
+        },
+        "static_spy_qqq_50_50_control": {
+          "observations": 756,
+          "start_date": "2013-01-02",
+          "end_date": "2015-12-31",
+          "total_return": 0.6445519849,
+          "gross_total_return": 0.6471568094,
+          "cash_total_return": -0.0028380923,
+          "annualized_return": 0.1803637643,
+          "annualized_volatility": 0.1351622153,
+          "cash_excess_sharpe": 1.3014219382,
+          "maximum_drawdown": -0.1293373974,
+          "maximum_drawdown_peak_date": "2015-07-20",
+          "maximum_drawdown_valley_date": "2015-08-25",
+          "calmar_ratio": 1.394521368,
+          "daily_expected_shortfall_p05": -0.0198316291,
+          "worst_day_return": -0.0403166228,
+          "cumulative_turnover_notional": 3.2090679257,
+          "annualized_turnover_notional": 1.0696893086,
+          "modeled_transaction_cost_simple_sum": 0.001604534,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2013": 0.3435390743,
+            "2014": 0.1632427028,
+            "2015": 0.0522694643
+          }
+        },
+        "qqq_buy_hold": {
+          "observations": 756,
+          "start_date": "2013-01-02",
+          "end_date": "2015-12-31",
+          "total_return": 0.7794533878,
+          "gross_total_return": 0.7820819738,
+          "cash_total_return": -0.0028380923,
+          "annualized_return": 0.2117942072,
+          "annualized_volatility": 0.1482156471,
+          "cash_excess_sharpe": 1.3767675969,
+          "maximum_drawdown": -0.1394104641,
+          "maximum_drawdown_peak_date": "2015-07-20",
+          "maximum_drawdown_valley_date": "2015-08-25",
+          "calmar_ratio": 1.5192131278,
+          "daily_expected_shortfall_p05": -0.0216536445,
+          "worst_day_return": -0.0437057535,
+          "cumulative_turnover_notional": 3,
+          "annualized_turnover_notional": 1,
+          "modeled_transaction_cost_simple_sum": 0.0015,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1,
+          "positive_calendar_year_fraction": 1,
+          "calendar_year_returns": {
+            "2013": 0.3650171619,
+            "2014": 0.1918141713,
+            "2015": 0.0938051391
+          }
+        }
+      },
+      "candidate_total_return_difference": {
+        "spy_buy_hold": 0.1784932217,
+        "static_spy_qqq_50_50_control": 0.0514362978,
+        "qqq_buy_hold": -0.0834651051
+      }
+    },
+    "post_2013_full_history": {
+      "requested_start": "2013-01-01",
+      "requested_end": "2026-08-27",
+      "observed_start": "2013-01-02",
+      "observed_end": "2026-08-27",
+      "standalone_boundary_costs_bps_one_way": 5,
+      "metrics": {
+        "qqq_core_sector_12_6": {
+          "observations": 3434,
+          "start_date": "2013-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 9.6710597833,
+          "gross_total_return": 9.948638594,
+          "cash_total_return": 0.2485651763,
+          "annualized_return": 0.1897447215,
+          "annualized_volatility": 0.1800522692,
+          "cash_excess_sharpe": 0.96472738,
+          "maximum_drawdown": -0.2898521154,
+          "maximum_drawdown_peak_date": "2020-02-19",
+          "maximum_drawdown_valley_date": "2020-03-23",
+          "calmar_ratio": 0.6546259675,
+          "daily_expected_shortfall_p05": -0.0267563949,
+          "worst_day_return": -0.1131999694,
+          "cumulative_turnover_notional": 51.4537126505,
+          "annualized_turnover_notional": 3.7758694199,
+          "modeled_transaction_cost_simple_sum": 0.025726856,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1.0000000001,
+          "positive_calendar_year_fraction": 0.8571428571,
+          "calendar_year_returns": {
+            "2013": 0.3417762589,
+            "2014": 0.1641274285,
+            "2015": 0.0863300751,
+            "2016": 0.0615717154,
+            "2017": 0.215009907,
+            "2018": -0.047903417,
+            "2019": 0.3952532737,
+            "2020": 0.2989979744,
+            "2021": 0.2525567605,
+            "2022": -0.0777865274,
+            "2023": 0.3106227988,
+            "2024": 0.2792908474,
+            "2025": 0.1725396446,
+            "2026": 0.2441994693
+          }
+        },
+        "spy_buy_hold": {
+          "observations": 3434,
+          "start_date": "2013-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 5.8081746189,
+          "gross_total_return": 5.8182060505,
+          "cash_total_return": 0.2485651763,
+          "annualized_return": 0.1511474737,
+          "annualized_volatility": 0.1678686166,
+          "cash_excess_sharpe": 0.8255873371,
+          "maximum_drawdown": -0.3371726114,
+          "maximum_drawdown_peak_date": "2020-02-19",
+          "maximum_drawdown_valley_date": "2020-03-23",
+          "calmar_ratio": 0.4482792155,
+          "daily_expected_shortfall_p05": -0.0254050468,
+          "worst_day_return": -0.1094235723,
+          "cumulative_turnover_notional": 3,
+          "annualized_turnover_notional": 0.2201514269,
+          "modeled_transaction_cost_simple_sum": 0.0015,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1,
+          "positive_calendar_year_fraction": 0.8571428571,
+          "calendar_year_returns": {
+            "2013": 0.3217876604,
+            "2014": 0.134637527,
+            "2015": 0.0123433784,
+            "2016": 0.1199788384,
+            "2017": 0.2170539483,
+            "2018": -0.045689844,
+            "2019": 0.3122388903,
+            "2020": 0.1833159959,
+            "2021": 0.2872874944,
+            "2022": -0.1817534894,
+            "2023": 0.2617577566,
+            "2024": 0.2488644156,
+            "2025": 0.1771908045,
+            "2026": 0.1362223383
+          }
+        },
+        "static_spy_qqq_50_50_control": {
+          "observations": 3434,
+          "start_date": "2013-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 8.272113383,
+          "gross_total_return": 8.2925669373,
+          "cash_total_return": 0.2485651763,
+          "annualized_return": 0.1775388904,
+          "annualized_volatility": 0.1849529122,
+          "cash_excess_sharpe": 0.8882298525,
+          "maximum_drawdown": -0.3081561215,
+          "maximum_drawdown_peak_date": "2020-02-19",
+          "maximum_drawdown_valley_date": "2020-03-23",
+          "calmar_ratio": 0.5761329342,
+          "daily_expected_shortfall_p05": -0.0278272084,
+          "worst_day_return": -0.1146591495,
+          "cumulative_turnover_notional": 4.4716733426,
+          "annualized_turnover_notional": 0.3281484223,
+          "modeled_transaction_cost_simple_sum": 0.0022358368,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1,
+          "positive_calendar_year_fraction": 0.8571428571,
+          "calendar_year_returns": {
+            "2013": 0.3435390743,
+            "2014": 0.1632427028,
+            "2015": 0.0528018427,
+            "2016": 0.0959628616,
+            "2017": 0.2718336876,
+            "2018": -0.0233156719,
+            "2019": 0.3509216755,
+            "2020": 0.3272980379,
+            "2021": 0.2820170966,
+            "2022": -0.2559549463,
+            "2023": 0.399576084,
+            "2024": 0.253361172,
+            "2025": 0.1927296174,
+            "2026": 0.1567104314
+          }
+        },
+        "qqq_buy_hold": {
+          "observations": 3434,
+          "start_date": "2013-01-02",
+          "end_date": "2026-08-27",
+          "total_return": 11.3627569177,
+          "gross_total_return": 11.3808572997,
+          "cash_total_return": 0.2485651763,
+          "annualized_return": 0.2026619828,
+          "annualized_volatility": 0.208696358,
+          "cash_excess_sharpe": 0.9108010422,
+          "maximum_drawdown": -0.3511872229,
+          "maximum_drawdown_peak_date": "2021-12-27",
+          "maximum_drawdown_valley_date": "2022-11-03",
+          "calmar_ratio": 0.5770767544,
+          "daily_expected_shortfall_p05": -0.0313466114,
+          "worst_day_return": -0.1197876539,
+          "cumulative_turnover_notional": 3,
+          "annualized_turnover_notional": 0.2201514269,
+          "modeled_transaction_cost_simple_sum": 0.0015,
+          "modeled_financing_spread_simple_sum": 0,
+          "average_risky_gross": 1,
+          "maximum_risky_gross": 1,
+          "positive_calendar_year_fraction": 0.8571428571,
+          "calendar_year_returns": {
+            "2013": 0.3650171619,
+            "2014": 0.1918141713,
+            "2015": 0.0943592159,
+            "2016": 0.0709793143,
+            "2017": 0.3266351562,
+            "2018": -0.0012624211,
+            "2019": 0.3896158281,
+            "2020": 0.48406147,
+            "2021": 0.2741969732,
+            "2022": -0.3257699416,
+            "2023": 0.5485557976,
+            "2024": 0.2557825532,
+            "2025": 0.2077254832,
+            "2026": 0.1760450083
+          }
+        }
+      },
+      "candidate_total_return_difference": {
+        "spy_buy_hold": 3.8628851644,
+        "static_spy_qqq_50_50_control": 1.3989464003,
+        "qqq_buy_hold": -1.6916971344
+      }
+    }
+  },
+  "calendar_years": [
+    {
+      "year": "2008",
+      "partial_year": true,
+      "observed_start": "2008-06-02",
+      "observed_end": "2008-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": -0.3791281439,
+        "spy_buy_hold": -0.3457885286,
+        "static_spy_qqq_50_50_control": -0.3753836265,
+        "qqq_buy_hold": -0.4045376423
+      },
+      "candidate_minus": {
+        "spy_buy_hold": -0.0333396153,
+        "static_spy_qqq_50_50_control": -0.0037445174,
+        "qqq_buy_hold": 0.0254094984
+      }
+    },
+    {
+      "year": "2009",
+      "partial_year": false,
+      "observed_start": "2009-01-02",
+      "observed_end": "2009-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.4019516557,
+        "spy_buy_hold": 0.2616531459,
+        "static_spy_qqq_50_50_control": 0.397936731,
+        "qqq_buy_hold": 0.5445787561
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.1402985098,
+        "static_spy_qqq_50_50_control": 0.0040149247,
+        "qqq_buy_hold": -0.1426271004
+      }
+    },
+    {
+      "year": "2010",
+      "partial_year": false,
+      "observed_start": "2010-01-04",
+      "observed_end": "2010-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.166063921,
+        "spy_buy_hold": 0.1488554197,
+        "static_spy_qqq_50_50_control": 0.1745162576,
+        "qqq_buy_hold": 0.1996511987
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.0172085013,
+        "static_spy_qqq_50_50_control": -0.0084523366,
+        "qqq_buy_hold": -0.0335872777
+      }
+    },
+    {
+      "year": "2011",
+      "partial_year": false,
+      "observed_start": "2011-01-03",
+      "observed_end": "2011-12-30",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.0459837806,
+        "spy_buy_hold": 0.0174303265,
+        "static_spy_qqq_50_50_control": 0.0260282118,
+        "qqq_buy_hold": 0.0332205626
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.0285534541,
+        "static_spy_qqq_50_50_control": 0.0199555688,
+        "qqq_buy_hold": 0.012763218
+      }
+    },
+    {
+      "year": "2012",
+      "partial_year": false,
+      "observed_start": "2012-01-03",
+      "observed_end": "2012-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.1613284131,
+        "spy_buy_hold": 0.1581917945,
+        "static_spy_qqq_50_50_control": 0.1694452972,
+        "qqq_buy_hold": 0.1793889474
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.0031366186,
+        "static_spy_qqq_50_50_control": -0.0081168841,
+        "qqq_buy_hold": -0.0180605343
+      }
+    },
+    {
+      "year": "2013",
+      "partial_year": false,
+      "observed_start": "2013-01-02",
+      "observed_end": "2013-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.3411084941,
+        "spy_buy_hold": 0.3211298796,
+        "static_spy_qqq_50_50_control": 0.3428710643,
+        "qqq_buy_hold": 0.3643390758
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.0199786145,
+        "static_spy_qqq_50_50_control": -0.0017625702,
+        "qqq_buy_hold": -0.0232305817
+      }
+    },
+    {
+      "year": "2014",
+      "partial_year": false,
+      "observed_start": "2014-01-02",
+      "observed_end": "2014-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.1623709847,
+        "spy_buy_hold": 0.132919484,
+        "static_spy_qqq_50_50_control": 0.1614832318,
+        "qqq_buy_hold": 0.1900114589
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.0294515007,
+        "static_spy_qqq_50_50_control": 0.0008877529,
+        "qqq_buy_hold": -0.0276404742
+      }
+    },
+    {
+      "year": "2015",
+      "partial_year": false,
+      "observed_start": "2015-01-02",
+      "observed_end": "2015-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.0848835971,
+        "spy_buy_hold": 0.0108197185,
+        "static_spy_qqq_50_50_control": 0.0512194667,
+        "qqq_buy_hold": 0.0927080404
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.0740638786,
+        "static_spy_qqq_50_50_control": 0.0336641304,
+        "qqq_buy_hold": -0.0078244433
+      }
+    },
+    {
+      "year": "2016",
+      "partial_year": false,
+      "observed_start": "2016-01-04",
+      "observed_end": "2016-12-30",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.0601375599,
+        "spy_buy_hold": 0.1182815071,
+        "static_spy_qqq_50_50_control": 0.0942963231,
+        "qqq_buy_hold": 0.0693447567
+      },
+      "candidate_minus": {
+        "spy_buy_hold": -0.0581439472,
+        "static_spy_qqq_50_50_control": -0.0341587632,
+        "qqq_buy_hold": -0.0092071968
+      }
+    },
+    {
+      "year": "2017",
+      "partial_year": false,
+      "observed_start": "2017-01-03",
+      "observed_end": "2017-12-29",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.2133990209,
+        "spy_buy_hold": 0.2152359099,
+        "static_spy_qqq_50_50_control": 0.2699366306,
+        "qqq_buy_hold": 0.3246534977
+      },
+      "candidate_minus": {
+        "spy_buy_hold": -0.001836889,
+        "static_spy_qqq_50_50_control": -0.0565376097,
+        "qqq_buy_hold": -0.1112544768
+      }
+    },
+    {
+      "year": "2018",
+      "partial_year": false,
+      "observed_start": "2018-01-02",
+      "observed_end": "2018-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": -0.0493191596,
+        "spy_buy_hold": -0.0471099148,
+        "static_spy_qqq_50_50_control": -0.0247641658,
+        "qqq_buy_hold": -0.0027386616
+      },
+      "candidate_minus": {
+        "spy_buy_hold": -0.0022092448,
+        "static_spy_qqq_50_50_control": -0.0245549938,
+        "qqq_buy_hold": -0.046580498
+      }
+    },
+    {
+      "year": "2019",
+      "partial_year": false,
+      "observed_start": "2019-01-02",
+      "observed_end": "2019-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.3931718335,
+        "spy_buy_hold": 0.3102741394,
+        "static_spy_qqq_50_50_control": 0.3489008286,
+        "qqq_buy_hold": 0.3875389655
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.0828976941,
+        "static_spy_qqq_50_50_control": 0.0442710049,
+        "qqq_buy_hold": 0.005632868
+      }
+    },
+    {
+      "year": "2020",
+      "partial_year": false,
+      "observed_start": "2020-01-02",
+      "observed_end": "2020-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.2970669652,
+        "spy_buy_hold": 0.1815555597,
+        "static_spy_qqq_50_50_control": 0.3253273255,
+        "qqq_buy_hold": 0.4818622999
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.1155114055,
+        "static_spy_qqq_50_50_control": -0.0282603603,
+        "qqq_buy_hold": -0.1847953347
+      }
+    },
+    {
+      "year": "2021",
+      "partial_year": false,
+      "observed_start": "2021-01-04",
+      "observed_end": "2021-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.2506620232,
+        "spy_buy_hold": 0.2853378239,
+        "static_spy_qqq_50_50_control": 0.2800738822,
+        "qqq_buy_hold": 0.2722640749
+      },
+      "candidate_minus": {
+        "spy_buy_hold": -0.0346758007,
+        "static_spy_qqq_50_50_control": -0.029411859,
+        "qqq_buy_hold": -0.0216020517
+      }
+    },
+    {
+      "year": "2022",
+      "partial_year": false,
+      "observed_start": "2022-01-03",
+      "observed_end": "2022-12-30",
+      "total_returns": {
+        "qqq_core_sector_12_6": -0.0791613771,
+        "spy_buy_hold": -0.1829768213,
+        "static_spy_qqq_50_50_control": -0.2570655759,
+        "qqq_buy_hold": -0.3267747263
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.1038154442,
+        "static_spy_qqq_50_50_control": 0.1779041988,
+        "qqq_buy_hold": 0.2476133492
+      }
+    },
+    {
+      "year": "2023",
+      "partial_year": false,
+      "observed_start": "2023-01-03",
+      "observed_end": "2023-12-29",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.3086418126,
+        "spy_buy_hold": 0.2598585889,
+        "static_spy_qqq_50_50_control": 0.3974671976,
+        "qqq_buy_hold": 0.5462198421
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.0487832237,
+        "static_spy_qqq_50_50_control": -0.088825385,
+        "qqq_buy_hold": -0.2375780295
+      }
+    },
+    {
+      "year": "2024",
+      "partial_year": false,
+      "observed_start": "2024-01-02",
+      "observed_end": "2024-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.2773480562,
+        "spy_buy_hold": 0.2469824407,
+        "static_spy_qqq_50_50_control": 0.2514636058,
+        "qqq_buy_hold": 0.2538725277
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.0303656155,
+        "static_spy_qqq_50_50_control": 0.0258844504,
+        "qqq_buy_hold": 0.0234755285
+      }
+    },
+    {
+      "year": "2025",
+      "partial_year": false,
+      "observed_start": "2025-01-02",
+      "observed_end": "2025-12-31",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.1707761741,
+        "spy_buy_hold": 0.1754183202,
+        "static_spy_qqq_50_50_control": 0.1909337812,
+        "qqq_buy_hold": 0.2059071052
+      },
+      "candidate_minus": {
+        "spy_buy_hold": -0.0046421461,
+        "static_spy_qqq_50_50_control": -0.0201576071,
+        "qqq_buy_hold": -0.0351309311
+      }
+    },
+    {
+      "year": "2026",
+      "partial_year": true,
+      "observed_start": "2026-01-02",
+      "observed_end": "2026-08-27",
+      "total_returns": {
+        "qqq_core_sector_12_6": 0.2429609551,
+        "spy_buy_hold": 0.1350881948,
+        "static_spy_qqq_50_50_control": 0.1555536796,
+        "qqq_buy_hold": 0.1748666807
+      },
+      "candidate_minus": {
+        "spy_buy_hold": 0.1078727603,
+        "static_spy_qqq_50_50_control": 0.0874072755,
+        "qqq_buy_hold": 0.0680942744
+      }
+    }
+  ],
+  "crisis_slices": {
+    "gfc_available_peak_to_trough": {
+      "label": "GFC, available-ledger start to the March 2009 trough",
+      "hindsight_labeled": true,
+      "comparison": {
+        "requested_start": "2008-06-02",
+        "requested_end": "2009-03-09",
+        "observed_start": "2008-06-02",
+        "observed_end": "2009-03-09",
+        "standalone_boundary_costs_bps_one_way": 5,
+        "metrics": {
+          "qqq_core_sector_12_6": {
+            "observations": 194,
+            "start_date": "2008-06-02",
+            "end_date": "2009-03-09",
+            "total_return": -0.487133384,
+            "gross_total_return": -0.4857617737,
+            "cash_total_return": 0.0098754039,
+            "annualized_return": -0.5799463874,
+            "annualized_volatility": 0.4417789042,
+            "cash_excess_sharpe": -1.7499630427,
+            "maximum_drawdown": -0.4922301446,
+            "maximum_drawdown_peak_date": "2008-06-05",
+            "maximum_drawdown_valley_date": "2009-03-09",
+            "calmar_ratio": -1.1782016882,
+            "daily_expected_shortfall_p05": -0.0618161364,
+            "worst_day_return": -0.0943318983,
+            "cumulative_turnover_notional": 5.2910116889,
+            "annualized_turnover_notional": 6.8728605443,
+            "modeled_transaction_cost_simple_sum": 0.0026455059,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1.0000000001,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2008": -0.3788211145,
+              "2009": -0.1743656651
+            }
+          },
+          "spy_buy_hold": {
+            "observations": 194,
+            "start_date": "2008-06-02",
+            "end_date": "2009-03-09",
+            "total_return": -0.5062306845,
+            "gross_total_return": -0.5054810558,
+            "cash_total_return": 0.0098754039,
+            "annualized_return": -0.600149833,
+            "annualized_volatility": 0.4811054234,
+            "cash_excess_sharpe": -1.6727244449,
+            "maximum_drawdown": -0.5072407645,
+            "maximum_drawdown_peak_date": "2008-06-05",
+            "maximum_drawdown_valley_date": "2009-03-09",
+            "calmar_ratio": -1.1831656187,
+            "daily_expected_shortfall_p05": -0.0687124581,
+            "worst_day_return": -0.0984481489,
+            "cumulative_turnover_notional": 3,
+            "annualized_turnover_notional": 3.8969072165,
+            "modeled_transaction_cost_simple_sum": 0.0015,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2008": -0.3454658675,
+              "2009": -0.2456171635
+            }
+          },
+          "static_spy_qqq_50_50_control": {
+            "observations": 194,
+            "start_date": "2008-06-02",
+            "end_date": "2009-03-09",
+            "total_return": -0.4946627036,
+            "gross_total_return": -0.4938602999,
+            "cash_total_return": 0.0098754039,
+            "annualized_return": -0.5879391591,
+            "annualized_volatility": 0.4581348714,
+            "cash_excess_sharpe": -1.7137692969,
+            "maximum_drawdown": -0.4976327401,
+            "maximum_drawdown_peak_date": "2008-06-05",
+            "maximum_drawdown_valley_date": "2009-03-09",
+            "calmar_ratio": -1.1814720207,
+            "daily_expected_shortfall_p05": -0.0627744161,
+            "worst_day_return": -0.0940220101,
+            "cumulative_turnover_notional": 3.1327336536,
+            "annualized_turnover_notional": 4.0693241274,
+            "modeled_transaction_cost_simple_sum": 0.0015663668,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2008": -0.3750746798,
+              "2009": -0.1913637037
+            }
+          },
+          "qqq_buy_hold": {
+            "observations": 194,
+            "start_date": "2008-06-02",
+            "end_date": "2009-03-09",
+            "total_return": -0.4846346315,
+            "gross_total_return": -0.483848683,
+            "cash_total_return": 0.0098754039,
+            "annualized_return": -0.5772860411,
+            "annualized_volatility": 0.4493310057,
+            "cash_excess_sharpe": -1.6997119808,
+            "maximum_drawdown": -0.4936682823,
+            "maximum_drawdown_peak_date": "2008-06-05",
+            "maximum_drawdown_valley_date": "2008-11-20",
+            "calmar_ratio": -1.169380456,
+            "daily_expected_shortfall_p05": -0.0613785313,
+            "worst_day_return": -0.0895570415,
+            "cumulative_turnover_notional": 3,
+            "annualized_turnover_notional": 3.8969072165,
+            "modeled_transaction_cost_simple_sum": 0.0015,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2008": -0.4042422675,
+              "2009": -0.134941369
+            }
+          }
+        },
+        "candidate_total_return_difference": {
+          "spy_buy_hold": 0.0190973005,
+          "static_spy_qqq_50_50_control": 0.0075293196,
+          "qqq_buy_hold": -0.0024987525
+        }
+      }
+    },
+    "euro_debt_us_downgrade_drawdown": {
+      "label": "2011 euro-area debt / U.S. downgrade drawdown",
+      "hindsight_labeled": true,
+      "comparison": {
+        "requested_start": "2011-04-29",
+        "requested_end": "2011-10-03",
+        "observed_start": "2011-04-29",
+        "observed_end": "2011-10-03",
+        "standalone_boundary_costs_bps_one_way": 5,
+        "metrics": {
+          "qqq_core_sector_12_6": {
+            "observations": 109,
+            "start_date": "2011-04-29",
+            "end_date": "2011-10-03",
+            "total_return": -0.1668069744,
+            "gross_total_return": -0.1646577276,
+            "cash_total_return": -4e-10,
+            "annualized_return": -0.3442025795,
+            "annualized_volatility": 0.2887498346,
+            "cash_excess_sharpe": -1.3172739384,
+            "maximum_drawdown": -0.1845367138,
+            "maximum_drawdown_peak_date": "2011-07-22",
+            "maximum_drawdown_valley_date": "2011-10-03",
+            "calmar_ratio": -1.8652254748,
+            "daily_expected_shortfall_p05": -0.0463677685,
+            "worst_day_return": -0.0667734424,
+            "cumulative_turnover_notional": 5.0990709215,
+            "annualized_turnover_notional": 11.7886777268,
+            "modeled_transaction_cost_simple_sum": 0.0025495355,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1.0000000001,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2011": -0.1668069744
+            }
+          },
+          "spy_buy_hold": {
+            "observations": 109,
+            "start_date": "2011-04-29",
+            "end_date": "2011-10-03",
+            "total_return": -0.1853750364,
+            "gross_total_return": -0.1841416321,
+            "cash_total_return": -4e-10,
+            "annualized_return": -0.3774979709,
+            "annualized_volatility": 0.2690169515,
+            "cash_excess_sharpe": -1.627341448,
+            "maximum_drawdown": -0.1864738828,
+            "maximum_drawdown_peak_date": "2011-04-29",
+            "maximum_drawdown_valley_date": "2011-10-03",
+            "calmar_ratio": -2.0244013009,
+            "daily_expected_shortfall_p05": -0.043507171,
+            "worst_day_return": -0.0651234026,
+            "cumulative_turnover_notional": 3,
+            "annualized_turnover_notional": 6.9357798165,
+            "modeled_transaction_cost_simple_sum": 0.0015,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2011": -0.1853750364
+            }
+          },
+          "static_spy_qqq_50_50_control": {
+            "observations": 109,
+            "start_date": "2011-04-29",
+            "end_date": "2011-10-03",
+            "total_return": -0.1591153671,
+            "gross_total_return": -0.1578198747,
+            "cash_total_return": -4e-10,
+            "annualized_return": -0.3301213793,
+            "annualized_volatility": 0.2687714043,
+            "cash_excess_sharpe": -1.3569259053,
+            "maximum_drawdown": -0.1617076538,
+            "maximum_drawdown_peak_date": "2011-07-22",
+            "maximum_drawdown_valley_date": "2011-08-19",
+            "calmar_ratio": -2.0414703424,
+            "daily_expected_shortfall_p05": -0.0429957634,
+            "worst_day_return": -0.0626571817,
+            "cumulative_turnover_notional": 3.051159763,
+            "annualized_turnover_notional": 7.0540574337,
+            "modeled_transaction_cost_simple_sum": 0.0015255798,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2011": -0.1591153671
+            }
+          },
+          "qqq_buy_hold": {
+            "observations": 109,
+            "start_date": "2011-04-29",
+            "end_date": "2011-10-03",
+            "total_return": -0.1328931227,
+            "gross_total_return": -0.1315787398,
+            "cash_total_return": -4e-10,
+            "annualized_return": -0.2808351254,
+            "annualized_volatility": 0.2745491152,
+            "cash_excess_sharpe": -1.0645719368,
+            "maximum_drawdown": -0.160992516,
+            "maximum_drawdown_peak_date": "2011-07-26",
+            "maximum_drawdown_valley_date": "2011-08-19",
+            "calmar_ratio": -1.7443986366,
+            "daily_expected_shortfall_p05": -0.042564696,
+            "worst_day_return": -0.0601899667,
+            "cumulative_turnover_notional": 3,
+            "annualized_turnover_notional": 6.9357798165,
+            "modeled_transaction_cost_simple_sum": 0.0015,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2011": -0.1328931227
+            }
+          }
+        },
+        "candidate_total_return_difference": {
+          "spy_buy_hold": 0.018568062,
+          "static_spy_qqq_50_50_control": -0.0076916073,
+          "qqq_buy_hold": -0.0339138517
+        }
+      }
+    },
+    "covid_crash": {
+      "label": "COVID crash, prior SPY peak to trough",
+      "hindsight_labeled": true,
+      "comparison": {
+        "requested_start": "2020-02-19",
+        "requested_end": "2020-03-23",
+        "observed_start": "2020-02-19",
+        "observed_end": "2020-03-23",
+        "standalone_boundary_costs_bps_one_way": 5,
+        "metrics": {
+          "qqq_core_sector_12_6": {
+            "observations": 24,
+            "start_date": "2020-02-19",
+            "end_date": "2020-03-23",
+            "total_return": -0.2875248672,
+            "gross_total_return": -0.2864439183,
+            "cash_total_return": 0.0025923072,
+            "annualized_return": -0.97155002,
+            "annualized_volatility": 0.7779090051,
+            "cash_excess_sharpe": -4.2016026235,
+            "maximum_drawdown": -0.2902121833,
+            "maximum_drawdown_peak_date": "2020-02-19",
+            "maximum_drawdown_valley_date": "2020-03-23",
+            "calmar_ratio": -3.3477230658,
+            "daily_expected_shortfall_p05": -0.103882871,
+            "worst_day_return": -0.1131999694,
+            "cumulative_turnover_notional": 3.0258783794,
+            "annualized_turnover_notional": 31.7717229837,
+            "modeled_transaction_cost_simple_sum": 0.0015129392,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1.0000000001,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2020": -0.2875248672
+            }
+          },
+          "spy_buy_hold": {
+            "observations": 24,
+            "start_date": "2020-02-19",
+            "end_date": "2020-03-23",
+            "total_return": -0.3350078405,
+            "gross_total_return": -0.3340036174,
+            "cash_total_return": 0.0025923072,
+            "annualized_return": -0.9862097064,
+            "annualized_volatility": 0.7525432656,
+            "cash_excess_sharpe": -5.3118743447,
+            "maximum_drawdown": -0.3375127211,
+            "maximum_drawdown_peak_date": "2020-02-19",
+            "maximum_drawdown_valley_date": "2020-03-23",
+            "calmar_ratio": -2.9219926977,
+            "daily_expected_shortfall_p05": -0.1025505108,
+            "worst_day_return": -0.1094235723,
+            "cumulative_turnover_notional": 3,
+            "annualized_turnover_notional": 31.5,
+            "modeled_transaction_cost_simple_sum": 0.0015,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2020": -0.3350078405
+            }
+          },
+          "static_spy_qqq_50_50_control": {
+            "observations": 24,
+            "start_date": "2020-02-19",
+            "end_date": "2020-03-23",
+            "total_return": -0.3042236019,
+            "gross_total_return": -0.3031773399,
+            "cash_total_return": 0.0025923072,
+            "annualized_return": -0.9778215203,
+            "annualized_volatility": 0.765918531,
+            "cash_excess_sharpe": -4.5961081385,
+            "maximum_drawdown": -0.3085062586,
+            "maximum_drawdown_peak_date": "2020-02-19",
+            "maximum_drawdown_valley_date": "2020-03-23",
+            "calmar_ratio": -3.1695354405,
+            "daily_expected_shortfall_p05": -0.1041633023,
+            "worst_day_return": -0.1146591495,
+            "cumulative_turnover_notional": 3.0059616306,
+            "annualized_turnover_notional": 31.5625971213,
+            "modeled_transaction_cost_simple_sum": 0.0015029808,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2020": -0.3042236019
+            }
+          },
+          "qqq_buy_hold": {
+            "observations": 24,
+            "start_date": "2020-02-19",
+            "end_date": "2020-03-23",
+            "total_return": -0.273340367,
+            "gross_total_return": -0.2722562838,
+            "cash_total_return": 0.0025923072,
+            "annualized_return": -0.9650074277,
+            "annualized_volatility": 0.7855683296,
+            "cash_excess_sharpe": -3.8904757134,
+            "maximum_drawdown": -0.2855936713,
+            "maximum_drawdown_peak_date": "2020-02-19",
+            "maximum_drawdown_valley_date": "2020-03-16",
+            "calmar_ratio": -3.3789524232,
+            "daily_expected_shortfall_p05": -0.1057394824,
+            "worst_day_return": -0.1197876539,
+            "cumulative_turnover_notional": 3,
+            "annualized_turnover_notional": 31.5,
+            "modeled_transaction_cost_simple_sum": 0.0015,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2020": -0.273340367
+            }
+          }
+        },
+        "candidate_total_return_difference": {
+          "spy_buy_hold": 0.0474829733,
+          "static_spy_qqq_50_50_control": 0.0166987347,
+          "qqq_buy_hold": -0.0141845002
+        }
+      }
+    },
+    "inflation_tightening_bear": {
+      "label": "2022 inflation / tightening bear-market drawdown",
+      "hindsight_labeled": true,
+      "comparison": {
+        "requested_start": "2022-01-03",
+        "requested_end": "2022-10-12",
+        "observed_start": "2022-01-03",
+        "observed_end": "2022-10-12",
+        "standalone_boundary_costs_bps_one_way": 5,
+        "metrics": {
+          "qqq_core_sector_12_6": {
+            "observations": 196,
+            "start_date": "2022-01-03",
+            "end_date": "2022-10-12",
+            "total_return": -0.139881148,
+            "gross_total_return": -0.1365672366,
+            "cash_total_return": 0.005998242,
+            "annualized_return": -0.1761258328,
+            "annualized_volatility": 0.2708301025,
+            "cash_excess_sharpe": -0.6083059931,
+            "maximum_drawdown": -0.2095753269,
+            "maximum_drawdown_peak_date": "2022-03-29",
+            "maximum_drawdown_valley_date": "2022-06-16",
+            "calmar_ratio": -0.8403939311,
+            "daily_expected_shortfall_p05": -0.039517437,
+            "worst_day_return": -0.0473783373,
+            "cumulative_turnover_notional": 7.652838903,
+            "annualized_turnover_notional": 9.8393643039,
+            "modeled_transaction_cost_simple_sum": 0.0038264193,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1.0000000001,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2022": -0.139881148
+            }
+          },
+          "spy_buy_hold": {
+            "observations": 196,
+            "start_date": "2022-01-03",
+            "end_date": "2022-10-12",
+            "total_return": -0.2417277441,
+            "gross_total_return": -0.2405921262,
+            "cash_total_return": 0.005998242,
+            "annualized_return": -0.2993687578,
+            "annualized_volatility": 0.2416415612,
+            "cash_excess_sharpe": -1.3828893092,
+            "maximum_drawdown": -0.2453426732,
+            "maximum_drawdown_peak_date": "2022-01-03",
+            "maximum_drawdown_valley_date": "2022-10-12",
+            "calmar_ratio": -1.2202066356,
+            "daily_expected_shortfall_p05": -0.0351698115,
+            "worst_day_return": -0.0434825217,
+            "cumulative_turnover_notional": 3,
+            "annualized_turnover_notional": 3.8571428571,
+            "modeled_transaction_cost_simple_sum": 0.0015,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2022": -0.2417277441
+            }
+          },
+          "static_spy_qqq_50_50_control": {
+            "observations": 196,
+            "start_date": "2022-01-03",
+            "end_date": "2022-10-12",
+            "total_return": -0.2903398655,
+            "gross_total_return": -0.2892243538,
+            "cash_total_return": 0.005998242,
+            "annualized_return": -0.356581738,
+            "annualized_volatility": 0.2794225333,
+            "cash_excess_sharpe": -1.4651004073,
+            "maximum_drawdown": -0.2950556681,
+            "maximum_drawdown_peak_date": "2022-01-03",
+            "maximum_drawdown_valley_date": "2022-10-12",
+            "calmar_ratio": -1.2085235991,
+            "daily_expected_shortfall_p05": -0.0395937511,
+            "worst_day_return": -0.0491732571,
+            "cumulative_turnover_notional": 3.150668948,
+            "annualized_turnover_notional": 4.050860076,
+            "modeled_transaction_cost_simple_sum": 0.0015753346,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2022": -0.2903398655
+            }
+          },
+          "qqq_buy_hold": {
+            "observations": 196,
+            "start_date": "2022-01-03",
+            "end_date": "2022-10-12",
+            "total_return": -0.3375131901,
+            "gross_total_return": -0.3365245182,
+            "cash_total_return": 0.005998242,
+            "annualized_return": -0.4110410612,
+            "annualized_volatility": 0.3225879964,
+            "cash_excess_sharpe": -1.5024458692,
+            "maximum_drawdown": -0.3431795379,
+            "maximum_drawdown_peak_date": "2022-01-03",
+            "maximum_drawdown_valley_date": "2022-10-12",
+            "calmar_ratio": -1.1977435011,
+            "daily_expected_shortfall_p05": -0.0444896019,
+            "worst_day_return": -0.0548369768,
+            "cumulative_turnover_notional": 3,
+            "annualized_turnover_notional": 3.8571428571,
+            "modeled_transaction_cost_simple_sum": 0.0015,
+            "modeled_financing_spread_simple_sum": 0,
+            "average_risky_gross": 1,
+            "maximum_risky_gross": 1,
+            "positive_calendar_year_fraction": 0,
+            "calendar_year_returns": {
+              "2022": -0.3375131901
+            }
+          }
+        },
+        "candidate_total_return_difference": {
+          "spy_buy_hold": 0.1018465961,
+          "static_spy_qqq_50_50_control": 0.1504587175,
+          "qqq_buy_hold": 0.1976320421
+        }
+      }
+    }
+  },
+  "rolling_candidate_vs_spy": {
+    "construction": "Every overlapping window compounds the already-recorded continuous-strategy net returns; no synthetic entry or exit cost is added to each window.",
+    "dependence_caveat": "Windows overlap heavily and are autocorrelated. Counts and win fractions are descriptive, not independent trials or statistical significance evidence.",
+    "by_sessions": {
+      "5": {
+        "sessions": 5,
+        "first_window_start": "2008-06-02",
+        "first_window_end": "2008-06-06",
+        "last_window_start": "2026-08-21",
+        "last_window_end": "2026-08-27",
+        "candidate_minus_spy_total_return_difference": {
+          "count": 4585,
+          "mean": 0.0006198108,
+          "standard_deviation": 0.007218241,
+          "minimum": -0.0532223464,
+          "p05": -0.0108239671,
+          "p25": -0.002945237,
+          "median": 0.0007069796,
+          "p75": 0.0046788847,
+          "p95": 0.0114602697,
+          "maximum": 0.0416334063,
+          "positive_fraction": 0.5515812432,
+          "tie_fraction": 0
+        }
+      },
+      "21": {
+        "sessions": 21,
+        "first_window_start": "2008-06-02",
+        "first_window_end": "2008-06-30",
+        "last_window_start": "2026-07-30",
+        "last_window_end": "2026-08-27",
+        "candidate_minus_spy_total_return_difference": {
+          "count": 4569,
+          "mean": 0.0024833938,
+          "standard_deviation": 0.0136905927,
+          "minimum": -0.0612907855,
+          "p05": -0.0195506281,
+          "p25": -0.0052090854,
+          "median": 0.0024879277,
+          "p75": 0.0099759265,
+          "p95": 0.0255509671,
+          "maximum": 0.0593231172,
+          "positive_fraction": 0.5918144014,
+          "tie_fraction": 0
+        }
+      },
+      "63": {
+        "sessions": 63,
+        "first_window_start": "2008-06-02",
+        "first_window_end": "2008-08-28",
+        "last_window_start": "2026-05-29",
+        "last_window_end": "2026-08-27",
+        "candidate_minus_spy_total_return_difference": {
+          "count": 4527,
+          "mean": 0.0077025389,
+          "standard_deviation": 0.0228588035,
+          "minimum": -0.0797768796,
+          "p05": -0.0277356399,
+          "p25": -0.0070066497,
+          "median": 0.007764963,
+          "p75": 0.0204506689,
+          "p95": 0.0478247567,
+          "maximum": 0.109234784,
+          "positive_fraction": 0.6520874751,
+          "tie_fraction": 0
+        }
+      },
+      "252": {
+        "sessions": 252,
+        "first_window_start": "2008-06-02",
+        "first_window_end": "2009-06-01",
+        "last_window_start": "2025-08-27",
+        "last_window_end": "2026-08-27",
+        "candidate_minus_spy_total_return_difference": {
+          "count": 4338,
+          "mean": 0.0330833747,
+          "standard_deviation": 0.0435613942,
+          "minimum": -0.0894850283,
+          "p05": -0.0403292349,
+          "p25": 0.0033114745,
+          "median": 0.0334907268,
+          "p75": 0.0618116422,
+          "p95": 0.1095525977,
+          "maximum": 0.1423079742,
+          "positive_fraction": 0.7720147533,
+          "tie_fraction": 0
+        }
+      }
+    }
+  },
+  "factor_like_exposure_proxies": {
+    "proxy_definition": "ETF-return proxies, not academic Fama-French factors: SPY-minus-BIL for market, QQQ-minus-SPY for growth/Nasdaq tilt, and XLK-minus-SPY for direct technology tilt.",
+    "correlations": {
+      "candidate_gross_with_spy": 0.9614485317,
+      "candidate_gross_with_qqq": 0.9608913977,
+      "candidate_gross_with_static_spy_qqq_control": 0.9793410399,
+      "qqq_minus_spy_with_xlk_minus_spy": 0.783033016
+    },
+    "regressions": {
+      "market_and_growth_proxy": {
+        "observations": 4589,
+        "intercept_daily": 0.0000629076,
+        "intercept_annualized_linearized": 0.0158527224,
+        "coefficients": {
+          "spy_minus_bil": 0.9598567001,
+          "qqq_minus_spy": 0.4466227248
+        },
+        "r_squared": 0.9595058059,
+        "residual_annualized_volatility": 0.0406665123,
+        "inference": "Descriptive OLS only; no standard errors, p-values, or causal/factor-alpha interpretation."
+      },
+      "static_control_and_tech_proxy": {
+        "observations": 4589,
+        "intercept_daily": 0.0000654164,
+        "intercept_annualized_linearized": 0.0164849277,
+        "coefficients": {
+          "static_spy_qqq_control_minus_bil": 0.9632637619,
+          "xlk_minus_spy": -0.0458148586
+        },
+        "r_squared": 0.9597741912,
+        "residual_annualized_volatility": 0.0405315246,
+        "inference": "Descriptive OLS only; no standard errors, p-values, or causal/factor-alpha interpretation."
+      },
+      "qqq_single_proxy": {
+        "observations": 4589,
+        "intercept_daily": 0.0000257717,
+        "intercept_annualized_linearized": 0.0064944692,
+        "coefficients": {
+          "qqq_minus_bil": 0.8671967469
+        },
+        "r_squared": 0.9236513182,
+        "residual_annualized_volatility": 0.0558394741,
+        "inference": "Descriptive OLS only; no standard errors, p-values, or causal/factor-alpha interpretation."
+      }
+    },
+    "interpretation_boundary": "High beta or R-squared identifies exposure resemblance, not causation. A positive fitted intercept is in-sample and post-selection; it is not investable alpha evidence."
+  },
+  "limitations": [
+    "All rows were consumed before this post-selection diagnostic; none is fresh out-of-sample evidence.",
+    "Overlapping rolling windows are dependent and must not be read as independent observations or significance tests.",
+    "Conventional crisis dates are selected with hindsight and standalone boundary trades are modeled, not historical fills.",
+    "ETF regressions are factor-like exposure proxies, not academic factor tests; no p-values or causal alpha claims are supplied.",
+    "QQQ and XLK overlap economically, so direct-position sums understate look-through complexity and cannot identify pure technology exposure.",
+    "Gross-return contribution excludes costs; turnover and transaction costs are reported separately under the frozen 5 bp one-way model.",
+    "The fixed ETF universe may embed availability, construction, and survivorship-like menu bias; 2026 is partial."
+  ]
+}

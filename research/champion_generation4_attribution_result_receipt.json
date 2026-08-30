@@ -1,0 +1,21 @@
+{
+  "schema_version": "finly_champion_generation4_attribution_result_receipt.v1",
+  "created_at": "2026-08-29T11:15:28Z",
+  "fixed_candidate_id": "qqq_core_sector_12_6",
+  "status": "DESCRIPTIVE_POST_SELECTION_ATTRIBUTION_ONLY",
+  "claim_boundary": "Local integrity receipt only. The attribution was independently recomputed, but the selected candidate later failed the frozen robustness protocol. This is not a server timestamp, independent attestation, or alpha claim.",
+  "files": {
+    "research/champion_generation4_attribution.mjs": "0ea0362d32622436676999438949a5238c6c5228964d81360ff31ad852e5656d",
+    "research/run_quant_champion_generation4_attribution.mjs": "0efb8ed89f2d081c0cf65e2d4fe1c99dd6c81c1efaf82cb38b194d19eb2a72da",
+    "tests/champion_generation4_attribution.test.mjs": "c589d9ad9a86b9bff9c5ae11f253eb6dd8a331ede54519677cd1052f9c7a55b0",
+    "research/output/quant_champion_generation4_attribution.json": "41c5be0cd470d01c73591ede1826dfb29f8fb46d0fb3125c0870fadc3d6bb046",
+    "research/output/quant_champion_generation4_attribution_report.md": "05b2f368d1e3ffb88b5694a4feeb6638eb4834ae0b2ff087708f988a32e99d33",
+    "research/output/quant_champion_generation4.json": "af935615b289b009af83fe67dd78a890ce4de3c2416bbf039b0da2f24de78788",
+    "research/champion_search_generation4_protocol.json": "918b6992a8a4531cf24c4dd6b540c4fda1d19f8ed7a16717d09effa3f8f075e5",
+    "research/champion_search_generation4_freeze_receipt.json": "c1b662533c31dc326ddb9ed4633b36081fbd0386652cf753cd6a2fc62c843a46",
+    "research/champion_generation4_robustness_result_receipt.json": "1cc09127b36b2f16606b1b8925c79af988787ed01a14ad98e98ee980366266b3",
+    "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014",
+    "data/private/champion_search/generation4_ledger_6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1.json.gz": "6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1"
+  },
+  "audit_addendum": "research/champion_generation4_attribution_audit_addendum.md"
+}

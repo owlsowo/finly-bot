@@ -1,0 +1,23 @@
+{
+  "schema_version": "finly_source_overlap_reconciliation_freeze_receipt.v1",
+  "frozen_at": "2026-08-29T10:56:45Z",
+  "frozen_before_authenticated_read": true,
+  "files": {
+    "research/source_overlap_reconciliation_protocol.json": "306f49f6632ed58c3e9ea446d87c1c28fc0a0d13b188cfa276f83f7cbbb0652d",
+    "research/source_overlap_reconciliation.mjs": "372bf9675417c1945635abb8a27605fa481c678f782d7858c9d2af6e4c114293",
+    "research/run_source_overlap_reconciliation.mjs": "d39f2ae7aa38ccd717011e1ea4f42f420f7a934962a6fb33b5db390d9b839232",
+    "tests/source_overlap_reconciliation.test.mjs": "cdc05ac8208c67e3ca00fccccd14717ba58f4e64fe20fe8a2f98c5466a3adc28"
+  },
+  "selection_locked_to": "qqq_core_sector_12_6",
+  "authenticated_source": {
+    "origin": "https://data.alpaca.markets",
+    "path": "/v2/stocks/bars",
+    "feed": "iex",
+    "adjustments": [
+      "split",
+      "all"
+    ],
+    "method": "GET"
+  },
+  "note": "Hashes lock the protocol, implementation, runner, and synthetic tests before any authenticated source-overlap result was observed. No credential, response, page token, or result is present."
+}

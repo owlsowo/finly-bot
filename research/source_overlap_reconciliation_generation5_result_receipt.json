@@ -1,0 +1,16 @@
+{
+  "schema_version": "finly_source_overlap_reconciliation_generation5_result_receipt.v2",
+  "created_at": "2026-08-29T11:42:29Z",
+  "disposition": "FAIL_CLOSED",
+  "all_20_symbols_passed": true,
+  "eligible_candidates_passed": 3,
+  "eligible_candidates_required": 4,
+  "blocking_candidate": "long_only_tsmom_ewma60",
+  "claim_boundary": "Local post-run integrity receipt only. It anchors the once-executed authenticated source-concordance result. It is not a server timestamp, independent attestation, fresh holdout, alpha claim, or future-profit evidence.",
+  "files": {
+    "research/source_overlap_reconciliation_generation5_protocol.json": "88f000732851a59f56a218c791731bb913e8ec51cd461b7a9347da6ae1697be6",
+    "research/source_overlap_reconciliation_generation5_freeze_receipt.json": "3238a3bbb13f3c08073a81cb8bb1d2424ee42f8751d7e52f76ffdc07d98a3828",
+    "research/output/source_overlap_reconciliation_generation5.json": "b5a9aa1f1212429732aa83a350d7003d6c5ed0b7f8f76bccba3c2d69ef07b6d6",
+    "research/output/source_overlap_reconciliation_generation5_report.md": "369417c77d801232eebdc79bf02d1655fa16088fdf3f0a27a0abc153c3fae6b1"
+  }
+}

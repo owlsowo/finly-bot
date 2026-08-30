@@ -1,0 +1,12 @@
+{
+  "schema_version": "finly_champion_generation6_run_claim.v1",
+  "status": "claimed_before_first_generation_6_computation",
+  "generated_at": "2026-08-29T14:07:58.793Z",
+  "generation_6_results_seen_before_claim": false,
+  "generation_6_output_absent_before_claim": true,
+  "protocol_sha256": "570c5a346289b5723e2ef19b27c51f6b12b4bd7f1d3d205b5b4c0108703991c9",
+  "trial_ledger_sha256": "f1b35f0b6ff50888b4ca7dbb6c1bb46258af081c09cf344d44adc88753991ecf",
+  "freeze_receipt_sha256": "a08e273ee97cbad298330d265a6a8ccde033c8b915731d9a0f5a10ede1b1c5fc",
+  "recovery_boundary": "A repeated invocation may only finish missing files or verify byte-identical files from this same claim. It may never replace a completed or conflicting artifact.",
+  "process_attestation_boundary": "This claim attests only that the official Generation 6 runner persisted this claim before its own first computation. Because the local panel, engine, and strategies are readable, it is not cryptographic proof that no alternate script previewed the same history."
+}

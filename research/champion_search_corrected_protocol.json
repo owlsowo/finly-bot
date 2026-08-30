@@ -1,0 +1,96 @@
+{
+  "schema_version": "finly_champion_search_corrected_protocol.v1",
+  "frozen_before_first_corrected_output": true,
+  "supersedes": [
+    "research/champion_search_protocol.json",
+    "research/champion_search_generation2_protocol.json"
+  ],
+  "invalidation_boundary": "All outputs from the pre-correction simulator are invalid for economic claims. They remain only as an append-only audit trail.",
+  "corrections": [
+    "Queue a close-t signal until close t+1 and first earn the t+1-to-t+2 return.",
+    "Expose to each signal only observations whose realized-return date is no later than the signal close.",
+    "Let portfolio weights drift with asset returns between scheduled rebalances.",
+    "Compute turnover at execution against then-drifted holdings.",
+    "Evaluate any rebalance band at execution rather than signal time.",
+    "Record signal-time weights separately from executed-period weights so offline ensemble plans cannot import one session of future drift.",
+    "Rebase entry and terminal costs for every scored partition and annual-origin window."
+  ],
+  "cost_accounting_convention": "Trading and financing costs reduce the period net return but do not alter within-period relative asset holdings; post-return weights are normalized from gross asset returns. This is a proportional cost debit approximation applied identically to every policy and baseline.",
+  "purpose": "Re-evaluate the already disclosed Generation 1 and Generation 2 formulas under the corrected causal engine before considering any later candidate family.",
+  "claim_boundary": "All history is seen, revised research data. Passing every retrospective gate can earn SHADOW_ONLY; no historical output proves future profit, submitted-competitor superiority, or historical options P&L.",
+  "data": {
+    "provider": "Yahoo Finance chart endpoint adjusted close",
+    "requested_start": "2007-05-25",
+    "requested_end": "2026-08-28",
+    "primary_symbols": [
+      "SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ",
+      "XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"
+    ],
+    "separate_aegis_symbols": ["SPY", "BIL", "QQQ", "TQQQ"],
+    "warmup_sessions": 252,
+    "null_policy": "Use only dates common to every symbol in the applicable panel; never forward fill.",
+    "frozen_vintage_policy": "Persist the normalized panel privately and publish its hash plus per-symbol raw-response and normalized-series hashes. Do not splice providers or backfill pre-inception history.",
+    "bias_boundary": "Yahoo adjusted close is revised, not point-in-time. Today-surviving ETF menus create fund-survival and 2026 menu-selection bias."
+  },
+  "partitions": {
+    "development": { "start": "2008-06-02", "end": "2017-12-29" },
+    "validation_selection": { "start": "2018-01-02", "end": "2024-12-31" },
+    "consumed_recent_diagnostic": { "start": "2025-01-02", "end": "2026-08-28" },
+    "requested_2013_2015_slice": { "start": "2013-01-01", "end": "2015-12-31" },
+    "prospective_gate_c_start": "2026-08-31",
+    "prospective_gate_c_minimum_sessions": 756
+  },
+  "execution": {
+    "base_one_way_cost_bps_per_absolute_traded_notional": 5,
+    "required_cost_stress_bps": [10, 25],
+    "primary_long_only": true,
+    "primary_gross_exposure_cap": 1,
+    "residual_cash_proxy": "BIL adjusted-close total return",
+    "entry_cost": "Start each scored period from 100% BIL and charge absolute target-minus-BIL turnover.",
+    "terminal_cost": "At each scored period end, charge liquidation of remaining risky ETF exposure into the BIL sleeve.",
+    "leverage_boundary": "SPY 1.5x and the TQQQ AEGIS legacy proxy are visible diagnostics only and cannot qualify as the primary champion."
+  },
+  "candidate_sources": {
+    "generation_1": "research/champion_search_protocol.json and research/champion_strategies.mjs",
+    "generation_2": "research/champion_search_generation2_protocol.json and research/champion_strategies_generation2.mjs"
+  },
+  "trial_accounting": {
+    "ledger": "research/champion_trial_ledger.json",
+    "minimum_cumulative_effective_trials": 92,
+    "includes_unexecuted_suggestions": true,
+    "reason": "A conservative deflated-statistics denominator avoids pretending that inspected but rejected ideas never existed."
+  },
+  "selection": {
+    "recent_interval_used": false,
+    "objective": "Among primary candidates passing all pre-robustness gates, maximize the smaller annualized log-growth advantage over SPY in development and validation; then break ties by validation BIL-excess Sharpe, drawdown, and identifier.",
+    "recent_interval_role": "May veto a hard safety failure after selection but cannot rank, rescue, or break ties.",
+    "annual_origin_windows": "Use standalone cost-rebased 252/504/756-session windows beginning at each available calendar-year origin inside validation."
+  },
+  "historical_shadow_gates": {
+    "raw_return": [
+      "standalone net annualized log growth exceeds SPY in development and validation",
+      "validation annualized log-growth advantage is at least 0.50 percentage points",
+      "median validation raw excess is positive in 252/504/756-session annual-origin windows",
+      "at least 60% of validation windows at every horizon beat SPY"
+    ],
+    "risk": [
+      "validation volatility does not exceed SPY",
+      "validation drawdown is no worse than SPY by over two percentage points",
+      "validation BIL-excess Sharpe exceeds frozen Finly and SPY volatility targeting by at least 0.10",
+      "validation drawdown is no worse than frozen Finly by over two points and never worse than 15%"
+    ],
+    "robustness_after_preselection": [
+      "sign survives 5/10/25 bp costs",
+      "sign survives every native rebalance anchor",
+      "Deflated-Sharpe probability is at least 0.95 using at least 92 trials",
+      "fixed-candidate familywise circular and moving-block p-value is at most 0.05 for 5/20/60-session blocks",
+      "authenticated Alpaca overlap reconciliation passes frozen tolerances for every used symbol"
+    ]
+  },
+  "dispositions": {
+    "historical_fail": "KEEP_V1",
+    "pre_robustness_pass": "ROBUSTNESS_PENDING",
+    "robustness_pass": "SHADOW_ONLY",
+    "prospective_pass": "ELIGIBLE_FOR_REPLACEMENT_REVIEW"
+  }
+}

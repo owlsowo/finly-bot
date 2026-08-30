@@ -1,0 +1,42 @@
+{
+  "schema_version": "finly_source_overlap_reconciliation_generation5_freeze_receipt.v2",
+  "status": "FROZEN_BEFORE_FIRST_AUTHENTICATED_READ",
+  "frozen_at": "2026-08-29T11:39:57Z",
+  "frozen_before_authenticated_read": true,
+  "authenticated_result_seen_at_freeze": false,
+  "authenticated_output_absent_at_freeze": true,
+  "files": {
+    "research/source_overlap_reconciliation_generation5_protocol.json": "88f000732851a59f56a218c791731bb913e8ec51cd461b7a9347da6ae1697be6",
+    "research/source_overlap_reconciliation_generation5.mjs": "d1b135ed7e9d8b538ef9aa73fbf99a2becededd60d18a99adafc1fdaf88e3ac9",
+    "research/run_source_overlap_reconciliation_generation5.mjs": "b17d18421cbc27992386e290f4823f46cc2af8dbfeb26cdf26fdbb896f413900",
+    "tests/source_overlap_reconciliation_generation5.test.mjs": "bdd5368bf9182de7134818005f494dbe188e22d13716e379f8fc42e733e0b720"
+  },
+  "generation5_freeze_receipt_sha256": "77eafc80d2d5eabec46e22d9193b9f4a8ab51eee199fdca10b1ef176b35351f0",
+  "generation5_results_seen_at_source_freeze": false,
+  "generation5_output_absent_at_source_freeze": true,
+  "authenticated_read_permitted_after_freeze": true,
+  "frozen_authenticated_request": {
+    "origin": "https://data.alpaca.markets",
+    "path": "/v2/stocks/bars",
+    "method": "GET",
+    "feed": "iex",
+    "primary_adjustment": "all",
+    "diagnostic_adjustment": "split",
+    "symbols": 20,
+    "raw_responses_persisted": false,
+    "request_headers_persisted": false,
+    "page_tokens_persisted": false
+  },
+  "validation_before_freeze": {
+    "combined_engine_generation4_generation5_source_tests": "30/30 passed",
+    "targeted_generation5_source_tests": "10/10 passed",
+    "targeted_eslint": "passed",
+    "syntax_and_json_checks": "passed",
+    "current_environment_secret_match_scan": "passed",
+    "source_and_generation5_outputs_absent": true,
+    "generation5_manifest_hash_reconciliation": "17/17 passed"
+  },
+  "independent_static_audit": "GO after verifying unrounded gate predicates, direct candidate/SPY log-growth calculations, exact 4/16/17-file manifests and hash reconciliation, all-adjusted primary semantics, split-only diagnostics with zero exclusions, mandatory 20-symbol and four-candidate gates, credential containment, and fail-closed behavior without executing an authenticated read.",
+  "claim_boundary": "This protocol was designed after the Generation 4 source-reconciliation FAIL_CLOSED result and all quantitative outcomes through Generation 4 were observed. Its eventual result will compare already-seen, retrospectively revised history and can establish only source concordance. It is not fresh out-of-sample evidence, proof of independent alpha, evidence of future profitability, or permission for live capital.",
+  "timestamp_boundary": "The freeze times are local UTC timestamps, not an independent time authority. File hashes establish exact local bytes and ordering declarations, not external publication priority."
+}

@@ -1,0 +1,499 @@
+{
+  "schema_version": "finly_competitor_landscape.v3",
+  "snapshot": {
+    "source_audit_captured_at": "2026-08-29T08:21:18Z",
+    "roster_refreshed_at": "2026-08-29T18:43:00Z",
+    "live_dashboard_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+    "submission_count_observed": 14,
+    "late_additions_since_source_audit": ["pin-desk", "alphaguard-ai"],
+    "purpose": "Neutral provenance and reproducibility landscape; not a ranking, profitability leaderboard, security review, or forecast of judging outcomes."
+  },
+  "criteria_context": {
+    "lablab_event_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon",
+    "lablab_criteria_observed": [
+      "P&L Performance",
+      "Technology Implementation",
+      "Creativity & Originality",
+      "Presentation & Execution"
+    ],
+    "published_numerical_weights_observed": null,
+    "boundary": "The checked event materials name four judging criteria but publish no numerical weights. This landscape does not invent a composite score."
+  },
+  "method": {
+    "source_pin_policy": "Each public repository is identified by the 40-character commit recorded during the bounded audit snapshot.",
+    "credential_policy": "No competitor process received Finly credentials, Alpaca credentials, or broker authority.",
+    "mutation_policy": "No broker, account, database, or other external state mutation was authorized or attempted.",
+    "execution_policy": "Only bounded credential-free checks were attempted after manifest and lifecycle-hook review. Package lifecycle scripts were disabled where an install was needed. Untrusted model artifacts and destructive project scripts were not executed.",
+    "missing_value_policy": "Missing P&L is UNKNOWN, never zero and never evidence of poor performance.",
+    "status_definitions": {
+      "PASS": "The recorded bounded check completed successfully.",
+      "PARTIAL": "The recorded bounded check completed with at least one failing component.",
+      "FAIL": "The recorded bounded build or check did not complete successfully.",
+      "NOT_RUN": "No bounded check was run; reason codes state why.",
+      "EXCLUDED": "Source execution was intentionally excluded by the safety policy."
+    },
+    "verification_levels": {
+      "SYNTAX": "Source compilation only; no behavior or economics inferred.",
+      "BUILD": "Application build only; no behavior or economics inferred.",
+      "RECONCILIATION": "A project-supplied evidence reconciliation command ran.",
+      "TEST": "A project-supplied credential-free test suite ran.",
+      "TEST_AND_DEMO": "Credential-free tests and a deterministic product demo ran.",
+      "NONE": "No local project check ran.",
+      "METADATA_ONLY": "Only public repository metadata was recorded."
+    }
+  },
+  "common_historical_replay": {
+    "status": "NOT_RUN",
+    "eligible": false,
+    "comparable_pnl_generated": false,
+    "reason_codes": [
+      "NO_SHARED_SIGNAL_POSITION_EXPORT",
+      "NO_SHARED_POINT_IN_TIME_DATASET",
+      "NO_SHARED_OPTION_CHAIN_HISTORY",
+      "NO_SHARED_COST_AND_EXECUTION_MODEL",
+      "HETEROGENEOUS_PRODUCT_AND_STRATEGY_SCOPES",
+      "SUBMITTED_STRATEGY_REPLAY_UNAVAILABLE_FOR_ALL_PROJECTS"
+    ],
+    "minimum_future_contract": [
+      "decision timestamp",
+      "instrument universe",
+      "target position or option intent",
+      "decision-time market snapshot identifier",
+      "deterministic configuration hash",
+      "rejection reason",
+      "shared capital, fee, spread, impact, execution-lag, and baseline rules"
+    ],
+    "decision_boundary": "Writing adapters or substituting data would create new implementations. No cross-project return, Sharpe, drawdown, or P&L comparison was computed."
+  },
+  "projects": [
+    {
+      "id": "vibehedge",
+      "name": "VibeHedge",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/shinydatatech/vibehedge-autonomous-ai-options-hedging-agent",
+      "pinned_source": {
+        "repository_url": "https://github.com/ShinyDataTech/VibeHedge",
+        "commit_sha": "eaf8f7a1715d043bd5eaae78bd4b9db9ca314284",
+        "commit_time": "2026-08-29T12:20:26+12:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "PASS",
+        "verification_level": "SYNTAX",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["python -m compileall -q ."],
+        "reason_codes": ["ONLY_SYNTAX_CHECK_AVAILABLE", "UNTRUSTED_MODEL_ARTIFACT_NOT_EXECUTED"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_CREDENTIAL_FREE_HISTORICAL_EVALUATOR", "NO_SHARED_OPTION_CHAIN_HISTORY"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["NO_REPORTED_PORTFOLIO_RETURN"] },
+        "context_only": null
+      }
+    },
+    {
+      "id": "tissue-regeneration",
+      "name": "Tissue Regeneration and Genetic Factor Navigator",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/tissulogic/tissue-regeneration-and-genetic-factor-navigator",
+      "pinned_source": {
+        "repository_url": "https://github.com/mahamtaqi3-cloud/Tissue-Regeneration-and-Genetic-Factor-Navigator",
+        "commit_sha": "06637f9e80301acda5ae09f18bc9568b1d544ca3",
+        "commit_time": null,
+        "contents_inspected": false
+      },
+      "safe_local_check": {
+        "status": "EXCLUDED",
+        "verification_level": "METADATA_ONLY",
+        "bounded_check_runnable": false,
+        "safe_without_credentials_or_external_mutation": false,
+        "commands": ["git ls-remote <repository> HEAD"],
+        "reason_codes": ["SAFETY_PRECONDITIONS_NOT_MET"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_ASSESSED",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["SAFETY_PRECONDITIONS_NOT_MET"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["SOURCE_NOT_INSPECTED"] },
+        "context_only": null
+      }
+    },
+    {
+      "id": "options-sniper",
+      "name": "Options Sniper",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/primehack-security-team/options-sniper-trading-agent",
+      "pinned_source": {
+        "repository_url": "https://github.com/public321-ai/option-sniper",
+        "commit_sha": "eebc95a574d42287a2266fb2db678fcef645f190",
+        "commit_time": "2026-08-29T09:32:12+03:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "PASS",
+        "verification_level": "BUILD",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["npm ci --ignore-scripts --no-audit --no-fund", "npm run build"],
+        "reason_codes": ["BUILD_ONLY", "NO_CREDENTIAL_FREE_HISTORICAL_EVALUATOR"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_CREDENTIAL_FREE_HISTORICAL_EVALUATOR", "NO_SHARED_OPTION_CHAIN_HISTORY"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["NO_HISTORICAL_RESULT"] },
+        "context_only": null
+      }
+    },
+    {
+      "id": "pin-desk",
+      "name": "Pin Desk",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/gasbin/pin-desk",
+      "pinned_source": {
+        "repository_url": "https://github.com/anujsuthar08/Pin-desk",
+        "commit_sha": "292825c37d2ca86843821e9119ecec4d4f9d2c5b",
+        "commit_time": "2026-08-29T15:54:41+05:30",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "PASS",
+        "verification_level": "SYNTAX",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["python3 -m compileall -q src tests"],
+        "reason_codes": ["PYTHON_SYNTAX_PASS", "DEPENDENCY_TESTS_AND_BROKER_PATHS_NOT_EXECUTED"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_CREDENTIAL_FREE_HISTORICAL_EVALUATOR", "HISTORICAL_OPEN_INTEREST_UNAVAILABLE", "NO_SHARED_OPTION_CHAIN_HISTORY"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["NO_SUBMITTED_STRATEGY_HISTORICAL_PNL_ARTIFACT"] },
+        "context_only": {
+          "kind": "REPOSITORY_REPORTED_PAPER_ROUND_TRIP",
+          "data_window": { "date": "2026-08-27", "round_trips": 1 },
+          "baseline": null,
+          "cost_assumptions": { "reported_entry_credit": 1.23, "reported_exit_debit": 1.28 },
+          "reported_net_pnl_usd": -5.2,
+          "provenance_boundary": "Repository narrative only; the broker read-back was not independently reproduced in this audit.",
+          "comparability": "NOT_COMPETITION_ACCOUNT_PNL_SNAPSHOT"
+        }
+      }
+    },
+    {
+      "id": "alphaguard-ai",
+      "name": "AlphaGuard AI",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/alphaguard-ai/alphaguard-ai-autonomous-multi-agent-trading-desk",
+      "pinned_source": {
+        "repository_url": "https://github.com/devenramanuj/finpulse-ai",
+        "commit_sha": "8aea3ee99c31018bd8f736cde68cff36dd2b56de",
+        "commit_time": "2026-08-28T20:06:44+05:30",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "PASS",
+        "verification_level": "SYNTAX",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["python3 -m compileall -q ."],
+        "reason_codes": ["PYTHON_SYNTAX_PASS", "NO_LOCKED_DEPENDENCY_MANIFEST", "NO_CREDENTIAL_FREE_HISTORICAL_EVALUATOR"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_HISTORICAL_EVALUATOR", "NO_POINT_IN_TIME_DATASET"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["NO_HISTORICAL_RESULT"] },
+        "context_only": null
+      }
+    },
+    {
+      "id": "continual-learning-agent",
+      "name": "A Continual Learning Agent",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/trueintrinsics-agent/a-continual-learning-agent",
+      "pinned_source": {
+        "repository_url": "https://github.com/atlas-jj/finance-trueintrinsics-public",
+        "commit_sha": "08360a32eb24f5d7301cb69207d71206ccb8dd0c",
+        "commit_time": "2026-08-28T11:47:06-06:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "NOT_RUN",
+        "verification_level": "NONE",
+        "bounded_check_runnable": false,
+        "safe_without_credentials_or_external_mutation": false,
+        "commands": [],
+        "reason_codes": ["NO_IMPLEMENTATION_AT_PIN"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_IMPLEMENTATION_AT_PIN"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["NO_IMPLEMENTATION_AT_PIN"] },
+        "context_only": null
+      }
+    },
+    {
+      "id": "vega",
+      "name": "Vega",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/isquividet/vega-autonomous-long-gamma-options-agent",
+      "pinned_source": {
+        "repository_url": "https://github.com/isquividet/vega",
+        "commit_sha": "263da012325f46c00a0396e03c8d068c496d6531",
+        "commit_time": "2026-08-28T11:21:32-04:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "PASS",
+        "verification_level": "RECONCILIATION",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["python tools/reconcile.py"],
+        "reason_codes": ["LOCAL_RECONCILIATION_AVAILABLE", "BROKER_DEPENDENT_ROWS_NOT_REPRODUCED"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["SCENARIO_NOT_HISTORICAL_REPLAY", "NO_SHARED_OPTION_CHAIN_HISTORY"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["SCENARIO_NOT_HISTORICAL_REPLAY"] },
+        "context_only": { "kind": "FROZEN_CHAIN_SCENARIO", "data_window": "single modeled option-chain scenario", "baseline": null, "cost_assumptions": { "slippage": "half spread", "sensitivity": "implied-volatility crush" }, "comparability": "NOT_HISTORICAL_PNL" }
+      }
+    },
+    {
+      "id": "odysseus",
+      "name": "Odysseus",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/odysseus/odysseus-ai-powered-strategy-research",
+      "pinned_source": {
+        "repository_url": "https://github.com/thoonnadi2003/odysseus",
+        "commit_sha": "065a3d995e29762e5ba3ae706f1eb12e4ad64de0",
+        "commit_time": "2026-08-27T22:47:30+03:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "NOT_RUN",
+        "verification_level": "NONE",
+        "bounded_check_runnable": false,
+        "safe_without_credentials_or_external_mutation": false,
+        "commands": [],
+        "reason_codes": ["REQUIRED_DOTNET_10_RUNTIME_UNAVAILABLE"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["REQUIRED_DOTNET_10_RUNTIME_UNAVAILABLE", "NO_PUBLIC_REAL_MARKET_RESULT"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["NO_PUBLIC_REAL_MARKET_RESULT"] },
+        "context_only": { "kind": "SYNTHETIC_DEMONSTRATION", "data_window": null, "baseline": null, "cost_assumptions": "framework includes spread and fee fields", "comparability": "NOT_REAL_MARKET_PNL" }
+      }
+    },
+    {
+      "id": "newsflow-trader",
+      "name": "NewsFlow Trader",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/cubiczan/newsflow-trader",
+      "pinned_source": {
+        "repository_url": "https://github.com/icohangar-ops/newsflow-trader",
+        "commit_sha": "36cfd8dbf49f9228fe2f475c84db5cbae2719beb",
+        "commit_time": "2026-08-28T18:35:49Z",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "NOT_RUN",
+        "verification_level": "NONE",
+        "bounded_check_runnable": false,
+        "safe_without_credentials_or_external_mutation": false,
+        "commands": [],
+        "reason_codes": ["BUN_RUNTIME_UNAVAILABLE", "NO_ISOLATED_NON_MUTATING_CHECK"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_ISOLATED_NON_MUTATING_CHECK", "NO_HISTORICAL_EVALUATOR"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["NO_HISTORICAL_RESULT"] },
+        "context_only": null
+      }
+    },
+    {
+      "id": "alphaswarm-sovereign",
+      "name": "AlphaSwarm Sovereign",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/intelliyash/alphaswarm-sovereign-capital",
+      "pinned_source": {
+        "repository_url": "https://github.com/fokrulanthro16-eng/alphaswarm-sovereign",
+        "commit_sha": "564521dd933f111c5c13b922ad9afd249c573cc6",
+        "commit_time": "2026-08-28T19:52:22+06:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "FAIL",
+        "verification_level": "BUILD",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["python -m compileall -q .", "npm ci --ignore-scripts --no-audit --no-fund", "npm run build"],
+        "reason_codes": ["PYTHON_SYNTAX_PASS", "LOCKED_INSTALL_PASS", "FRONTEND_BUILD_DID_NOT_COMPLETE"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_HISTORICAL_EVALUATOR", "SCENARIO_NOT_HISTORICAL_REPLAY"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["SCENARIO_NOT_HISTORICAL_REPLAY"] },
+        "context_only": { "kind": "MONTE_CARLO_SCENARIO", "data_window": null, "baseline": null, "cost_assumptions": null, "model": "1,000-path geometric Brownian motion with fixed drift and ATR-derived volatility", "comparability": "NOT_HISTORICAL_PNL" }
+      }
+    },
+    {
+      "id": "alphapilot-ai",
+      "name": "AlphaPilot AI",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/quantum-coders/alphapilot-ai",
+      "pinned_source": {
+        "repository_url": "https://github.com/ibrahimjatt1313-prog/AlphaPilot",
+        "commit_sha": "771edcbb9fea3d383d90e6427c550689e15b0816",
+        "commit_time": "2026-08-29T03:32:07+05:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "PASS",
+        "verification_level": "SYNTAX",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["python -m compileall -q ."],
+        "reason_codes": ["ONLY_SYNTAX_CHECK_AVAILABLE", "NO_DEPENDENCY_MANIFEST"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_DEPENDENCY_MANIFEST", "NO_CREDENTIAL_FREE_REPLAY_ENTRY_POINT"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["NO_HISTORICAL_RESULT"] },
+        "context_only": null
+      }
+    },
+    {
+      "id": "spy-sentinel-ai",
+      "name": "SPY Sentinel AI",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/spy-sentinel-ai/spy-sentinel-ai",
+      "pinned_source": {
+        "repository_url": "https://github.com/ajennings1974/SPY-Sentinel-AI",
+        "commit_sha": "efd7edab9b19f10e2a7de0d130e7e335ad262d50",
+        "commit_time": "2026-08-28T19:44:00-04:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "PASS",
+        "verification_level": "SYNTAX",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["python -m compileall -q ."],
+        "reason_codes": ["ONLY_SYNTAX_CHECK_AVAILABLE", "REPLAY_REQUIRES_EXTERNAL_ACCESS_OR_WRITES_LOCAL_EVIDENCE"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_LOCKED_CREDENTIAL_FREE_REPLAY", "SIGNAL_STUDY_NOT_PORTFOLIO_PNL"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["SIGNAL_STUDY_NOT_PORTFOLIO_PNL"] },
+        "context_only": { "kind": "SIGNAL_VALIDATION_STUDY", "observations": 99, "data_window": null, "baseline": null, "cost_assumptions": "cost sensitivity reported for signal study", "comparability": "NOT_PORTFOLIO_PNL" }
+      }
+    },
+    {
+      "id": "babil",
+      "name": "BABIL",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/babil/babil-human-in-the-loop-ai-options-trading-agent",
+      "pinned_source": {
+        "repository_url": "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026",
+        "commit_sha": "9080b2a0d695bc5f733dc064926af7883a243441",
+        "commit_time": "2026-08-28T01:17:27+09:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "PARTIAL",
+        "verification_level": "TEST",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["python test_static_security.py", "pytest tests/ -q"],
+        "reason_codes": ["STATIC_CHECK_PASS", "ONE_CREDENTIAL_FREE_TEST_FAILED"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["NO_HISTORICAL_OPTIONS_EVALUATOR", "NO_SHARED_OPTION_CHAIN_HISTORY"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["NO_HISTORICAL_OPTIONS_RESULT"] },
+        "context_only": null
+      }
+    },
+    {
+      "id": "aegis-q",
+      "name": "AEGIS-Q",
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/team-v/aegis-q",
+      "pinned_source": {
+        "repository_url": "https://github.com/VicensPaneque/aegis-q",
+        "commit_sha": "76bb97e9200c41c519440bb64ea40d2161367627",
+        "commit_time": "2026-08-28T18:46:20-07:00",
+        "contents_inspected": true
+      },
+      "safe_local_check": {
+        "status": "PASS",
+        "verification_level": "TEST_AND_DEMO",
+        "bounded_check_runnable": true,
+        "safe_without_credentials_or_external_mutation": true,
+        "commands": ["python -m unittest discover -s tests -v", "python -m pnl_agent.cli options-demo"],
+        "reason_codes": ["CREDENTIAL_FREE_TESTS_PASS", "DETERMINISTIC_OPTIONS_DEMO_PASS"]
+      },
+      "submitted_strategy_replay": {
+        "status": "NOT_AVAILABLE",
+        "runnable_without_credentials_or_external_mutation": false,
+        "reason_codes": ["HISTORICAL_RESULT_IS_DIFFERENT_STRATEGY", "NO_HISTORICAL_OPTIONS_RESULT", "NO_SHARED_OPTION_CHAIN_HISTORY"]
+      },
+      "economic_evidence": {
+        "competition_account_pnl": { "status": "UNKNOWN", "value": null, "reason_code": "NO_VERIFIED_COMPETITION_ACCOUNT_ARTIFACT" },
+        "submitted_strategy_historical_pnl": { "status": "UNKNOWN", "value": null, "data_window": null, "baseline": null, "cost_assumptions": null, "reason_codes": ["HISTORICAL_RESULT_IS_DIFFERENT_STRATEGY"] },
+        "context_only": { "kind": "LEGACY_EQUITY_REGIME_RESULT", "strategy_scope": "different from submitted options policy", "data_window": { "start": "2021-05-12", "end": "2026-08-27", "observations": 1330 }, "baseline": "QQQ buy-and-hold", "cost_assumptions": { "one_way_slippage_bps": 5, "execution_timing": "signal at close; execution at next open" }, "comparability": "NOT_SUBMITTED_OPTIONS_PNL" }
+      }
+    }
+  ],
+  "finly_comparison_boundary": {
+    "status": "NOT_RANKED_AND_NOT_CROSS_PROJECT_BACKTESTED",
+    "source_artifact": "public/data/submission_claims_lock.json",
+    "source_artifact_sha256": "sha256:2cf3b45a8588de376d7c84704e99c915d4ef0171aadc2c7a85ebd01ba905c333",
+    "historical_scope": "Consumed 2013-01-02 through 2026-08-27 adjusted-close G4 ETF allocation replay; descriptive only, not promoted, not historical options P&L, and not a forecast",
+    "competition_account_pnl": "UNKNOWN",
+    "allowed_claim": "In its consumed retrospective replay, G4 recorded a higher annualized return and a shallower maximum drawdown than SPY after modeled 5 bp one-way costs, but failed promotion.",
+    "forbidden_claims": [
+      "Finly beat any submission in a common replay",
+      "Finly has verified competition-account profit",
+      "Finly's historical ETF replay establishes options profitability",
+      "Finly is the most profitable or best project",
+      "Finly's retrospective G4 result establishes future outperformance"
+    ]
+  }
+}

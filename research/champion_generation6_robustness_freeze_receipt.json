@@ -1,0 +1,30 @@
+{
+  "schema_version": "finly_champion_generation6_robustness_freeze_receipt.v1",
+  "status": "frozen_before_first_post_selection_robustness_output",
+  "created_at": "2026-08-29T14:14:00.000Z",
+  "robustness_results_seen_at_freeze": false,
+  "robustness_output_absent_at_freeze": true,
+  "market_fetch_permitted": false,
+  "protocol_sha256": "ae27eee5f5ea266026e7b946b67365f93c8f0da081e02efd4ba1d81b486f816d",
+  "frozen_selection": {
+    "primary_spy": null,
+    "growth_control_challenge": null
+  },
+  "source_reconciliation_status": "NOT_APPLICABLE_WITHOUT_SELECTED_CANDIDATE",
+  "claim_boundary": "This receipt freezes a null-selection closure before any Generation 6 robustness output existed. With no selected candidate, no candidate-level source or robustness pass can be earned; the only permitted result is fail-closed retention of the prior descriptive baseline.",
+  "files": {
+    "research/champion_generation6_robustness_protocol.json": "ae27eee5f5ea266026e7b946b67365f93c8f0da081e02efd4ba1d81b486f816d",
+    "research/champion_generation6_robustness.mjs": "a3cce0a77537495d9599b5a7c58da9d0f052c67bcbfa65b3626a655add2144ba",
+    "research/champion_generation6_growth_statistics.mjs": "96fad5e5b3c2edba2eb20275be99ba65fa47e8b441534c9600bddfac66c0dbf4",
+    "research/run_quant_champion_generation6_robustness.mjs": "cb2f2fa0588a4183defd296edd44f4a6c897b9aa791735912509de0337dddd3d",
+    "tests/champion_generation6_growth_statistics.test.mjs": "d62e03b5569e4fb6a105968435df6ced0da5c3790cf760a7afab797514221e37",
+    "tests/champion_generation6_robustness_runner.test.mjs": "ab06bea2e86b4da5ea713e36d494e5d106cdb16589911745ed65d9250ec4152f",
+    "research/champion_search_generation6_protocol.json": "570c5a346289b5723e2ef19b27c51f6b12b4bd7f1d3d205b5b4c0108703991c9",
+    "research/champion_search_generation6_freeze_receipt.json": "a08e273ee97cbad298330d265a6a8ccde033c8b915731d9a0f5a10ede1b1c5fc",
+    "research/champion_trial_ledger_generation6.json": "f1b35f0b6ff50888b4ca7dbb6c1bb46258af081c09cf344d44adc88753991ecf",
+    "research/output/quant_champion_generation6.json": "028e0fdc69a8cb591a4d4fd6b6e4a20869d7a6296eb0650e643e3df23a4a3b9e",
+    "research/champion_generation6_result_receipt.json": "16323e2cd8035ae3fcce4656d08102fbf3030fba8b81db3742548cb2666a1e78",
+    "data/private/champion_search/generation6_ledger_143deb4dcec1d3647280bacbe2ed5b2f9ab4c2fc9a426bb0c11dccbb6263a182.json.gz": "143deb4dcec1d3647280bacbe2ed5b2f9ab4c2fc9a426bb0c11dccbb6263a182",
+    "data/private/champion_search/generation4_panel_91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014.json": "91a53ac73e785d2ccb8db043cce6d808b9a851d7e95da7031bb227e8b40d1014"
+  }
+}

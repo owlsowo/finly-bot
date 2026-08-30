@@ -1,0 +1,68 @@
+{
+  "schema_version": "finly_generation6_alpaca_adjustment_all_panel_protocol.v2",
+  "status": "FROZEN_BEFORE_AUTHENTICATED_PANEL_READ",
+  "frozen_at": "2026-08-29T13:57:14.000Z",
+  "execution_status_at_freeze": {
+    "authenticated_read_started": false,
+    "run_claim_absent": true,
+    "result_receipt_absent": true,
+    "panel_artifacts_absent": true
+  },
+  "request": {
+    "symbols": [
+      "SPY",
+      "BIL",
+      "QQQ",
+      "IWM",
+      "EFA",
+      "EEM",
+      "IEF",
+      "TLT",
+      "GLD",
+      "DBC",
+      "VNQ",
+      "XLK",
+      "XLF",
+      "XLE",
+      "XLY",
+      "XLP",
+      "XLI",
+      "XLB",
+      "XLV",
+      "XLU"
+    ],
+    "start": "2007-05-30",
+    "end": "2026-08-27",
+    "feed": "iex",
+    "adjustment": "all",
+    "timeframe": "1Day",
+    "asof": "2026-08-27",
+    "currency": "USD",
+    "sort": "asc",
+    "limit": 10000,
+    "minimum_common_sessions": 1250
+  },
+  "security": {
+    "method": "GET",
+    "credentials_persisted": false,
+    "raw_responses_persisted": false,
+    "request_headers_persisted": false,
+    "page_tokens_persisted": false
+  },
+  "universe_boundary": {
+    "universe_as_of": "2026-08-27",
+    "construction": "Fixed 20-ETF CORE_SYMBOLS menu selected before this authenticated acquisition.",
+    "point_in_time_membership_dataset": false,
+    "delisted_or_failed_funds_included": false,
+    "survivorship_bias_present": true,
+    "permitted_use": "Cross-provider reconciliation and sensitivity analysis on the disclosed fixed ETF menu.",
+    "forbidden_inference": "The panel is not evidence for a survivorship-free investable universe or an unbiased historical asset-selection process."
+  },
+  "output_contract": {
+    "panel_schema_version": "finly_generation6_alpaca_adjustment_all_panel.v2",
+    "run_claim_path": "research/alpaca_adjustment_all_panel_generation6_run_claim.json",
+    "result_receipt_path": "research/alpaca_adjustment_all_panel_generation6_result_receipt.json",
+    "private_panel_directory": "data/private/champion_search",
+    "panel_filename_prefix": "alpaca_adjustment_all_panel_generation6_"
+  }
+}

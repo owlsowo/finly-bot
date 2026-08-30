@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use Finly in research, please cite this repository."
+title: "Finly: Controlled Delegation and the Separation of Market Judgment from Trading Authority"
+type: software
+authors:
+  - family-names: Wen
+    given-names: Bruce
+    email: bwen412@brandeis.edu
+version: 0.3.0
+date-released: 2026-08-29
+license: MIT
+repository-code: "https://github.com/owlsowo/finly-bot"
+url: "https://owlsowo.github.io/finly-bot/"
+keywords:
+  - agentic trading
+  - options
+  - controlled delegation
+  - retrospective trading research
+  - bounded model authority
+  - paper trading
+  - Alpaca
