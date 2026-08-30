@@ -48,7 +48,7 @@ export function HistoricalExplorer({
         </p>
       </div>
 
-      <div className="range-tabs" role="group" aria-label="Choose how to inspect the historical replay">
+      <div className="range-tabs" role="group" aria-label="Choose a view of the historical comparison">
         <button
           type="button"
           aria-pressed={view === "result"}
@@ -128,14 +128,14 @@ export function HistoricalExplorer({
             </div>
           </dl>
           <p className="audit-panel-conclusion">
-            Finly pairs a market-beating performance engine with deterministic risk controls—turning an attractive signal
-            into an inspectable, capital-bounded decision workflow.
+            Finly pairs a historically outperforming research configuration with deterministic risk controls—turning
+            research output into an inspectable, capital-bounded decision workflow.
           </p>
         </div>
       )}
 
       <p className="range-boundary">
-        <strong>Study design:</strong> historical simulation from {startDate} to {endDate}; identical $10,000 starting
+        <strong>Comparison basis:</strong> historical simulation from {startDate} to {endDate}; identical $10,000 starting
         capital and comparison window; modeled {oneWayCostBps} bp one-way costs.
       </p>
     </section>

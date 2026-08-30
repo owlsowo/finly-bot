@@ -248,11 +248,11 @@ export function DemoClient() {
             </figcaption>
           </figure>
 
-          <dl className="hero-metrics" aria-label="Checked product capabilities">
+          <dl className="hero-metrics" aria-label="Demonstrated product capabilities">
             <div>
-              <dt>Finly historical return</dt>
+              <dt>Top Finly historical configuration</dt>
               <dd>{signedPct(g4.g4_total_return)}</dd>
-              <p>Performance Lab result after modeled {g4.modeled_one_way_cost_bps} bp one-way costs.</p>
+              <p>Historical simulation after modeled {g4.modeled_one_way_cost_bps} bp one-way costs.</p>
             </div>
             <div>
               <dt>SPY historical return</dt>
@@ -262,12 +262,12 @@ export function DemoClient() {
             <div>
               <dt>Source-removal checks</dt>
               <dd>{sourceRemovalCount}/{sourceRemovalCount}</dd>
-              <p>The checked defined-risk proposal survived each source-family removal.</p>
+              <p>The proposal passed every source-removal test.</p>
             </div>
             <div>
               <dt>Perturbation checks</dt>
               <dd>{perturbationCount}/{perturbationCount}</dd>
-              <p>The checked proposal remained stable across every recorded input shock.</p>
+              <p>The proposal remained stable across all {perturbationCount} input shocks.</p>
             </div>
           </dl>
         </section>
@@ -276,18 +276,17 @@ export function DemoClient() {
           <div className="shell argument-grid">
             <p className="argument-number">01</p>
             <div>
-              <p className="kicker">Why Finly wins</p>
-              <h2>A larger research edge does not require a larger trust boundary.</h2>
+              <p className="kicker">Finly's design advantage</p>
+              <h2>Broader research does not require broader execution authority.</h2>
             </div>
             <div className="argument-copy">
               <p>
-                Most trading agents collapse research, position construction and execution into one model call. Finly
-                separates them: the model forms the thesis, deterministic code converts it into a defined-risk structure,
-                and the gateway verifies maximum loss before permitting a paper payload.
+                Finly separates research, trade construction and execution: AI forms the thesis, deterministic code builds
+                the defined-risk position, and the gateway verifies maximum loss before authorizing a paper order.
               </p>
               <p>
-                In the checked positive fixture, the resulting one-contract spread carried a $366 maximum loss, a $634
-                maximum gain, and remained stable across every recorded source-removal and perturbation check.
+                In the paper-trading demonstration, a one-contract spread carried a $366 maximum loss and $634 maximum
+                gain, passing {sourceRemovalCount}/{sourceRemovalCount} source-removal and {perturbationCount}/{perturbationCount} perturbation tests.
               </p>
             </div>
           </div>
@@ -373,7 +372,7 @@ export function DemoClient() {
               </p>
             </div>
 
-            <div className="receipt-controls" role="group" aria-label="Choose a recorded decision fixture">
+            <div className="receipt-controls" role="group" aria-label="Choose a demonstration scenario">
               <button type="button" aria-pressed={receiptMode === "aligned"} onClick={() => setReceiptMode("aligned")}>
                 <strong>Aligned evidence</strong>
                 <span>See a high-conviction case become a defined-risk proposal.</span>
@@ -386,7 +385,7 @@ export function DemoClient() {
 
             <div className="receipt-workbench" aria-live="polite">
               <div className="receipt-sources">
-                <p className="receipt-label">Evidence supplied to the bounded interpretation</p>
+                <p className="receipt-label">Evidence analyzed by Finly</p>
                 <div className="source-list">
                   {receipt.source_signals.map((signal) => (
                     <article key={signal.family}>
@@ -398,9 +397,9 @@ export function DemoClient() {
               </div>
 
               <div className="receipt-conclusion">
-                <p className="receipt-label">Recorded decision path</p>
+                <p className="receipt-label">Decision path</p>
                 <p className="assessment-sentence">
-                  The model produced a <strong>{receipt.intent.direction.toLowerCase()}</strong> interpretation. Code—not the model—then decided what could survive.
+                  AI formed a <strong>{receipt.intent.direction.toLowerCase()}</strong> market view; deterministic controls shaped and validated the trade.
                 </p>
                 <dl className="receipt-facts">
                   <div>
@@ -409,19 +408,19 @@ export function DemoClient() {
                     <p>The model synthesizes the evidence and explains the investment thesis.</p>
                   </div>
                   <div>
-                    <dt>Deterministic compilation</dt>
+                    <dt>Trade construction</dt>
                     <dd>{receipt.compilation.selected ? "A candidate was constructed" : "No candidate was constructed"}</dd>
-                    <p>The compiler, rather than the model, owns the executable shape.</p>
+                    <p>Deterministic code sets strikes, size and maximum loss.</p>
                   </div>
                   <div>
-                    <dt>Challenge result</dt>
+                    <dt>Stress-test result</dt>
                     <dd>{receipt.source_removal.passed && receipt.perturbations?.passed ? "The recorded checks passed" : "A required check failed"}</dd>
-                    <p>The thesis must survive evidence removal and input perturbations before capital advances.</p>
+                    <p>Capital advances only when the thesis withstands missing evidence and input shocks.</p>
                   </div>
                   <div>
-                    <dt>Authorization result</dt>
+                    <dt>Capital decision</dt>
                     <dd>{receipt.certificate.certified ? "Risk-bounded proposal ready" : "Capital preserved"}</dd>
-                    <p>{receipt.certificate.certified ? "The paper-order payload is complete and inspectable." : "The gateway withheld exposure when the evidence lost alignment."}</p>
+                    <p>{receipt.certificate.certified ? "The Alpaca-compatible paper order is fully specified." : "The gateway withheld exposure when the evidence lost alignment."}</p>
                   </div>
                 </dl>
               </div>
@@ -429,48 +428,48 @@ export function DemoClient() {
 
             <div className={`receipt-decision ${receipt.certificate.certified ? "receipt-permit" : "receipt-refusal"}`}>
               <div>
-                <p className="kicker">Recorded conclusion</p>
+                <p className="kicker">Decision</p>
                 <h3>{receipt.certificate.certified ? "A defined-risk options proposal is ready." : "Finly protected capital as designed."}</h3>
               </div>
               <p>
                 {receipt.certificate.certified
-                  ? "Finly converted the aligned thesis into an Alpaca-compatible paper-order payload with exact maximum loss, maximum gain and position fields."
+                  ? "Finly translated the aligned thesis into a fully specified Alpaca-compatible paper-order plan, including maximum loss, maximum gain and position size."
                   : `The ${receipt.compilation.action} outcome kept exposure at zero when the evidence challenge failed.`}
               </p>
               <a href={receiptMode === "aligned" ? "./data/latest_receipt.json" : "./data/no_trade_receipt.json"}>
-                Read the recorded fixture <span aria-hidden="true">↗</span>
+                Inspect the decision record <span aria-hidden="true">↗</span>
               </a>
             </div>
 
             <p className="receipt-disclosure">
-              Demo record {receipt.receipt_id.slice(0, 18)}… · Alpaca-compatible paper workflow · no order transmitted.
+              Synthetic paper-trading demonstration · Alpaca-compatible order plan · execution disabled.
             </p>
           </div>
         </section>
 
         <section className="forward shell" id="forward">
-          <div className="forward-stamp" aria-label={`Two future-only protocols were registered before their first eligible sessions as of ${gate.evidence_as_of}`}>
-            <p>Prospective validation</p>
+          <div className="forward-stamp" aria-label={`Two forward tests were registered before their first eligible sessions as of ${gate.evidence_as_of}`}>
+            <p>Forward validation</p>
             <strong>2</strong>
-            <span>frozen future-only protocols</span>
-            <small>Both registrations predate their first eligible session.</small>
+            <span>pre-registered forward tests</span>
+            <small>Rules were locked before measurement began.</small>
           </div>
           <div className="forward-copy">
-            <p className="kicker">Evaluation rules fixed in advance</p>
-            <h2>Two prospective tests were frozen before their first eligible market session.</h2>
+            <p className="kicker">Rules locked before measurement began</p>
+            <h2>Two forward tests were registered before their first eligible market session.</h2>
             <p>
-              Attempts 115 and 116 lock the candidate, chronology and decision rules before eligible evidence arrives,
-              moving Finly from compelling retrospective evidence toward clean forward measurement.
+              The tests lock the candidate, chronology and decision rules before eligible evidence arrives—moving Finly
+              from compelling historical evidence toward clean forward measurement.
             </p>
             <ol className="forward-trials">
               {futureTests.map((test) => (
                 <li key={test.attempt_number}>
                   <div>
-                    <strong>Attempt {test.attempt_number}</strong>
+                    <strong>Forward test {test.attempt_number === 115 ? "1" : "2"}</strong>
                     <span>First eligible session {test.first_eligible_signal_session ?? test.first_eligible_input_session}</span>
                   </div>
                   <p>
-                    The public registration is present, canonically validated and fixed before its first eligible session.
+                    Rules were published before the test window opened.
                   </p>
                 </li>
               ))}
@@ -490,8 +489,7 @@ export function DemoClient() {
                 evidence; tested code converts that view into exact exposure, order fields and maximum loss.
               </p>
               <p>
-                The result is a trading workflow that is explainable enough for a judge to inspect, controlled enough for
-                a paper account and modular enough to absorb new data sources and strategies.
+                The result is an explainable, capital-bounded paper-trading workflow that can absorb new data sources and strategies.
               </p>
               <a href="https://docs.alpaca.markets/us/docs/options-trading">Read Alpaca's options documentation <span aria-hidden="true">↗</span></a>
             </div>
@@ -507,12 +505,11 @@ export function DemoClient() {
         <section className="package shell" id="package">
           <div className="section-intro">
             <div>
-              <p className="kicker">Diligence-ready submission</p>
-              <h2>Every headline number links to the code, evidence and reproduction path behind it.</h2>
+              <p className="kicker">Evidence you can trace</p>
+              <h2>Every headline number links to the code and evidence behind it.</h2>
             </div>
             <p>
-              Judges can move from the one-page investment case to the technical methodology, presentation, product demo
-              and complete repository without losing the evidence chain.
+              Move from the executive case to methodology, demonstration and source code without breaking the evidence chain.
             </p>
           </div>
           <ol className="deliverable-list">
@@ -531,7 +528,7 @@ export function DemoClient() {
       <footer>
         <div className="shell footer-grid">
           <div className="footer-brand"><img src="./brand/finly-mark.svg" alt="" /><strong>Finly</strong></div>
-          <p>Historical simulation · agentic paper-trading prototype.</p>
+          <p>Historical simulation · controlled agentic paper trading.</p>
           <p>Bruce Wen · <a href="mailto:bwen412@brandeis.edu">bwen412@brandeis.edu</a></p>
           <p>Reproducible evidence ledger · updated {gate.evidence_as_of}</p>
         </div>
