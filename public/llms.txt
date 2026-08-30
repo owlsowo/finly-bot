@@ -4,7 +4,7 @@ Finly is an agentic trading system built to turn broad market intelligence into 
 
 ## Executive investment case
 
-Finly's strongest 2013–2026 historical configuration returned **+967.11%** versus **+580.82%** for SPY after modeled 5 bp one-way transaction costs. On the same simulated $10,000 starting capital, Finly finished at **$106,711** versus **$68,082** for SPY—an incremental **$38,629** and **56.7% more ending wealth**.
+Finly turned a modeled **$10,000 into $106,711** in its 2013–2026 cost-adjusted simulation, versus **$68,082** for SPY. That is **$38,629 in incremental ending wealth**, **56.7% more ending wealth**, and a total return of **+967.11%** versus **+580.82%** for SPY.
 
 The value proposition extends beyond the return chart. Finly separates three responsibilities that most trading agents collapse into one model call:
 
@@ -20,11 +20,11 @@ When the evidence loses alignment, the same gateway preserves capital with NO_TR
 
 ## Why the project stands out
 
-- **Measured historical advantage:** +967.11% for Finly versus +580.82% for SPY across the same 2013–2026 window and modeled cost framework.
+- **13-year measured advantage:** +967.11% for Finly versus +580.82% for SPY across the same 2013–2026 window and modeled cost framework.
 - **Capital-aware architecture:** exact maximum loss, maximum gain, position structure, and broker fields are code-owned rather than improvised by a language model.
 - **Adversarial stability:** the product demonstrates evidence-removal and input-perturbation checks before a proposal can advance.
 - **Reproducible diligence:** the public repository connects every headline metric to source code, evidence artifacts, an academic-style methodology, a one-page investment case, and a complete demonstration.
-- **Forward validation:** two frozen prospective protocols fix their rules before eligible market evidence arrives, creating a disciplined path from historical evidence to forward measurement.
+- **Pre-registered validation:** two frozen prospective protocols fix their rules before eligible market evidence arrives, creating a disciplined path from historical evidence to forward measurement.
 
 ## Judge takeaway
 

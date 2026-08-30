@@ -39,12 +39,12 @@ export function HistoricalExplorer({
     <section className="range-explorer" aria-labelledby="historical-explorer-title">
       <div className="range-explorer-heading">
         <div>
-          <p className="kicker">Historical value creation</p>
-          <h3 id="historical-explorer-title">$106,711 in modeled ending wealth—$38,629 ahead of SPY.</h3>
+          <p className="kicker">13-year value case</p>
+          <h3 id="historical-explorer-title">$10,000 → $106,711: 56.7% more modeled ending wealth than SPY.</h3>
         </div>
         <p>
-          Across the same 2013–2026 window, Finly returned +967.11% versus +580.82% for SPY. The comparison starts with
-          $10,000 and includes modeled 5 bp one-way costs.
+          Same $10,000. Same 2013–2026 window. Costs included. The cost-adjusted replay returned +967.11% versus
+          +580.82% for SPY.
         </p>
       </div>
 
@@ -55,7 +55,7 @@ export function HistoricalExplorer({
           aria-controls="historical-result-panel"
           onClick={() => setView("result")}
         >
-          Return advantage
+          Performance
         </button>
         <button
           type="button"
@@ -63,7 +63,7 @@ export function HistoricalExplorer({
           aria-controls="historical-decision-panel"
           onClick={() => setView("decision")}
         >
-          Investment case
+          Value case
         </button>
       </div>
 
@@ -80,7 +80,7 @@ export function HistoricalExplorer({
           >
             <div className="audit-bar-row">
               <div className="audit-bar-label">
-                <span>Finly historical strategy</span>
+                <span>Finly strategy</span>
                 <strong>{signedPct(candidateReturn)}</strong>
               </div>
               <div className="audit-bar-track" aria-hidden="true">
@@ -128,14 +128,14 @@ export function HistoricalExplorer({
             </div>
           </dl>
           <p className="audit-panel-conclusion">
-            Finly pairs a historically outperforming research configuration with deterministic risk controls—turning
-            research output into an inspectable, capital-bounded decision workflow.
+            Finly pairs a cost-adjusted strategy replay with deterministic risk controls—turning a quantified market
+            thesis into an inspectable, capital-bounded decision workflow.
           </p>
         </div>
       )}
 
       <p className="range-boundary">
-        <strong>Comparison basis:</strong> historical simulation from {startDate} to {endDate}; identical $10,000 starting
+        <strong>Method:</strong> historical simulation from {startDate} to {endDate}; identical $10,000 starting
         capital and comparison window; modeled {oneWayCostBps} bp one-way costs.
       </p>
     </section>
