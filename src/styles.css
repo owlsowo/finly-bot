@@ -858,6 +858,70 @@ h1 {
 .range-explorer-loading,
 .range-explorer-error { margin: 0 0 64px; padding: 30px; color: var(--stone); border-block: 1px solid var(--rule); }
 
+.external-proof {
+  margin: 18px 0 64px;
+  padding: 42px 42px 32px;
+  color: white;
+  background: var(--navy);
+  border-top: 6px solid var(--green);
+}
+
+.external-proof .kicker { color: #9bc1b0; }
+
+.external-proof-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, .65fr);
+  gap: clamp(48px, 7vw, 92px);
+  align-items: end;
+  margin-bottom: 42px;
+}
+
+.external-proof-lead h3 {
+  max-width: 760px;
+  margin: 0;
+  color: white;
+  font-family: var(--serif);
+  font-size: clamp(34px, 3.8vw, 52px);
+  font-weight: 520;
+  letter-spacing: -.045em;
+  line-height: 1.04;
+}
+
+.external-proof-lead > p {
+  margin: 0;
+  color: #cbd4d6;
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.external-proof-lead > p strong { color: white; }
+
+.external-proof-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  border-top: 1px solid #58748a;
+  border-bottom: 1px solid #58748a;
+}
+
+.external-proof-metrics > div { min-height: 176px; padding: 22px 22px 18px 0; }
+.external-proof-metrics > div + div { padding-left: 22px; border-left: 1px solid #58748a; }
+.external-proof-metrics dt { color: #9ab0b6; font-size: 10px; font-weight: 760; letter-spacing: .08em; text-transform: uppercase; }
+.external-proof-metrics dd { margin: 20px 0 10px; color: white; font-family: var(--serif); font-size: clamp(31px, 3.1vw, 44px); font-weight: 520; letter-spacing: -.04em; line-height: 1; }
+.external-proof-metrics p { margin: 0; color: #aebdc0; font-size: 11px; line-height: 1.5; }
+
+.external-proof-conclusion {
+  display: flex;
+  justify-content: space-between;
+  gap: 36px;
+  align-items: baseline;
+  padding-top: 24px;
+}
+
+.external-proof-conclusion p { max-width: 820px; margin: 0; color: #d7e0df; font-family: var(--serif); font-size: 15px; line-height: 1.6; }
+.external-proof-conclusion a { flex: 0 0 auto; color: white; font-size: 11px; font-weight: 700; text-underline-offset: 4px; }
+
 .production-clarifier {
   display: grid;
   grid-template-columns: minmax(250px, .42fr) minmax(0, .58fr);
@@ -1160,7 +1224,7 @@ footer {
   .hero-metrics > div:nth-child(3) { border-left: 0; border-top: 1px solid var(--rule); }
   .hero-metrics > div:nth-child(4) { border-top: 1px solid var(--rule); }
   .argument-band, .system, .receipt-section, .evidence-section, .forward, .package { padding-block: 82px; }
-  .argument-grid, .section-intro, .production-clarifier, .evidence-ledger, .forward, .broker-grid, .research-note, .range-explorer-heading, .range-proof-strip { grid-template-columns: 1fr; }
+  .argument-grid, .section-intro, .production-clarifier, .evidence-ledger, .forward, .broker-grid, .research-note, .range-explorer-heading, .range-proof-strip, .external-proof-lead { grid-template-columns: 1fr; }
   .argument-grid { gap: 28px; }
   .argument-copy { grid-column: auto; }
   .section-intro { gap: 28px; margin-bottom: 46px; }
@@ -1183,6 +1247,9 @@ footer {
   .audit-decision-ledger > div + div { padding-left: 0; border-top: 1px solid var(--rule); border-left: 0; }
   .audit-decision-ledger .audit-disposition { margin-inline: -24px; padding-inline: 24px; }
   .research-note { gap: 24px; }
+  .external-proof-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .external-proof-metrics > div:nth-child(3) { padding-left: 0; border-top: 1px solid #58748a; border-left: 0; }
+  .external-proof-metrics > div:nth-child(4) { border-top: 1px solid #58748a; }
   .forward { gap: 50px; }
   .forward-stamp { min-height: 280px; }
   .forward-trials li { grid-template-columns: 1fr; gap: 10px; }
@@ -1260,6 +1327,11 @@ footer {
   .production-clarifier { margin-inline: -6px; padding: 26px 20px 22px; }
   .range-explorer { margin-inline: -6px; }
   .range-explorer-heading { padding-inline: 6px; }
+  .external-proof { margin-inline: -6px; padding: 34px 24px 28px; }
+  .external-proof-metrics { grid-template-columns: 1fr; }
+  .external-proof-metrics > div { min-height: 0; padding: 20px 0 !important; border-top: 1px solid #58748a; border-left: 0 !important; }
+  .external-proof-metrics > div:first-child { border-top: 0; }
+  .external-proof-conclusion { display: grid; }
   .range-tabs { max-width: none; margin-inline: 6px; }
   .range-tabs button { min-height: 52px; padding-inline: 10px; }
   .audit-panel { padding: 26px 20px 24px; }
