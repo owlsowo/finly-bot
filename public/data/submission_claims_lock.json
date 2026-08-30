@@ -1,7 +1,7 @@
 {
   "schema_version": "finly_submission_claims_lock.v1",
   "status": "LOCKED_FOR_QUALITATIVE_REBUILD",
-  "evidence_as_of": "2026-08-27",
+  "evidence_as_of": "2026-08-30T04:53:55.000Z",
   "central_distinction": "Finly separates finding a plausible trade from earning authority to risk capital.",
   "judge_proposition": "Judge Finly on whether its controlled-delegation architecture can refuse attractive but insufficient evidence, not on an unsupported promise of future profit.",
   "retrospective_result": {
@@ -139,6 +139,117 @@
       "mutation_requested": false
     }
   },
+  "execution_realism": {
+    "evidence_class": "CONSUMED_RETROSPECTIVE_EXECUTION_REALISM",
+    "evidence_as_of": "2026-08-29T13:58:18.149Z",
+    "policy_id": "tsmom_ensemble_vol",
+    "window": {
+      "start": "2025-01-02",
+      "end": "2026-08-28",
+      "observations": 415
+    },
+    "fill_assumption": "fractional market DAY orders at the next session open t+1",
+    "cost_unit": "basis points per absolute traded-notional leg",
+    "next_open_cost_stress": [
+      {
+        "bps_per_leg": 1,
+        "total_return": 0.1637768834,
+        "annualized_return": 0.096473153,
+        "annualized_volatility": 0.0812356458,
+        "maximum_drawdown": -0.0537699288,
+        "spy_total_return": 0.3352366407
+      },
+      {
+        "bps_per_leg": 5,
+        "total_return": 0.1538759778,
+        "annualized_return": 0.090799229,
+        "annualized_volatility": 0.0812194739,
+        "maximum_drawdown": -0.0544710489,
+        "spy_total_return": 0.3352366407
+      },
+      {
+        "bps_per_leg": 25,
+        "total_return": 0.1055891073,
+        "annualized_return": 0.0628485546,
+        "annualized_volatility": 0.0813329798,
+        "maximum_drawdown": -0.0579709322,
+        "spy_total_return": 0.3352366407
+      }
+    ],
+    "raw_no_distribution_proxy": {
+      "bps_per_leg": 1,
+      "total_return": 0.12745684,
+      "annualized_return": 0.0755648019,
+      "annualized_volatility": 0.0811840623,
+      "maximum_drawdown": -0.0587119346,
+      "spy_total_return": 0.3127047502
+    },
+    "small_account_proxy": {
+      "bps_per_leg": 1,
+      "initial_equity_usd": 300,
+      "ending_equity_usd": 351.88433421,
+      "total_return": 0.1729477807,
+      "annualized_return": 0.1017118392,
+      "maximum_drawdown": -0.0584880007,
+      "minimum_order_notional_usd": 1,
+      "quantity_decimals": 9,
+      "sell_day_fees_total_usd": 0.7,
+      "skipped_minimum_orders": 12
+    },
+    "assurance": {
+      "consumed_retrospective_only": true,
+      "raw_ohlc_redistributed": false,
+      "alpha_proven": false,
+      "future_profitability_proven": false,
+      "broker_fill_verified": false,
+      "broker_mutation_authorized": false
+    },
+    "exact_safe_claim": "In a consumed 2025-01-02 through 2026-08-28 next-open adjusted-OHLC audit, the frozen SPY/BIL policy recorded positive modeled returns at 1, 5, and 25 basis points per traded leg but underperformed SPY. This is execution-mechanics sensitivity, not alpha, a broker fill, live or options P&L, a forecast, or proof of future profit."
+  },
+  "prospective_attempt114": {
+    "attempt_id": "finly_prospective_profitability_attempt_114",
+    "attempt_number": 114,
+    "evidence_class": "PUBLIC_GITHUB_PRE_SIGNAL_FREEZE_POINTER",
+    "publication_status": "PUBLIC_PRE_DEADLINE_GITHUB_WORKFLOW_VERIFIED",
+    "required_signal_commitments": 254,
+    "required_settlements": 252,
+    "primary_intervals": 252,
+    "exclusive_deadline": "2026-08-31T20:00:00.000Z",
+    "publication_commit": {
+      "sha": "38a999cdf5db98f3a831d137b799ff8a48248e71",
+      "url": "https://github.com/owlsowo/finly-bot/commit/38a999cdf5db98f3a831d137b799ff8a48248e71"
+    },
+    "verification_workflow": {
+      "run_id": 33293038439,
+      "url": "https://github.com/owlsowo/finly-bot/actions/runs/33293038439",
+      "conclusion": "success",
+      "created_at": "2026-08-30T04:41:05Z",
+      "completed_at": "2026-08-30T04:43:05Z"
+    },
+    "verification_observed_at": "2026-08-30T04:53:55.000Z",
+    "bound_runtime_source_count": 17,
+    "public_get_count": 23,
+    "assurance": {
+      "github_public_api_record_verified": true,
+      "successful_workflow_observed": true,
+      "public_pre_deadline_publication_observed": true,
+      "github_platform_record_only": true,
+      "independent_cryptographic_timestamp_verified": false,
+      "provider_origin_verified": false,
+      "broker_execution_verified": false,
+      "performance_inference_permitted": false,
+      "broker_mutation_authorized": false
+    },
+    "sample_boundary": {
+      "consecutive_official_sessions_required": true,
+      "no_skips": true,
+      "no_backfill": true,
+      "replacement_window_permitted": false,
+      "optional_stopping_permitted": false,
+      "repeat_confirmatory_test_permitted": false
+    },
+    "exact_safe_claim": "Attempt 114 publicly pinned the protocol, runtime, settlement, decomposition, and inference bytes to a successful GitHub workflow before the exclusive first-signal deadline. This GitHub platform record is not an independent cryptographic timestamp; all 254 timely commitment anchors and 252 reconciled settlements are still required, and performance inference and broker mutation remain disabled."
+  },
   "forward_trial": {
     "schema_version": "finly_forward_trial1_protocol.v2",
     "phase": "FROZEN_TWO_PHASE_ZERO_ROW",
@@ -259,6 +370,26 @@
         "id": "current_economic_decision",
         "path": "public/data/current_economic_decision.json",
         "sha256": "cd5f617639c00a217c9536b7b970a7b81d410a4e8ee0c47f984d9314234ab9f2"
+      },
+      {
+        "id": "equity_execution_realism",
+        "path": "research/output/equity_execution_realism.json",
+        "sha256": "8d4eb5922acf46c539790c398364ffcd41aa6c189c38494bf31f871bb6dfeb6d"
+      },
+      {
+        "id": "prospective_attempt114_protocol",
+        "path": "research/prospective_attempt114/protocol.json",
+        "sha256": "794bb93d578b4b4766daac1c27d7fa0a68f730fbeda853b208aa98ad501572ff"
+      },
+      {
+        "id": "prospective_attempt114_runtime_manifest",
+        "path": "research/prospective_attempt114/runtime_manifest.json",
+        "sha256": "c3fbcb985385ef9dcbc118824a6e318b1e39f45b290e180a6a1f1f0865ea9966"
+      },
+      {
+        "id": "prospective_attempt114_publication_receipt",
+        "path": "research/prospective_attempt114/publication_receipts/a10099fa3931c9ef6d40446486744dde72f1efb5538515d03c015cd7c1a87fbb.json",
+        "sha256": "de45561738de7be69d4b6bfa5da8848919756fc29682c42aa60dddb26d029360"
       }
     ]
   }

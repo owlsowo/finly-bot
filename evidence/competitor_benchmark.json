@@ -484,7 +484,7 @@
   "finly_comparison_boundary": {
     "status": "NOT_RANKED_AND_NOT_CROSS_PROJECT_BACKTESTED",
     "source_artifact": "public/data/submission_claims_lock.json",
-    "source_artifact_sha256": "sha256:2cf3b45a8588de376d7c84704e99c915d4ef0171aadc2c7a85ebd01ba905c333",
+    "source_artifact_sha256": "sha256:5a3013ed5757bca1d77ff9504ee71a1c22db9f2439900bd9c23d836f52631846",
     "historical_scope": "Consumed 2013-01-02 through 2026-08-27 adjusted-close G4 ETF allocation replay; descriptive only, not promoted, not historical options P&L, and not a forecast",
     "competition_account_pnl": "UNKNOWN",
     "allowed_claim": "In its consumed retrospective replay, G4 recorded a higher annualized return and a shallower maximum drawdown than SPY after modeled 5 bp one-way costs, but failed promotion.",

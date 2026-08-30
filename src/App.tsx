@@ -92,6 +92,82 @@ type ClaimsLock = {
     all_hashes_verified: boolean;
     artifacts: Array<{ id: string; path: string; sha256: string }>;
   };
+  execution_realism: {
+    evidence_class: string;
+    evidence_as_of: string;
+    policy_id: string;
+    window: { start: string; end: string; observations: number };
+    fill_assumption: string;
+    cost_unit: string;
+    next_open_cost_stress: Array<{
+      bps_per_leg: number;
+      total_return: number;
+      annualized_return: number;
+      annualized_volatility: number;
+      maximum_drawdown: number;
+      spy_total_return: number;
+    }>;
+    raw_no_distribution_proxy: {
+      bps_per_leg: number;
+      total_return: number;
+      annualized_return: number;
+      annualized_volatility: number;
+      maximum_drawdown: number;
+      spy_total_return: number;
+    };
+    small_account_proxy: {
+      bps_per_leg: number;
+      initial_equity_usd: number;
+      ending_equity_usd: number;
+      total_return: number;
+      annualized_return: number;
+      maximum_drawdown: number;
+      minimum_order_notional_usd: number;
+      quantity_decimals: number;
+      sell_day_fees_total_usd: number;
+      skipped_minimum_orders: number;
+    };
+    exact_safe_claim: string;
+  };
+  prospective_attempt114: {
+    attempt_id: string;
+    publication_status: string;
+    required_signal_commitments: number;
+    required_settlements: number;
+    primary_intervals: number;
+    exclusive_deadline: string;
+    publication_commit: { sha: string; url: string };
+    verification_workflow: {
+      run_id: number;
+      url: string;
+      conclusion: string;
+      created_at: string;
+      completed_at: string;
+    };
+    verification_observed_at: string;
+    bound_runtime_source_count: number;
+    public_get_count: number;
+    assurance: {
+      github_public_api_record_verified: boolean;
+      successful_workflow_observed: boolean;
+      public_pre_deadline_publication_observed: boolean;
+      github_platform_record_only: boolean;
+      independent_cryptographic_timestamp_verified: boolean;
+      provider_origin_verified: boolean;
+      broker_execution_verified: boolean;
+      performance_inference_permitted: boolean;
+      broker_mutation_authorized: boolean;
+    };
+    sample_boundary: {
+      consecutive_official_sessions_required: boolean;
+      no_skips: boolean;
+      no_backfill: boolean;
+      replacement_window_permitted: boolean;
+      optional_stopping_permitted: boolean;
+      repeat_confirmatory_test_permitted: boolean;
+    };
+    exact_safe_claim: string;
+  };
 };
 
 type DemoReceipt = {
@@ -158,13 +234,10 @@ const alignedReceipt = alignedReceiptJson as unknown as DemoReceipt;
 const conflictReceipt = conflictReceiptJson as unknown as DemoReceipt;
 
 const navigation = [
-  ["case", "The case"],
-  ["system", "System"],
-  ["receipt", "Decision record"],
-  ["range", "Historical replay"],
+  ["case", "Thesis"],
   ["evidence", "Evidence"],
-  ["forward", "Forward test"],
-  ["package", "Submission"],
+  ["forward", "Forward proof"],
+  ["package", "Artifacts"],
 ] as const;
 
 const architecture = [
@@ -255,8 +328,16 @@ export function DemoClient() {
 
   const result = claims.retrospective_result;
   const tests = claims.falsification;
-  const forward = claims.forward_trial;
-  const production = claims.production_policy;
+  const execution = claims.execution_realism;
+  const attempt = claims.prospective_attempt114;
+  const executionAt = (bps: number) => {
+    const row = execution.next_open_cost_stress.find((item) => item.bps_per_leg === bps);
+    if (!row) throw new Error(`Execution-realism evidence omits ${bps} bp stress`);
+    return row;
+  };
+  const baseExecution = executionAt(5);
+  const severeExecution = executionAt(25);
+  const smallAccount = execution.small_account_proxy;
   const receipt = receiptMode === "aligned" ? alignedReceipt : conflictReceipt;
   const selected = receipt.compilation.selected;
   const sourceRemovalCount = receipt.source_removal.variants.length;
@@ -283,63 +364,64 @@ export function DemoClient() {
       <main id="main-content">
         <section className="hero shell" id="case">
           <div className="hero-copy">
-            <p className="kicker">Controlled-delegation trading research</p>
-            <h1>In a consumed historical replay, Finly's G4 shadow turned a modeled $100,000 into {compactUsd.format(g4EndingValue)}.</h1>
+            <p className="kicker">Controlled-delegation trading agent</p>
+            <h1>Finly stayed positive after next-open execution and 25-basis-point cost stress.</h1>
             <p className="hero-deck">
-              The fourth-generation nonproduction shadow candidate (G4) finished a consumed 2013–2026 ETF replay at {compactUsd.format(g4EndingValue)},
-              versus {compactUsd.format(spyEndingValue)} for SPY—a {compactUsd.format(historicalDollarGap)} historical lead after modeled trading costs.
-              It also recorded the higher annualized return and the less severe drawdown. Select another period below and recompute the result yourself.
+              The frozen SPY/BIL policy returned {signedPct(baseExecution.total_return)} across {execution.window.observations} consumed sessions
+              under next-open fills and five basis points per traded leg. At a severe 25-basis-point stress, the return remained
+              {" "}{signedPct(severeExecution.total_return)}. The model may interpret evidence; deterministic code owns exposure, costs,
+              order fields and the final permission to trade.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#range">Explore a historical period</a>
-              <a className="text-action" href="#evidence">See why it was not promoted <span aria-hidden="true">↓</span></a>
+              <a className="primary-action" href="#evidence">Inspect the quantitative evidence</a>
+              <a className="text-action" href="#receipt">Try the decision record <span aria-hidden="true">↓</span></a>
             </div>
             <p className="hero-thesis">{claims.central_distinction}</p>
           </div>
 
           <figure className="hero-figure">
             <div className="figure-labels">
-              <span>Consumed retrospective replay</span>
-              <strong>{result.one_way_cost_bps} bp costs applied</strong>
+              <span>Consumed execution-realism audit</span>
+              <strong>Next open · 5 bp / leg</strong>
             </div>
-            <div className="hero-result" role="img" aria-label={`A modeled $100,000 became ${Math.round(g4EndingValue).toLocaleString("en-US")} in the nonproduction G4 historical replay versus ${Math.round(spyEndingValue).toLocaleString("en-US")} in SPY, a historical difference of ${Math.round(historicalDollarGap).toLocaleString("en-US")}.`}>
+            <div className="hero-result" role="img" aria-label={`The frozen production policy recorded a modeled ${pct(baseExecution.total_return)} total return and ${pct(baseExecution.maximum_drawdown)} maximum drawdown under next-open execution and five basis points per traded leg.`}>
               <div>
-                <span>Modeled $100k ending value</span>
-                <strong>{compactUsd.format(g4EndingValue)}</strong>
-                <small>SPY {compactUsd.format(spyEndingValue)}</small>
+                <span>Modeled total return</span>
+                <strong>{signedPct(baseExecution.total_return)}</strong>
+                <small>{execution.window.start} — {execution.window.end}</small>
               </div>
               <div>
-                <span>Historical dollar gap</span>
-                <strong>+{compactUsd.format(historicalDollarGap)}</strong>
-                <small>After modeled {result.one_way_cost_bps} bp one-way costs</small>
+                <span>Maximum drawdown</span>
+                <strong>{signedPct(baseExecution.maximum_drawdown)}</strong>
+                <small>Annualized volatility {pct(baseExecution.annualized_volatility)}</small>
               </div>
-              <p>G4 beat SPY in this consumed replay. Every cost assumption, test result and claim boundary remains attached for inspection.</p>
+              <p>The same frozen policy remained positive at {signedPct(severeExecution.total_return)} when the modeled cost rose to 25 basis points per traded leg.</p>
             </div>
             <figcaption>
-              2013-01-02 to 2026-08-27 · modeled 5 bp one-way turnover cost · selected after viewing history. Descriptive ETF replay—not options P&amp;L and not a forecast.
+              Adjusted-OHLC theoretical ledger; fractional next-open DAY-order assumption. Consumed retrospective evidence—not a broker fill, options P&amp;L, alpha claim or forecast. SPY returned {signedPct(baseExecution.spy_total_return)} over the same adjusted path.
             </figcaption>
           </figure>
 
-          <dl className="hero-metrics" aria-label="Headline historical results">
+          <dl className="hero-metrics" aria-label="Headline execution and reproducibility results">
             <div>
-              <dt>Modeled ending value</dt>
-              <dd>{compactUsd.format(g4EndingValue)} <small>Finly G4</small></dd>
-              <p>$100,000 initial capital</p>
+              <dt>25 bp cost stress</dt>
+              <dd>{signedPct(severeExecution.total_return)}</dd>
+              <p>Positive after 25× the one-basis-point case</p>
             </div>
             <div>
-              <dt>Historical lead</dt>
-              <dd>+{compactUsd.format(historicalDollarGap)}</dd>
-              <p>Versus SPY's {compactUsd.format(spyEndingValue)}</p>
+              <dt>$300 shadow</dt>
+              <dd>{compactUsd.format(smallAccount.ending_equity_usd)}</dd>
+              <p>From {compactUsd.format(smallAccount.initial_equity_usd)} after minimum-order and fee constraints</p>
             </div>
             <div>
-              <dt>Annualized return</dt>
-              <dd>{pct(result.candidate_annualized_return)} <small>Finly G4</small></dd>
-              <p>SPY {pct(result.spy_annualized_return)}</p>
+              <dt>Runtime closure</dt>
+              <dd>{attempt.bound_runtime_source_count} <small>files</small></dd>
+              <p>Hash-bound before the first eligible signal</p>
             </div>
             <div>
-              <dt>Maximum drawdown</dt>
-              <dd>{signedPct(result.candidate_maximum_drawdown)} <small>Finly G4</small></dd>
-              <p>SPY {signedPct(result.spy_maximum_drawdown)}</p>
+              <dt>Public verification</dt>
+              <dd>{attempt.public_get_count} <small>checks</small></dd>
+              <p>Fixed unauthenticated GitHub reads; workflow passed</p>
             </div>
           </dl>
         </section>
@@ -498,56 +580,68 @@ export function DemoClient() {
           <div className="shell">
             <div className="section-intro evidence-intro">
               <div>
-                <p className="kicker">The evidence</p>
-                <h2>A $386,289 historical lead—tested harder than a screenshot.</h2>
+                <p className="kicker">Execution evidence</p>
+                <h2>The production policy remained positive when we made the backtest harder to flatter.</h2>
               </div>
               <p>
-                From {result.window.start} through {result.window.end}, G4 recorded a higher annualized return and a less
-                severe maximum drawdown than SPY after the modeled {result.one_way_cost_bps}-basis-point one-way turnover cost.
-                Because G4 was selected after the full interval had been examined, these are descriptive results that
-                motivate further testing; they do not support deployment.
+                A consumed next-open audit replaced the policy's historical-close fill assumption, charged every absolute
+                traded SPY and BIL leg, and repeated the ledger at one, five and 25 basis points. The policy returned
+                {" "}{signedPct(baseExecution.total_return)} at five basis points and {signedPct(severeExecution.total_return)} at 25;
+                SPY returned {signedPct(baseExecution.spy_total_return)} over the same adjusted path.
               </p>
             </div>
 
-            <HistoricalExplorer />
-
             <aside className="production-clarifier" aria-labelledby="production-title">
               <div className="production-copy">
-                <p className="kicker">What would actually trade</p>
-                <h3 id="production-title">Production Finly is not G4.</h3>
+                <p className="kicker">The fixed production book</p>
+                <h3 id="production-title">A cautious SPY/BIL policy, audited as it would be queued.</h3>
                 <p>
-                  The frozen production book is a SPY/BIL trend-and-volatility policy. In its fixed, now-consumed holdout it
-                  gave up raw return for materially lower volatility and drawdown. It has no forward observations, so the
-                  evidence does not support saying it is more likely than not to beat SPY next month.
+                  Three lagged trend horizons set the SPY fraction; a 10% volatility target scales it; BIL receives the
+                  remainder. Signals are formed at close and the audit assumes fractional market orders at the next open.
+                  The result supports execution resilience and downside control, not a claim of market-beating alpha.
                 </p>
               </div>
               <dl className="production-metrics">
                 <div>
-                  <dt>Annualized return</dt>
-                  <dd>{pct(production.candidate.annualized_return)}</dd>
-                  <p>SPY {pct(production.spy.annualized_return)}</p>
+                  <dt>Next-open return · 5 bp</dt>
+                  <dd>{signedPct(baseExecution.total_return)}</dd>
+                  <p>{pct(baseExecution.annualized_return)} annualized</p>
                 </div>
                 <div>
-                  <dt>Annualized volatility</dt>
-                  <dd>{pct(production.candidate.annualized_volatility)}</dd>
-                  <p>SPY {pct(production.spy.annualized_volatility)}</p>
+                  <dt>Maximum drawdown · 5 bp</dt>
+                  <dd>{signedPct(baseExecution.maximum_drawdown)}</dd>
+                  <p>{pct(baseExecution.annualized_volatility)} annualized volatility</p>
                 </div>
                 <div>
-                  <dt>Maximum drawdown</dt>
-                  <dd>{signedPct(production.candidate.maximum_drawdown)}</dd>
-                  <p>SPY {signedPct(production.spy.maximum_drawdown)}</p>
+                  <dt>Return · 25 bp stress</dt>
+                  <dd>{signedPct(severeExecution.total_return)}</dd>
+                  <p>{signedPct(severeExecution.maximum_drawdown)} maximum drawdown</p>
                 </div>
                 <div>
-                  <dt>Forward observations</dt>
-                  <dd>{forward.settlements}</dd>
-                  <p>Next-month inference unavailable</p>
+                  <dt>Modeled $300 account</dt>
+                  <dd>{compactUsd.format(smallAccount.ending_equity_usd)}</dd>
+                  <p>{smallAccount.skipped_minimum_orders} sub-$1 adjustments skipped; {compactUsd.format(smallAccount.sell_day_fees_total_usd)} fee proxy</p>
                 </div>
               </dl>
               <p className="production-status">
-                Latest research-only proposal: {pct(production.latest_research_proposal.spy_weight)} SPY / {pct(production.latest_research_proposal.bil_weight)} BIL.
-                The paper account remained in its prior defensive state; no broker mutation was authorized or requested.
+                Same policy, same consumed {execution.window.start}–{execution.window.end} window. SPY's higher
+                {" "}{signedPct(baseExecution.spy_total_return)} raw return remains visible; no order or fill is presented as performance evidence.
               </p>
             </aside>
+
+            <div className="section-intro evidence-intro rejected-intro">
+              <div>
+                <p className="kicker">Why the system needs a refusal gate</p>
+                <h2>The stronger-looking backtest was the one Finly declined to trust.</h2>
+              </div>
+              <p>
+                G4 turned a modeled $100,000 into {compactUsd.format(g4EndingValue)}, versus {compactUsd.format(spyEndingValue)} for SPY,
+                after the declared costs. That {compactUsd.format(historicalDollarGap)} gap is tempting—and precisely why the
+                post-selection, multiple-testing and source-overlap checks matter.
+              </p>
+            </div>
+
+            <HistoricalExplorer />
 
             <div className="evidence-ledger">
               <div className="ledger-summary">
@@ -622,28 +716,34 @@ export function DemoClient() {
         </section>
 
         <section className="forward shell" id="forward">
-          <div className="forward-number" aria-label={`Zero of ${forward.minimum_settlements_for_primary_calculation} forward settlements`}>
-            <strong>{forward.settlements}</strong>
-            <span>/ {forward.minimum_settlements_for_primary_calculation}</span>
+          <div className="forward-stamp" aria-label={`${attempt.bound_runtime_source_count} runtime source files publicly hash-bound before the first eligible signal`}>
+            <p>Public before the first signal</p>
+            <strong>{attempt.bound_runtime_source_count}/{attempt.bound_runtime_source_count}</strong>
+            <span>runtime source files matched the public commit</span>
+            <small>{attempt.public_get_count} fixed public checks · workflow {attempt.verification_workflow.conclusion}</small>
           </div>
           <div className="forward-copy">
-            <p className="kicker">Forward Trial 1</p>
-            <h2>Forward Trial 1 has not yet produced performance evidence.</h2>
+            <p className="kicker">Attempt 114 · prospective proof</p>
+            <h2>We froze the next test before seeing its first result.</h2>
             <p>
-              Every interval used in the reported research has already been examined. Forward Trial 1 therefore starts with
-              zero observations and separates a recorded signal commitment from its later outcome. Local timestamps and
-              hashes do not prove when data were captured, so production writes and inference remain disabled until external
-              anchoring and reconciliation are ready and at least {forward.minimum_settlements_for_primary_calculation} settlements exist.
+              Before the exclusive first-signal deadline, Finly published the exact policy, accounting, settlement and
+              inference bytes in commit {attempt.publication_commit.sha.slice(0, 7)} and linked them to a successful GitHub workflow.
+              The primary test now requires consecutive evidence: no skipped session, replacement window, backfill, optional
+              stopping or repeat confirmatory run.
             </p>
             <dl className="forward-facts">
-              <div><dt>Signal commitments</dt><dd>{forward.commitments}</dd></div>
-              <div><dt>Outcome settlements</dt><dd>{forward.settlements}</dd></div>
-              <div><dt>Broker authority</dt><dd>{forward.broker_authority ? "Enabled" : "None"}</dd></div>
-              <div><dt>Performance inference</dt><dd>{forward.performance_inference_enabled ? "Enabled" : "Disabled"}</dd></div>
+              <div><dt>Timely public anchors</dt><dd>0 / {attempt.required_signal_commitments}</dd></div>
+              <div><dt>Reconciled settlements</dt><dd>0 / {attempt.required_settlements}</dd></div>
+              <div><dt>Broker mutation</dt><dd>{attempt.assurance.broker_mutation_authorized ? "Enabled" : "Disabled"}</dd></div>
+              <div><dt>Performance inference</dt><dd>{attempt.assurance.performance_inference_permitted ? "Enabled" : "Disabled"}</dd></div>
             </dl>
+            <div className="forward-links">
+              <a href={attempt.publication_commit.url}>Inspect the frozen commit <span aria-hidden="true">↗</span></a>
+              <a href={attempt.verification_workflow.url}>Inspect the successful workflow <span aria-hidden="true">↗</span></a>
+            </div>
             <p className="boundary-note">
-              The local, hash-bound protocol demonstrates schema and accounting mechanics. It does not yet prove
-              prospectivity, provider origin, execution quality, performance or future profit.
+              The publication is a reproducible GitHub platform record, not an independent cryptographic timestamp.
+              Provider origin, broker execution and future performance remain unverified.
             </p>
           </div>
         </section>

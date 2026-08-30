@@ -410,12 +410,13 @@ export function HistoricalExplorer() {
     <section className="range-explorer" id="range" aria-labelledby="range-title">
       <div className="range-explorer-heading">
         <div>
-          <p className="kicker">Explore the historical claim</p>
-          <h3 id="range-title">Choose a period. Recompute the historical edge.</h3>
+          <p className="kicker">Rejected-candidate appendix</p>
+          <h3 id="range-title">Stress-test the backtest Finly refused to promote.</h3>
         </div>
         <p>
-          This recomputes a standalone ${dataset.initial_capital.toLocaleString("en-US")} replay for the selected calendar years
-          under the frozen entry, exit and {dataset.one_way_cost_bps}-basis-point one-way cost convention.
+          G4 is a post-selected research shadow, not the production policy. This exhibit recomputes its standalone
+          ${dataset.initial_capital.toLocaleString("en-US")} replay for selected calendar years under the frozen entry,
+          exit and {dataset.one_way_cost_bps}-basis-point one-way cost convention.
         </p>
       </div>
 

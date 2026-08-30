@@ -6,19 +6,31 @@ Finly is Bruce Wen's solo submission to the Alpaca AI Trading Agents Hackathon. 
 
 Finly separates the right to interpret market evidence from the right to expose capital. An AI component may produce a bounded assessment and rationale. Deterministic code owns direction, horizon, sizing, defined-risk option construction, challenge tests, and the final PERMIT or NO_TRADE decision. Broker authority is disabled by default.
 
-## Strongest quantitative evidence
+## Production-policy execution evidence
 
-- A nonproduction research shadow called G4 was tested in a consumed adjusted-close ETF replay from 2013-01-02 through 2026-08-27.
-- A modeled $100,000 ended at $1,067,106 for G4 versus $680,817 for SPY: a $386,289 historical difference.
-- G4 returned 18.97% annualized versus 15.11% for SPY.
-- G4 maximum drawdown was -28.99% versus -33.72% for SPY.
-- The replay applies a modeled 5-basis-point one-way turnover cost.
-- The website contains an interactive range explorer that recomputes standalone entry and exit costs for a selected period.
-- Across the full consumed record, G4 beat SPY in all 2,175 overlapping five-year trading-session windows. These windows overlap heavily and are descriptive, not independent trials.
+- The frozen production policy is a long-only, unlevered SPY/BIL trend-and-volatility allocation. It is distinct from the rejected G4 research shadow.
+- Across 415 consumed sessions from 2025-01-02 through 2026-08-28, the adjusted theoretical ledger returned 15.39% under next-open execution and 5 basis points per absolute traded-notional leg. Annualized volatility was 8.12% and maximum drawdown was -5.45%.
+- At a severe 25-basis-point per-leg stress, the same policy remained positive at 10.56% with a -5.80% maximum drawdown.
+- SPY returned 33.52% over the same adjusted path. Finly did not beat SPY's raw return in this execution-realism window.
+- A raw/no-distribution proxy returned 12.75%.
+- A modeled $300 fractional shadow ended at $351.88 after a $1 order minimum, nine-decimal sizing, 12 skipped sub-$1 adjustments, and a $0.70 sell-fee proxy.
+
+## Why the rejected G4 result remains visible
+
+- G4 was a post-selected nonproduction research shadow tested in a consumed adjusted-close ETF replay from 2013-01-02 through 2026-08-27.
+- A modeled $100,000 ended at $1,067,106 for G4 versus $680,817 for SPY, but G4 failed multiple-testing, growth-control-independence, and authenticated-source-overlap promotion gates.
+- The interactive range explorer is an appendix exhibit for stress-testing that rejected historical candidate; it is not the production policy.
+
+## Prospective Attempt 114
+
+- Before the exclusive first-signal deadline, Finly publicly pinned the policy, accounting, settlement, decomposition, and inference runtime to commit 38a999c and a successful GitHub workflow.
+- Seventeen runtime source files matched the public commit through 23 fixed unauthenticated public checks.
+- The primary design requires 254 consecutive timely public commitment anchors and 252 reconciled settlements. It forbids skipped sessions, backfill, replacement windows, optional stopping, and repeat confirmatory tests.
+- No forward return has been observed yet. Broker mutation and performance inference remain disabled.
 
 ## Evidence boundary
 
-G4 was selected after historical results were viewed. It is not the production Finly policy, a forward forecast, an options-profit record, or proof of future profitability. It remains a nonproduction shadow because statistical and source-overlap promotion gates failed. Production Finly has zero forward performance observations. The repository does not claim guaranteed profit or likely next-month SPY outperformance.
+All returns above are consumed retrospective evidence. Adjusted-OHLC theory, the raw-price proxy, and Alpaca paper cash equity are separate ledgers; none is a broker-fill record, options P&L, durable-alpha proof, or forecast. The Attempt 114 publication is a reproducible GitHub platform record, not an independent cryptographic timestamp. The repository does not claim guaranteed profit or likely next-month SPY outperformance.
 
 ## Inspectable proof
 

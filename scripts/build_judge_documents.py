@@ -31,7 +31,7 @@ STONE = "68706F"
 RULE = "C8CCC7"
 PALE = "F1F3EF"
 WHITE = "FFFFFF"
-DOCUMENT_TIMESTAMP = datetime(2026, 8, 29, 12, 0, 0, tzinfo=timezone.utc)
+DOCUMENT_TIMESTAMP = datetime(2026, 8, 30, 12, 0, 0, tzinfo=timezone.utc)
 
 
 def set_cell_shading(cell, fill: str) -> None:
@@ -126,7 +126,7 @@ def add_page_number(paragraph) -> None:
 INLINE = re.compile(r"(\[[^\]]+\]\([^)]+\)|`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)")
 
 
-def add_hyperlink(paragraph, label: str, url: str, *, size: float, font: str, color=GREEN) -> None:
+def add_hyperlink(paragraph, label: str, url: str, *, size: float, font: str, color=GREEN, bold=False) -> None:
     part = paragraph.part
     rel_id = part.relate_to(url, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink", is_external=True)
     hyperlink = OxmlElement("w:hyperlink")
@@ -143,6 +143,8 @@ def add_hyperlink(paragraph, label: str, url: str, *, size: float, font: str, co
     underline = OxmlElement("w:u")
     underline.set(qn("w:val"), "single")
     r_pr.extend([r_fonts, color_node, size_node, underline])
+    if bold:
+        r_pr.append(OxmlElement("w:b"))
     new_run.append(r_pr)
     text = OxmlElement("w:t")
     text.text = label
@@ -151,30 +153,35 @@ def add_hyperlink(paragraph, label: str, url: str, *, size: float, font: str, co
     paragraph._p.append(hyperlink)
 
 
-def add_inline(paragraph, text: str, *, size: float, font="Times New Roman", color=INK) -> None:
+def add_inline(paragraph, text: str, *, size: float, font="Times New Roman", color=INK, bold=False) -> None:
     cursor = 0
     for match in INLINE.finditer(text):
         if match.start() > cursor:
             run = paragraph.add_run(text[cursor:match.start()])
-            set_run_font(run, font, size, color)
+            set_run_font(run, font, size, color, bold=bold)
         token = match.group(0)
         if token.startswith("["):
             label, url = re.match(r"\[([^\]]+)\]\(([^)]+)\)", token).groups()
-            add_hyperlink(paragraph, label, url, size=size, font=font)
+            link_bold = bold
+            if label.startswith("**") and label.endswith("**"):
+                label = label[2:-2]
+                link_bold = True
+            if label.startswith("`") and label.endswith("`"):
+                label = label[1:-1]
+            add_hyperlink(paragraph, label, url, size=size, font=font, bold=link_bold)
         elif token.startswith("`"):
             run = paragraph.add_run(token[1:-1])
-            set_run_font(run, "Menlo", max(6.8, size - 0.7), color)
+            set_run_font(run, "Menlo", max(6.8, size - 0.7), color, bold=bold)
             run.font.highlight_color = None
         elif token.startswith("**"):
-            run = paragraph.add_run(token[2:-2])
-            set_run_font(run, font, size, color, bold=True)
+            add_inline(paragraph, token[2:-2], size=size, font=font, color=color, bold=True)
         else:
             run = paragraph.add_run(token[1:-1])
             set_run_font(run, font, size, color, italic=True)
         cursor = match.end()
     if cursor < len(text):
         run = paragraph.add_run(text[cursor:])
-        set_run_font(run, font, size, color)
+        set_run_font(run, font, size, color, bold=bold)
 
 
 def set_page(section, *, top, bottom, left, right) -> None:
@@ -209,7 +216,7 @@ def add_doc_header(section, label: str) -> None:
     set_run_font(run, "Arial", 7.7, GREEN, bold=True)
     p2 = right.paragraphs[0]
     p2.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    run = p2.add_run("29 AUGUST 2026")
+    run = p2.add_run("30 AUGUST 2026")
     set_run_font(run, "Arial", 7.7, STONE, bold=True)
     set_table_borders(table, WHITE, 0)
     rule = header.add_paragraph()
@@ -321,18 +328,24 @@ def flush_paragraph(doc: Document, buffer: list[str], *, abstract=False, referen
         return
     text = " ".join(item.strip() for item in buffer).strip()
     buffer.clear()
+    is_formula = not abstract and not reference and text.startswith("`") and text.endswith("`")
+    if is_formula and doc.paragraphs:
+        doc.paragraphs[-1].paragraph_format.keep_with_next = True
     p = doc.add_paragraph()
-    p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-    p.paragraph_format.space_after = Pt(4 if not reference else 0.8)
-    p.paragraph_format.line_spacing = 1.03 if not reference else 0.90
+    p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER if is_formula else WD_ALIGN_PARAGRAPH.JUSTIFY
+    p.paragraph_format.space_before = Pt(2.5 if is_formula else 0)
+    p.paragraph_format.space_after = Pt(2.5 if is_formula else (4.2 if not reference else 0.6))
+    p.paragraph_format.line_spacing = 1.0 if is_formula else (1.05 if not reference else 0.88)
     p.paragraph_format.widow_control = True
+    p.paragraph_format.keep_together = is_formula or text.startswith("The publication receipt has")
+    p.paragraph_format.keep_with_next = is_formula
     if abstract:
         p.paragraph_format.left_indent = Inches(0.18)
         p.paragraph_format.right_indent = Inches(0.18)
     if reference:
         p.paragraph_format.left_indent = Inches(0.22)
         p.paragraph_format.first_line_indent = Inches(-0.22)
-    add_inline(p, text, size=8.95 if not reference else 7.10, color=INK if not reference else STONE)
+    add_inline(p, text, size=9.10 if not reference else 7.05, color=INK if not reference else STONE)
 
 
 def parse_table(lines: list[str], start: int) -> tuple[list[list[str]], int]:
@@ -366,9 +379,35 @@ def add_data_table(doc: Document, rows: list[list[str]]) -> None:
             p = cell.paragraphs[0]
             p.paragraph_format.space_after = Pt(0)
             p.paragraph_format.line_spacing = 1.0
-            p.alignment = WD_ALIGN_PARAGRAPH.LEFT if c_idx == 0 else WD_ALIGN_PARAGRAPH.RIGHT
-            run = p.add_run(value)
-            set_run_font(run, "Arial", 7.8, WHITE if r_idx == 0 else INK, bold=(r_idx == 0 or c_idx == 0))
+            header = rows[0][c_idx].replace("**", "").replace("`", "")
+            numeric_headers = {
+                "G4",
+                "SPY",
+                "Observed",
+                "Requirement",
+                "Total return",
+                "Annualized return",
+                "Annualized volatility",
+                "Maximum drawdown",
+                "SPY total return",
+            }
+            if c_idx == 0 or header not in numeric_headers:
+                p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+            else:
+                p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+            cell_text = value
+            cell_bold = r_idx == 0 or c_idx == 0
+            if cell_text.startswith("**") and cell_text.endswith("**"):
+                cell_text = cell_text[2:-2]
+                cell_bold = True
+            add_inline(
+                p,
+                cell_text,
+                size=7.8,
+                font="Arial",
+                color=WHITE if r_idx == 0 else INK,
+                bold=cell_bold,
+            )
     after = doc.add_paragraph()
     after.paragraph_format.space_after = Pt(1)
 
@@ -399,10 +438,10 @@ def build_technical_paper() -> Path:
 
     doc = Document()
     section = doc.sections[0]
-    set_page(section, top=0.68, bottom=0.62, left=0.72, right=0.72)
+    set_page(section, top=0.68, bottom=0.50, left=0.72, right=0.72)
     add_doc_header(section, "Finly / Technical evidence paper")
-    add_doc_footer(section, "Historical evidence is descriptive; promotion and broker authority remain withheld.")
-    configure_styles(doc, 8.95)
+    add_doc_footer(section, "Controlled delegation · execution realism · publicly frozen prospective evaluation.")
+    configure_styles(doc, 9.10)
 
     p = doc.add_paragraph()
     p.paragraph_format.space_before = Pt(4)

@@ -306,7 +306,7 @@
     },
     "submission_claims_lock": {
       "path": "public/data/submission_claims_lock.json",
-      "sha256": "2cf3b45a8588de376d7c84704e99c915d4ef0171aadc2c7a85ebd01ba905c333"
+      "sha256": "5a3013ed5757bca1d77ff9504ee71a1c22db9f2439900bd9c23d836f52631846"
     },
     "private_generation4_ledger": {
       "path": "data/private/champion_search/generation4_ledger_6f656b79d7a4e836eda3b85d35bfca34841e80c0da16a2afdef30e862d8a23e1.json.gz",
