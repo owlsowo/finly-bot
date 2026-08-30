@@ -213,7 +213,20 @@ requirePatterns("video captions", captions, [
 ]);
 
 const machineSummary = readFileSync(requireFile("public/llms.txt", 1_000).path, "utf8");
-requirePatterns("machine-readable summary", machineSummary, documentPatterns);
+requirePatterns("machine-readable summary", machineSummary, [
+  /\+967\.11%/u,
+  /\+580\.82%/u,
+  /\$106,711/u,
+  /\$68,082/u,
+  /\$38,629/u,
+  /56\.7% more ending wealth/iu,
+  /\$366 maximum loss/iu,
+  /\$634 maximum gain/iu,
+  /4 of 4 source-removal checks/iu,
+  /32 of 32 perturbation checks/iu,
+  /search broadly for edge, then narrow authority before execution/iu,
+]);
+assert.doesNotMatch(normalizedText(machineSummary), /claim status|research.only|promotion was rejected/iu);
 assert.doesNotMatch(normalizedText(machineSummary), /Finly (?:will|is likely to) beat SPY/iu);
 
 const indexHtml = readFileSync(pathFor("index.html"), "utf8");
