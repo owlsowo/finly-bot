@@ -1,0 +1,76 @@
+{
+  "schema_version": "finly_attempt150_public_evidence.v1",
+  "evidence_id": "industry_vm_g4_external_replay_attempt150",
+  "completed_at": "2026-08-30T13:11:03.202Z",
+  "evidence_class": "PRE_SPECIFIED_OUT_OF_ERA_EXTERNAL_REPLAY",
+  "source": {
+    "provider": "Kenneth R. French Data Library",
+    "dataset": "10 Industry Portfolios Daily, value weighted",
+    "official_archive_url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip",
+    "full_source_first_date": "1926-07-01",
+    "full_source_last_date": "2026-06-30",
+    "full_source_observations": 26274,
+    "archive_raw_bytes_sha256": "sha256:c4c9b7c3969e5477630e9e312f61a19bb74c0f8d159612ef3adf33380eeb301c",
+    "member_raw_bytes_sha256": "sha256:b05fb74129c63d57a70b2447ef6b32635466dd804f5ff459f65374ce2ea85c96",
+    "iso_date_sequence_sha256": "sha256:4d0b141f05d01b5b4028060a11081d5fc983bc0133c69325d994a469c5ff1eba"
+  },
+  "primary_window": {
+    "start_date": "1927-05-07",
+    "end_date": "2007-05-29",
+    "observations": 21218,
+    "modeled_one_way_cost_bps": 5
+  },
+  "headline": {
+    "finly_annualized_return": 0.13373047164258,
+    "market_annualized_return": 0.09479210440508279,
+    "annualized_return_advantage": 0.03893836723749722,
+    "finly_annualized_net_log_growth": 0.12551349772782178,
+    "market_annualized_net_log_growth": 0.09056448625217241,
+    "annualized_net_log_growth_advantage": 0.03494901147564834,
+    "finly_cash_excess_sharpe": 0.5728443845921158,
+    "market_cash_excess_sharpe": 0.42875316597963076,
+    "finly_maximum_drawdown": -0.6776033243655231,
+    "market_maximum_drawdown": -0.8407399476860211,
+    "drawdown_improvement_percentage_points": 0.16313662332049805
+  },
+  "risk_matched_comparison": {
+    "finly_annualized_return": 0.13373047164258,
+    "volatility_matched_market_annualized_return": 0.10935250302906141,
+    "annualized_net_log_growth_advantage": 0.021736983211517905,
+    "realized_volatility_ratio": 1.0679039777542854,
+    "finly_maximum_drawdown": -0.6776033243655231,
+    "volatility_matched_market_maximum_drawdown": -0.7638856571899212
+  },
+  "robustness": {
+    "positive_rebalance_anchors": 21,
+    "tested_rebalance_anchors": 21,
+    "minimum_anchor_annualized_net_log_growth_advantage": 0.026242927633797875,
+    "median_anchor_annualized_net_log_growth_advantage": 0.03384917796542321,
+    "maximum_anchor_annualized_net_log_growth_advantage": 0.04057726137406436,
+    "positive_at_modeled_cost_bps": [
+      5,
+      10,
+      25
+    ],
+    "annualized_net_log_growth_advantage_at_25bps": 0.024509431089598913,
+    "positive_complete_decades": 5,
+    "tested_complete_decades": 7,
+    "post_2007_overlap_diagnostic_annualized_net_log_growth_advantage": 0.020812036542129247
+  },
+  "audit": {
+    "precommitted_gates_passed": 8,
+    "precommitted_gates_total": 9,
+    "nominal_one_sided_bootstrap_p_value": 0.0024,
+    "global_trial_count": 201,
+    "bonferroni_adjusted_p_value": 0.48239999999999994,
+    "parametric_deflated_sharpe_probability": 0.7181513222236224,
+    "statistical_gate_passed": false,
+    "protocol_sha256": "sha256:31a9fc0536858e978400eb5550f8c815c74e7becbfe4b0a636504bcb433090bc",
+    "acquisition_receipt_sha256": "sha256:03e4a4d423f57b7b48b8ffa49eb6d2c6dd7a60489ef7f995f12f746d01bd69c1",
+    "evaluation_sha256": "sha256:f3815cf74193bc4507422e52cdb70ebbfd1f11bdd2b312e6c84c448110cd4492",
+    "primary_series_sha256": "sha256:88d40b9327c8d041719a1dafd32c5645114e0220ae5bc6f09413d807f417c4a4",
+    "run_receipt_sha256": "sha256:41776e239d2d3d944eade41bc647e463174534fca5f25f157ba916a1bc21c800"
+  },
+  "method_scope": "Pre-specified external industry-proxy replay with modeled transaction and financing costs; separate from live broker performance.",
+  "artifact_sha256": "sha256:17dd8590e5abe5d490d50fada830fe1b103f1e5b0675148bbaa63e7c304dda4c"
+}

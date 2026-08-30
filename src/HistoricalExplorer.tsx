@@ -39,7 +39,7 @@ export function HistoricalExplorer({
     <section className="range-explorer" aria-labelledby="historical-explorer-title">
       <div className="range-explorer-heading">
         <div>
-          <p className="kicker">13-year value case</p>
+          <p className="kicker">The performance headline</p>
           <h3 id="historical-explorer-title">$10,000 → $106,711: 56.7% more modeled ending wealth than SPY.</h3>
         </div>
         <p>
@@ -135,7 +135,7 @@ export function HistoricalExplorer({
       )}
 
       <p className="range-boundary">
-        <strong>Method:</strong> historical simulation from {startDate} to {endDate}; identical $10,000 starting
+        <strong>Evidence basis:</strong> historical simulation from {startDate} to {endDate}; identical $10,000 starting
         capital and comparison window; modeled {oneWayCostBps} bp one-way costs.
       </p>
     </section>

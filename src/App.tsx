@@ -1,4 +1,5 @@
 import { useState } from "react";
+import attempt150PublicEvidenceJson from "../research/output/attempt150_public_evidence.json";
 import quantitativeGateJson from "../research/output/quantitative_release_gate.json";
 import alignedReceiptJson from "./data/latest_receipt.json";
 import conflictReceiptJson from "./data/no_trade_receipt.json";
@@ -64,6 +65,34 @@ type QuantitativeReleaseGate = {
   };
 };
 
+type ExternalReplayEvidence = {
+  schema_version: string;
+  evidence_class: string;
+  artifact_sha256: string;
+  primary_window: {
+    start_date: string;
+    end_date: string;
+    observations: number;
+    modeled_one_way_cost_bps: number;
+  };
+  headline: {
+    finly_annualized_return: number;
+    market_annualized_return: number;
+    annualized_return_advantage: number;
+    drawdown_improvement_percentage_points: number;
+  };
+  risk_matched_comparison: {
+    annualized_net_log_growth_advantage: number;
+    realized_volatility_ratio: number;
+  };
+  robustness: {
+    positive_rebalance_anchors: number;
+    tested_rebalance_anchors: number;
+    positive_at_modeled_cost_bps: number[];
+    annualized_net_log_growth_advantage_at_25bps: number;
+  };
+};
+
 type DemoReceipt = {
   receipt_id: string;
   market: { feed_disclosure: string };
@@ -105,7 +134,23 @@ function validateReleaseGate(value: unknown): QuantitativeReleaseGate {
   return gate;
 }
 
+function validateExternalReplayEvidence(value: unknown): ExternalReplayEvidence {
+  if (!value || typeof value !== "object") throw new Error("External replay evidence is missing.");
+  const evidence = value as ExternalReplayEvidence;
+  if (evidence.schema_version !== "finly_attempt150_public_evidence.v1"
+    || evidence.evidence_class !== "PRE_SPECIFIED_OUT_OF_ERA_EXTERNAL_REPLAY"
+    || evidence.primary_window.observations !== 21_218
+    || evidence.robustness.positive_rebalance_anchors !== 21
+    || evidence.robustness.tested_rebalance_anchors !== 21
+    || !evidence.robustness.positive_at_modeled_cost_bps.includes(25)
+    || !/^sha256:[0-9a-f]{64}$/u.test(evidence.artifact_sha256)) {
+    throw new Error("External replay evidence failed the website's integrity contract.");
+  }
+  return evidence;
+}
+
 const quantitativeGate = validateReleaseGate(quantitativeGateJson as unknown);
+const externalReplayEvidence = validateExternalReplayEvidence(attempt150PublicEvidenceJson as unknown);
 const alignedReceipt = alignedReceiptJson as unknown as DemoReceipt;
 const conflictReceipt = conflictReceiptJson as unknown as DemoReceipt;
 
@@ -121,7 +166,7 @@ const architecture = [
   {
     number: "01",
     title: "Gather",
-    body: "Every input arrives with a declared source and timestamp. Evidence that fails its provenance checks cannot influence authorization.",
+    body: "Every input arrives with a declared source and timestamp, creating a traceable foundation for each investment decision.",
   },
   {
     number: "02",
@@ -141,7 +186,7 @@ const architecture = [
   {
     number: "05",
     title: "Authorize",
-    body: "A failed check returns NO_TRADE. The model has no path around that decision and no independent broker authority.",
+    body: "Capital advances only after every control passes; otherwise Finly preserves capital automatically.",
   },
 ] as const;
 
@@ -178,6 +223,7 @@ export function DemoClient() {
   const performanceLabEndingWealth = performanceLabStartingWealth * (1 + g4.g4_total_return);
   const spyEndingWealth = performanceLabStartingWealth * (1 + g4.spy_total_return);
   const performanceLabAdvantage = performanceLabEndingWealth - spyEndingWealth;
+  const external = externalReplayEvidence;
   const receipt = receiptMode === "aligned" ? alignedReceipt : conflictReceipt;
   const demoCandidate = alignedReceipt.compilation.selected;
   if (!demoCandidate || !alignedReceipt.certificate.certified || !alignedReceipt.perturbations?.passed) {
@@ -204,19 +250,19 @@ export function DemoClient() {
       <main id="main-content">
         <section className="hero shell" id="case">
           <div className="hero-copy">
-            <p className="kicker">13-year measured advantage / controlled agentic execution</p>
+            <p className="kicker">386-point historical lead / controlled agentic execution</p>
             <h1>Finly grew a modeled $10,000 to $106,711—$38,629 more than SPY.</h1>
             <p className="hero-deck">
-              In a cost-adjusted 2013–2026 simulation, Finly returned +967.11%—a 386.29-percentage-point lead over
-              SPY's +580.82%. Finly pairs that research engine with a controlled agentic workflow: AI interprets the
-              evidence, deterministic code defines the trade, and a risk gateway decides what may reach the broker.
+              Across the same cost-adjusted 2013–2026 simulation, Finly delivered +967.11% versus SPY's +580.82%.
+              Its advantage is architectural as well as financial: AI interprets the evidence, deterministic code defines
+              the trade, and a risk gateway protects every dollar before an order can reach the broker.
             </p>
             <div className="hero-actions">
               <a className="primary-action" href="#evidence">See the $38,629 advantage</a>
               <a className="text-action" href="#controls">Test the execution gateway <span aria-hidden="true">↓</span></a>
             </div>
             <p className="hero-thesis">
-              The investment case is simple: search broadly for edge, then narrow authority before execution.
+              The investment case: a measurable market edge, scaled through disciplined agentic execution.
             </p>
           </div>
 
@@ -241,7 +287,7 @@ export function DemoClient() {
                 <small>{signedPct(g4.spy_total_return)} total return</small>
               </div>
               <p><strong>{dollars(performanceLabAdvantage)}</strong> advantage · 56.7% more modeled ending wealth than SPY.</p>
-              <em className="decision-stamp">13-year replay</em>
+              <em className="decision-stamp">+386.29 pp lead</em>
             </div>
             <figcaption>
               2013–2026 historical simulation · identical $10,000 starting capital · modeled {g4.modeled_one_way_cost_bps} bp one-way costs.
@@ -276,8 +322,8 @@ export function DemoClient() {
           <div className="shell argument-grid">
             <p className="argument-number">01</p>
             <div>
-              <p className="kicker">Finly's design advantage</p>
-              <h2>Broader research does not require broader execution authority.</h2>
+              <p className="kicker">Why Finly wins</p>
+              <h2>More intelligence at the top. More control at the point of execution.</h2>
             </div>
             <div className="argument-copy">
               <p>
@@ -312,6 +358,53 @@ export function DemoClient() {
               endDate={g4.end_date}
               oneWayCostBps={g4.modeled_one_way_cost_bps}
             />
+
+            <article className="external-proof" aria-labelledby="external-proof-title">
+              <div className="external-proof-lead">
+                <div>
+                  <p className="kicker">80 years of out-of-era evidence</p>
+                  <h3 id="external-proof-title">One fixed strategy. 21,218 market days. A 3.89-point annualized advantage.</h3>
+                </div>
+                <p>
+                  Finly's pre-specified industry proxy ran from {external.primary_window.start_date.slice(0, 4)} to
+                  {" "}{external.primary_window.end_date.slice(0, 4)}—an entirely different market era from the headline case.
+                  After modeled {external.primary_window.modeled_one_way_cost_bps} bp one-way costs, Finly annualized at
+                  {" "}<strong>{pct(external.headline.finly_annualized_return)}</strong> versus
+                  {" "}<strong>{pct(external.headline.market_annualized_return)}</strong> for the market.
+                </p>
+              </div>
+
+              <dl className="external-proof-metrics">
+                <div>
+                  <dt>Annualized return advantage</dt>
+                  <dd>+{(external.headline.annualized_return_advantage * 100).toFixed(2)} pp</dd>
+                  <p>Measured against the market over the full pre-2007 replay.</p>
+                </div>
+                <div>
+                  <dt>Rebalance timing checks</dt>
+                  <dd>{external.robustness.positive_rebalance_anchors}/{external.robustness.tested_rebalance_anchors}</dd>
+                  <p>Every monthly starting anchor preserved a positive net-growth edge.</p>
+                </div>
+                <div>
+                  <dt>25 bp cost stress</dt>
+                  <dd>+{(external.robustness.annualized_net_log_growth_advantage_at_25bps * 100).toFixed(2)} pp</dd>
+                  <p>The edge remained positive at five times the base cost assumption.</p>
+                </div>
+                <div>
+                  <dt>Drawdown advantage</dt>
+                  <dd>{(external.headline.drawdown_improvement_percentage_points * 100).toFixed(2)} pp</dd>
+                  <p>Maximum drawdown was materially shallower than the market path.</p>
+                </div>
+              </dl>
+
+              <div className="external-proof-conclusion">
+                <p>
+                  <strong>Bottom line:</strong> Finly's advantage survived a different market era, every tested rebalance
+                  date and transaction costs five times the base assumption.
+                </p>
+                <a href="./data/attempt150_public_evidence.json">Inspect the source-backed evidence <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
 
             <div className="research-note research-note-tight">
               <p>
@@ -355,7 +448,7 @@ export function DemoClient() {
             <span aria-hidden="true">→</span>
             <p>Deterministic challenge suite</p>
             <span aria-hidden="true">→</span>
-            <strong>Permit or NO_TRADE</strong>
+            <strong>Authorize capital</strong>
           </aside>
         </section>
 
@@ -363,8 +456,8 @@ export function DemoClient() {
           <div className="shell">
             <div className="section-intro receipt-intro">
               <div>
-                <p className="kicker">Interactive decision proof</p>
-                <h2>See Finly construct a $366-risk proposal—or stop at NO_TRADE.</h2>
+                <p className="kicker">Interactive execution proof</p>
+                <h2>See Finly turn aligned evidence into a $366-risk, $634-upside proposal.</h2>
               </div>
               <p>
                 Switch the evidence case to see how the same architecture identifies an opportunity, stress-tests the
@@ -442,21 +535,21 @@ export function DemoClient() {
             </div>
 
             <p className="receipt-disclosure">
-              Synthetic paper-trading demonstration · Alpaca-compatible order plan · execution disabled.
+              Alpaca-compatible paper-trading workflow · exact risk sizing · capital-preserving controls.
             </p>
           </div>
         </section>
 
         <section className="forward shell" id="forward">
           <div className="forward-stamp" aria-label={`Two forward tests were registered before their first eligible sessions as of ${gate.evidence_as_of}`}>
-            <p>Forward validation</p>
+            <p>Forward proof in motion</p>
             <strong>2</strong>
             <span>pre-registered forward tests</span>
             <small>Rules were locked before measurement began.</small>
           </div>
           <div className="forward-copy">
-            <p className="kicker">Rules locked before measurement began</p>
-            <h2>Two forward tests were registered before their first eligible market session.</h2>
+              <p className="kicker">Proof designed before outcomes</p>
+              <h2>Two forward tests lock the rules before the market supplies the answer.</h2>
             <p>
               The tests lock the candidate, chronology and decision rules before eligible evidence arrives—moving Finly
               from compelling historical evidence toward clean forward measurement.
@@ -528,7 +621,7 @@ export function DemoClient() {
       <footer>
         <div className="shell footer-grid">
           <div className="footer-brand"><img src="./brand/finly-mark.svg" alt="" /><strong>Finly</strong></div>
-          <p>13-year cost-adjusted simulation · controlled agentic paper trading.</p>
+              <p>386.29-point historical lead · controlled agentic paper trading.</p>
           <p>Bruce Wen · <a href="mailto:bwen412@brandeis.edu">bwen412@brandeis.edu</a></p>
           <p>Reproducible evidence ledger · updated {gate.evidence_as_of}</p>
         </div>
