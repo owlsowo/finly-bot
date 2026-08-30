@@ -1,0 +1,124 @@
+{
+  "schema_version": "finly_g4_shadow_live_protocol.v1",
+  "trial_id": "finly_g4_shadow_live_1",
+  "status": "FROZEN_BEFORE_FIRST_SIGNAL",
+  "registered_at": "2026-08-30T13:29:14.000Z",
+  "hindsight_boundary": {
+    "last_consumed_session": "2026-08-28",
+    "first_eligible_signal_session": "2026-08-31",
+    "first_eligible_execution_session": "2026-09-01",
+    "no_backfill": true,
+    "strategy_revision_after_freeze_permitted": false
+  },
+  "upstream_capture": {
+    "trial_id": "finly_forward_trial_live_1a",
+    "activation_sha256": "sha256:a9ad429e2094d7cb59300bab18727306121554b62ac112a8e297ce9e12b2800d",
+    "runtime_manifest_sha256": "sha256:9ab2b2d7b3e788880db9d6de1212fa485967472b1f0fae5963c6c51f88912457",
+    "market_data_provider": "Alpaca Market Data API",
+    "feed": "iex",
+    "adjusted_signal_book": "all",
+    "raw_shadow_book": "raw",
+    "symbols": [
+      "SPY",
+      "BIL",
+      "QQQ",
+      "IWM",
+      "EFA",
+      "EEM",
+      "IEF",
+      "TLT",
+      "GLD",
+      "DBC",
+      "VNQ",
+      "XLK",
+      "XLF",
+      "XLE",
+      "XLY",
+      "XLP",
+      "XLI",
+      "XLB",
+      "XLV",
+      "XLU"
+    ]
+  },
+  "frozen_strategy": {
+    "strategy_id": "qqq_core_sector_12_6",
+    "technology_core_symbol": "QQQ",
+    "technology_core_weight": 0.5,
+    "sector_satellite_count": 3,
+    "weight_per_selected_sector": 0.16666666666666666,
+    "momentum_start_sessions": 252,
+    "momentum_end_sessions": 126,
+    "lookback_sessions": 252,
+    "rebalance_interval_sessions": 21,
+    "rebalance_anchor": 0,
+    "long_only": true,
+    "maximum_risky_gross": 1
+  },
+  "signal_chronology": {
+    "signal_time": "COMPLETED_SESSION_CLOSE",
+    "capture_delay_minutes": 15,
+    "execution_time": "NEXT_COMPLETED_SESSION_CLOSE",
+    "first_return_interval": "EXECUTION_CLOSE_TO_FOLLOWING_CLOSE",
+    "hold_between_scheduled_rebalances": true
+  },
+  "shadow_account": {
+    "currency": "USD",
+    "initial_cash_usd": 300,
+    "monthly_contribution_usd": 300,
+    "first_additional_contribution_month": "2026-10",
+    "fractional_shares": true,
+    "minimum_order_notional_usd": 1,
+    "sell_before_buy": true,
+    "self_financing": true,
+    "one_way_transaction_cost_bps": 5,
+    "slippage_bps": 0,
+    "no_margin": true
+  },
+  "comparison": {
+    "benchmark": "SPY",
+    "identical_contribution_schedule": true,
+    "identical_cost_model": true,
+    "primary_metric": "ENDING_WEALTH_DIFFERENCE_USD",
+    "secondary_metrics": [
+      "TIME_WEIGHTED_RETURN",
+      "MAXIMUM_DRAWDOWN",
+      "REALIZED_VOLATILITY",
+      "TOTAL_MODELED_COST"
+    ]
+  },
+  "publication": {
+    "write_once": true,
+    "hash_chained": true,
+    "publish_before_outcome_interval": true,
+    "public_fields": [
+      "signal_session_date",
+      "captured_at",
+      "strategy_id",
+      "target_weights",
+      "selected_sectors",
+      "modeled_orders",
+      "shadow_equity",
+      "spy_shadow_equity",
+      "contributions_to_date",
+      "modeled_costs_to_date",
+      "source_panel_sha256",
+      "previous_record_sha256",
+      "record_sha256"
+    ]
+  },
+  "authority": {
+    "market_data_read_only": true,
+    "shadow_only": true,
+    "broker_mutation_authorized": false,
+    "order_submission_permitted": false,
+    "real_money_permitted": false
+  },
+  "claim_policy": {
+    "operational_claim_permitted": true,
+    "live_profitability_claim_before_252_returns": false,
+    "historical_result_relabeling_permitted": false,
+    "competitor_rank_claim_permitted": false
+  },
+  "protocol_sha256": "sha256:51a636dfaadfb283651f8735695a0594fc78421189eb8abf2a7fe0eb01036a35"
+}
