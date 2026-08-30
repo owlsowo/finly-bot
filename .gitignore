@@ -46,6 +46,7 @@ next-env.d.ts
 # local Finly state and credentials
 /data/private/
 /data/ledger/
+/data/external_validation_attempt115/
 *.sqlite
 *.sqlite-wal
 *.sqlite-shm
