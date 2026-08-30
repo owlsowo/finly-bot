@@ -1,6 +1,6 @@
 # Finly historical-research cutoff
 
-Cutoff: **2026-08-29T11:54:51Z**
+Cutoff: **2026-08-29T11:54:51Z**  
 Disposition: **HISTORICAL TUNING CLOSED**
 
 This file closes Finly's historical search. No strategy rule, universe, lookback, rebalance cadence, selection threshold, cost assumption, or benchmark may be changed in response to any market observation dated on or before 27 August 2026. The remaining submission work may improve engineering, explanation, interface design, and demonstrations, but it may not use the consumed history to improve a reported performance number.
@@ -40,3 +40,4 @@ Only prospectively timestamped paper observations collected after this cutoff ar
 | `research/source_overlap_reconciliation_generation5_protocol.json` | `88f000732851a59f56a218c791731bb913e8ec51cd461b7a9347da6ae1697be6` |
 | `research/source_overlap_reconciliation_generation5_freeze_receipt.json` | `3238a3bbb13f3c08073a81cb8bb1d2424ee42f8751d7e52f76ffdc07d98a3828` |
 | `research/output/source_overlap_reconciliation_generation5.json` | `b5a9aa1f1212429732aa83a350d7003d6c5ed0b7f8f76bccba3c2d69ef07b6d6` |
+

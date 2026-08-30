@@ -532,7 +532,6 @@ test("concentration statistics report conditional HHI and direct ETF weights wit
 
 test("the recurring-contribution hook compares equal $300 schedules and returns compact evidence", () => {
   const dates = Array.from({ length: 15 }, (_, index) => `${2024 + Math.floor(index / 12)}-${String((index % 12) + 1).padStart(2, "0")}-02`);
-  dates[dates.length - 1] = "2025-03-02";
   const candidate = dates.map((date) => row(date, 0.01));
   const spy = dates.map((date) => row(date, 0.005));
   const result = buildRecurringContributionEvidence(
