@@ -27,7 +27,7 @@ export const SOURCE_REGISTRY = Object.freeze([
   Object.freeze({ id: "prospective_attempt114_publication_receipt", path: "research/prospective_attempt114/publication_receipts/a10099fa3931c9ef6d40446486744dde72f1efb5538515d03c015cd7c1a87fbb.json", sha256: "de45561738de7be69d4b6bfa5da8848919756fc29682c42aa60dddb26d029360" }),
 ]);
 
-export const OUTPUT_PATH = "public/data/submission_claims_lock.json";
+export const OUTPUT_PATH = "research/output/legacy_submission_claims_lock.json";
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);

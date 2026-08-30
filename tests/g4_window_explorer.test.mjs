@@ -37,7 +37,7 @@ function sha256(payload) {
 test("window explorer is claims-lock aligned and exposes the stable UI schema", async () => {
   const [artifact, claims] = await Promise.all([
     loadArtifact(),
-    readFile(resolve(projectRoot, "public/data/submission_claims_lock.json"), "utf8").then(JSON.parse),
+    readFile(resolve(projectRoot, "research/output/legacy_submission_claims_lock.json"), "utf8").then(JSON.parse),
   ]);
   assert.equal(artifact.schema_version, SCHEMA_VERSION);
   assert.equal(artifact.initial_capital, 100000);

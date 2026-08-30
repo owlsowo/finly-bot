@@ -55,6 +55,6 @@ The Generation 7 registry records **20 visible projects** and **zero exact same-
 | attempt115_publication_receipt | `research/prospective_attempt115/publication_receipts/4dd7720d25198702013ab10e582b37004515bed5e4466a56eca89192559d2cd9.json` | `sha256:16d6af10a21b6654b862cf48a1489fca51aa7015b3f33b152832a2637704f436` |
 | attempt116_protocol | `research/prospective_attempt116/protocol.json` | `sha256:3baa380e02f982d1c0c892357cded0e24ad311c2e73c1c1cc38d1d1b5d1501a2` |
 | attempt116_publication_receipt | `research/prospective_attempt116/publication_receipts/934e52a583893e2720a0962195efd56b5f4b2a0554a1b8f8dfa9ab5951191362.json` | `sha256:1f959fd4245b7abd0c8eeeef2c4034623f93f68a691a9f80e0570c97ceab16ec` |
-| competitor_strategy_registry_generation7 | `research/competitor_strategy_registry_generation7.json` | `sha256:06d57411772d9670df9af48bc66e699b201f561d0bebd90f4a1aac40ccf17f7f` |
+| field_evidence_availability_generation7 | `research/field_evidence_availability_generation7.json` | `sha256:da43337c634c50dd85d7c1c194d43d3f0d0b2747b82822c62f4f59db2a2c708d` |
 
-All seven sources are required. Missing files, byte drift, schema drift, protocol self-hash drift, or receipt validation failure stops the build. Artifact self-hash: `sha256:033cdabd1965ee7b0c1226183dcb0c03d2c093ebccc9e8ba3b6adea7cbe92cc6`.
+All seven sources are required. Missing files, byte drift, schema drift, protocol self-hash drift, or receipt validation failure stops the build. Artifact self-hash: `sha256:1550d4fa7956138074dd08b98b8836811e6bd9adfd635e1378598efd81d0d5f1`.

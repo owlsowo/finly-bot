@@ -305,7 +305,7 @@
       "sha256": "e5608cd87b7ec19e2ce592e8a8458188058282de32fd8143371abe59e92c0d8e"
     },
     "submission_claims_lock": {
-      "path": "public/data/submission_claims_lock.json",
+      "path": "research/output/legacy_submission_claims_lock.json",
       "sha256": "5a3013ed5757bca1d77ff9504ee71a1c22db9f2439900bd9c23d836f52631846"
     },
     "private_generation4_ledger": {

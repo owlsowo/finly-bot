@@ -1,0 +1,25 @@
+{
+  "schema_version": "finly_anonymous_field_evidence_availability.v1",
+  "captured_at": "2026-08-30T07:34:56Z",
+  "capture": {
+    "live_page_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+    "live_page_observed_at": "2026-08-30T07:27:00Z",
+    "visible_submission_count": 20,
+    "complete_visible_census": true,
+    "method": "Authenticated read-only live-page expansion followed by read-only inspection of the public evidence exposed by each visible submission."
+  },
+  "financial_evidence_availability": {
+    "exact_same_panel_submitted_options_comparator_count": 0,
+    "status": "NO_PUBLIC_SAME_PANEL_SUBMITTED_OPTIONS_COMPARATOR",
+    "missing_pnl_treatment": "UNKNOWN_NEVER_ZERO",
+    "finly_vs_project_return_matchup_authorized": false,
+    "cross_project_financial_rank_authorized": false
+  },
+  "privacy_boundary": {
+    "project_level_records_included": false,
+    "project_names_included": false,
+    "project_critiques_included": false,
+    "project_return_figures_included": false
+  },
+  "claim_boundary": "This aggregate availability record supports neither a Finly-versus-project return matchup nor a financial rank. Missing P&L remains unknown and cannot be imputed as zero."
+}

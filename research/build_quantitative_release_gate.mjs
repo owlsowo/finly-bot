@@ -66,16 +66,17 @@ export const SOURCE_REGISTRY = Object.freeze([
     self_hash_sha256: "sha256:934e52a583893e2720a0962195efd56b5f4b2a0554a1b8f8dfa9ab5951191362",
   }),
   Object.freeze({
-    id: "competitor_strategy_registry_generation7",
-    path: "research/competitor_strategy_registry_generation7.json",
-    schema_version: "finly_competitor_strategy_registry_generation7.v1",
-    raw_bytes_sha256: "sha256:06d57411772d9670df9af48bc66e699b201f561d0bebd90f4a1aac40ccf17f7f",
+    id: "field_evidence_availability_generation7",
+    path: "research/field_evidence_availability_generation7.json",
+    schema_version: "finly_anonymous_field_evidence_availability.v1",
+    raw_bytes_sha256: "sha256:da43337c634c50dd85d7c1c194d43d3f0d0b2747b82822c62f4f59db2a2c708d",
   }),
 ]);
 
 export const OUTPUT_PATHS = Object.freeze({
   json: "research/output/quantitative_release_gate.json",
   markdown: "research/output/quantitative_release_gate_report.md",
+  public_json: "public/data/quantitative_release_gate.json",
 });
 
 export const EXACT_ALLOWED_CLAIMS = Object.freeze([
@@ -217,7 +218,7 @@ async function validateSourceContracts(sources, rootDir) {
   const attempt115Receipt = sources.attempt115_publication_receipt;
   const attempt116Protocol = sources.attempt116_protocol;
   const attempt116Receipt = sources.attempt116_publication_receipt;
-  const competitors = sources.competitor_strategy_registry_generation7;
+  const fieldEvidence = sources.field_evidence_availability_generation7;
 
   const canonical115 = await loadProspectiveAttempt115Protocol({ projectRoot: rootDir });
   const canonical116 = await loadProspectiveAttempt116Protocol({ projectRoot: rootDir });
@@ -284,21 +285,25 @@ async function validateSourceContracts(sources, rootDir) {
     && attempt116Receipt.assurance?.performance_inference_permitted === false,
   "Attempt 116 public-registration boundary changed");
 
-  const eligibleComparators = competitors.projects
-    ?.filter((project) => project.financial_evidence?.comparator_eligible);
-  invariant(competitors.capture?.visible_submission_count === 20
-    && competitors.capture?.complete_visible_census === true
-    && competitors.projects?.length === 20,
-  "Generation 7 visible-project census changed");
-  invariant(eligibleComparators?.length === 0
-    && competitors.primary_comparators?.financial?.eligible_project_count === 0
-    && competitors.primary_comparators?.financial?.status
+  invariant(fieldEvidence.capture?.visible_submission_count === 20
+    && fieldEvidence.capture?.complete_visible_census === true,
+  "Generation 7 aggregate visible-project count changed");
+  invariant(fieldEvidence.financial_evidence_availability
+    ?.exact_same_panel_submitted_options_comparator_count === 0
+    && fieldEvidence.financial_evidence_availability?.status
       === "NO_PUBLIC_SAME_PANEL_SUBMITTED_OPTIONS_COMPARATOR"
-    && competitors.primary_comparators?.financial?.direct_submitted_options_pnl_comparison === false
-    && competitors.primary_comparators?.financial?.cross_project_financial_rank_supported === false,
-  "Generation 7 financial-comparator boundary changed");
-  invariant(competitors.claim_boundaries?.some((claim) => /unknown, never zero/iu.test(claim)),
-    "Generation 7 missing-P&L boundary changed");
+    && fieldEvidence.financial_evidence_availability
+      ?.finly_vs_project_return_matchup_authorized === false
+    && fieldEvidence.financial_evidence_availability
+      ?.cross_project_financial_rank_authorized === false,
+  "Generation 7 aggregate financial-evidence boundary changed");
+  invariant(fieldEvidence.financial_evidence_availability?.missing_pnl_treatment
+      === "UNKNOWN_NEVER_ZERO"
+    && fieldEvidence.privacy_boundary?.project_level_records_included === false
+    && fieldEvidence.privacy_boundary?.project_names_included === false
+    && fieldEvidence.privacy_boundary?.project_critiques_included === false
+    && fieldEvidence.privacy_boundary?.project_return_figures_included === false,
+  "Generation 7 privacy or missing-P&L boundary changed");
 
   return Object.freeze({
     surface,
@@ -307,7 +312,7 @@ async function validateSourceContracts(sources, rootDir) {
     attempt115Receipt,
     attempt116Protocol,
     attempt116Receipt,
-    competitors,
+    fieldEvidence,
     g4,
     g4Falsification,
     costCells,
@@ -325,7 +330,7 @@ function latestEvidenceInstant(evidence) {
     evidence.execution.evidence_as_of,
     evidence.attempt115Receipt.verification_observed_at,
     evidence.attempt116Receipt.verification_observed_at,
-    evidence.competitors.captured_at,
+    evidence.fieldEvidence.captured_at,
   ];
   invariant(values.every((value) => Number.isFinite(Date.parse(value))),
     "release-gate evidence timestamps are invalid");
@@ -520,8 +525,8 @@ export async function buildQuantitativeReleaseGate({
         }),
       ]),
       competitor_evidence_availability: Object.freeze({
-        captured_at: evidence.competitors.captured_at,
-        visible_project_count: evidence.competitors.capture.visible_submission_count,
+        captured_at: evidence.fieldEvidence.captured_at,
+        visible_project_count: evidence.fieldEvidence.capture.visible_submission_count,
         exact_same_panel_submitted_options_comparator_count: 0,
         missing_pnl_treatment: "UNKNOWN_NEVER_ZERO",
         finly_vs_competitor_return_matchup_authorized: false,
@@ -574,11 +579,16 @@ export async function writeQuantitativeReleaseGate({
   const json = canonicalQuantitativeReleaseGateJson(built.artifact);
   const jsonPath = resolveWithin(outputRootDir, outputPaths.json);
   const markdownPath = resolveWithin(outputRootDir, outputPaths.markdown);
+  const publicJsonPath = outputPaths.public_json
+    ? resolveWithin(outputRootDir, outputPaths.public_json)
+    : null;
   await atomicWrite(jsonPath, json);
   await atomicWrite(markdownPath, built.markdown);
+  if (publicJsonPath) await atomicWrite(publicJsonPath, json);
   return Object.freeze({
     json_path: jsonPath,
     markdown_path: markdownPath,
+    public_json_path: publicJsonPath,
     json_raw_bytes_sha256: rawBytesSha256(Buffer.from(json, "utf8")),
     markdown_raw_bytes_sha256: rawBytesSha256(Buffer.from(built.markdown, "utf8")),
     artifact_sha256: built.artifact.artifact_sha256,

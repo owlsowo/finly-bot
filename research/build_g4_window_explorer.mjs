@@ -30,7 +30,7 @@ const modulePath = fileURLToPath(import.meta.url);
 const projectRoot = resolve(dirname(modulePath), "..");
 
 export const SCHEMA_VERSION = "finly_public_g4_window_explorer.v1";
-export const OUTPUT_PATH = "public/data/g4_window_explorer.json";
+export const OUTPUT_PATH = "research/output/legacy_g4_window_explorer.json";
 export const CANDIDATE_ID = "qqq_core_sector_12_6";
 export const BENCHMARK_ID = "spy_buy_hold";
 export const DEFAULT_START = "2013-01-02";
@@ -46,7 +46,7 @@ const SOURCE_PATHS = Object.freeze({
   protocol: "research/champion_search_generation4_protocol.json",
   engine: "research/champion_engine.mjs",
   frozen_output: "research/output/quant_champion_generation4.json",
-  claims_lock: "public/data/submission_claims_lock.json",
+  claims_lock: "research/output/legacy_submission_claims_lock.json",
   private_ledger: LEDGER_PATH,
 });
 

@@ -1,9 +1,30 @@
 import react from "@vitejs/plugin-react";
+import { readdir, rm } from "node:fs/promises";
+import { resolve } from "node:path";
 import { defineConfig } from "vite";
+
+const hostedDataAllowlist = new Set([
+  "latest_receipt.json",
+  "no_trade_receipt.json",
+  "quantitative_release_gate.json",
+]);
+
+const pruneInternalResearchData = {
+  name: "prune-internal-research-data",
+  apply: "build" as const,
+  async closeBundle() {
+    const dataDirectory = resolve(import.meta.dirname, "dist/data");
+    const entries = await readdir(dataDirectory, { withFileTypes: true });
+    await Promise.all(entries.map(async (entry) => {
+      if (!entry.isFile() || hostedDataAllowlist.has(entry.name)) return;
+      await rm(resolve(dataDirectory, entry.name));
+    }));
+  },
+};
 
 export default defineConfig({
   base: "./",
-  plugins: [react()],
+  plugins: [react(), pruneInternalResearchData],
   build: {
     outDir: "dist",
     sourcemap: true,
