@@ -93,7 +93,7 @@ function integrityInputs(value = true) {
   return Object.fromEntries(INDUSTRY_VM_G4_EXTERNAL_INTEGRITY_INPUTS.map((name) => [name, value]));
 }
 
-test("industry external bootstrap is deterministic and frozen to N=149", () => {
+test("industry external bootstrap is deterministic and frozen to effective N=200", () => {
   const values = oscillatingFixture(731, 0.001);
   const first = runIndustryVmG4StationaryBootstrap(values);
   const second = runIndustryVmG4StationaryBootstrap(structuredClone(values));
@@ -102,8 +102,8 @@ test("industry external bootstrap is deterministic and frozen to N=149", () => {
   assert.equal(INDUSTRY_VM_G4_BOOTSTRAP_SEED, 20260830);
   assert.equal(INDUSTRY_VM_G4_BOOTSTRAP_RESAMPLES, 4_999);
   assert.equal(INDUSTRY_VM_G4_EXPECTED_BLOCK_SESSIONS, 20);
-  assert.equal(INDUSTRY_VM_G4_GLOBAL_TRIAL_COUNT, 149);
-  assert.equal(INDUSTRY_VM_G4_BONFERRONI_THRESHOLD, 0.05 / 149);
+  assert.equal(INDUSTRY_VM_G4_GLOBAL_TRIAL_COUNT, 200);
+  assert.equal(INDUSTRY_VM_G4_BONFERRONI_THRESHOLD, 0.05 / 200);
   assert.equal(first.seed_uint32, 20260830);
   assert.equal(first.resamples, 4_999);
   assert.equal(first.expected_block_sessions, 20);
@@ -114,7 +114,7 @@ test("industry external bootstrap is deterministic and frozen to N=149", () => {
   assert.ok(Object.isFrozen(first));
 });
 
-test("bootstrap equality fails closed and DSR uses the same 149-trial family", () => {
+test("bootstrap equality fails closed and DSR uses the same 200-trial family", () => {
   const zero = runIndustryVmG4StationaryBootstrap(Array(127).fill(0));
   assert.equal(zero.exceedances, 4_999);
   assert.equal(zero.nominal_one_sided_p_value, 1);
@@ -122,7 +122,7 @@ test("bootstrap equality fails closed and DSR uses the same 149-trial family", (
   assert.equal(zero.passes_bonferroni_gate, false);
 
   const dsr = industryVmG4DeflatedSharpe(oscillatingFixture(731, 0.001));
-  assert.equal(dsr.global_trial_count, 149);
+  assert.equal(dsr.global_trial_count, 200);
   assert.equal(dsr.disposition, "FINITE");
   assert.equal(dsr.passes_gate, true);
   assert.ok(dsr.probability >= 0.95 && dsr.probability <= 1);

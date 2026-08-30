@@ -46,7 +46,7 @@ export const INDUSTRY_VM_G4_PRIMARY_ANCHOR = 0;
 export const INDUSTRY_VM_G4_BOOTSTRAP_SEED = 20260830;
 export const INDUSTRY_VM_G4_BOOTSTRAP_RESAMPLES = 4_999;
 export const INDUSTRY_VM_G4_EXPECTED_BLOCK_SESSIONS = 20;
-export const INDUSTRY_VM_G4_GLOBAL_TRIAL_COUNT = 149;
+export const INDUSTRY_VM_G4_GLOBAL_TRIAL_COUNT = 200;
 export const INDUSTRY_VM_G4_NOMINAL_ALPHA = 0.05;
 export const INDUSTRY_VM_G4_BONFERRONI_THRESHOLD =
   INDUSTRY_VM_G4_NOMINAL_ALPHA / INDUSTRY_VM_G4_GLOBAL_TRIAL_COUNT;
@@ -773,7 +773,7 @@ export function evaluateIndustryVmG4External(adapted, { integrityInputs } = {}) 
     }),
     statistical_evidence: gate("statistical_evidence", {
       nominal_p_value_at_most_0_05: bootstrap.passes_nominal_gate,
-      bonferroni_raw_p_value_at_most_0_05_over_149: bootstrap.passes_bonferroni_gate,
+      bonferroni_raw_p_value_at_most_0_05_over_200: bootstrap.passes_bonferroni_gate,
       deflated_sharpe_probability_at_least_0_95: deflatedSharpe.passes_gate,
     }),
     absolute_and_rf_performance: gate("absolute_and_rf_performance", {

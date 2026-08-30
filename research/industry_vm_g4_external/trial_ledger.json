@@ -1,7 +1,7 @@
 {
   "schema_version": "finly_industry_vm_g4_trial_ledger.v1",
   "append_only_through": 149,
-  "counting_policy": "Conservative effective multiplicity count. Every prior registered formula, control, diagnostic eligible for comparison, aborted or consumed replay, and every inspected exploratory variant counts even when it was not promoted or its exact scratch command was not retained.",
+  "counting_policy": "Append-only operational attempt numbers end at 149. Statistical inference uses an effective count of 200: every reconstructed formula, eligible control, aborted or consumed replay counts, plus a 51-cell reserve for any scratch variants whose exact commands were not retained.",
   "blocks": [
     {
       "range": "1-113",
@@ -52,7 +52,7 @@
       "count": 18,
       "status": "retrospectively_registered_exploratory_family_before_attempt149",
       "family": "external_factor_formula_and_cadence_band_exploration",
-      "evidence_boundary": "The exploratory shell commands were not retained as a durable per-variant ledger. Eighteen is the no-fewer-than count reconstructed from the six inspected formula families plus their inspected cadence and rebalance-band variants; the full family is charged to multiplicity and none is eligible to be called preregistered."
+      "evidence_boundary": "The exploratory shell commands were not retained as a durable per-variant ledger. Eighteen cells were reconstructed from the six inspected formula families plus their inspected cadence and rebalance-band variants. Any reconstruction error or additional scratch cell is charged again through the separate 51-cell inferential reserve; none is eligible to be called preregistered."
     },
     {
       "range": "137-148",
@@ -71,10 +71,24 @@
       "id": "industry_vm_g4_external_replay_attempt149",
       "candidate_count": 1,
       "diagnostic_mapping_count": 1,
-      "diagnostic_mapping_is_selection_eligible": false
+      "diagnostic_mapping_is_selection_eligible": false,
+      "diagnostic_mapping_can_rescue_reverse_select_or_modify_primary": false,
+      "deterministic_comparators": [
+        "MARKET_BUY_HOLD",
+        "MARKET_VOL20_CAP15",
+        "UNSCALED_A",
+        "RF_CASH"
+      ],
+      "diagnostic_and_comparator_counting_boundary": "Mapping B and the four comparators were fixed before industry outcomes and cannot select, rescue, reverse, or modify primary A. They are not additional selection-eligible candidates; the 51-cell inferential reserve nevertheless overcharges any ambiguity."
     }
   ],
   "block_count_sum": 149,
-  "inferential_cumulative_trial_count": 149,
-  "claim_boundary": "This ledger deliberately over-credits incomplete scratch history to the multiplicity penalty. It prevents the selected volatility-managed G4 formula from being represented as an untouched discovery and does not convert the new industry replay into live, forward, tradable-ETF, or options evidence."
+  "operational_attempt_count": 149,
+  "inferential_multiplicity_reserve": {
+    "additional_scratch_cells_charged": 51,
+    "reason": "Upper-bound reserve for unretained formula, target, cap, cadence, band, and rerun cells beyond the 149 operational attempts.",
+    "selection_or_claim_credit_created": false
+  },
+  "inferential_cumulative_trial_count": 200,
+  "claim_boundary": "The 200-trial inferential count deliberately over-credits incomplete scratch history to the multiplicity penalty. It prevents the selected volatility-managed G4 formula from being represented as an untouched discovery and does not convert the new industry replay into live, forward, tradable-ETF, or options evidence."
 }
