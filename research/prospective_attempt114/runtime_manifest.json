@@ -1,0 +1,57 @@
+{
+  "schema_version": "finly_attempt114_runtime_manifest.v1",
+  "attempt_id": "finly_prospective_profitability_attempt_114",
+  "manifest_kind": "PRE_SIGNAL_SETTLEMENT_INFERENCE_RUNTIME_FREEZE",
+  "frozen_at": "2026-08-30T04:34:10.000Z",
+  "publication_deadline": "2026-08-31T20:00:00.000Z",
+  "publication_deadline_exclusive": true,
+  "protocol": {
+    "path": "research/prospective_attempt114/protocol.json",
+    "raw_bytes_sha256": "sha256:794bb93d578b4b4766daac1c27d7fa0a68f730fbeda853b208aa98ad501572ff",
+    "protocol_sha256": "sha256:a1eb1b3304920f72606d2bb710adb9e5580a213cda1df51a776aa55940f7f311"
+  },
+  "runtime_source_files": {
+    "lib/canonical.mjs": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904",
+    "lib/economic_research.mjs": "sha256:efde15977d43fb5556683ce7ba5ca7fe29fa82a1cc6acd9632d8f6e6fc5c1256",
+    "lib/equity_shadow_execution.mjs": "sha256:0bac7898f61acdcef9ace0807ffc0376c37bee8d2d8d886672de38de645ff5d0",
+    "lib/forward_market_data.mjs": "sha256:a7d8597f3733817fed3420b07ca2a51fece15f4b37b69d5b4e462ec6e9dfc053",
+    "research/champion_generation6_robustness.mjs": "sha256:a3cce0a77537495d9599b5a7c58da9d0f052c67bcbfa65b3626a655add2144ba",
+    "research/champion_trial_ledger_generation6.json": "sha256:f1b35f0b6ff50888b4ca7dbb6c1bb46258af081c09cf344d44adc88753991ecf",
+    "research/forward_trial_live_core.mjs": "sha256:ef8651fe4ada18045dd8765f30746936254917f599d89d1bd89f514c9e43f523",
+    "research/forward_trial_live/activation.json": "sha256:ecf7a16fbe84061799b8df6db7b58e8b8b0f028e8d7a4c4147b08b20d45a6180",
+    "research/forward_trial_live/runtime_manifest.json": "sha256:c5df20d6bc9908d89cfef46b0d3c1901688a25835e22fa87f14e7c73cf6c3d1c",
+    "research/forward_trial1.mjs": "sha256:acd6b07f61a37624534c98472c315f732bf51bc4bdf50764cfacb4c0d8224528",
+    "research/prospective_attempt114/decomposition.mjs": "sha256:2102ca535848d1870bb1dde56422544250444421f15b70e58134684ef3caa1e7",
+    "research/prospective_attempt114/inference.mjs": "sha256:62f64a60797500d35191fa7a7d53e31d93e0c5b125a0b9533cc8d43372b0f88f",
+    "research/prospective_attempt114/protocol.json": "sha256:794bb93d578b4b4766daac1c27d7fa0a68f730fbeda853b208aa98ad501572ff",
+    "research/prospective_attempt114/protocol.mjs": "sha256:5906f37c20a00dfafa1c9ac5a4de29735378690972b5758bb48e824cc9b1d4d2",
+    "research/prospective_attempt114/runtime.mjs": "sha256:c6eeefccdf26f50f20a5fec781809e525009f63a40ee4d7a964cb866f305079f",
+    "research/prospective_attempt114/settlement.mjs": "sha256:3c6c5eeaf864bccbbb7afa0346bc4bbfe1d9532f4c56541a2a64139c84a29079",
+    "research/run_forward_trial_live.mjs": "sha256:221fd0f6a2ce17041f5984cfc68baa6b68648337ccf678e758640d929d318fea"
+  },
+  "runtime_source_files_sha256": "sha256:27dc26f0f84f673bb4b6c7a1d6dccd3d14febda77722bfa9277c0d02ecf81023",
+  "authority": {
+    "research_only": true,
+    "broker_reads_permitted": false,
+    "broker_mutation_authorized": false,
+    "network_requests_permitted": false,
+    "persistence_authorized": false,
+    "order_payload": null
+  },
+  "evaluation_gates": {
+    "protocol_runtime_publication_verified": false,
+    "settlement_enabled": false,
+    "inference_enabled": false
+  },
+  "assurance": {
+    "github_publication_before_first_signal_required": true,
+    "all_254_independent_pre_execution_anchors_required": true,
+    "all_252_outcome_price_lineages_required": true,
+    "independent_cryptographic_timestamp_verified": false,
+    "provider_origin_verified": false,
+    "broker_execution_verified": false,
+    "performance_inference_permitted": false
+  },
+  "claim_boundary": "This manifest binds research-only settlement, inference, decomposition, and validation bytes. It does not itself prove public prospectivity, open either evaluation gate, verify provider origin, authorize broker or network mutation, or permit performance inference.",
+  "manifest_sha256": "sha256:29a4c21d2acaf01489f21546b3ca75e9b6203705bcd22a629f017bd3d0fb18e1"
+}
