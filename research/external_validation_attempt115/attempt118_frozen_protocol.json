@@ -1,0 +1,358 @@
+{
+  "artifact_binding": {
+    "hashes_computed_before_source_acquisition": true,
+    "source_files_sha256": {
+      "lib/canonical.mjs": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904",
+      "lib/policy.mjs": "sha256:40237fb4d4cde679d5c5db2e73e9df4b756c6b478f31c2049595043c45bc64cf",
+      "lib/quant.mjs": "sha256:a9135a688bdf565331254f6097d74f67e5849d124b47fe48dc22e0cb1b6cea7d",
+      "package-lock.json": "sha256:cb19a97f40951befd4f64fcf92d8a919aa9b34d297976332a5f87c4fc6d0c371",
+      "package.json": "sha256:61a380127fd92cd97191d4eb9cc68185091f037c9ed7251a19f14522cc93eb2b",
+      "research/external_validation_attempt115/acquisition.mjs": "sha256:51c4a7c065c31a46fe1635ef675a85e051df34b57e70ad9c66cefd362487b11f",
+      "research/external_validation_attempt115/attempt117_failure_receipt.json": "sha256:5a5c213ad4a218920ad6dba1a87d7bbd7676494383f98caec8e4434fd9b286e8",
+      "research/external_validation_attempt115/evaluation.mjs": "sha256:9b0b976d31d518820382c7baa4b02b0d87b8c5d9905981a1a0c964cd597d2349",
+      "research/external_validation_attempt115/frozen_protocol.json": "sha256:29e467273c9d6a9c958da5cb0ce1621f04da4cad5c303773d61e5f7b005345eb",
+      "research/external_validation_attempt115/inference.mjs": "sha256:bc28fc3564b39f6a83421caea6614916be139bf8ff23cff676b47611a5037b0a",
+      "research/external_validation_attempt115/kenneth_french_daily_factor_adapter.mjs": "sha256:760b9750476cd8d362ba608f80447f2ccfc7cf3252acb1011786a1e345b602c9",
+      "research/external_validation_attempt115/official_transport.mjs": "sha256:b4102bf6c9ade76f2879c8baa977fc2759ab5b3018fb6c481dc5cd8d6db15013",
+      "research/external_validation_attempt115/protocol.mjs": "sha256:f344c932571446e69bbb012469bf67ccf769d0bf816a21fd83a7cf890d86b257",
+      "research/external_validation_attempt115/replay.mjs": "sha256:5db9be9086e5c264fcc3a49e31fbbd994b526bcdfad5a62c8097c88e24344d95",
+      "research/external_validation_attempt115/run_once.mjs": "sha256:702037e4feb5507735eddb0a376f8e25c946a9915da01c6489a3279d711de40e",
+      "research/external_validation_attempt115/runner.mjs": "sha256:559b91da6ec6910adcf84403098bc229ce5a2178d93b5f94adedadfbfb9571bd",
+      "research/external_validation_attempt115/strict_zip.mjs": "sha256:f3286d51fd332f99de17c7b5bfc17907e57082b54f5c6f8c2a42befa56a33b1c",
+      "research/prospective_attempt115/policy.mjs": "sha256:e30a3f1076212df634b7f8f9e573192f80c5bdcd4ec2700de842a0c603c02fb6",
+      "research/prospective_attempt115/protocol.mjs": "sha256:a0414483900e3351579870dfee181626fbb4713f83c1ecf153237b3518adadd6"
+    },
+    "test_files_sha256": {
+      "tests/external_validation_attempt115_acquisition.test.mjs": "sha256:24145ed7ca7b84c24610e8c983e220c5a9202dbffa29c9e281aa31d986bc6600",
+      "tests/external_validation_attempt115_evaluation.test.mjs": "sha256:6b0479a558718edd07f69bf3645deea2eafa12d303ecdc11d35122eee2cd2a67",
+      "tests/external_validation_attempt115_french_factor_adapter.test.mjs": "sha256:ef1fa0f6a14af8c88177eab23d550a909d345b15f027bc7bb2c318deef7ba123",
+      "tests/external_validation_attempt115_inference.test.mjs": "sha256:6d7c117f57716fa406928e63dd79d8604cc043cd47541f51a42942b41c8613be",
+      "tests/external_validation_attempt115_protocol.test.mjs": "sha256:d352ad0bae834178f7140fbf7a4587f901cd180de6cae853b2ecaf7a2fb5b54d",
+      "tests/external_validation_attempt115_replay.test.mjs": "sha256:602ee01c2f156aa832c2045e2ce725eaf471ff8fc584a92649b136d2df3576a1",
+      "tests/external_validation_attempt115_runner.test.mjs": "sha256:fcbca03c1c90309022f1f758ac0997a01da4a4a9d49aaa78e511f363a6b245a5",
+      "tests/external_validation_attempt115_strict_zip.test.mjs": "sha256:11083399226cb53597f8045236d44cf88ecbb6fdb63e5e090b23258a8471047c"
+    }
+  },
+  "authority": {
+    "broker_mutation_authorized": false,
+    "broker_reads_authorized": false,
+    "capital_authorized": false,
+    "orders_authorized": false,
+    "production_policy_mutation_authorized": false,
+    "protocol_module_file_io_authorized": false,
+    "protocol_module_network_access_authorized": false,
+    "public_performance_claim_authorized": false,
+    "research_only": true,
+    "site_or_release_mutation_authorized": false
+  },
+  "claim_boundary": "External fixed-sample mechanism portability evidence only on the acquisition-date current Kenneth French vintage. MARKET_PROXY and RF_PROXY are revised/reconstructed factor-return proxies, not an immutable historical tape and not SPY or BIL ETF histories. This replay is retrospective, not a pristine holdout, and cannot establish future alpha, live profitability, options profitability, policy superiority, or competitor rank; authorize capital or broker activity; change the frozen incumbent; or modify any public, site, deck, paper, video, or release claim.",
+  "evaluation_id": "finly_attempt115_french_century_mechanism_replay.v2",
+  "execution_protocol": {
+    "cadence_sensitivity_anchors": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "cost_formula": "turnover * one_way_cost_bps / 10000",
+    "entry_cost_included": true,
+    "first_earned_return_timing": "the target rebalanced at observation t+1 first earns the observation t+1 to t+2 return",
+    "holdings_drift_between_rebalances": true,
+    "initial_weights": {
+      "MARKET_PROXY": 0,
+      "RF_PROXY": 1
+    },
+    "one_way_cost_bps_primary": 5,
+    "one_way_cost_bps_sensitivities": [
+      1,
+      10,
+      25
+    ],
+    "primary_cadence_anchor": 0,
+    "rebalance_interval_valid_observations": 5,
+    "rebalance_timing": "rebalance at factor observation t+1 close",
+    "same_dates_costs_anchors_and_partition_required_for_both_policies": true,
+    "signal_timing": "observe proxy levels through factor observation t close only",
+    "target_timing": "derive both frozen policy targets after factor observation t close",
+    "terminal_liquidation": {
+      "costed": true,
+      "required": true,
+      "target_weights": {
+        "MARKET_PROXY": 0,
+        "RF_PROXY": 1
+      }
+    },
+    "turnover_definition": "abs(target_MARKET_PROXY - drifted_MARKET_PROXY) + abs(target_RF_PROXY - drifted_RF_PROXY)"
+  },
+  "frozen_at": "2026-08-30T11:31:01.308Z",
+  "mechanism_gates": {
+    "absolute_and_rf_proxy_performance": {
+      "both_policies_beat_rf_proxy_net_log_growth": true,
+      "both_policies_positive_net_log_growth": true
+    },
+    "cadence_robustness": {
+      "anchor_zero_positive_required": true,
+      "anchors_evaluated": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "cost_bps": 5,
+      "minimum_positive_anchors": 4
+    },
+    "complete_decades": {
+      "calendar_decade_definition": "UTC calendar years YYYY0 through YYYY9 inclusive",
+      "complete_decade_eligibility_rule": "the primary partition starts on or before YYYY0-01-01, ends on or after YYYY9-12-31, and contains at least one outcome observation in each of the ten calendar years",
+      "decade_edge_formula": "sum of challenger-minus-incumbent paired daily net log-return differences whose outcome_observation_date falls within the calendar decade",
+      "expected_complete_decade_start_years": [
+        1930,
+        1940,
+        1950,
+        1960,
+        1970,
+        1980,
+        1990
+      ],
+      "incomplete_decades_excluded": true,
+      "median_challenger_minus_incumbent_edge_operator": ">",
+      "median_challenger_minus_incumbent_edge_threshold": 0,
+      "minimum_complete_decade_count": 7,
+      "minimum_positive_decade_share": 0.6,
+      "zero_edge_counts_as_positive": false
+    },
+    "cost_stress": {
+      "metric": "paired net log-return edge, challenger minus incumbent",
+      "required_positive_edge_bps": [
+        5,
+        10
+      ]
+    },
+    "default_measurement_cell": {
+      "cadence_anchor": 0,
+      "one_way_cost_bps": 5,
+      "partition_id": "PRE_ETF_OVERLAP_EXTERNAL_MECHANISM"
+    },
+    "drawdown_guardrail": {
+      "formula": "challenger_maximum_drawdown >= incumbent_maximum_drawdown - 0.05",
+      "maximum_worsening_percentage_points": 5
+    },
+    "integrity": {
+      "all_required": true,
+      "required_checks": [
+        "protocol_self_hash",
+        "artifact_hash_binding",
+        "official_source_identity_and_receipt",
+        "strict_parser_schema_and_row_order",
+        "source_transform_identity",
+        "warmup_signal_rebalance_outcome_chronology",
+        "future_observation_mutation_invariance",
+        "cost_monotonicity_and_exact_entry_cost",
+        "exact_terminal_liquidation"
+      ]
+    },
+    "primary_direction": {
+      "metric": "primary mean paired daily net log-return difference",
+      "operator": ">",
+      "threshold": 0
+    },
+    "statistical_evidence": {
+      "all_required": true,
+      "bonferroni_raw_p_value_maximum": 0.0004237288135593221,
+      "deflated_sharpe_probability_minimum": 0.95,
+      "nominal_bootstrap_p_value_maximum": 0.05
+    },
+    "unqualified_metrics_use_default_measurement_cell": true,
+    "volatility_guardrail": {
+      "formula": "challenger_annualized_volatility <= 1.10 * incumbent_annualized_volatility",
+      "maximum_ratio": 1.1
+    }
+  },
+  "policy_binding": {
+    "additional_policy_or_parameter_variant_permitted": false,
+    "challenger": {
+      "policy_id": "tsmom_ensemble_downside_semivol",
+      "role": "SOLE_FROZEN_CHALLENGER"
+    },
+    "incumbent": {
+      "policy_id": "tsmom_ensemble_vol",
+      "role": "FROZEN_ATTEMPT115_INCUMBENT"
+    },
+    "policy_mutation_after_freeze_permitted": false,
+    "sole_primary_pair": [
+      "tsmom_ensemble_downside_semivol",
+      "tsmom_ensemble_vol"
+    ]
+  },
+  "primary_inference": {
+    "alternative_hypothesis": "mean paired daily net log-return difference > 0",
+    "bootstrap": {
+      "circular": true,
+      "equality_counts_as_exceedance": true,
+      "expected_block_valid_observations": 20,
+      "nominal_alpha": 0.05,
+      "null_centered": true,
+      "p_value_formula": "(1 + exceedances) / 5000",
+      "resamples": 4999,
+      "restart_probability": 0.05,
+      "seed_uint32": 20260829,
+      "test": "one-sided null-centered stationary circular block bootstrap"
+    },
+    "cadence_anchor": 0,
+    "challenger": "tsmom_ensemble_downside_semivol",
+    "comparator": "tsmom_ensemble_vol",
+    "daily_value_formula": "log1p(challenger_net_simple_return) - log1p(incumbent_net_simple_return)",
+    "deflated_sharpe": {
+      "calibration_assumption": "All N=118 registered trials are treated as independent draws from a zero-mean unit-variance normal-return null solely to predeclare the expected-maximum Sharpe benchmark; no outcome-derived cross-strategy Sharpe moments may be substituted.",
+      "deflated_benchmark_sharpe_formula": "0 + (1 / sqrt(n - 1)) * expected_maximum_coefficient",
+      "degenerate_or_nonfinite_disposition": "GATE_FAILS_CLOSED",
+      "euler_mascheroni_constant": 0.5772156649015329,
+      "expected_maximum_coefficient_formula": "(1 - EulerGamma) * Phi^-1(1 - 1 / N) + EulerGamma * Phi^-1(1 - 1 / (N * e))",
+      "global_registered_attempt_count": 118,
+      "input_series": "the sole primary paired daily net log-return difference series",
+      "method": "Bailey-Lopez de Prado deflated Sharpe probability with a preregistered independent-null-trial benchmark",
+      "minimum_probability": 0.95,
+      "non_normality_variance_factor_formula": "1 - skewness * observed_SR + ((Pearson_kurtosis - 1) / 4) * observed_SR^2",
+      "observed_periodic_sharpe": "sample_mean(input_series) / sample_standard_deviation(input_series)",
+      "pearson_kurtosis_convention": "uncorrected fourth central moment divided by population_variance^2, each central moment using denominator n; not excess kurtosis",
+      "probability_formula": "Phi(z_score)",
+      "required": true,
+      "sample_standard_deviation_convention": "square root of sum((x - mean(x))^2) / (n - 1)",
+      "skewness_convention": "uncorrected third central moment divided by population_variance^(3/2), each central moment using denominator n",
+      "trial_sharpe_mean_periodic": 0,
+      "trial_sharpe_standard_deviation_periodic": "1 / sqrt(n - 1)",
+      "z_score_formula": "(observed_SR - deflated_benchmark_SR) * sqrt(n - 1) / sqrt(non_normality_variance_factor)"
+    },
+    "interim_or_repeat_inference_permitted": false,
+    "multiple_testing": {
+      "familywise_alpha": 0.05,
+      "global_registered_attempt_count": 118,
+      "method": "Bonferroni",
+      "minimum_attainable_raw_p_value": 0.0002,
+      "passing_attainable_raw_p_values": [
+        0.0002,
+        0.0004
+      ],
+      "per_test_threshold": 0.0004237288135593221
+    },
+    "null_hypothesis": "mean paired daily net log-return difference <= 0",
+    "one_way_cost_bps": 5,
+    "partition_id": "PRE_ETF_OVERLAP_EXTERNAL_MECHANISM",
+    "sole_endpoint": "mean paired daily net log-return difference, challenger minus incumbent"
+  },
+  "protocol_sha256": "sha256:82192fae2a726d8ce5a7ca914598a16cc0a4b3506046c24e08727179885a56ea",
+  "proxy_definition": {
+    "aliases_are_internal_only": true,
+    "fabricated_prior_proxy_point_permitted": false,
+    "market_proxy_formula": "(Mkt-RF + RF) / 100",
+    "market_proxy_label": "MARKET_PROXY",
+    "policy_input_aliases": {
+      "BIL": "RF_PROXY",
+      "SPY": "MARKET_PROXY"
+    },
+    "proxy_return_units": "decimal",
+    "result_labels_must_remain": [
+      "MARKET_PROXY",
+      "RF_PROXY"
+    ],
+    "rf_proxy_formula": "RF / 100",
+    "rf_proxy_label": "RF_PROXY",
+    "source_columns": [
+      "date",
+      "Mkt-RF",
+      "SMB",
+      "HML",
+      "RF"
+    ],
+    "source_return_units": "percent"
+  },
+  "registration": {
+    "additional_registered_attempt_count": 1,
+    "attempt117_failure_receipt_bound_before_freeze": true,
+    "candidate_count": 1,
+    "candidate_selected_before_external_outcomes": true,
+    "external_replay_is_new_attempt": true,
+    "global_registered_attempt_count": 118,
+    "only_member_matching_and_multiplicity_accounting_changed_from_attempt117": true,
+    "packaging_only_successor_to_registered_attempt": 117,
+    "prior_registered_attempt_count": 117,
+    "registered_attempt_number": 118,
+    "repeat_or_replacement_primary_permitted": false
+  },
+  "result_disposition": {
+    "all_mechanism_gates_required": true,
+    "any_failure_disposition": "EXTERNAL_MECHANISM_PORTABILITY_NOT_ESTABLISHED",
+    "diagnostic_or_overlap_result_can_rescue": false,
+    "incumbent_policy_changes": false,
+    "pass_label": "EXTERNAL_MECHANISM_PORTABILITY_ESTABLISHED_ON_FROZEN_FACTOR_PROXY_REPLAY",
+    "pass_supports_only": "The sole frozen challenger mechanism ported to an external factor-return proxy under the preregistered replay.",
+    "public_claim_changes": false
+  },
+  "sample_partition": {
+    "alternate_start_or_end_date_permitted": false,
+    "diagnostics_can_rescue_primary": false,
+    "first_rebalance_observation_ordinal": 254,
+    "first_scored_outcome_observation_ordinal": 255,
+    "first_signal_observation_ordinal": 253,
+    "overlap_diagnostic": {
+      "first_outcome_date_inclusive": "2007-05-30",
+      "id": "POST_2007_OVERLAP_DIAGNOSTIC",
+      "last_outcome_date_inclusive": "SOURCE_LAST_VALID_DATE",
+      "role": "DESCRIPTIVE_ONLY_CANNOT_RESCUE_OR_REVERSE_PRIMARY"
+    },
+    "primary_partition": {
+      "date_field": "outcome_observation_date",
+      "first_scored_outcome": "VALID_FACTOR_OBSERVATION_255",
+      "id": "PRE_ETF_OVERLAP_EXTERNAL_MECHANISM",
+      "last_scored_outcome_date_inclusive": "2007-05-29"
+    },
+    "source_observation_ordinal_origin": 1,
+    "warmup_valid_factor_observations": 253
+  },
+  "schema_version": "finly_attempt115_external_french_mechanism_protocol.v2",
+  "source_freeze": {
+    "acquisition_permitted_only_after_protocol_and_bound_artifacts_freeze": true,
+    "acquisition_receipt_must_be_separate": true,
+    "acquisition_receipt_required_fields": [
+      "acquired_at",
+      "official_archive_url",
+      "archive_raw_bytes_sha256",
+      "selected_member_name",
+      "selected_member_raw_bytes_sha256",
+      "parsed_first_date",
+      "parsed_last_date",
+      "parsed_valid_row_count"
+    ],
+    "archive_member_match_rule": "SINGLE_TRAVERSAL_SAFE_ASCII_BASENAME_WITH_ASCII_CASE_FOLD_EQUAL_TO_LOGICAL_MEMBER",
+    "archive_member_non_ascii_permitted": false,
+    "archive_member_path_components_permitted": false,
+    "attempt117_archive_downloaded_in_memory_before_attempt118_freeze": true,
+    "attempt117_factor_values_parsed": false,
+    "attempt117_failure_receipt_relative_path": "research/external_validation_attempt115/attempt117_failure_receipt.json",
+    "attempt117_frozen_protocol_relative_path": "research/external_validation_attempt115/frozen_protocol.json",
+    "attempt117_performance_result_observed": false,
+    "current_us_returns_use_crsp_ciz_beginning": "2025-01",
+    "current_vintage_reconstructed_history": true,
+    "daily_portfolio_treatment_changed_in_2015": true,
+    "dataset": "Fama/French 3 Factors daily",
+    "expected_source_first_date": "1926-07-01",
+    "historical_returns_may_change_with_crsp_revisions": true,
+    "immutable_historical_tape_claim_permitted": false,
+    "market_return_definition_changed_in_2012": true,
+    "network_or_file_io_performed_by_protocol_module": false,
+    "official_archive_member": "F-F_Research_Data_Factors_daily.CSV",
+    "official_archive_url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip",
+    "official_data_library_documentation_url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.HTML",
+    "official_factor_description_url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library/f-f_factors.html",
+    "provider": "Kenneth R. French Data Library",
+    "source_acquired_before_freeze": false,
+    "source_acquisition_state": "NOT_ACQUIRED_FOR_ATTEMPT_118",
+    "source_archive_sha256": null,
+    "source_member_sha256": null,
+    "source_values_observed_before_freeze": false,
+    "vintage_binding": "The separate acquisition receipt's acquired_at and raw archive/member hashes define the tested current-provider vintage."
+  },
+  "status": "FROZEN_BEFORE_SOURCE_ACQUISITION"
+}
