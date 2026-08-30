@@ -174,6 +174,10 @@ const futurePatterns = [
   /neither supports a performance claim/iu,
 ];
 const documentPatterns = [...g4Patterns, ...productionPatterns, ...futurePatterns];
+const productMetadataPatterns = [
+  /From market evidence to a bounded options decision/iu,
+  /deterministic code owns the contract, maximum loss, stress tests, and final authorization outcome/iu,
+];
 
 requireSourcePdfParity({
   label: "one-page proposal",
@@ -213,7 +217,8 @@ requirePatterns("machine-readable summary", machineSummary, documentPatterns);
 assert.doesNotMatch(normalizedText(machineSummary), /Finly (?:will|is likely to) beat SPY/iu);
 
 const indexHtml = readFileSync(pathFor("index.html"), "utf8");
-requirePatterns("social metadata", indexHtml, g4Patterns);
+requirePatterns("social metadata", indexHtml, productMetadataPatterns);
+assert.doesNotMatch(normalizedText(indexHtml), /A backtest returned \+967\.11%.{0,40}Finly rejected it/iu);
 
 for (const [label, file] of [["one-page", onePage], ["paper", paper], ["deck", deck]]) {
   assert.ok(file.size < 20 * 1024 * 1024, `${label} PDF is unexpectedly large`);

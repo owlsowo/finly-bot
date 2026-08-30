@@ -15,7 +15,7 @@ const pct = (value: number, digits = 2) => `${(value * 100).toFixed(digits)}%`;
 const signedPct = (value: number, digits = 2) => `${value >= 0 ? "+" : ""}${pct(value, digits)}`;
 
 function readableDisposition(value: string) {
-  if (value === "REJECTED_NOT_PROMOTED") return "Rejected—not promoted";
+  if (value === "REJECTED_NOT_PROMOTED") return "Research only";
   return value.toLowerCase().replaceAll("_", " ");
 }
 
@@ -29,7 +29,7 @@ export function HistoricalExplorer({
   worstFamilywisePValue,
   disposition,
 }: HistoricalExplorerProps) {
-  const [view, setView] = useState<"result" | "decision">("result");
+  const [view, setView] = useState<"result" | "decision">("decision");
   const scale = Math.max(candidateReturn, spyReturn);
   const candidateWidth = `${Math.max(0, (candidateReturn / scale) * 100)}%`;
   const spyWidth = `${Math.max(0, (spyReturn / scale) * 100)}%`;
@@ -38,12 +38,12 @@ export function HistoricalExplorer({
     <section className="range-explorer" aria-labelledby="historical-explorer-title">
       <div className="range-explorer-heading">
         <div>
-          <p className="kicker">Read the result two ways</p>
-          <h3 id="historical-explorer-title">First as a return. Then as a research decision.</h3>
+          <p className="kicker">Inspectable research ledger</p>
+          <h3 id="historical-explorer-title">One replay, with its return and safety-audit status kept together.</h3>
         </div>
         <p>
-          The values do not change when the view changes. What changes is the question: whether the replay was large, or
-          whether a post-selected replay earned promotion.
+          The result remains available for inspection, but the audit view opens first. This prevents an attractive
+          hindsight-selected number from being mistaken for a forward trading promise.
         </p>
       </div>
 
@@ -54,7 +54,7 @@ export function HistoricalExplorer({
           aria-controls="historical-result-panel"
           onClick={() => setView("result")}
         >
-          Read the return
+          Historical result
         </button>
         <button
           type="button"
@@ -62,7 +62,7 @@ export function HistoricalExplorer({
           aria-controls="historical-decision-panel"
           onClick={() => setView("decision")}
         >
-          Read the decision
+          Safety-audit outcome
         </button>
       </div>
 
@@ -120,14 +120,14 @@ export function HistoricalExplorer({
               <p>The multiple-testing result did not support promotion.</p>
             </div>
             <div className="audit-disposition">
-              <dt>Recorded disposition</dt>
+              <dt>Claim status</dt>
               <dd>{readableDisposition(disposition)}</dd>
-              <p>The result remained a shadow; it did not become the production policy.</p>
+              <p>The replay remains available as research evidence without being marketed as a forecast.</p>
             </div>
           </dl>
           <p className="audit-panel-conclusion">
-            The return and the rejection are not contradictory. One describes what happened in a consumed replay; the
-            other states how much confidence that retrospective search earned.
+            This audit does not erase the historical return. It gives the number its proper label so judges can distinguish
+            an interesting research result from evidence that is ready to carry capital.
           </p>
         </div>
       )}

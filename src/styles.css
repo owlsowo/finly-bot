@@ -282,6 +282,23 @@ h1 {
   transform: rotate(-3deg);
 }
 
+.decision-stamp {
+  position: absolute;
+  right: 22px;
+  bottom: 16px;
+  padding: 6px 12px 5px;
+  color: var(--green-dark);
+  border: 2px solid var(--green-dark);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: .12em;
+  line-height: 1;
+  text-transform: uppercase;
+  transform: rotate(-3deg);
+}
+
 .hero-result > div { min-width: 0; padding: 34px 20px; }
 .hero-result > div + div { text-align: right; }
 .hero-result span,
@@ -1191,7 +1208,8 @@ footer {
   .hero-result > div + div { border-top: 1px solid var(--rule-light); text-align: left; }
   .hero-result > p { grid-column: 1; margin: 16px 18px 0; font-size: 15px; }
   .hero-result-rejected { padding-bottom: 58px; }
-  .rejection-stamp { right: 18px; bottom: 17px; }
+  .rejection-stamp,
+  .decision-stamp { right: 18px; bottom: 17px; }
   .figure-labels { align-items: flex-start; }
   .hero-metrics { grid-template-columns: 1fr; }
   .hero-metrics > div { min-height: 96px; padding-left: 0 !important; border-top: 1px solid var(--rule); border-left: 0 !important; }
