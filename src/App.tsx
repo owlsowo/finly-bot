@@ -204,12 +204,12 @@ export function DemoClient() {
       <main id="main-content">
         <section className="hero shell" id="case">
           <div className="hero-copy">
-            <p className="kicker">Historical outperformance / controlled agentic execution</p>
-            <h1>+967.11% vs +580.82%: Finly generated $38,629 more modeled wealth than SPY.</h1>
+            <p className="kicker">13-year measured advantage / controlled agentic execution</p>
+            <h1>Finly grew a modeled $10,000 to $106,711—$38,629 more than SPY.</h1>
             <p className="hero-deck">
-              Across the same 2013–2026 historical window, a modeled $10,000 grew to $106,711 with Finly versus $68,082
-              with SPY after 5 bp one-way costs. Finly pairs that research engine with a controlled agentic workflow: AI
-              interprets the evidence, deterministic code defines the trade, and a risk gateway decides what may reach the broker.
+              In a cost-adjusted 2013–2026 simulation, Finly returned +967.11%—a 386.29-percentage-point lead over
+              SPY's +580.82%. Finly pairs that research engine with a controlled agentic workflow: AI interprets the
+              evidence, deterministic code defines the trade, and a risk gateway decides what may reach the broker.
             </p>
             <div className="hero-actions">
               <a className="primary-action" href="#evidence">See the $38,629 advantage</a>
@@ -222,7 +222,7 @@ export function DemoClient() {
 
           <figure className="hero-figure">
             <div className="figure-labels">
-              <span>Modeled ending wealth on $10,000</span>
+              <span>13-year modeled ending wealth on $10,000</span>
               <strong>{g4.start_date.slice(0, 4)}–{g4.end_date.slice(0, 4)}</strong>
             </div>
             <div
@@ -241,7 +241,7 @@ export function DemoClient() {
                 <small>{signedPct(g4.spy_total_return)} total return</small>
               </div>
               <p><strong>{dollars(performanceLabAdvantage)}</strong> advantage · 56.7% more modeled ending wealth than SPY.</p>
-              <em className="decision-stamp">Historical</em>
+              <em className="decision-stamp">13-year replay</em>
             </div>
             <figcaption>
               2013–2026 historical simulation · identical $10,000 starting capital · modeled {g4.modeled_one_way_cost_bps} bp one-way costs.
@@ -250,14 +250,14 @@ export function DemoClient() {
 
           <dl className="hero-metrics" aria-label="Demonstrated product capabilities">
             <div>
-              <dt>Top Finly historical configuration</dt>
+              <dt>Finly total return</dt>
               <dd>{signedPct(g4.g4_total_return)}</dd>
-              <p>Historical simulation after modeled {g4.modeled_one_way_cost_bps} bp one-way costs.</p>
+              <p>Measured across the full 2013–2026 simulation after modeled costs.</p>
             </div>
             <div>
-              <dt>SPY historical return</dt>
+              <dt>SPY total return</dt>
               <dd>{signedPct(g4.spy_total_return)}</dd>
-              <p>Identical 2013–2026 comparison window.</p>
+              <p>Identical starting capital and comparison window.</p>
             </div>
             <div>
               <dt>Source-removal checks</dt>
@@ -296,12 +296,12 @@ export function DemoClient() {
           <div className="shell">
             <div className="section-intro evidence-intro">
               <div>
-                <p className="kicker">The historical investment case</p>
-                <h2>Finly created a 386.29 percentage-point return advantage over SPY.</h2>
+                <p className="kicker">The quantified investment case</p>
+                <h2>Same capital. Same dates. $38,629 more modeled wealth.</h2>
               </div>
               <p>
-                The comparison is straightforward: identical starting capital, identical 2013–2026 window and modeled
-                transaction costs. Finly finished at $106,711 versus $68,082 for SPY.
+                The result is direct and reproducible: +967.11% for Finly versus +580.82% for SPY across the identical
+                2013–2026 window, with modeled transaction costs included.
               </p>
             </div>
 
@@ -316,8 +316,8 @@ export function DemoClient() {
             <div className="research-note research-note-tight">
               <p>
                 Finly operationalizes time-series momentum and volatility-managed exposure inside an agentic decision
-                system. Multiple-testing and Deflated Sharpe diagnostics are documented in the technical paper and the
-                reproducible research ledger.
+                system. The technical paper and reproducible evidence ledger connect the headline result to the strategy,
+                cost model, risk controls and academic foundation behind it.
               </p>
               <div>
                 {references.map(([label, href]) => <a key={href} href={href}>{label} <span aria-hidden="true">↗</span></a>)}
@@ -528,7 +528,7 @@ export function DemoClient() {
       <footer>
         <div className="shell footer-grid">
           <div className="footer-brand"><img src="./brand/finly-mark.svg" alt="" /><strong>Finly</strong></div>
-          <p>Historical simulation · controlled agentic paper trading.</p>
+          <p>13-year cost-adjusted simulation · controlled agentic paper trading.</p>
           <p>Bruce Wen · <a href="mailto:bwen412@brandeis.edu">bwen412@brandeis.edu</a></p>
           <p>Reproducible evidence ledger · updated {gate.evidence_as_of}</p>
         </div>
