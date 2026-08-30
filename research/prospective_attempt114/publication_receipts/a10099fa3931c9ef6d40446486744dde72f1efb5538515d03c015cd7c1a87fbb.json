@@ -1,0 +1,299 @@
+{
+  "schema_version": "finly_attempt114_github_publication_collection_receipt.v1",
+  "attempt_id": "finly_prospective_profitability_attempt_114",
+  "evidence_class": "PUBLIC_GITHUB_GET_COLLECTION_NOT_INDEPENDENT_TIMESTAMP",
+  "publication_head_sha": "38a999cdf5db98f3a831d137b799ff8a48248e71",
+  "workflow_run_id": 33293038439,
+  "runtime_publication_receipt": {
+    "schema_version": "finly_attempt114_github_publication_receipt.v1",
+    "attempt_id": "finly_prospective_profitability_attempt_114",
+    "evidence_class": "REPRODUCIBLE_PUBLIC_GITHUB_API_POINTER_NOT_INDEPENDENT_TIMESTAMP",
+    "repository": {
+      "id": 1350112497,
+      "full_name": "owlsowo/finly-bot",
+      "public": true,
+      "default_branch": "main"
+    },
+    "publication_commit": {
+      "sha": "38a999cdf5db98f3a831d137b799ff8a48248e71",
+      "parent_sha": "be4ea625dc9b8c609fee437cc077ea3dfc97d306",
+      "tree_sha": "af8d8360c6259091d78d10c8bfe62580bfde2f24",
+      "html_url": "https://github.com/owlsowo/finly-bot/commit/38a999cdf5db98f3a831d137b799ff8a48248e71"
+    },
+    "workflow_run": {
+      "id": 33293038439,
+      "workflow_id": 344996171,
+      "name": "Verify Finly",
+      "path": ".github/workflows/ci.yml",
+      "event": "push",
+      "head_branch": "main",
+      "head_sha": "38a999cdf5db98f3a831d137b799ff8a48248e71",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-08-30T04:41:05Z",
+      "updated_at": "2026-08-30T04:43:05Z",
+      "html_url": "https://github.com/owlsowo/finly-bot/actions/runs/33293038439",
+      "verification_job": {
+        "id": 99207888057,
+        "name": "verify",
+        "head_sha": "38a999cdf5db98f3a831d137b799ff8a48248e71",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-08-30T04:41:08Z",
+        "completed_at": "2026-08-30T04:43:05Z",
+        "required_steps": [
+          {
+            "name": "Run npm run verify",
+            "number": 6,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-30T04:41:50Z",
+            "completed_at": "2026-08-30T04:43:00Z"
+          },
+          {
+            "name": "Generated receipts are committed and reproducible",
+            "number": 7,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-08-30T04:43:00Z",
+            "completed_at": "2026-08-30T04:43:01Z"
+          }
+        ]
+      }
+    },
+    "published_artifacts": {
+      "protocol": {
+        "path": "research/prospective_attempt114/protocol.json",
+        "raw_bytes_sha256": "sha256:794bb93d578b4b4766daac1c27d7fa0a68f730fbeda853b208aa98ad501572ff",
+        "protocol_sha256": "sha256:a1eb1b3304920f72606d2bb710adb9e5580a213cda1df51a776aa55940f7f311"
+      },
+      "runtime_manifest": {
+        "path": "research/prospective_attempt114/runtime_manifest.json",
+        "raw_bytes_sha256": "sha256:c3fbcb985385ef9dcbc118824a6e318b1e39f45b290e180a6a1f1f0865ea9966",
+        "manifest_sha256": "sha256:29a4c21d2acaf01489f21546b3ca75e9b6203705bcd22a629f017bd3d0fb18e1",
+        "runtime_source_files_sha256": "sha256:27dc26f0f84f673bb4b6c7a1d6dccd3d14febda77722bfa9277c0d02ecf81023"
+      },
+      "runtime_source_files": {
+        "lib/canonical.mjs": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904",
+        "lib/economic_research.mjs": "sha256:efde15977d43fb5556683ce7ba5ca7fe29fa82a1cc6acd9632d8f6e6fc5c1256",
+        "lib/equity_shadow_execution.mjs": "sha256:0bac7898f61acdcef9ace0807ffc0376c37bee8d2d8d886672de38de645ff5d0",
+        "lib/forward_market_data.mjs": "sha256:a7d8597f3733817fed3420b07ca2a51fece15f4b37b69d5b4e462ec6e9dfc053",
+        "research/champion_generation6_robustness.mjs": "sha256:a3cce0a77537495d9599b5a7c58da9d0f052c67bcbfa65b3626a655add2144ba",
+        "research/champion_trial_ledger_generation6.json": "sha256:f1b35f0b6ff50888b4ca7dbb6c1bb46258af081c09cf344d44adc88753991ecf",
+        "research/forward_trial_live_core.mjs": "sha256:ef8651fe4ada18045dd8765f30746936254917f599d89d1bd89f514c9e43f523",
+        "research/forward_trial_live/activation.json": "sha256:ecf7a16fbe84061799b8df6db7b58e8b8b0f028e8d7a4c4147b08b20d45a6180",
+        "research/forward_trial_live/runtime_manifest.json": "sha256:c5df20d6bc9908d89cfef46b0d3c1901688a25835e22fa87f14e7c73cf6c3d1c",
+        "research/forward_trial1.mjs": "sha256:acd6b07f61a37624534c98472c315f732bf51bc4bdf50764cfacb4c0d8224528",
+        "research/prospective_attempt114/decomposition.mjs": "sha256:2102ca535848d1870bb1dde56422544250444421f15b70e58134684ef3caa1e7",
+        "research/prospective_attempt114/inference.mjs": "sha256:62f64a60797500d35191fa7a7d53e31d93e0c5b125a0b9533cc8d43372b0f88f",
+        "research/prospective_attempt114/protocol.json": "sha256:794bb93d578b4b4766daac1c27d7fa0a68f730fbeda853b208aa98ad501572ff",
+        "research/prospective_attempt114/protocol.mjs": "sha256:5906f37c20a00dfafa1c9ac5a4de29735378690972b5758bb48e824cc9b1d4d2",
+        "research/prospective_attempt114/runtime.mjs": "sha256:c6eeefccdf26f50f20a5fec781809e525009f63a40ee4d7a964cb866f305079f",
+        "research/prospective_attempt114/settlement.mjs": "sha256:3c6c5eeaf864bccbbb7afa0346bc4bbfe1d9532f4c56541a2a64139c84a29079",
+        "research/run_forward_trial_live.mjs": "sha256:221fd0f6a2ce17041f5984cfc68baa6b68648337ccf678e758640d929d318fea"
+      }
+    },
+    "exclusive_deadline": "2026-08-31T20:00:00.000Z",
+    "verification_observed_at": "2026-08-30T04:53:55.000Z",
+    "assurance": {
+      "github_public_api_record_verified": true,
+      "successful_workflow_observed": true,
+      "public_pre_deadline_publication_observed": true,
+      "evidence_class": "REPRODUCIBLE_PUBLIC_GITHUB_API_POINTER",
+      "github_platform_record_only": true,
+      "self_contained_offline_evidence": false,
+      "independent_cryptographic_timestamp_verified": false,
+      "provider_origin_verified": false,
+      "broker_execution_verified": false,
+      "performance_inference_permitted": false
+    },
+    "receipt_sha256": "sha256:16b5dc281fcc7b7e4fff4facff14f56b3b5a20394a4610d7fbc4eeb39581dd80"
+  },
+  "github_public_get_evidence": {
+    "request_count": 23,
+    "responses": [
+      {
+        "request_id": "repository",
+        "canonical_url": "https://api.github.com/repos/owlsowo/finly-bot",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 5154,
+        "response_bytes_sha256": "sha256:d9cd8409ec7178e46d3d27296a90997fc2b3cb7e999ff4ce29d8ed103fcd3d1d"
+      },
+      {
+        "request_id": "publication_commit",
+        "canonical_url": "https://api.github.com/repos/owlsowo/finly-bot/commits/38a999cdf5db98f3a831d137b799ff8a48248e71?per_page=100&page=1",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 197167,
+        "response_bytes_sha256": "sha256:24309e858099b382666d0c704242e81141969749215636d235a076043ece0d60"
+      },
+      {
+        "request_id": "workflow_run",
+        "canonical_url": "https://api.github.com/repos/owlsowo/finly-bot/actions/runs/33293038439",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 11879,
+        "response_bytes_sha256": "sha256:6c27fcf2f762eca8c4da138ee6c3591b69faa1efe67d84a68b3268e72d1e29c2"
+      },
+      {
+        "request_id": "workflow_jobs",
+        "canonical_url": "https://api.github.com/repos/owlsowo/finly-bot/actions/runs/33293038439/jobs?per_page=100",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 2559,
+        "response_bytes_sha256": "sha256:090b0405da92126100a7ab1a49775b99e71b97a2f633fb6d0c0dda030ee30e83"
+      },
+      {
+        "request_id": "workflow_file",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/.github/workflows/ci.yml",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 614,
+        "response_bytes_sha256": "sha256:f23196c2cd6e070455395490e7fde6ad14b8ae31016771188269d85cb75e70e5"
+      },
+      {
+        "request_id": "runtime_manifest",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/prospective_attempt114/runtime_manifest.json",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 3959,
+        "response_bytes_sha256": "sha256:c3fbcb985385ef9dcbc118824a6e318b1e39f45b290e180a6a1f1f0865ea9966"
+      },
+      {
+        "request_id": "runtime_source:lib/canonical.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/lib/canonical.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 1465,
+        "response_bytes_sha256": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904"
+      },
+      {
+        "request_id": "runtime_source:lib/economic_research.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/lib/economic_research.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 44411,
+        "response_bytes_sha256": "sha256:efde15977d43fb5556683ce7ba5ca7fe29fa82a1cc6acd9632d8f6e6fc5c1256"
+      },
+      {
+        "request_id": "runtime_source:lib/equity_shadow_execution.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/lib/equity_shadow_execution.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 24935,
+        "response_bytes_sha256": "sha256:0bac7898f61acdcef9ace0807ffc0376c37bee8d2d8d886672de38de645ff5d0"
+      },
+      {
+        "request_id": "runtime_source:lib/forward_market_data.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/lib/forward_market_data.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 24361,
+        "response_bytes_sha256": "sha256:a7d8597f3733817fed3420b07ca2a51fece15f4b37b69d5b4e462ec6e9dfc053"
+      },
+      {
+        "request_id": "runtime_source:research/champion_generation6_robustness.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/champion_generation6_robustness.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 47954,
+        "response_bytes_sha256": "sha256:a3cce0a77537495d9599b5a7c58da9d0f052c67bcbfa65b3626a655add2144ba"
+      },
+      {
+        "request_id": "runtime_source:research/champion_trial_ledger_generation6.json",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/champion_trial_ledger_generation6.json",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 2158,
+        "response_bytes_sha256": "sha256:f1b35f0b6ff50888b4ca7dbb6c1bb46258af081c09cf344d44adc88753991ecf"
+      },
+      {
+        "request_id": "runtime_source:research/forward_trial_live_core.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/forward_trial_live_core.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 61771,
+        "response_bytes_sha256": "sha256:ef8651fe4ada18045dd8765f30746936254917f599d89d1bd89f514c9e43f523"
+      },
+      {
+        "request_id": "runtime_source:research/forward_trial_live/activation.json",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/forward_trial_live/activation.json",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 2378,
+        "response_bytes_sha256": "sha256:ecf7a16fbe84061799b8df6db7b58e8b8b0f028e8d7a4c4147b08b20d45a6180"
+      },
+      {
+        "request_id": "runtime_source:research/forward_trial_live/runtime_manifest.json",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/forward_trial_live/runtime_manifest.json",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 3171,
+        "response_bytes_sha256": "sha256:c5df20d6bc9908d89cfef46b0d3c1901688a25835e22fa87f14e7c73cf6c3d1c"
+      },
+      {
+        "request_id": "runtime_source:research/forward_trial1.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/forward_trial1.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 70103,
+        "response_bytes_sha256": "sha256:acd6b07f61a37624534c98472c315f732bf51bc4bdf50764cfacb4c0d8224528"
+      },
+      {
+        "request_id": "runtime_source:research/prospective_attempt114/decomposition.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/prospective_attempt114/decomposition.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 21333,
+        "response_bytes_sha256": "sha256:2102ca535848d1870bb1dde56422544250444421f15b70e58134684ef3caa1e7"
+      },
+      {
+        "request_id": "runtime_source:research/prospective_attempt114/inference.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/prospective_attempt114/inference.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 26836,
+        "response_bytes_sha256": "sha256:62f64a60797500d35191fa7a7d53e31d93e0c5b125a0b9533cc8d43372b0f88f"
+      },
+      {
+        "request_id": "runtime_source:research/prospective_attempt114/protocol.json",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/prospective_attempt114/protocol.json",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 19392,
+        "response_bytes_sha256": "sha256:794bb93d578b4b4766daac1c27d7fa0a68f730fbeda853b208aa98ad501572ff"
+      },
+      {
+        "request_id": "runtime_source:research/prospective_attempt114/protocol.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/prospective_attempt114/protocol.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:54 GMT",
+        "response_byte_length": 27053,
+        "response_bytes_sha256": "sha256:5906f37c20a00dfafa1c9ac5a4de29735378690972b5758bb48e824cc9b1d4d2"
+      },
+      {
+        "request_id": "runtime_source:research/prospective_attempt114/runtime.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/prospective_attempt114/runtime.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:55 GMT",
+        "response_byte_length": 29620,
+        "response_bytes_sha256": "sha256:c6eeefccdf26f50f20a5fec781809e525009f63a40ee4d7a964cb866f305079f"
+      },
+      {
+        "request_id": "runtime_source:research/prospective_attempt114/settlement.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/prospective_attempt114/settlement.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:55 GMT",
+        "response_byte_length": 36249,
+        "response_bytes_sha256": "sha256:3c6c5eeaf864bccbbb7afa0346bc4bbfe1d9532f4c56541a2a64139c84a29079"
+      },
+      {
+        "request_id": "runtime_source:research/run_forward_trial_live.mjs",
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/38a999cdf5db98f3a831d137b799ff8a48248e71/research/run_forward_trial_live.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 04:53:55 GMT",
+        "response_byte_length": 49334,
+        "response_bytes_sha256": "sha256:221fd0f6a2ce17041f5984cfc68baa6b68648337ccf678e758640d929d318fea"
+      }
+    ]
+  },
+  "executing_local_closure": {
+    "runtime_manifest_matches_public_head": true,
+    "runtime_source_files_match_public_head": true,
+    "runtime_source_files_verified": 17,
+    "workflow_file_matches_public_head": true,
+    "workflow_file_sha256": "sha256:f23196c2cd6e070455395490e7fde6ad14b8ae31016771188269d85cb75e70e5"
+  },
+  "assurance": {
+    "fixed_unauthenticated_get_requests": true,
+    "no_credentials_sent": true,
+    "network_mutation_authorized": false,
+    "public_github_platform_record_only": true,
+    "self_contained_offline_evidence": false,
+    "independent_cryptographic_timestamp_verified": false,
+    "provider_origin_verified": false,
+    "broker_execution_verified": false,
+    "performance_inference_permitted": false,
+    "hostile_local_filesystem_race_resistant": false
+  },
+  "receipt_sha256": "sha256:a10099fa3931c9ef6d40446486744dde72f1efb5538515d03c015cd7c1a87fbb"
+}
