@@ -1,0 +1,120 @@
+{
+  "artifact_binding": {
+    "artifact_set_sha256": "sha256:5374c470fb933ae9608db0c787de3c556a42eba94f613d2d396379c1aff368ec",
+    "frozen_runner_source_sha256": "sha256:559b91da6ec6910adcf84403098bc229ce5a2178d93b5f94adedadfbfb9571bd",
+    "persisted_artifacts": {
+      "acquisition_receipt": {
+        "byte_count": 2331,
+        "raw_bytes_sha256": "sha256:d1f2c126971af9e5e5d27f3e61251d784b02ab929becfa88d9773a38beadf162",
+        "relative_path": "data/external_validation_attempt115/attempt118/acquisition_receipt.json",
+        "semantic_sha256": "sha256:70eed39228214728a23e667a6ec92694479a3fa45bf49015fd8a9d89f42db54a"
+      },
+      "canonical_daily_factors": {
+        "byte_count": 799341,
+        "raw_bytes_sha256": "sha256:156d6bc8396e6c1cc3c680016f132304c09491f077881f5ae932d1ca0610d603",
+        "relative_path": "data/external_validation_attempt115/attempt118/canonical_daily_factors.csv"
+      },
+      "evaluation": {
+        "byte_count": 10353,
+        "raw_bytes_sha256": "sha256:f595a18e2c7ba7cbb4c874ef4a4e6f9161338a326986b566aa28fef9e75d8a27",
+        "relative_path": "data/external_validation_attempt115/attempt118/evaluation.json",
+        "semantic_sha256": "sha256:13fb1c1e66fd3e00b15181fe7c958e6263b4269e3c13a0532d3c572a516afcb4"
+      },
+      "frozen_protocol": {
+        "byte_count": 18092,
+        "raw_bytes_sha256": "sha256:e094d13edd348485cef54f7ad20f179ce88793134e59c360bf681ffdf7e15b5b",
+        "relative_path": "data/external_validation_attempt115/attempt118/frozen_protocol.json",
+        "semantic_sha256": "sha256:82192fae2a726d8ce5a7ca914598a16cc0a4b3506046c24e08727179885a56ea"
+      },
+      "integrity_evidence": {
+        "byte_count": 4902,
+        "raw_bytes_sha256": "sha256:c90d957466903ee6e0e2a0d5e2940dcf226fa56a00f756253db75b0cf2f98331",
+        "relative_path": "data/external_validation_attempt115/attempt118/integrity_evidence.json"
+      },
+      "replay_grid": {
+        "byte_count": 83683157,
+        "raw_bytes_sha256": "sha256:71c0a51eb77f0a9fda9e48da7190813a72c37dd68b515fbf3b075343848972da",
+        "relative_path": "data/external_validation_attempt115/attempt118/replay_grid.json",
+        "semantic_sha256": "sha256:e0c79e22664bacfc67c59902f127a65b79255f6dcd1eccfa4d31327bdd08c473"
+      },
+      "response_headers": {
+        "byte_count": 787,
+        "raw_bytes_sha256": "sha256:f7dcb7cd0ebbc37997f1dac7fc054112c06936375cc8be372caa006b7e9ac6a2",
+        "relative_path": "data/external_validation_attempt115/attempt118/response_headers.json"
+      },
+      "selected_source_member": {
+        "byte_count": 1209019,
+        "raw_bytes_sha256": "sha256:3d73942f7c0ba3accd021721876fef3059c6b02764a476dbdd9c311817f09710",
+        "relative_path": "data/external_validation_attempt115/attempt118/F-F_Research_Data_Factors_daily.CSV"
+      },
+      "source_archive": {
+        "byte_count": 177852,
+        "raw_bytes_sha256": "sha256:39f9ae1d0e9f575024bc23145980ac270cea508fb67e592578b3f4d65f36d006",
+        "relative_path": "data/external_validation_attempt115/attempt118/source_archive.zip"
+      }
+    },
+    "persisted_artifact_count": 9,
+    "public_frozen_protocol": {
+      "byte_count": 18092,
+      "raw_bytes_sha256": "sha256:e094d13edd348485cef54f7ad20f179ce88793134e59c360bf681ffdf7e15b5b",
+      "relative_path": "research/external_validation_attempt115/attempt118_frozen_protocol.json",
+      "semantic_sha256": "sha256:82192fae2a726d8ce5a7ca914598a16cc0a4b3506046c24e08727179885a56ea"
+    }
+  },
+  "claim_boundary": "Operational failure receipt only. Attempt 118 acquired, parsed, replayed, and evaluated the source, so its outcome was observed. The one-shot run did not reach its completion receipt and is not a completed confirmatory trial, a profitability claim, or authorization to trade.",
+  "completion_state": {
+    "authoritative_run_completed": false,
+    "fixed_output_relative_path": "data/external_validation_attempt115/attempt118",
+    "one_time_attempt_consumed": true,
+    "rerun_permitted": false,
+    "run_receipt_exists": false,
+    "run_receipt_relative_path": "data/external_validation_attempt115/attempt118/run_receipt.json",
+    "run_receipt_sha256": null
+  },
+  "disposition": "ATTEMPT_118_CONSUMED_NO_RETRY",
+  "evaluation_id": "finly_attempt115_french_century_mechanism_replay.v2",
+  "failure": {
+    "cause": "replay_grid.json exceeded the frozen per-artifact durable-verification maximum",
+    "cli_error_line": "External Attempt115 one-shot failed closed: external Attempt115 bound artifact data/external_validation_attempt115/attempt118/replay_grid.json is not a bounded regular file",
+    "excess_byte_count": 16574293,
+    "failing_artifact_byte_count": 83683157,
+    "failing_artifact_is_regular_file": true,
+    "failing_artifact_relative_path": "data/external_validation_attempt115/attempt118/replay_grid.json",
+    "failure_message": "external Attempt115 bound artifact data/external_validation_attempt115/attempt118/replay_grid.json is not a bounded regular file",
+    "failure_phase": "POST_EVALUATION_DURABLE_OUTPUT_VERIFICATION_BEFORE_RUN_RECEIPT",
+    "verification_maximum_byte_count": 67108864,
+    "verification_maximum_mib": 64
+  },
+  "failure_receipt_sha256": "sha256:44298ef16ff5dfbd505968f526bf23016d7ceea02d9d0210b2f0737c551768f5",
+  "observed_outcome": {
+    "acquired_at": "2026-08-30T11:31:35.488Z",
+    "acquisition_receipt_sha256": "sha256:70eed39228214728a23e667a6ec92694479a3fa45bf49015fd8a9d89f42db54a",
+    "all_nine_mechanism_gates_passed": false,
+    "evaluation_disposition": "EXTERNAL_MECHANISM_PORTABILITY_NOT_ESTABLISHED",
+    "evaluation_invoked": true,
+    "evaluation_sha256": "sha256:13fb1c1e66fd3e00b15181fe7c958e6263b4269e3c13a0532d3c572a516afcb4",
+    "factor_values_parsed": true,
+    "failed_mechanism_gates": [
+      "statistical_evidence"
+    ],
+    "parsed_first_date": "1926-07-01",
+    "parsed_last_date": "2026-06-30",
+    "parsed_valid_row_count": 26274,
+    "performance_result_observed": true,
+    "replay_generated": true,
+    "replay_grid_sha256": "sha256:e0c79e22664bacfc67c59902f127a65b79255f6dcd1eccfa4d31327bdd08c473",
+    "source_data_acquired": true
+  },
+  "protocol_sha256": "sha256:82192fae2a726d8ce5a7ca914598a16cc0a4b3506046c24e08727179885a56ea",
+  "recorded_at": "2026-08-30T11:43:42.295Z",
+  "registered_attempt_number": 118,
+  "run_start_marker": {
+    "artifact_set_sha256": "sha256:5374c470fb933ae9608db0c787de3c556a42eba94f613d2d396379c1aff368ec",
+    "byte_count": 2512,
+    "raw_bytes_sha256": "sha256:72a041d79e79bf525c5a8afd0da832956e5e95c396db7ec5d65081f63cbeda2b",
+    "relative_path": "data/external_validation_attempt115/attempt118.run-start.json",
+    "run_start_marker_sha256": "sha256:98009df5065456d5107e5851a42d223720cad68b71ef1b067b9f8269a7548851",
+    "started_at": "2026-08-30T11:31:35.111Z"
+  },
+  "schema_version": "finly_attempt115_external_attempt_failure_receipt.v2"
+}
