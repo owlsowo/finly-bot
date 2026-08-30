@@ -1,0 +1,148 @@
+{
+  "allowed_claims": [
+    "In the consumed, post-selected 2013-01-02–2026-08-27 retrospective replay with modeled 5 bp one-way costs, G4 returned +967.11% versus SPY +580.82%; promotion was rejected because the Deflated Sharpe probability was 3.75% and the worst familywise-adjusted p-value was 37.18%.",
+    "Production v1 is the frozen unlevered SPY/BIL policy targeting 10% annualized volatility: in the consumed 2025-01-02–2026-08-28 modeled next-open study it returned +15.39% at 5 bp per traded leg and +10.56% at 25 bp, versus SPY +33.52%; at 5 bp its modeled annualized volatility was 8.12% and maximum drawdown was -5.45%, so it was risk-controlled but not market-beating on total return.",
+    "Attempts 115 and 116 are publicly registered future-only tests. As of 2026-08-30T08:10:52.000Z, each had zero observed outcomes, and neither supports a performance claim.",
+    "At the Generation 7 capture, 20 projects were visible and zero supplied an exact same-panel submitted-options comparator; missing P&L is unknown, never zero, and supports neither a return matchup nor a competitor rank."
+  ],
+  "artifact_sha256": "sha256:033cdabd1965ee7b0c1226183dcb0c03d2c093ebccc9e8ba3b6adea7cbe92cc6",
+  "conclusions": {
+    "competitor_evidence_availability": {
+      "captured_at": "2026-08-30T07:34:56Z",
+      "competitor_rank_claim_authorized": false,
+      "exact_same_panel_submitted_options_comparator_count": 0,
+      "finly_vs_competitor_return_matchup_authorized": false,
+      "missing_pnl_treatment": "UNKNOWN_NEVER_ZERO",
+      "visible_project_count": 20
+    },
+    "g4_rejected_post_selection": {
+      "deflated_sharpe_probability": 0.037478432287,
+      "disposition": "REJECTED_NOT_PROMOTED",
+      "end_date": "2026-08-27",
+      "evidence_class": "CONSUMED_POST_SELECTED_RETROSPECTIVE_REPLAY",
+      "g4_total_return": 9.6710597833,
+      "modeled_one_way_cost_bps": 5,
+      "spy_total_return": 5.8081746189,
+      "start_date": "2013-01-02",
+      "worst_familywise_adjusted_p_value": 0.371814092954
+    },
+    "production_v1_execution_realism": {
+      "annualized_volatility_at_5bp": 0.0812194739,
+      "broker_fill_replay": false,
+      "end_date": "2026-08-28",
+      "evidence_class": "CONSUMED_MODELED_NEXT_OPEN_EXECUTION_REALISM",
+      "market_beating_on_total_return": false,
+      "maximum_drawdown_at_5bp": -0.0544710489,
+      "observations": 415,
+      "policy_id": "tsmom_ensemble_vol",
+      "risk_characterization": "UNLEVERED_SPY_BIL_POLICY_TARGETING_10_PERCENT_ANNUALIZED_VOLATILITY",
+      "spy_total_return": 0.3352366407,
+      "start_date": "2025-01-02",
+      "total_return_at_25bp_per_leg": 0.1055891073,
+      "total_return_at_5bp_per_leg": 0.1538759778
+    },
+    "registered_future_only_tests": [
+      {
+        "attempt_number": 115,
+        "first_eligible_signal_session": "2026-08-31",
+        "observed_outcome_count": 0,
+        "performance_claim_authorized": false,
+        "public_registration": "PUBLIC_GITHUB_RECEIPT_PRESENT_AND_CANONICALLY_VALIDATED"
+      },
+      {
+        "attempt_number": 116,
+        "first_eligible_input_session": "2026-08-31",
+        "observed_outcome_count": 0,
+        "performance_claim_authorized": false,
+        "public_registration": "PUBLIC_GITHUB_RECEIPT_PRESENT_AND_CANONICALLY_VALIDATED"
+      }
+    ]
+  },
+  "evidence_as_of": "2026-08-30T08:10:52.000Z",
+  "forbidden_claims": [
+    "Finly will be profitable in the future.",
+    "Finly will beat SPY next month.",
+    "Finly has verified options P&L.",
+    "Finly ranks first, or above any named competitor, on returns or profitability.",
+    "Attempt 115 or Attempt 116 has a performance outcome.",
+    "G4 is validated, promoted, or evidence of future market superiority.",
+    "Missing competitor P&L equals zero or proves a Finly win.",
+    "Any Finly-versus-competitor return or P&L matchup."
+  ],
+  "limitations": [
+    "All G4 and production-v1 market intervals are consumed retrospective evidence.",
+    "The production-v1 next-open study is a modeled adjusted-OHLC ledger, not broker fills or options P&L.",
+    "The public-registration receipts are GitHub platform records, not independent cryptographic timestamps or outcome evidence.",
+    "Absent competitor P&L is unknown and cannot be imputed, compared, or ranked."
+  ],
+  "release_decision": {
+    "bounded_release": "GO",
+    "competitor_rank_claim": "NO_GO",
+    "downstream_surfaces": {
+      "deck": "USE_EXACT_ALLOWED_CLAIMS_ONLY",
+      "paper": "USE_EXACT_ALLOWED_CLAIMS_ONLY",
+      "site": "USE_EXACT_ALLOWED_CLAIMS_ONLY",
+      "video": "USE_EXACT_ALLOWED_CLAIMS_ONLY"
+    },
+    "finly_vs_competitor_return_matchup": "NO_GO",
+    "rationale": "Release only the source-bound historical, execution-realism, prospective-registration, and evidence-availability statements below. Do not publish a return matchup or financial rank against another project.",
+    "status": "GO_BOUNDED_RELEASE_NO_GO_PERFORMANCE_MATCHUP"
+  },
+  "schema_version": "finly_quantitative_release_gate.v1",
+  "source_integrity": {
+    "all_hashes_verified": true,
+    "source_count": 7,
+    "sources": [
+      {
+        "id": "submission_quantitative_evidence_surface",
+        "path": "research/output/submission_quantitative_evidence_surface.json",
+        "raw_bytes_sha256": "sha256:e69236a8b313bb42a9add625c0a90ce0ed678c8a81da259ef0399b8afb2da4db",
+        "schema_version": "finly_submission_quantitative_evidence_surface.v2"
+      },
+      {
+        "id": "equity_execution_realism",
+        "path": "research/output/equity_execution_realism.json",
+        "raw_bytes_sha256": "sha256:8d4eb5922acf46c539790c398364ffcd41aa6c189c38494bf31f871bb6dfeb6d",
+        "schema_version": "finly_equity_execution_realism_evidence.v1"
+      },
+      {
+        "id": "attempt115_protocol",
+        "path": "research/downside_semivolatility_challenger_protocol.json",
+        "raw_bytes_sha256": "sha256:34d30a46e70c07b27fad637b1948262f953662b43e30cbbaf86b84927dbe0e53",
+        "schema_version": "finly_downside_semivolatility_challenger_protocol.v1",
+        "self_hash_field": "protocol_sha256",
+        "self_hash_sha256": "sha256:340ba21e8e3404bd42adcd8e4e30ea5f0f327ee2d891988564ca3f0654657619"
+      },
+      {
+        "id": "attempt115_publication_receipt",
+        "path": "research/prospective_attempt115/publication_receipts/4dd7720d25198702013ab10e582b37004515bed5e4466a56eca89192559d2cd9.json",
+        "raw_bytes_sha256": "sha256:16d6af10a21b6654b862cf48a1489fca51aa7015b3f33b152832a2637704f436",
+        "schema_version": "finly_attempt115_github_publication_receipt.v1",
+        "self_hash_field": "receipt_sha256",
+        "self_hash_sha256": "sha256:4dd7720d25198702013ab10e582b37004515bed5e4466a56eca89192559d2cd9"
+      },
+      {
+        "id": "attempt116_protocol",
+        "path": "research/prospective_attempt116/protocol.json",
+        "raw_bytes_sha256": "sha256:3baa380e02f982d1c0c892357cded0e24ad311c2e73c1c1cc38d1d1b5d1501a2",
+        "schema_version": "finly_attempt116_vrp_shadow_protocol.v1",
+        "self_hash_field": "protocol_sha256",
+        "self_hash_sha256": "sha256:8703b78afabe6cfe39d981ed1399878ba219b8f92100982c43e2c88e24c5a677"
+      },
+      {
+        "id": "attempt116_publication_receipt",
+        "path": "research/prospective_attempt116/publication_receipts/934e52a583893e2720a0962195efd56b5f4b2a0554a1b8f8dfa9ab5951191362.json",
+        "raw_bytes_sha256": "sha256:1f959fd4245b7abd0c8eeeef2c4034623f93f68a691a9f80e0570c97ceab16ec",
+        "schema_version": "finly_attempt116_github_public_registration_receipt.v1",
+        "self_hash_field": "receipt_sha256",
+        "self_hash_sha256": "sha256:934e52a583893e2720a0962195efd56b5f4b2a0554a1b8f8dfa9ab5951191362"
+      },
+      {
+        "id": "competitor_strategy_registry_generation7",
+        "path": "research/competitor_strategy_registry_generation7.json",
+        "raw_bytes_sha256": "sha256:06d57411772d9670df9af48bc66e699b201f561d0bebd90f4a1aac40ccf17f7f",
+        "schema_version": "finly_competitor_strategy_registry_generation7.v1"
+      }
+    ]
+  }
+}
