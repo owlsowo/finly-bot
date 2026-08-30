@@ -37,7 +37,7 @@ The table separates public financial evidence from mechanism evidence. â€œNoneâ€
 
 ## No submission supports a public financial head-to-head
 
-[AEGIS-Q's strategy](https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/strategy.py), [backtester](https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/backtest.py), and [metric bundle](https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/reports/metrics.json) describe an archived legacy-equity system, not the submitted AEGIS-Q options strategy. No competitor publishes the exact submitted-options rule, point-in-time data, execution assumptions, and outcome path needed for a defensible public P&L matchup. Finly therefore publishes no competitor-return comparison or tournament rank; internal adversarial checks remain private decision aids.
+[AEGIS-Q's strategy](https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/strategy.py), [backtester](https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/backtest.py), and [metric bundle](https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/reports/metrics.json) describe an archived legacy-equity system, not the submitted AEGIS-Q options strategy. No competitor publishes the exact submitted-options rule, point-in-time data, execution assumptions, and outcome path needed for a defensible public P&L matchup. Finly therefore publishes no competitor-return comparison or tournament rank; adversarial checks are decision aids and are not part of the submission.
 
 ## VRP contributes two credible shadow tests, not a Kelly upgrade
 
@@ -74,7 +74,7 @@ The validator enforces the 20-project census, seven-project delta, unique ranks 
 ## Recommended next steps
 
 1. **Resolve submission visibility first.** Complete all three steps and confirm Finly appears on the public live list.
-2. **Keep adversarial competitor-return checks private.** Publish no head-to-head unless both submitted-options paths become exactly reproducible on one panel.
+2. **Keep adversarial competitor-return checks out of the submission.** Publish no head-to-head unless both submitted-options paths become exactly reproducible on one panel.
 3. **Freeze VRP-style IV/RV and term slope as a shadow challenger.** Do not authorize trades or alter the promoted policy from this post-snapshot idea.
 4. **Keep fixed bounded sizing.** Require prospective probability calibration before reconsidering any Kelly rule.
 5. **Treat portfolio stress as a future safety extension.** It matters when Finly admits simultaneous or multi-underlying positions; it should sit below, not relax, the existing 3% aggregate cap.

@@ -876,7 +876,7 @@
     "report_path": "research/competitor_strategy_registry_generation7_report.md",
     "expected_project_count": 20,
     "expected_new_project_count": 7,
-    "expected_financial_comparator_count": 1,
+    "expected_financial_comparator_count": 0,
     "expected_strongest_new_engineering_mechanism_count": 1
   }
 }

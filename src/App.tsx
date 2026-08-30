@@ -368,7 +368,7 @@ export function DemoClient() {
             <h1>Finly stayed positive after next-open execution and 25-basis-point cost stress.</h1>
             <p className="hero-deck">
               The frozen SPY/BIL policy returned {signedPct(baseExecution.total_return)} across {execution.window.observations} consumed sessions
-              under next-open fills and five basis points per traded leg. At a severe 25-basis-point stress, the return remained
+              under modeled next-open execution and five basis points per traded leg. At a severe 25-basis-point stress, the return remained
               {" "}{signedPct(severeExecution.total_return)}. The model may interpret evidence; deterministic code owns exposure, costs,
               order fields and the final permission to trade.
             </p>
