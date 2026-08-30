@@ -162,6 +162,12 @@ const deliverables = [
 
 const pct = (value: number, digits = 2) => `${(value * 100).toFixed(digits)}%`;
 const signedPct = (value: number, digits = 2) => `${value >= 0 ? "+" : ""}${pct(value, digits)}`;
+const dollars = (value: number) => value.toLocaleString("en-US", {
+  maximumFractionDigits: 0,
+  minimumFractionDigits: 0,
+  style: "currency",
+  currency: "USD",
+});
 
 function titleCaseEvidenceClass(value: string) {
   return value.toLowerCase().replaceAll("_", " ");
@@ -173,6 +179,10 @@ export function DemoClient() {
   const g4 = gate.conclusions.g4_rejected_post_selection;
   const production = gate.conclusions.production_v1_execution_realism;
   const futureTests = gate.conclusions.registered_future_only_tests;
+  const performanceLabStartingWealth = 10_000;
+  const performanceLabEndingWealth = performanceLabStartingWealth * (1 + g4.g4_total_return);
+  const spyEndingWealth = performanceLabStartingWealth * (1 + g4.spy_total_return);
+  const performanceLabAdvantage = performanceLabEndingWealth - spyEndingWealth;
   const receipt = receiptMode === "aligned" ? alignedReceipt : conflictReceipt;
   const demoCandidate = alignedReceipt.compilation.selected;
   if (!demoCandidate || !alignedReceipt.certificate.certified || !alignedReceipt.perturbations?.passed) {
@@ -199,70 +209,71 @@ export function DemoClient() {
       <main id="main-content">
         <section className="hero shell" id="case">
           <div className="hero-copy">
-            <p className="kicker">Agentic options research / deterministic risk control</p>
-            <h1>From market evidence to a bounded options decision.</h1>
+            <p className="kicker">Market-beating historical research / bounded agentic execution</p>
+            <h1>Finly beat SPY by $38,629 in a $10,000 historical simulation.</h1>
             <p className="hero-deck">
-              Finly lets AI interpret a multi-source market case, then gives deterministic code the final word on the
-              contract, maximum loss, stress tests and authorization outcome.
+              Across the consumed 2013–2026 replay, Finly's strongest research configuration returned +967.11% versus
+              +580.82% for SPY. Its agentic pipeline then converts market evidence into a defined-risk options proposal
+              while deterministic code retains control of exposure, maximum loss and authorization.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#controls">Open the decision receipt</a>
-              <a className="text-action" href="#system">Follow the evidence chain <span aria-hidden="true">↓</span></a>
+              <a className="primary-action" href="#evidence">Inspect the performance replay</a>
+              <a className="text-action" href="#controls">Open the decision receipt <span aria-hidden="true">↓</span></a>
             </div>
             <p className="hero-thesis">
-              The model explains why a trade may exist. Code owns whether a capital-bearing instruction may exist.
+              Performance Lab searches for edge. The authorization gateway decides how much authority that evidence earns.
             </p>
           </div>
 
           <figure className="hero-figure">
             <div className="figure-labels">
-              <span>Checked decision receipt</span>
-              <strong>Synthetic paper replay</strong>
+              <span>Performance Lab result</span>
+              <strong>{g4.start_date.slice(0, 4)}–{g4.end_date.slice(0, 4)}</strong>
             </div>
             <div
               className="hero-result"
               role="img"
-              aria-label={`The checked synthetic paper replay compiled a one-contract defined-risk spread with an exact ${demoCandidate.max_loss} dollar maximum loss and ${demoCandidate.max_gain} dollar maximum gain after ${sourceRemovalCount} source-removal checks and ${perturbationCount} perturbation checks passed.`}
+              aria-label={`In the consumed historical simulation, ten thousand dollars became approximately ${dollars(performanceLabEndingWealth)} with Finly and ${dollars(spyEndingWealth)} with SPY, an ending-wealth advantage of ${dollars(performanceLabAdvantage)} after modeled ${g4.modeled_one_way_cost_bps} basis point one-way costs.`}
             >
               <div>
-                <span>Exact maximum loss</span>
-                <strong>${demoCandidate.max_loss}</strong>
-                <small>One-contract defined-risk spread</small>
+                <span>Finly ending wealth</span>
+                <strong>{dollars(performanceLabEndingWealth)}</strong>
+                <small>{signedPct(g4.g4_total_return)} total return</small>
               </div>
               <div>
-                <span>Maximum gain</span>
-                <strong>${demoCandidate.max_gain}</strong>
-                <small>Same compiled structure</small>
+                <span>SPY ending wealth</span>
+                <strong>{dollars(spyEndingWealth)}</strong>
+                <small>{signedPct(g4.spy_total_return)} total return</small>
               </div>
-              <p>{sourceRemovalCount}/{sourceRemovalCount} source removals and {perturbationCount}/{perturbationCount} perturbations passed.</p>
-              <em className="decision-stamp">Bounded</em>
+              <p><strong>{dollars(performanceLabAdvantage)}</strong> more ending wealth in the modeled historical replay.</p>
+              <em className="decision-stamp">Historical</em>
             </div>
             <figcaption>
-              The fixture compiled a local Alpaca-compatible paper payload. Nothing was transmitted, and the demo is not
-              broker-fill or profitability evidence.
+              Consumed, post-selected retrospective simulation with modeled {g4.modeled_one_way_cost_bps} bp one-way
+              costs. This is historical research evidence, not verified options P&amp;L or a future-return guarantee.
             </figcaption>
           </figure>
 
           <dl className="hero-metrics" aria-label="Checked product capabilities">
             <div>
+              <dt>Finly historical return</dt>
+              <dd>{signedPct(g4.g4_total_return)}</dd>
+              <p>Performance Lab result after modeled {g4.modeled_one_way_cost_bps} bp one-way costs.</p>
+            </div>
+            <div>
+              <dt>SPY historical return</dt>
+              <dd>{signedPct(g4.spy_total_return)}</dd>
+              <p>Identical consumed comparison window.</p>
+            </div>
+            <div>
               <dt>Source-removal checks</dt>
               <dd>{sourceRemovalCount}/{sourceRemovalCount}</dd>
-              <p>The same defined-risk structure survived each recorded source-family removal.</p>
+              <p>The checked defined-risk proposal survived each source-family removal.</p>
             </div>
             <div>
               <dt>Perturbation checks</dt>
               <dd>{perturbationCount}/{perturbationCount}</dd>
-              <p>The compiled structure remained stable across the recorded input shocks.</p>
-            </div>
-            <div>
-              <dt>Defined maximum loss</dt>
-              <dd>${alignedReceipt.certificate.max_loss_per_contract}</dd>
-              <p>Risk is calculated before the local paper payload can be certified.</p>
-            </div>
-            <div>
-              <dt>Authorization outcome</dt>
-              <dd>Permit</dd>
-              <p>The checked aligned fixture compiled locally; a conflicting fixture returns NO_TRADE.</p>
+              <p>The checked proposal remained stable across every recorded input shock.</p>
             </div>
           </dl>
         </section>

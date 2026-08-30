@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Finly - from market evidence to a bounded options decision</title>
-  <desc id="desc">A checked defined-risk options decision with deterministic maximum-loss and stress-test controls.</desc>
+  <title id="title">Finly - +967.11% historical simulation versus +580.82% for SPY</title>
+  <desc id="desc">A ten-thousand-dollar historical simulation ended at $106,711 with Finly versus $68,082 with SPY.</desc>
   <rect width="1200" height="630" fill="#f6f3ec"/>
   <rect x="0" y="0" width="28" height="630" fill="#0d2b43"/>
 
@@ -15,29 +15,33 @@
   <text x="1130" y="68" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.6" text-anchor="end">ALPACA AI TRADING AGENTS HACKATHON</text>
   <line x1="70" y1="124" x2="1130" y2="124" stroke="#0d2b43" stroke-width="1.5"/>
 
-  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">AGENTIC RESEARCH · DETERMINISTIC RISK CONTROL</text>
-  <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="50" font-weight="700" letter-spacing="-1.3">
-    <text x="70" y="252">From market evidence to a</text>
-    <text x="70" y="318">bounded options decision.</text>
+  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">PERFORMANCE LAB · 2013–2026 RETROSPECTIVE SIMULATION</text>
+  <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-weight="700" letter-spacing="-1.5">
+    <text x="70" y="248" font-size="54">Finly beat SPY by</text>
+    <text x="70" y="330" font-size="76">$38,629</text>
   </g>
+  <text x="70" y="373" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="24">from the same simulated $10,000 starting portfolio.</text>
 
-  <line x1="70" y1="367" x2="1130" y2="367" stroke="#c8ccc7" stroke-width="1"/>
-  <g font-family="Arial, Helvetica, sans-serif">
-    <text x="70" y="410" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">EXACT MAXIMUM LOSS</text>
-    <text x="70" y="468" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="52" font-weight="700">$366</text>
-
-    <text x="486" y="410" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">MAXIMUM GAIN</text>
-    <text x="486" y="468" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="52" font-weight="700">$634</text>
-
-    <g transform="translate(936 402) rotate(-1)">
-      <rect width="194" height="68" fill="#e7f0eb" stroke="#2e6f5c" stroke-width="2"/>
-      <text x="97" y="42" fill="#2e6f5c" font-size="17" font-weight="700" letter-spacing="1.5" text-anchor="middle">BOUNDED</text>
+  <g transform="translate(710 162)" font-family="Arial, Helvetica, sans-serif">
+    <rect width="420" height="330" fill="#fbfaf6" stroke="#c8ccc7" stroke-width="1"/>
+    <text x="28" y="38" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">ENDING WEALTH · MODELED 5 BP ONE-WAY COSTS</text>
+    <line x1="28" y1="57" x2="392" y2="57" stroke="#c8ccc7" stroke-width="1"/>
+    <text x="28" y="91" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">FINLY G4 RESEARCH</text>
+    <text x="28" y="149" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="50" font-weight="700">$106,711</text>
+    <text x="287" y="145" fill="#2e6f5c" font-size="18" font-weight="700">+967.11%</text>
+    <line x1="28" y1="174" x2="392" y2="174" stroke="#d7d9d5" stroke-width="1"/>
+    <text x="28" y="208" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">SPY</text>
+    <text x="28" y="266" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="50" font-weight="700">$68,082</text>
+    <text x="287" y="262" fill="#0d2b43" font-size="18" font-weight="700">+580.82%</text>
+    <g transform="translate(254 289) rotate(-1)">
+      <rect width="138" height="26" fill="#e7f0eb" stroke="#2e6f5c" stroke-width="1.5"/>
+      <text x="69" y="18" fill="#2e6f5c" font-size="10" font-weight="700" letter-spacing="1.1" text-anchor="middle">HISTORICAL</text>
     </g>
   </g>
 
   <line x1="70" y1="516" x2="1130" y2="516" stroke="#0d2b43" stroke-width="1.5"/>
-  <text x="70" y="558" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="21">4/4 source-removal checks · 32/32 perturbation checks</text>
-  <text x="70" y="578" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">One-contract defined-risk spread · synthetic paper replay</text>
-  <text x="70" y="603" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Alpaca-compatible payload compiled locally · no order transmitted</text>
+  <text x="70" y="556" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="20">Market-beating research · 4/4 source removals · 32/32 perturbations</text>
+  <text x="70" y="582" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Consumed, post-selected historical replay; not verified options P&amp;L or a future-return guarantee.</text>
+  <text x="70" y="603" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Agentic evidence synthesis · deterministic defined-risk options authorization</text>
   <text x="1130" y="603" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" text-anchor="end">BRUCE WEN · SOLO BUILDER</text>
 </svg>

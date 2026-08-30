@@ -1203,7 +1203,7 @@ footer {
   .hero-deck { font-size: 17px; }
   .hero-actions { align-items: flex-start; flex-direction: column; gap: 16px; }
   .hero-figure { margin-inline: -6px; padding: 10px; }
-  .hero-result { min-height: 350px; grid-template-columns: 1fr; background: var(--paper-bright); }
+  .hero-result { min-height: 350px; grid-template-columns: 1fr; padding-bottom: 58px; background: var(--paper-bright); }
   .hero-result > div { padding: 22px 18px; }
   .hero-result > div + div { border-top: 1px solid var(--rule-light); text-align: left; }
   .hero-result > p { grid-column: 1; margin: 16px 18px 0; font-size: 15px; }

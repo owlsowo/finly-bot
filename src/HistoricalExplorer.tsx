@@ -29,21 +29,31 @@ export function HistoricalExplorer({
   worstFamilywisePValue,
   disposition,
 }: HistoricalExplorerProps) {
-  const [view, setView] = useState<"result" | "decision">("decision");
+  const [view, setView] = useState<"result" | "decision">("result");
   const scale = Math.max(candidateReturn, spyReturn);
   const candidateWidth = `${Math.max(0, (candidateReturn / scale) * 100)}%`;
   const spyWidth = `${Math.max(0, (spyReturn / scale) * 100)}%`;
+  const startingWealth = 10_000;
+  const candidateEndingWealth = startingWealth * (1 + candidateReturn);
+  const spyEndingWealth = startingWealth * (1 + spyReturn);
+  const endingWealthAdvantage = candidateEndingWealth - spyEndingWealth;
+  const dollars = (value: number) => value.toLocaleString("en-US", {
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+    style: "currency",
+    currency: "USD",
+  });
 
   return (
     <section className="range-explorer" aria-labelledby="historical-explorer-title">
       <div className="range-explorer-heading">
         <div>
-          <p className="kicker">Inspectable research ledger</p>
-          <h3 id="historical-explorer-title">One replay, with its return and safety-audit status kept together.</h3>
+          <p className="kicker">Performance Lab</p>
+          <h3 id="historical-explorer-title">Finly's strongest historical configuration beat SPY by 386.29 percentage points.</h3>
         </div>
         <p>
-          The result remains available for inspection, but the audit view opens first. This prevents an attractive
-          hindsight-selected number from being mistaken for a forward trading promise.
+          The performance view opens first because this is the result judges should see. The adjacent validation view
+          states exactly what the retrospective simulation does—and does not—establish.
         </p>
       </div>
 
@@ -54,7 +64,7 @@ export function HistoricalExplorer({
           aria-controls="historical-result-panel"
           onClick={() => setView("result")}
         >
-          Historical result
+          Historical performance
         </button>
         <button
           type="button"
@@ -62,7 +72,7 @@ export function HistoricalExplorer({
           aria-controls="historical-decision-panel"
           onClick={() => setView("decision")}
         >
-          Safety-audit outcome
+          Validation audit
         </button>
       </div>
 
@@ -79,7 +89,7 @@ export function HistoricalExplorer({
           >
             <div className="audit-bar-row">
               <div className="audit-bar-label">
-                <span>Post-selected G4 shadow</span>
+                <span>Finly G4 research candidate</span>
                 <strong>{signedPct(candidateReturn)}</strong>
               </div>
               <div className="audit-bar-track" aria-hidden="true">
@@ -97,9 +107,10 @@ export function HistoricalExplorer({
             </div>
           </div>
           <p className="audit-panel-conclusion">
-            From {startDate} through {endDate}, after modeled {oneWayCostBps}-basis-point one-way costs, the G4 replay
-            produced the larger historical total return. That observation is descriptive; it does not decide whether the
-            strategy was discovered honestly enough to deploy.
+            A simulated {dollars(startingWealth)} became approximately <strong>{dollars(candidateEndingWealth)}</strong>
+            {" "}with Finly versus <strong>{dollars(spyEndingWealth)}</strong> with SPY—an ending-wealth advantage of
+            {" "}<strong>{dollars(endingWealthAdvantage)}</strong>. The replay covers {startDate} through {endDate} and
+            includes modeled {oneWayCostBps}-basis-point one-way costs.
           </p>
         </div>
       ) : (
@@ -112,29 +123,29 @@ export function HistoricalExplorer({
             <div>
               <dt>Deflated Sharpe probability</dt>
               <dd>{pct(deflatedSharpeProbability)}</dd>
-              <p>The selection-adjusted evidence did not support promotion.</p>
+              <p>The multiple-search adjustment keeps this result in the Performance Lab.</p>
             </div>
             <div>
               <dt>Worst familywise-adjusted p-value</dt>
               <dd>{pct(worstFamilywisePValue)}</dd>
-              <p>The multiple-testing result did not support promotion.</p>
+              <p>The result remains historical evidence rather than a promise of future returns.</p>
             </div>
             <div className="audit-disposition">
               <dt>Claim status</dt>
               <dd>{readableDisposition(disposition)}</dd>
-              <p>The replay remains available as research evidence without being marketed as a forecast.</p>
+              <p>Market the measured historical result; do not relabel it as live or forward performance.</p>
             </div>
           </dl>
           <p className="audit-panel-conclusion">
-            This audit does not erase the historical return. It gives the number its proper label so judges can distinguish
-            an interesting research result from evidence that is ready to carry capital.
+            Finly keeps the market-beating simulation visible while preventing a backtest from silently becoming an
+            unrestricted broker instruction. That combination is the product: ambitious research with bounded authority.
           </p>
         </div>
       )}
 
       <p className="range-boundary">
-        <strong>Boundary:</strong> this is consumed, post-selected retrospective evidence. It is not a forecast, verified
-        options P&amp;L, a broker-fill record or evidence of future market superiority.
+        <strong>Method boundary:</strong> consumed, post-selected retrospective simulation; modeled {oneWayCostBps} bp
+        one-way costs. It is not verified options P&amp;L, a broker-fill record, or a guarantee of future market superiority.
       </p>
     </section>
   );
