@@ -18,6 +18,16 @@ test("loads the byte-frozen G4 shadow protocol before the first signal", async (
   assert.ok(protocol.registered_at < G4_SHADOW_LIVE_FIRST_SIGNAL_ELIGIBLE_AT);
   assert.equal(protocol.authority.broker_mutation_authorized, false);
   assert.equal(protocol.shadow_account.initial_cash_usd, 300);
+  assert.equal(protocol.shadow_account.valuation_method, "SAME_VINTAGE_ADJUSTED_TOTAL_RETURN_EQUIVALENT_UNITS");
+  assert.equal(Object.isFrozen(protocol), true);
+  assert.equal(Object.isFrozen(protocol.publication), true);
+  assert.equal(Object.isFrozen(protocol.publication.public_fields), true);
+  for (const field of [
+    "action", "signal_sha256", "signal", "execution_session_date", "execution_status",
+    "executed_prior_signal_sha256", "next_signal_session_date", "publication_deadline",
+  ]) {
+    assert.ok(protocol.publication.public_fields.includes(field));
+  }
 });
 test("protocol validation rejects hindsight, strategy, and authority drift", async () => {
   const protocol = await loadG4ShadowLiveProtocol();

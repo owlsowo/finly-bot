@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { sha256 } from "../lib/canonical.mjs";
 import {
   G4_SHADOW_SYMBOLS,
   buildG4ShadowSignal,
@@ -69,6 +70,18 @@ test("HOLD preserves the prior target and the 21-session cadence", () => {
   assert.equal(next.action, "REBALANCE");
 });
 
+test("source hash binds normalized economic inputs rather than JSON number representation", () => {
+  const numeric = panel();
+  const strings = structuredClone(numeric);
+  for (const symbol of G4_SHADOW_SYMBOLS) {
+    for (const row of strings[symbol]) row.close = String(row.close);
+  }
+  const numericSignal = buildG4ShadowSignal({ adjustedCloseRows: numeric, sessionNumber: 0 });
+  const stringSignal = buildG4ShadowSignal({ adjustedCloseRows: strings, sessionNumber: 0 });
+  assert.equal(numericSignal.source_panel_sha256, stringSignal.source_panel_sha256);
+  assert.deepEqual(numericSignal.target_weights, stringSignal.target_weights);
+});
+
 test("rejects hindsight-prone or malformed panels and target state", () => {
   const base = panel();
   const missing = structuredClone(base);
@@ -97,6 +110,18 @@ test("validation catches tampering with the frozen cadence, weights, and hash", 
   const wrongWeight = structuredClone(signal);
   wrongWeight.target_weights.QQQ = 0.6;
   assert.throws(() => validateG4ShadowSignal(wrongWeight), /sum to/u);
+
+  const forgedAllocation = structuredClone(signal);
+  forgedAllocation.target_weights.QQQ = 0.7;
+  for (const sector of forgedAllocation.selected_sectors) forgedAllocation.target_weights[sector] = 0.1;
+  const forgedAllocationBody = structuredClone(forgedAllocation);
+  delete forgedAllocationBody.signal_sha256;
+  forgedAllocation.signal_sha256 = sha256(forgedAllocationBody);
+  assert.throws(() => validateG4ShadowSignal(forgedAllocation), /frozen 50% QQQ/u);
+
+  const forgedSelection = structuredClone(signal);
+  forgedSelection.selected_sectors = ["XLE", "XLF", "XLK"];
+  assert.throws(() => validateG4ShadowSignal(forgedSelection), /selected sectors/u);
 
   const wrongHash = structuredClone(signal);
   wrongHash.signal_sha256 = `sha256:${"0".repeat(64)}`;

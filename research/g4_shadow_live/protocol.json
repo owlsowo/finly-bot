@@ -1,8 +1,9 @@
 {
-  "schema_version": "finly_g4_shadow_live_protocol.v1",
+  "schema_version": "finly_g4_shadow_live_protocol.v2",
   "trial_id": "finly_g4_shadow_live_1",
-  "status": "FROZEN_BEFORE_FIRST_SIGNAL",
-  "registered_at": "2026-08-30T13:29:14.000Z",
+  "status": "FROZEN_SUPERSEDING_V1_BEFORE_FIRST_SIGNAL",
+  "registered_at": "2026-08-30T13:42:02.000Z",
+  "supersedes_protocol_sha256": "sha256:51a636dfaadfb283651f8735695a0594fc78421189eb8abf2a7fe0eb01036a35",
   "hindsight_boundary": {
     "last_consumed_session": "2026-08-28",
     "first_eligible_signal_session": "2026-08-31",
@@ -73,6 +74,7 @@
     "self_financing": true,
     "one_way_transaction_cost_bps": 5,
     "slippage_bps": 0,
+    "valuation_method": "SAME_VINTAGE_ADJUSTED_TOTAL_RETURN_EQUIVALENT_UNITS",
     "no_margin": true
   },
   "comparison": {
@@ -91,18 +93,28 @@
     "write_once": true,
     "hash_chained": true,
     "publish_before_outcome_interval": true,
+    "github_publication_receipt_required_before_next_execution_close": true,
+    "github_publication_receipt_directory": "research/g4_shadow_live/publication_receipts",
     "public_fields": [
       "signal_session_date",
+      "next_signal_session_date",
       "captured_at",
       "strategy_id",
+      "action",
+      "signal_sha256",
+      "signal",
       "target_weights",
       "selected_sectors",
+      "execution_session_date",
+      "execution_status",
+      "executed_prior_signal_sha256",
       "modeled_orders",
       "shadow_equity",
       "spy_shadow_equity",
       "contributions_to_date",
       "modeled_costs_to_date",
       "source_panel_sha256",
+      "publication_deadline",
       "previous_record_sha256",
       "record_sha256"
     ]
@@ -120,5 +132,5 @@
     "historical_result_relabeling_permitted": false,
     "competitor_rank_claim_permitted": false
   },
-  "protocol_sha256": "sha256:51a636dfaadfb283651f8735695a0594fc78421189eb8abf2a7fe0eb01036a35"
+  "protocol_sha256": "sha256:9f2e117bafb1d42ce2af725744e2091977327b78a9109b2e86270cdfee40c0b6"
 }

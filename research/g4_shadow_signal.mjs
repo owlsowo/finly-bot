@@ -160,10 +160,21 @@ export function validateG4ShadowSignal(value) {
   if (value.action !== expectedAction) fail("G4 shadow action differs from the frozen cadence");
   const weights = fullWeights(value.target_weights);
   if (sha256(weights) !== sha256(value.target_weights)) fail("G4 shadow target weights are not canonical and complete");
+  const sectorUniverse = ["XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"];
+  const positiveSectors = sectorUniverse.filter((symbol) => weights[symbol] > 0).sort();
   if (!Array.isArray(value.selected_sectors) || value.selected_sectors.length !== 3
     || new Set(value.selected_sectors).size !== 3
-    || value.selected_sectors.some((symbol) => !["XLK", "XLF", "XLE", "XLY", "XLP", "XLI", "XLB", "XLV", "XLU"].includes(symbol))) {
+    || value.selected_sectors.some((symbol) => !sectorUniverse.includes(symbol))
+    || sha256(value.selected_sectors) !== sha256([...value.selected_sectors].sort())
+    || sha256(value.selected_sectors) !== sha256(positiveSectors)) {
     fail("G4 shadow selected sectors must contain three unique sector ETFs");
+  }
+  if (weights.QQQ !== 0.5
+    || positiveSectors.some((symbol) => weights[symbol] !== 1 / 6)
+    || G4_SHADOW_SYMBOLS.some((symbol) => (
+      symbol !== "QQQ" && !positiveSectors.includes(symbol) && weights[symbol] !== 0
+    ))) {
+    fail("G4 shadow target weights differ from the frozen 50% QQQ plus three equal sector sleeves");
   }
   exactKeys(value.authority, ["shadow_only", "broker_mutation_authorized", "order_payload"], "G4 shadow authority");
   if (value.authority.shadow_only !== true
@@ -208,9 +219,9 @@ export function buildG4ShadowSignal({
     .map(([symbol]) => symbol)
     .sort();
   if (selectedSectors.length !== 3) fail("frozen G4 signal did not select exactly three sectors");
-  const panelProjection = dates.map((date, index) => [
-    date,
-    ...G4_SHADOW_SYMBOLS.map((symbol) => adjustedCloseRows[symbol][index].close),
+  const panelProjection = points.map((point) => [
+    point.date,
+    ...G4_SHADOW_SYMBOLS.map((symbol) => point[symbol]),
   ]);
   const body = {
     schema_version: G4_SHADOW_SIGNAL_SCHEMA,

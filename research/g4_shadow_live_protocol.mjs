@@ -8,10 +8,10 @@ import { sha256 } from "../lib/canonical.mjs";
 import { G4_SHADOW_SYMBOLS } from "./g4_shadow_signal.mjs";
 
 export const G4_SHADOW_LIVE_ID = "finly_g4_shadow_live_1";
-export const G4_SHADOW_LIVE_PROTOCOL_SCHEMA = "finly_g4_shadow_live_protocol.v1";
+export const G4_SHADOW_LIVE_PROTOCOL_SCHEMA = "finly_g4_shadow_live_protocol.v2";
 export const G4_SHADOW_LIVE_PROTOCOL_PATH = "research/g4_shadow_live/protocol.json";
-export const G4_SHADOW_LIVE_PROTOCOL_SHA256 = "sha256:51a636dfaadfb283651f8735695a0594fc78421189eb8abf2a7fe0eb01036a35";
-export const G4_SHADOW_LIVE_PROTOCOL_RAW_BYTES_SHA256 = "sha256:e4e20e131f955c0d9bb30307d42a6d4e78d66927567d942f244b447be006333b";
+export const G4_SHADOW_LIVE_PROTOCOL_SHA256 = "sha256:9f2e117bafb1d42ce2af725744e2091977327b78a9109b2e86270cdfee40c0b6";
+export const G4_SHADOW_LIVE_PROTOCOL_RAW_BYTES_SHA256 = "sha256:7133721007134522804d05e1013f96bcb389341cedf937aa5e69a853a2d317fe";
 export const G4_SHADOW_LIVE_FIRST_SIGNAL_SESSION = "2026-08-31";
 export const G4_SHADOW_LIVE_FIRST_SIGNAL_ELIGIBLE_AT = "2026-08-31T20:15:00.000Z";
 export const G4_SHADOW_LIVE_FIRST_EXECUTION_SESSION = "2026-09-01";
@@ -21,6 +21,14 @@ const SHA256 = /^sha256:[0-9a-f]{64}$/u;
 
 function fail(message) {
   throw new TypeError(message);
+}
+
+function deepFreeze(value) {
+  if (value && typeof value === "object" && !Object.isFrozen(value)) {
+    Object.values(value).forEach(deepFreeze);
+    Object.freeze(value);
+  }
+  return value;
 }
 
 function plainObject(value, label) {
@@ -64,13 +72,14 @@ export function canonicalG4ShadowLiveProtocolJson(value) {
 
 export function validateG4ShadowLiveProtocol(value) {
   exactKeys(value, [
-    "schema_version", "trial_id", "status", "registered_at", "hindsight_boundary",
+    "schema_version", "trial_id", "status", "registered_at", "supersedes_protocol_sha256", "hindsight_boundary",
     "upstream_capture", "frozen_strategy", "signal_chronology", "shadow_account",
     "comparison", "publication", "authority", "claim_policy", "protocol_sha256",
   ], "G4 shadow live protocol");
   if (value.schema_version !== G4_SHADOW_LIVE_PROTOCOL_SCHEMA
     || value.trial_id !== G4_SHADOW_LIVE_ID
-    || value.status !== "FROZEN_BEFORE_FIRST_SIGNAL") {
+    || value.status !== "FROZEN_SUPERSEDING_V1_BEFORE_FIRST_SIGNAL"
+    || value.supersedes_protocol_sha256 !== "sha256:51a636dfaadfb283651f8735695a0594fc78421189eb8abf2a7fe0eb01036a35") {
     fail("G4 shadow live protocol envelope changed");
   }
   if (instant(value.registered_at, "G4 shadow registered_at") >= G4_SHADOW_LIVE_FIRST_SIGNAL_ELIGIBLE_AT) {
@@ -139,6 +148,7 @@ export function validateG4ShadowLiveProtocol(value) {
     || account.self_financing !== true
     || account.one_way_transaction_cost_bps !== 5
     || account.slippage_bps !== 0
+    || account.valuation_method !== "SAME_VINTAGE_ADJUSTED_TOTAL_RETURN_EQUIVALENT_UNITS"
     || account.no_margin !== true) {
     fail("G4 shadow account specification changed");
   }
@@ -156,8 +166,10 @@ export function validateG4ShadowLiveProtocol(value) {
   if (publication.write_once !== true
     || publication.hash_chained !== true
     || publication.publish_before_outcome_interval !== true
+    || publication.github_publication_receipt_required_before_next_execution_close !== true
+    || publication.github_publication_receipt_directory !== "research/g4_shadow_live/publication_receipts"
     || publication.public_fields.join("|")
-      !== "signal_session_date|captured_at|strategy_id|target_weights|selected_sectors|modeled_orders|shadow_equity|spy_shadow_equity|contributions_to_date|modeled_costs_to_date|source_panel_sha256|previous_record_sha256|record_sha256") {
+      !== "signal_session_date|next_signal_session_date|captured_at|strategy_id|action|signal_sha256|signal|target_weights|selected_sectors|execution_session_date|execution_status|executed_prior_signal_sha256|modeled_orders|shadow_equity|spy_shadow_equity|contributions_to_date|modeled_costs_to_date|source_panel_sha256|publication_deadline|previous_record_sha256|record_sha256") {
     fail("G4 shadow publication contract changed");
   }
 
@@ -222,5 +234,5 @@ export async function loadG4ShadowLiveProtocol({ projectRoot = REPOSITORY_ROOT }
   if (bytes.toString("utf8") !== canonicalG4ShadowLiveProtocolJson(protocol)) {
     fail("G4 shadow live protocol is not canonical pretty JSON with one trailing newline");
   }
-  return validateG4ShadowLiveProtocol(protocol);
+  return deepFreeze(structuredClone(validateG4ShadowLiveProtocol(protocol)));
 }
