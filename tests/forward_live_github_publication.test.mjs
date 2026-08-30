@@ -9,6 +9,7 @@ import {
   buildForwardTrialLiveActivation,
   hashForwardTrialLiveValue,
 } from "../research/forward_trial_live_core.mjs";
+import { newYorkMarketInstant } from "../research/run_forward_trial_live.mjs";
 import {
   GITHUB_PUBLICATION_POLICY,
   GITHUB_PUBLICATION_RECEIPT_DIRECTORY,
@@ -16,6 +17,7 @@ import {
   fetchAndValidateGitHubPublication,
   githubPublicApiRequestPlan,
   githubPublicationReceiptPlan,
+  loadGitHubPublicationReceipt,
   parseGitHubPublicationCli,
   publishGitHubPublicationReceiptWriteOnce,
   sha256Bytes,
@@ -104,6 +106,54 @@ function buildAnchor({ activation = ACTIVATION, runtimeManifest = buildRuntimeMa
   });
 }
 
+function nextWeekday(sessionDate) {
+  const value = new Date(`${sessionDate}T12:00:00.000Z`);
+  do {
+    value.setUTCDate(value.getUTCDate() + 1);
+  } while ([0, 6].includes(value.getUTCDay()));
+  return value.toISOString().slice(0, 10);
+}
+
+function buildSuccessorAnchor(previousAnchor, {
+  activation = ACTIVATION,
+  runtimeManifest = buildRuntimeManifest(activation),
+} = {}) {
+  const sequence = previousAnchor.commitment_sequence + 1;
+  const signalSessionDate = previousAnchor.timing.next_session_date;
+  const nextSessionDate = nextWeekday(signalSessionDate);
+  const marketCloseAt = previousAnchor.timing.next_market_close_at;
+  const nextMarketCloseAt = newYorkMarketInstant(nextSessionDate, "16:00:00");
+  const action = (sequence - 1) % 5 === 0 ? "REBALANCE" : "HOLD";
+  return rehashAnchor({
+    schema_version: FORWARD_TRIAL_LIVE_ANCHOR_SCHEMA,
+    trial_id: activation.trial_id,
+    manifest_kind: "PUBLIC_HASH_ONLY_SIGNAL_ANCHOR",
+    commitment_sequence: sequence,
+    signal_session_date: signalSessionDate,
+    timing: {
+      captured_at: new Date(Date.parse(marketCloseAt) + 16 * 60_000 + 123).toISOString(),
+      market_close_at: marketCloseAt,
+      bar_eligible_at: new Date(Date.parse(marketCloseAt) + 15 * 60_000).toISOString(),
+      next_session_date: nextSessionDate,
+      next_market_close_at: nextMarketCloseAt,
+      anchor_deadline: nextMarketCloseAt,
+    },
+    formula: {
+      ...structuredClone(activation.payload.formula_binding),
+      implementation_binding_sha256: runtimeManifest.manifest_sha256,
+      decision_receipt_sha256: sha256Canonical({ decision_sequence: sequence }),
+    },
+    action,
+    target_weights: action === "HOLD"
+      ? structuredClone(previousAnchor.target_weights)
+      : { SPY: sequence % 10 / 10, BIL: 1 - sequence % 10 / 10 },
+    private_bundle_sha256: sha256Canonical({ private_bundle_sequence: sequence }),
+    previous_private_bundle_sha256: previousAnchor.private_bundle_sha256,
+    authority: structuredClone(activation.payload.authority),
+    evaluation_gates: structuredClone(activation.payload.evaluation_gates),
+  });
+}
+
 function anchorPath(anchor) {
   return `${GITHUB_PUBLICATION_POLICY.anchor_directory}/${String(anchor.commitment_sequence).padStart(8, "0")}_${anchor.manifest_sha256.slice(7)}.json`;
 }
@@ -131,6 +181,7 @@ function apiResponseFixture(value) {
     headSha: value.run.head_sha,
     parentSha: value.expectedParentSha,
     anchorPath: value.anchorPath,
+    previousAnchorPath: value.previousReceipt?.anchor_path ?? null,
   });
   const responseValues = {
     repository: value.repository,
@@ -143,7 +194,10 @@ function apiResponseFixture(value) {
       `runtime_source:${path}`,
       value.runtimeSourceBytes[path],
     ])),
-    parent_freeze_workflow_runs: value.parentFreezeRuns,
+    parent_publication_workflow_runs: value.parentFreezeRuns,
+    ...(value.previousReceipt === null ? {} : {
+      previous_anchor_at_parent: value.previousAnchorBytes,
+    }),
     anchor_at_head: value.anchorBytes,
     workflow_at_parent: value.workflowBytes,
     verifier_at_parent: value.verifierScriptBytes,
@@ -151,7 +205,7 @@ function apiResponseFixture(value) {
   return plan.map((request) => ({
     request_id: request.request_id,
     canonical_url: request.canonical_url,
-    github_http_date: "Mon, 31 Aug 2026 20:25:00 GMT",
+    github_http_date: new Date(value.apiObservedAt).toUTCString(),
     response_bytes: request.response_type === "json"
       ? Buffer.from(JSON.stringify(responseValues[request.request_id]), "utf8")
       : Buffer.from(responseValues[request.request_id], "utf8"),
@@ -166,6 +220,9 @@ function rehashReceipt(receipt) {
 }
 
 function fixture(overrides = {}) {
+  const headSha = overrides.headSha ?? HEAD_SHA;
+  const expectedParentSha = overrides.expectedParentSha ?? PARENT_SHA;
+  const runId = overrides.runId ?? RUN_ID;
   const activation = overrides.activation ?? structuredClone(ACTIVATION);
   const runtimeManifest = overrides.runtimeManifest ?? buildRuntimeManifest(activation);
   const anchor = overrides.anchor ?? buildAnchor({ activation, runtimeManifest });
@@ -187,20 +244,20 @@ function fixture(overrides = {}) {
     private: false,
   };
   const run = {
-    id: RUN_ID,
+    id: runId,
     workflow_id: GITHUB_PUBLICATION_POLICY.workflow.id,
     name: GITHUB_PUBLICATION_POLICY.workflow.name,
     path: GITHUB_PUBLICATION_POLICY.workflow.path,
     event: "push",
     head_branch: "main",
-    head_sha: HEAD_SHA,
+    head_sha: headSha,
     status: "completed",
     conclusion: "success",
     created_at: "2026-08-31T20:20:00Z",
     run_started_at: "2026-08-31T20:20:01Z",
     updated_at: "2026-08-31T20:24:31Z",
     run_attempt: 1,
-    html_url: `https://github.com/owlsowo/finly-bot/actions/runs/${RUN_ID}`,
+    html_url: `https://github.com/owlsowo/finly-bot/actions/runs/${runId}`,
     repository: runRepository,
     head_repository: structuredClone(runRepository),
     ...overrides.run,
@@ -208,7 +265,7 @@ function fixture(overrides = {}) {
   const parentRun = {
     ...structuredClone(run),
     id: PARENT_RUN_ID,
-    head_sha: PARENT_SHA,
+    head_sha: expectedParentSha,
     created_at: "2026-08-30T04:05:00Z",
     run_started_at: "2026-08-30T04:05:01Z",
     updated_at: "2026-08-30T04:10:00Z",
@@ -220,8 +277,8 @@ function fixture(overrides = {}) {
     jobs: [{
       id: 99_192_087_329,
       name: "verify",
-      run_id: RUN_ID,
-      head_sha: HEAD_SHA,
+      run_id: runId,
+      head_sha: headSha,
       status: "completed",
       conclusion: "success",
       steps: [
@@ -246,8 +303,8 @@ function fixture(overrides = {}) {
     ...overrides.jobs,
   };
   const commit = {
-    sha: HEAD_SHA,
-    parents: [{ sha: PARENT_SHA }],
+    sha: headSha,
+    parents: [{ sha: expectedParentSha }],
     files: [{
       filename: publicAnchorPath,
       status: "added",
@@ -272,17 +329,93 @@ function fixture(overrides = {}) {
     runtimeManifestBytes,
     runtimeSourceBytes,
     anchorBytes: overrides.anchorBytes ?? canonicalRepositoryJson(anchor),
+    previousAnchorBytes: overrides.previousAnchorBytes ?? null,
+    previousReceipt: overrides.previousReceipt ?? null,
     workflowBytes: overrides.workflowBytes ?? WORKFLOW_BYTES,
     verifierScriptBytes: overrides.verifierScriptBytes ?? VERIFIER_SCRIPT_BYTES,
     executingVerifierBytes: overrides.executingVerifierBytes ?? VERIFIER_SCRIPT_BYTES,
     executingRuntimeManifestBytes: overrides.executingRuntimeManifestBytes ?? runtimeManifestBytes,
     executingRuntimeSourceBytes: overrides.executingRuntimeSourceBytes ?? structuredClone(runtimeSourceBytes),
-    runId: RUN_ID,
+    runId,
     anchorPath: publicAnchorPath,
-    expectedParentSha: PARENT_SHA,
+    expectedParentSha,
+    apiObservedAt: overrides.apiObservedAt ?? "2026-08-31T20:25:00.000Z",
   };
   value.apiResponses = overrides.apiResponses ?? apiResponseFixture(value);
   return value;
+}
+
+function nextPublication(previous) {
+  const anchor = buildSuccessorAnchor(previous.anchor);
+  const sequence = anchor.commitment_sequence;
+  const runId = RUN_ID + sequence - 1;
+  const headSha = sequence.toString(16).padStart(40, "0");
+  const capturedAt = Date.parse(anchor.timing.captured_at);
+  const createdAt = new Date(capturedAt + 1_000).toISOString();
+  const startedAt = new Date(capturedAt + 2_000).toISOString();
+  const firstStepCompletedAt = new Date(capturedAt + 120_000).toISOString();
+  const secondStepStartedAt = new Date(capturedAt + 121_000).toISOString();
+  const updatedAt = new Date(capturedAt + 240_000).toISOString();
+  const apiObservedAt = new Date(capturedAt + 300_000).toISOString();
+  const jobs = {
+    total_count: 1,
+    jobs: [{
+      id: 99_192_087_329 + sequence - 1,
+      name: GITHUB_PUBLICATION_POLICY.workflow.job_name,
+      run_id: runId,
+      head_sha: headSha,
+      status: "completed",
+      conclusion: "success",
+      steps: [
+        {
+          name: GITHUB_PUBLICATION_POLICY.workflow.required_successful_steps[0],
+          number: 5,
+          status: "completed",
+          conclusion: "success",
+          started_at: startedAt,
+          completed_at: firstStepCompletedAt,
+        },
+        {
+          name: GITHUB_PUBLICATION_POLICY.workflow.required_successful_steps[1],
+          number: 6,
+          status: "completed",
+          conclusion: "success",
+          started_at: secondStepStartedAt,
+          completed_at: updatedAt,
+        },
+      ],
+    }],
+  };
+  const value = fixture({
+    anchor,
+    headSha,
+    expectedParentSha: previous.receipt.publication_commit.sha,
+    runId,
+    run: {
+      created_at: createdAt,
+      run_started_at: startedAt,
+      updated_at: updatedAt,
+    },
+    jobs,
+    parentRun: previous.value.run,
+    previousAnchorBytes: previous.value.anchorBytes,
+    previousReceipt: previous.receipt,
+    apiObservedAt,
+  });
+  return {
+    anchor,
+    value,
+    receipt: validateGitHubPublicationEvidence(value),
+  };
+}
+
+function firstPublication() {
+  const value = fixture();
+  return {
+    anchor: JSON.parse(value.anchorBytes),
+    value,
+    receipt: validateGitHubPublicationEvidence(value),
+  };
 }
 
 test("real v2 activation/runtime/anchor evidence yields a narrow self-hashed receipt", () => {
@@ -328,6 +461,212 @@ test("real v2 activation/runtime/anchor evidence yields a narrow self-hashed rec
   assert.equal(canonicalJson(receipt), canonicalJson(JSON.parse(canonicalJson(receipt))));
 });
 
+test("successor publication is an exact previous-receipt, anchor, workflow, and Git-parent extension", () => {
+  const first = firstPublication();
+  const second = nextPublication(first);
+  assert.equal(second.receipt.commitment_sequence, 2);
+  assert.equal(second.receipt.public_anchor_chain.length, 2);
+  assert.equal(second.receipt.github_public_get_evidence.request_count, 16);
+  assert.equal(
+    second.receipt.previous_publication.receipt_sha256,
+    first.receipt.receipt_sha256,
+  );
+  assert.equal(
+    second.receipt.previous_publication.anchor_raw_bytes_sha256,
+    first.receipt.anchor_at_head.raw_bytes_sha256,
+  );
+  assert.equal(
+    second.receipt.publication_commit.parent_sha,
+    first.receipt.publication_commit.sha,
+  );
+  assert.equal(second.receipt.immediate_parent_run.id, first.receipt.run.id);
+  assert.equal(validateGitHubPublicationReceipt(second.receipt), second.receipt);
+
+  const missingReceipt = structuredClone(second.value);
+  missingReceipt.previousReceipt = null;
+  assert.throws(
+    () => validateGitHubPublicationEvidence(missingReceipt),
+    /requires the immediate previous receipt and parent anchor/,
+  );
+
+  const wrongParent = structuredClone(second.value);
+  wrongParent.expectedParentSha = "e".repeat(40);
+  assert.throws(
+    () => validateGitHubPublicationEvidence(wrongParent),
+    /does not directly extend the previous receipt commit/,
+  );
+
+  const wrongAnchor = structuredClone(second.value);
+  wrongAnchor.previousAnchorBytes = `${wrongAnchor.previousAnchorBytes} `;
+  assert.throws(
+    () => validateGitHubPublicationEvidence(wrongAnchor),
+    /not canonical repository JSON|differ from the immediate previous publication receipt/,
+  );
+
+  const wrongParentRun = structuredClone(second.value);
+  wrongParentRun.parentFreezeRuns.workflow_runs[0].id += 1;
+  wrongParentRun.parentFreezeRuns.workflow_runs[0].html_url =
+    `https://github.com/owlsowo/finly-bot/actions/runs/${wrongParentRun.parentFreezeRuns.workflow_runs[0].id}`;
+  assert.throws(
+    () => validateGitHubPublicationEvidence(wrongParentRun),
+    /differs from the previous anchor publication receipt/,
+  );
+});
+
+test("canonical consecutive publication receipts remain valid through sequence 254", () => {
+  const first = firstPublication();
+  const second = nextPublication(first);
+  const anchors = structuredClone(second.receipt.public_anchor_chain);
+  while (anchors.length < 254) anchors.push(buildSuccessorAnchor(anchors.at(-1)));
+
+  const receipt = structuredClone(second.receipt);
+  const anchor = anchors.at(-1);
+  const previousAnchor = anchors.at(-2);
+  const currentCommitSha = "f".repeat(40);
+  const previousCommitSha = "e".repeat(40);
+  const previousReceiptSha = sha256Canonical({ previous_receipt_sequence: 253 });
+  const currentRunId = RUN_ID + 253;
+  const previousRunId = RUN_ID + 252;
+  const capturedAt = Date.parse(anchor.timing.captured_at);
+  const previousCapturedAt = Date.parse(previousAnchor.timing.captured_at);
+  const createdAt = new Date(capturedAt + 1_000).toISOString();
+  const startedAt = new Date(capturedAt + 2_000).toISOString();
+  const firstStepCompletedAt = new Date(capturedAt + 120_000).toISOString();
+  const secondStepStartedAt = new Date(capturedAt + 121_000).toISOString();
+  const updatedAt = new Date(capturedAt + 240_000).toISOString();
+  const observedAt = new Date(Math.floor((capturedAt + 300_000) / 1_000) * 1_000).toISOString();
+  const previousAnchorBytes = canonicalRepositoryJson(previousAnchor);
+  const anchorBytes = canonicalRepositoryJson(anchor);
+
+  receipt.commitment_sequence = 254;
+  receipt.manifest_sha256 = anchor.manifest_sha256;
+  receipt.anchor_path = anchorPath(anchor);
+  receipt.anchor_deadline = anchor.timing.anchor_deadline;
+  receipt.publication_commit = {
+    sha: currentCommitSha,
+    parent_sha: previousCommitSha,
+    only_added_path: receipt.anchor_path,
+  };
+  Object.assign(receipt.run, {
+    id: currentRunId,
+    head_sha: currentCommitSha,
+    created_at: createdAt,
+    updated_at: updatedAt,
+    html_url: `https://github.com/owlsowo/finly-bot/actions/runs/${currentRunId}`,
+    verification_job_id: 99_192_087_329 + 253,
+    required_job_steps: [
+      {
+        name: GITHUB_PUBLICATION_POLICY.workflow.required_successful_steps[0],
+        number: 5,
+        status: "completed",
+        conclusion: "success",
+        started_at: startedAt,
+        completed_at: firstStepCompletedAt,
+      },
+      {
+        name: GITHUB_PUBLICATION_POLICY.workflow.required_successful_steps[1],
+        number: 6,
+        status: "completed",
+        conclusion: "success",
+        started_at: secondStepStartedAt,
+        completed_at: updatedAt,
+      },
+    ],
+  });
+  receipt.activation_at_head.ref_sha = previousCommitSha;
+  receipt.runtime_manifest_at_head.ref_sha = previousCommitSha;
+  receipt.previous_publication = {
+    receipt_path: `${GITHUB_PUBLICATION_RECEIPT_DIRECTORY}/00000253_${previousReceiptSha.slice(7)}.json`,
+    receipt_sha256: previousReceiptSha,
+    commitment_sequence: 253,
+    anchor_path: anchorPath(previousAnchor),
+    anchor_raw_bytes_sha256: sha256Bytes(previousAnchorBytes),
+    anchor_manifest_sha256: previousAnchor.manifest_sha256,
+    anchor_private_bundle_sha256: previousAnchor.private_bundle_sha256,
+    publication_commit_sha: previousCommitSha,
+    workflow_run_id: previousRunId,
+    root_parent_sha: PARENT_SHA,
+  };
+  receipt.immediate_parent_run = {
+    id: previousRunId,
+    event: "push",
+    head_branch: "main",
+    head_sha: previousCommitSha,
+    created_at: new Date(previousCapturedAt + 1_000).toISOString(),
+    updated_at: new Date(previousCapturedAt + 240_000).toISOString(),
+    run_attempt: 1,
+    status: "completed",
+    conclusion: "success",
+    html_url: `https://github.com/owlsowo/finly-bot/actions/runs/${previousRunId}`,
+  };
+  receipt.public_anchor_chain = anchors;
+  receipt.public_anchor_chain_sha256 = sha256Canonical(anchors);
+  receipt.anchor_at_head = {
+    raw_bytes_sha256: sha256Bytes(anchorBytes),
+    manifest_sha256: anchor.manifest_sha256,
+    implementation_binding_sha256: anchor.formula.implementation_binding_sha256,
+    private_bundle_sha256: anchor.private_bundle_sha256,
+    previous_private_bundle_sha256: anchor.previous_private_bundle_sha256,
+  };
+  receipt.verifier_at_parent.ref_sha = previousCommitSha;
+  receipt.verification_observed_at = observedAt;
+  const plan = githubPublicApiRequestPlan({
+    runId: currentRunId,
+    headSha: currentCommitSha,
+    parentSha: previousCommitSha,
+    anchorPath: receipt.anchor_path,
+    previousAnchorPath: receipt.previous_publication.anchor_path,
+  });
+  const oldResponses = Object.fromEntries(receipt.github_public_get_evidence.responses.map(
+    (response) => [response.request_id, response],
+  ));
+  const rawHashes = {
+    activation_at_parent: receipt.activation_at_head.raw_bytes_sha256,
+    runtime_manifest_at_parent: receipt.runtime_manifest_at_head.raw_bytes_sha256,
+    previous_anchor_at_parent: receipt.previous_publication.anchor_raw_bytes_sha256,
+    anchor_at_head: receipt.anchor_at_head.raw_bytes_sha256,
+    workflow_at_parent: receipt.workflow.frozen_file_sha256,
+    verifier_at_parent: receipt.verifier_at_parent.raw_bytes_sha256,
+    ...Object.fromEntries(RUNTIME_PATHS.map((path) => [
+      `runtime_source:${path}`,
+      receipt.runtime_manifest_at_head.runtime_source_files[path],
+    ])),
+  };
+  receipt.github_public_get_evidence = {
+    request_count: plan.length,
+    responses: plan.map((request) => ({
+      ...oldResponses[request.request_id],
+      request_id: request.request_id,
+      canonical_url: request.canonical_url,
+      github_http_date: new Date(observedAt).toUTCString(),
+      response_bytes_sha256: rawHashes[request.request_id]
+        ?? oldResponses[request.request_id].response_bytes_sha256,
+    })),
+  };
+  rehashReceipt(receipt);
+
+  assert.equal(receipt.commitment_sequence, 254);
+  assert.equal(receipt.public_anchor_chain.length, 254);
+  assert.equal(receipt.previous_publication.commitment_sequence, 253);
+  assert.equal(receipt.github_public_get_evidence.request_count, 16);
+  assert.ok(Buffer.byteLength(canonicalJson(receipt), "utf8") <= 1024 * 1024);
+  assert.equal(validateGitHubPublicationReceipt(receipt), receipt);
+  assert.equal(githubPublicApiRequestPlan({
+    runId: receipt.run.id,
+    headSha: receipt.publication_commit.sha,
+    parentSha: receipt.publication_commit.parent_sha,
+    anchorPath: receipt.anchor_path,
+    previousAnchorPath: receipt.previous_publication.anchor_path,
+  }).length, 16);
+  assert.throws(() => githubPublicApiRequestPlan({
+    runId: receipt.run.id + 1,
+    headSha: "f".repeat(40),
+    parentSha: receipt.publication_commit.sha,
+    anchorPath: `${GITHUB_PUBLICATION_POLICY.anchor_directory}/00000255_${"a".repeat(64)}.json`,
+    previousAnchorPath: receipt.anchor_path,
+  }), /anchor sequence must be from 1 through 254/);
+});
+
 test("repository and workflow identity gates reject lookalikes, tags, other SHAs, and unsuccessful runs", () => {
   const cases = [
     fixture({ repository: { id: 7 } }),
@@ -365,7 +704,7 @@ test("parent runtime freeze requires one successful public push run strictly bef
   );
   assert.throws(
     () => validateGitHubPublicationEvidence(fixture({ parentRun: { head_sha: HEAD_SHA } })),
-    /did not complete successfully before the activated first close/,
+    /does not belong to the exact commit parent/,
   );
   assert.throws(
     () => validateGitHubPublicationEvidence(fixture({
@@ -563,7 +902,7 @@ test("fifteen public-GET observations bind fixed URLs, canonical HTTP Dates, and
   missing.apiResponses.pop();
   assert.throws(
     () => validateGitHubPublicationEvidence(missing),
-    /exactly fifteen fixed GETs/,
+    /exact bounded GET plan/,
   );
 
   const reordered = fixture();
@@ -709,39 +1048,57 @@ function mockResponse(value, {
   };
 }
 
-test("public REST orchestration performs exactly fifteen fixed unauthenticated GETs and no mutation", async () => {
-  const value = fixture();
-  const calls = [];
-  const responses = new Map();
+function publicApiResponseMap(value) {
   const base = "https://api.github.com";
-  responses.set(`${base}/repos/owlsowo/finly-bot`, [value.repository, "json"]);
-  responses.set(`${base}/repos/owlsowo/finly-bot/actions/runs/${RUN_ID}`, [value.run, "json"]);
-  responses.set(`${base}/repos/owlsowo/finly-bot/actions/runs/${RUN_ID}/jobs?per_page=100`, [value.jobs, "json"]);
-  responses.set(`${base}/repos/owlsowo/finly-bot/commits/${HEAD_SHA}?per_page=100&page=1`, [value.commit, "json"]);
-  responses.set(
-    `${base}/repos/owlsowo/finly-bot/contents/${GITHUB_PUBLICATION_POLICY.activation_path}?ref=${PARENT_SHA}`,
-    [value.activationBytes, "raw"],
-  );
-  responses.set(
-    `${base}/repos/owlsowo/finly-bot/contents/${GITHUB_PUBLICATION_POLICY.runtime_manifest_path}?ref=${PARENT_SHA}`,
-    [value.runtimeManifestBytes, "raw"],
-  );
+  const responses = new Map([
+    [`${base}/repos/owlsowo/finly-bot`, [value.repository, "json"]],
+    [`${base}/repos/owlsowo/finly-bot/actions/runs/${value.runId}`, [value.run, "json"]],
+    [`${base}/repos/owlsowo/finly-bot/actions/runs/${value.runId}/jobs?per_page=100`, [value.jobs, "json"]],
+    [`${base}/repos/owlsowo/finly-bot/commits/${value.run.head_sha}?per_page=100&page=1`, [value.commit, "json"]],
+    [
+      `${base}/repos/owlsowo/finly-bot/contents/${GITHUB_PUBLICATION_POLICY.activation_path}?ref=${value.expectedParentSha}`,
+      [value.activationBytes, "raw"],
+    ],
+    [
+      `${base}/repos/owlsowo/finly-bot/contents/${GITHUB_PUBLICATION_POLICY.runtime_manifest_path}?ref=${value.expectedParentSha}`,
+      [value.runtimeManifestBytes, "raw"],
+    ],
+  ]);
   for (const path of GITHUB_PUBLICATION_POLICY.runtime_source_paths) {
     responses.set(
-      `${base}/repos/owlsowo/finly-bot/contents/${path}?ref=${PARENT_SHA}`,
+      `${base}/repos/owlsowo/finly-bot/contents/${path}?ref=${value.expectedParentSha}`,
       [value.runtimeSourceBytes[path], "raw"],
     );
   }
   responses.set(
-    `${base}/repos/owlsowo/finly-bot/actions/workflows/${GITHUB_PUBLICATION_POLICY.workflow.id}/runs?branch=main&event=push&status=success&head_sha=${PARENT_SHA}&per_page=10`,
+    `${base}/repos/owlsowo/finly-bot/actions/workflows/${GITHUB_PUBLICATION_POLICY.workflow.id}/runs?branch=main&event=push&status=success&head_sha=${value.expectedParentSha}&per_page=10`,
     [value.parentFreezeRuns, "json"],
   );
-  responses.set(`${base}/repos/owlsowo/finly-bot/contents/${value.anchorPath}?ref=${HEAD_SHA}`, [value.anchorBytes, "raw"]);
-  responses.set(`${base}/repos/owlsowo/finly-bot/contents/.github/workflows/ci.yml?ref=${PARENT_SHA}`, [WORKFLOW_BYTES, "raw"]);
+  if (value.previousReceipt !== null) {
+    responses.set(
+      `${base}/repos/owlsowo/finly-bot/contents/${value.previousReceipt.anchor_path}?ref=${value.expectedParentSha}`,
+      [value.previousAnchorBytes, "raw"],
+    );
+  }
   responses.set(
-    `${base}/repos/owlsowo/finly-bot/contents/${GITHUB_PUBLICATION_POLICY.verifier_path}?ref=${PARENT_SHA}`,
+    `${base}/repos/owlsowo/finly-bot/contents/${value.anchorPath}?ref=${value.run.head_sha}`,
+    [value.anchorBytes, "raw"],
+  );
+  responses.set(
+    `${base}/repos/owlsowo/finly-bot/contents/.github/workflows/ci.yml?ref=${value.expectedParentSha}`,
+    [WORKFLOW_BYTES, "raw"],
+  );
+  responses.set(
+    `${base}/repos/owlsowo/finly-bot/contents/${GITHUB_PUBLICATION_POLICY.verifier_path}?ref=${value.expectedParentSha}`,
     [VERIFIER_SCRIPT_BYTES, "raw"],
   );
+  return responses;
+}
+
+test("public REST orchestration performs exactly fifteen fixed unauthenticated GETs and no mutation", async () => {
+  const value = fixture();
+  const calls = [];
+  const responses = publicApiResponseMap(value);
 
   const fetchImpl = async (url, options) => {
     calls.push({ url: url.href, options: structuredClone(options) });
@@ -767,7 +1124,39 @@ test("public REST orchestration performs exactly fifteen fixed unauthenticated G
   }
 });
 
-test("CLI parser accepts exactly the three bounded publication identifiers", () => {
+test("successor REST orchestration adds only the parent-anchor GET and remains mutation-free", async () => {
+  const first = firstPublication();
+  const second = nextPublication(first);
+  const calls = [];
+  const responses = publicApiResponseMap(second.value);
+  const fetchImpl = async (url, options) => {
+    calls.push({ url: url.href, options: structuredClone(options) });
+    const selected = responses.get(url.href);
+    assert.ok(selected, `unexpected URL ${url.href}`);
+    return mockResponse(selected[0], {
+      url: url.href,
+      accept: selected[1],
+      observedAt: second.value.apiObservedAt,
+    });
+  };
+  const receipt = await fetchAndValidateGitHubPublication({
+    runId: second.value.runId,
+    anchorPath: second.value.anchorPath,
+    expectedParentSha: second.value.expectedParentSha,
+    previousReceipt: first.receipt,
+    fetchImpl,
+  });
+  assert.equal(receipt.commitment_sequence, 2);
+  assert.equal(receipt.github_public_get_evidence.request_count, 16);
+  assert.equal(calls.length, 16);
+  assert.equal(calls.filter(({ url }) => url.includes(first.receipt.anchor_path)).length, 1);
+  for (const call of calls) {
+    assert.equal(call.options.method, "GET");
+    assert.equal(Object.keys(call.options.headers).some((key) => /authorization|token/i.test(key)), false);
+  }
+});
+
+test("CLI parser requires the immediate predecessor identifier after sequence one", () => {
   assert.deepEqual(parseGitHubPublicationCli([
     "--anchor-path", `${GITHUB_PUBLICATION_POLICY.anchor_directory}/00000001_${"a".repeat(64)}.json`,
     "--expected-parent-sha", PARENT_SHA,
@@ -776,6 +1165,7 @@ test("CLI parser accepts exactly the three bounded publication identifiers", () 
     runId: RUN_ID,
     anchorPath: `${GITHUB_PUBLICATION_POLICY.anchor_directory}/00000001_${"a".repeat(64)}.json`,
     expectedParentSha: PARENT_SHA,
+    previousReceiptPath: null,
   });
   assert.throws(() => parseGitHubPublicationCli([]), /usage/);
   assert.throws(() => parseGitHubPublicationCli(["--run-id", "nope"]), /usage|positive integer/);
@@ -784,6 +1174,22 @@ test("CLI parser accepts exactly the three bounded publication identifiers", () 
     "--anchor-path", "../secret.json",
     "--expected-parent-sha", PARENT_SHA,
   ]), /fixed public anchor directory/);
+  assert.throws(() => parseGitHubPublicationCli([
+    "--run-id", String(RUN_ID),
+    "--anchor-path", `${GITHUB_PUBLICATION_POLICY.anchor_directory}/00000002_${"a".repeat(64)}.json`,
+    "--expected-parent-sha", PARENT_SHA,
+  ]), /require --previous-receipt-path/);
+  assert.deepEqual(parseGitHubPublicationCli([
+    "--run-id", String(RUN_ID),
+    "--anchor-path", `${GITHUB_PUBLICATION_POLICY.anchor_directory}/00000002_${"a".repeat(64)}.json`,
+    "--expected-parent-sha", PARENT_SHA,
+    "--previous-receipt-path", `${GITHUB_PUBLICATION_RECEIPT_DIRECTORY}/00000001_${"b".repeat(64)}.json`,
+  ]), {
+    runId: RUN_ID,
+    anchorPath: `${GITHUB_PUBLICATION_POLICY.anchor_directory}/00000002_${"a".repeat(64)}.json`,
+    expectedParentSha: PARENT_SHA,
+    previousReceiptPath: `${GITHUB_PUBLICATION_RECEIPT_DIRECTORY}/00000001_${"b".repeat(64)}.json`,
+  });
 });
 
 test("content-addressed receipt publication is canonical, idempotent, and race-safe", async () => {
@@ -803,6 +1209,10 @@ test("content-addressed receipt publication is canonical, idempotent, and race-s
     const second = await publishGitHubPublicationReceiptWriteOnce(receipt, { projectRoot });
     assert.equal(second.disposition, "verified_existing");
     assert.equal(second.path, first.path);
+    assert.deepEqual(
+      await loadGitHubPublicationReceipt(first.path, { projectRoot }),
+      receipt,
+    );
 
     const directory = resolve(projectRoot, GITHUB_PUBLICATION_RECEIPT_DIRECTORY);
     assert.deepEqual(await readdir(directory), [plan.filename]);

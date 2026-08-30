@@ -49,7 +49,7 @@ export const GITHUB_PUBLICATION_POLICY = Object.freeze({
 });
 
 export const GITHUB_PUBLICATION_RECEIPT_SCHEMA =
-  "finly_forward_trial_live_github_publication_receipt.v3";
+  "finly_forward_trial_live_github_publication_receipt.v4";
 
 export const GITHUB_PUBLICATION_RECEIPT_DIRECTORY =
   GITHUB_PUBLICATION_POLICY.receipt_directory;
@@ -57,6 +57,7 @@ export const GITHUB_PUBLICATION_RECEIPT_DIRECTORY =
 const SHA256 = /^sha256:[0-9a-f]{64}$/;
 const COMMIT_SHA = /^[0-9a-f]{40}$/;
 const ANCHOR_FILENAME = /^(\d{8})_([0-9a-f]{64})\.json$/;
+const MAX_COMMITMENT_SEQUENCE = 254;
 const MAX_JSON_BYTES = 5 * 1024 * 1024;
 const MAX_RAW_BYTES = 1024 * 1024;
 const PROJECT_ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -198,11 +199,32 @@ function anchorPathParts(path) {
   if (filename.includes("/")) fail("anchor path must name one direct child of the public anchor directory");
   const match = ANCHOR_FILENAME.exec(filename);
   if (!match) fail("anchor filename is not content addressed");
+  const sequence = Number(match[1]);
+  if (!Number.isSafeInteger(sequence) || sequence < 1 || sequence > MAX_COMMITMENT_SEQUENCE) {
+    fail(`anchor sequence must be from 1 through ${MAX_COMMITMENT_SEQUENCE}`);
+  }
   return {
     filename,
-    sequence: Number(match[1]),
+    sequence,
     manifestHex: match[2],
   };
+}
+
+function receiptPathParts(path) {
+  boundedText(path, "previous receipt path", 512);
+  const prefix = `${GITHUB_PUBLICATION_RECEIPT_DIRECTORY}/`;
+  if (!path.startsWith(prefix) || path.includes("..") || path.includes("//")) {
+    fail("previous receipt path is outside the fixed receipt directory");
+  }
+  const filename = path.slice(prefix.length);
+  if (filename.includes("/")) fail("previous receipt path must name one direct child");
+  const match = ANCHOR_FILENAME.exec(filename);
+  if (!match) fail("previous receipt filename is not content addressed");
+  const sequence = Number(match[1]);
+  if (!Number.isSafeInteger(sequence) || sequence < 1 || sequence >= MAX_COMMITMENT_SEQUENCE) {
+    fail(`previous receipt sequence must be from 1 through ${MAX_COMMITMENT_SEQUENCE - 1}`);
+  }
+  return { filename, sequence, receiptHex: match[2] };
 }
 
 function parseCanonicalRepositoryJson(bytes, label) {
@@ -321,18 +343,55 @@ function validateRun(run, runId) {
   return run;
 }
 
-function validateParentFreezeRuns(runsResponse, expectedParentSha, activation) {
-  record(runsResponse, "GitHub parent-freeze workflow-runs response");
+function publicationRunRecord(run) {
+  return {
+    id: run.id,
+    event: run.event,
+    head_branch: run.head_branch,
+    head_sha: run.head_sha,
+    created_at: run.created_at,
+    updated_at: run.updated_at,
+    run_attempt: run.run_attempt,
+    status: run.status,
+    conclusion: run.conclusion,
+    html_url: run.html_url,
+  };
+}
+
+function validateParentPublicationRuns(
+  runsResponse,
+  expectedParentSha,
+  activation,
+  previousReceipt,
+) {
+  record(runsResponse, "GitHub parent-publication workflow-runs response");
   if (!Array.isArray(runsResponse.workflow_runs)
     || runsResponse.total_count !== 1
     || runsResponse.workflow_runs.length !== 1) {
-    fail("GitHub parent-freeze workflow run is absent, ambiguous, or paginated");
+    fail("GitHub parent-publication workflow run is absent, ambiguous, or paginated");
   }
   const run = validateRun(runsResponse.workflow_runs[0], runsResponse.workflow_runs[0]?.id);
-  if (run.head_sha !== expectedParentSha
-    || Date.parse(run.created_at) >= Date.parse(activation.payload.activation_session.market_close_at)
-    || Date.parse(run.updated_at) >= Date.parse(activation.payload.activation_session.market_close_at)) {
-    fail("GitHub parent-freeze workflow did not complete successfully before the activated first close");
+  if (run.head_sha !== expectedParentSha) {
+    fail("GitHub parent-publication workflow does not belong to the exact commit parent");
+  }
+  if (previousReceipt === null) {
+    if (Date.parse(run.created_at) >= Date.parse(activation.payload.activation_session.market_close_at)
+      || Date.parse(run.updated_at) >= Date.parse(activation.payload.activation_session.market_close_at)) {
+      fail("GitHub parent-freeze workflow did not complete successfully before the activated first close");
+    }
+  } else if (stableJson(publicationRunRecord(run)) !== stableJson({
+    id: previousReceipt.run.id,
+    event: previousReceipt.run.event,
+    head_branch: previousReceipt.run.head_branch,
+    head_sha: previousReceipt.run.head_sha,
+    created_at: previousReceipt.run.created_at,
+    updated_at: previousReceipt.run.updated_at,
+    run_attempt: previousReceipt.run.run_attempt,
+    status: previousReceipt.run.status,
+    conclusion: previousReceipt.run.conclusion,
+    html_url: previousReceipt.run.html_url,
+  })) {
+    fail("GitHub immediate-parent workflow differs from the previous anchor publication receipt");
   }
   return run;
 }
@@ -420,12 +479,12 @@ function validateReceiptApiEvidence(receipt) {
     headSha: receipt.publication_commit.sha,
     parentSha: receipt.publication_commit.parent_sha,
     anchorPath: receipt.anchor_path,
+    previousAnchorPath: receipt.previous_publication?.anchor_path ?? null,
   });
-  if (evidence.request_count !== 15
-    || evidence.request_count !== requests.length
+  if (evidence.request_count !== requests.length
     || !Array.isArray(evidence.responses)
     || evidence.responses.length !== requests.length) {
-    fail("GitHub publication receipt must point to exactly fifteen public GET responses");
+    fail("GitHub publication receipt must point to its exact bounded public GET plan");
   }
   evidence.responses.forEach((response, index) => {
     exact(response, [
@@ -457,6 +516,11 @@ function validateReceiptApiEvidence(receipt) {
     || byId.verifier_at_parent.response_bytes_sha256 !== receipt.verifier_at_parent.raw_bytes_sha256) {
     fail("GitHub publication receipt raw artifact hashes differ from their public-GET observations");
   }
+  if (receipt.previous_publication !== null
+    && byId.previous_anchor_at_parent?.response_bytes_sha256
+      !== receipt.previous_publication.anchor_raw_bytes_sha256) {
+    fail("GitHub publication receipt previous anchor differs from its parent observation");
+  }
   for (const path of GITHUB_PUBLICATION_POLICY.runtime_source_paths) {
     if (byId[`runtime_source:${path}`].response_bytes_sha256
       !== receipt.runtime_manifest_at_head.runtime_source_files[path]) {
@@ -471,6 +535,8 @@ export function validateGitHubPublicationReceipt(receipt) {
     "schema_version", "trial_id", "commitment_sequence", "manifest_sha256", "anchor_path",
     "anchor_deadline", "repository", "publication_commit", "workflow", "run",
     "activation_at_head", "runtime_manifest_at_head", "parent_freeze_run", "anchor_at_head",
+    "frozen_context", "public_anchor_chain", "public_anchor_chain_sha256",
+    "previous_publication", "immediate_parent_run",
     "verifier_at_parent", "github_public_get_evidence", "verification_observed_at",
     "self_contained_offline_evidence", "external_anchor_verified",
     "public_pre_deadline_publication_observed", "assurance", "receipt_sha256",
@@ -479,8 +545,12 @@ export function validateGitHubPublicationReceipt(receipt) {
     || receipt.trial_id !== "finly_forward_trial_live_1a") {
     fail("GitHub publication receipt envelope is invalid");
   }
-  if (positiveInteger(receipt.commitment_sequence, "GitHub publication receipt sequence") !== 1) {
-    fail("GitHub publication receipt is limited to the first public anchor");
+  const sequence = positiveInteger(
+    receipt.commitment_sequence,
+    "GitHub publication receipt sequence",
+  );
+  if (sequence > MAX_COMMITMENT_SEQUENCE) {
+    fail(`GitHub publication receipt sequence exceeds ${MAX_COMMITMENT_SEQUENCE}`);
   }
   digest(receipt.manifest_sha256, "GitHub publication receipt manifest hash");
   const pathParts = anchorPathParts(receipt.anchor_path);
@@ -633,6 +703,102 @@ export function validateGitHubPublicationReceipt(receipt) {
     || receipt.runtime_manifest_at_head.matches_executing_runtime !== true) {
     fail("GitHub publication receipt runtime manifest differs from the activation at the publication head");
   }
+  exact(receipt.frozen_context, ["activation", "runtime_manifest"],
+    "GitHub publication receipt frozen context");
+  const frozenActivation = receipt.frozen_context.activation;
+  const frozenRuntimeManifest = receipt.frozen_context.runtime_manifest;
+  validateForwardTrialLiveActivation(frozenActivation);
+  validateForwardTrialLiveImplementationBinding(frozenRuntimeManifest, {
+    activation: frozenActivation,
+  });
+  if (frozenActivation.activation_sha256 !== receipt.activation_at_head.activation_sha256
+    || frozenRuntimeManifest.manifest_sha256 !== receipt.runtime_manifest_at_head.manifest_sha256
+    || frozenRuntimeManifest.runtime_source_files_sha256
+      !== receipt.runtime_manifest_at_head.runtime_source_files_sha256
+    || stableJson(frozenRuntimeManifest.runtime_source_files)
+      !== stableJson(receipt.runtime_manifest_at_head.runtime_source_files)) {
+    fail("GitHub publication receipt frozen context differs from the observed runtime closure");
+  }
+  if (!Array.isArray(receipt.public_anchor_chain)
+    || receipt.public_anchor_chain.length !== sequence) {
+    fail("GitHub publication receipt must carry the exact canonical anchor prefix");
+  }
+  const publicAnchorChain = validateForwardTrialLivePublicAnchorChain({
+    activation: frozenActivation,
+    implementationBinding: frozenRuntimeManifest,
+    anchors: receipt.public_anchor_chain,
+  });
+  digest(receipt.public_anchor_chain_sha256,
+    "GitHub publication receipt public anchor-chain hash");
+  if (receipt.public_anchor_chain_sha256 !== sha256Canonical(publicAnchorChain)) {
+    fail("GitHub publication receipt public anchor-chain hash is invalid");
+  }
+  const receiptAnchor = publicAnchorChain.at(-1);
+  if (receiptAnchor.commitment_sequence !== sequence
+    || receiptAnchor.manifest_sha256 !== receipt.manifest_sha256
+    || receiptAnchor.timing.anchor_deadline !== receipt.anchor_deadline) {
+    fail("GitHub publication receipt anchor prefix does not end at the published anchor");
+  }
+  let rootParentSha = receipt.publication_commit.parent_sha;
+  if (sequence === 1) {
+    if (receipt.previous_publication !== null || receipt.immediate_parent_run !== null
+      || receiptAnchor.previous_private_bundle_sha256 !== frozenActivation.activation_sha256) {
+      fail("GitHub first publication receipt must root directly in the pre-signal freeze");
+    }
+  } else {
+    exact(receipt.previous_publication, [
+      "receipt_path", "receipt_sha256", "commitment_sequence", "anchor_path",
+      "anchor_raw_bytes_sha256", "anchor_manifest_sha256",
+      "anchor_private_bundle_sha256", "publication_commit_sha", "workflow_run_id",
+      "root_parent_sha",
+    ], "GitHub publication receipt previous-publication link");
+    const previous = receipt.previous_publication;
+    digest(previous.receipt_sha256, "GitHub previous publication receipt hash");
+    digest(previous.anchor_raw_bytes_sha256, "GitHub previous anchor raw-byte hash");
+    digest(previous.anchor_manifest_sha256, "GitHub previous anchor manifest hash");
+    digest(previous.anchor_private_bundle_sha256, "GitHub previous anchor private-bundle hash");
+    commitSha(previous.publication_commit_sha, "GitHub previous publication commit SHA");
+    commitSha(previous.root_parent_sha, "GitHub root publication parent SHA");
+    positiveInteger(previous.workflow_run_id, "GitHub previous publication workflow run ID");
+    const previousReceiptPath = receiptPathParts(previous.receipt_path);
+    const previousAnchorPath = anchorPathParts(previous.anchor_path);
+    const previousAnchor = publicAnchorChain.at(-2);
+    if (previousReceiptPath.sequence !== sequence - 1
+      || previousReceiptPath.receiptHex !== previous.receipt_sha256.slice(7)
+      || previous.commitment_sequence !== sequence - 1
+      || previousAnchorPath.sequence !== sequence - 1
+      || previousAnchorPath.manifestHex !== previous.anchor_manifest_sha256.slice(7)
+      || previousAnchor.manifest_sha256 !== previous.anchor_manifest_sha256
+      || previousAnchor.private_bundle_sha256 !== previous.anchor_private_bundle_sha256
+      || receiptAnchor.previous_private_bundle_sha256 !== previous.anchor_private_bundle_sha256
+      || receipt.publication_commit.parent_sha !== previous.publication_commit_sha) {
+      fail("GitHub publication receipt breaks the immediate previous-anchor/parent link");
+    }
+    exact(receipt.immediate_parent_run, [
+      "id", "event", "head_branch", "head_sha", "created_at", "updated_at", "run_attempt",
+      "status", "conclusion", "html_url",
+    ], "GitHub publication receipt immediate-parent run");
+    const immediateParentRun = receipt.immediate_parent_run;
+    positiveInteger(immediateParentRun.id, "GitHub immediate-parent run ID");
+    positiveInteger(immediateParentRun.run_attempt, "GitHub immediate-parent run attempt");
+    commitSha(immediateParentRun.head_sha, "GitHub immediate-parent run head SHA");
+    githubInstant(immediateParentRun.created_at, "GitHub immediate-parent run created_at");
+    githubInstant(immediateParentRun.updated_at, "GitHub immediate-parent run updated_at");
+    if (immediateParentRun.id !== previous.workflow_run_id
+      || immediateParentRun.head_sha !== previous.publication_commit_sha
+      || immediateParentRun.event !== "push"
+      || immediateParentRun.head_branch !== GITHUB_PUBLICATION_POLICY.repository.default_branch
+      || immediateParentRun.status !== "completed"
+      || immediateParentRun.conclusion !== "success"
+      || immediateParentRun.html_url
+        !== `https://github.com/${GITHUB_PUBLICATION_POLICY.repository.full_name}/actions/runs/${immediateParentRun.id}`
+      || Date.parse(immediateParentRun.updated_at) < Date.parse(immediateParentRun.created_at)
+      || Date.parse(immediateParentRun.updated_at) > Date.parse(receipt.verification_observed_at)
+      || Date.parse(immediateParentRun.updated_at) > Date.parse(receipt.run.created_at)) {
+      fail("GitHub immediate-parent run is not the verified previous anchor publication");
+    }
+    rootParentSha = previous.root_parent_sha;
+  }
   exact(receipt.parent_freeze_run, [
     "id", "event", "head_branch", "head_sha", "created_at", "updated_at", "run_attempt",
     "status", "conclusion", "html_url",
@@ -647,7 +813,7 @@ export function validateGitHubPublicationReceipt(receipt) {
   }
   if (receipt.parent_freeze_run.event !== "push"
     || receipt.parent_freeze_run.head_branch !== GITHUB_PUBLICATION_POLICY.repository.default_branch
-    || receipt.parent_freeze_run.head_sha !== receipt.publication_commit.parent_sha
+    || receipt.parent_freeze_run.head_sha !== rootParentSha
     || receipt.parent_freeze_run.status !== "completed"
     || receipt.parent_freeze_run.conclusion !== "success"
     || receipt.parent_freeze_run.html_url !== `https://github.com/${GITHUB_PUBLICATION_POLICY.repository.full_name}/actions/runs/${receipt.parent_freeze_run.id}`
@@ -659,17 +825,26 @@ export function validateGitHubPublicationReceipt(receipt) {
   }
   exact(receipt.anchor_at_head, [
     "raw_bytes_sha256", "manifest_sha256", "implementation_binding_sha256",
-    "previous_private_bundle_sha256",
+    "private_bundle_sha256", "previous_private_bundle_sha256",
   ], "GitHub publication receipt anchored content");
   digest(receipt.anchor_at_head.raw_bytes_sha256, "GitHub publication receipt raw anchor hash");
   digest(receipt.anchor_at_head.manifest_sha256, "GitHub publication receipt anchored manifest hash");
   digest(receipt.anchor_at_head.implementation_binding_sha256, "GitHub publication receipt anchor implementation hash");
+  digest(receipt.anchor_at_head.private_bundle_sha256, "GitHub publication receipt anchor private-bundle hash");
   digest(receipt.anchor_at_head.previous_private_bundle_sha256, "GitHub publication receipt anchor predecessor hash");
-  if (receipt.anchor_at_head.manifest_sha256 !== receipt.manifest_sha256) {
+  if (receipt.anchor_at_head.manifest_sha256 !== receipt.manifest_sha256
+    || receipt.anchor_at_head.private_bundle_sha256 !== receiptAnchor.private_bundle_sha256
+    || receipt.anchor_at_head.previous_private_bundle_sha256
+      !== receiptAnchor.previous_private_bundle_sha256) {
     fail("GitHub publication receipt anchored manifest hash is inconsistent");
   }
   if (receipt.anchor_at_head.implementation_binding_sha256 !== receipt.runtime_manifest_at_head.manifest_sha256
-    || receipt.anchor_at_head.previous_private_bundle_sha256 !== receipt.activation_at_head.activation_sha256) {
+    || (sequence === 1
+      && receipt.anchor_at_head.previous_private_bundle_sha256
+        !== receipt.activation_at_head.activation_sha256)
+    || (sequence > 1
+      && receipt.anchor_at_head.previous_private_bundle_sha256
+        !== receipt.previous_publication.anchor_private_bundle_sha256)) {
     fail("GitHub publication receipt anchor is not bound to the public activation and runtime manifest");
   }
   exact(receipt.verifier_at_parent, [
@@ -702,6 +877,8 @@ export function validateGitHubPublicationEvidence({
   runtimeManifestBytes,
   runtimeSourceBytes,
   anchorBytes,
+  previousAnchorBytes = null,
+  previousReceipt = null,
   workflowBytes,
   verifierScriptBytes,
   executingVerifierBytes,
@@ -714,13 +891,34 @@ export function validateGitHubPublicationEvidence({
 }) {
   positiveInteger(runId, "GitHub workflow run ID");
   commitSha(expectedParentSha, "expected publication parent SHA");
+  const pathParts = anchorPathParts(anchorPath);
+  if (pathParts.sequence === 1) {
+    if (previousReceipt !== null || previousAnchorBytes !== null) {
+      fail("GitHub first-anchor publication cannot claim a predecessor receipt or anchor");
+    }
+  } else {
+    if (previousReceipt === null || previousAnchorBytes === null) {
+      fail("GitHub successor publication requires the immediate previous receipt and parent anchor");
+    }
+    validateGitHubPublicationReceipt(previousReceipt);
+    if (previousReceipt.commitment_sequence !== pathParts.sequence - 1
+      || previousReceipt.publication_commit.sha !== expectedParentSha) {
+      fail("GitHub successor publication does not directly extend the previous receipt commit");
+    }
+  }
   validateRepository(repository);
   validateRun(run, runId);
   const { job, requiredSteps } = validateJobs(jobs, run);
   validateCommit(commit, run.head_sha, expectedParentSha, anchorPath);
   const activation = parseCanonicalRepositoryJson(activationBytes, "activation");
   validateForwardTrialLiveActivation(activation);
-  const parentFreezeRun = validateParentFreezeRuns(parentFreezeRuns, expectedParentSha, activation);
+  const parentPublicationRun = validateParentPublicationRuns(
+    parentFreezeRuns,
+    expectedParentSha,
+    activation,
+    previousReceipt,
+  );
+  const parentFreezeRun = previousReceipt?.parent_freeze_run ?? parentPublicationRun;
   const implementationBinding = parseCanonicalRepositoryJson(runtimeManifestBytes, "runtime manifest");
   validateForwardTrialLiveImplementationBinding(implementationBinding, { activation });
   validateRuntimeSourceBytes(runtimeSourceBytes, implementationBinding);
@@ -735,13 +933,27 @@ export function validateGitHubPublicationEvidence({
     fail("runtime manifest chronology is inconsistent with activation and public parent run");
   }
   const anchorCandidate = parseCanonicalRepositoryJson(anchorBytes, "public anchor");
-  const [anchor] = validateForwardTrialLivePublicAnchorChain({
+  let previousAnchor = null;
+  let priorAnchorChain = [];
+  if (previousReceipt !== null) {
+    previousAnchor = parseCanonicalRepositoryJson(previousAnchorBytes, "previous public anchor");
+    const previousPath = anchorPathParts(previousReceipt.anchor_path);
+    if (previousPath.sequence !== pathParts.sequence - 1
+      || sha256Bytes(previousAnchorBytes) !== previousReceipt.anchor_at_head.raw_bytes_sha256
+      || stableJson(previousAnchor)
+        !== stableJson(previousReceipt.public_anchor_chain.at(-1))) {
+      fail("GitHub parent anchor bytes differ from the immediate previous publication receipt");
+    }
+    priorAnchorChain = previousReceipt.public_anchor_chain;
+  }
+  const publicAnchorChain = validateForwardTrialLivePublicAnchorChain({
     activation,
     implementationBinding,
-    anchors: [anchorCandidate],
+    anchors: [...priorAnchorChain, anchorCandidate],
   });
-  const pathParts = anchorPathParts(anchorPath);
+  const anchor = publicAnchorChain.at(-1);
   if (pathParts.sequence !== anchor.commitment_sequence
+    || publicAnchorChain.length !== pathParts.sequence
     || pathParts.manifestHex !== anchor.manifest_sha256.slice(7)) {
     fail("public anchor path differs from its strict sequence or manifest hash");
   }
@@ -775,7 +987,10 @@ export function validateGitHubPublicationEvidence({
       `runtime_source:${path}`,
       runtimeSourceBytes[path],
     ])),
-    parent_freeze_workflow_runs: parentFreezeRuns,
+    parent_publication_workflow_runs: parentFreezeRuns,
+    ...(previousReceipt === null ? {} : {
+      previous_anchor_at_parent: previousAnchorBytes,
+    }),
     anchor_at_head: anchorBytes,
     workflow_at_parent: workflowBytes,
     verifier_at_parent: verifierScriptBytes,
@@ -785,6 +1000,7 @@ export function validateGitHubPublicationEvidence({
     headSha: run.head_sha,
     parentSha: expectedParentSha,
     anchorPath,
+    previousAnchorPath: previousReceipt?.anchor_path ?? null,
   }, responseValues);
   const verificationObservedAt = latestApiObservation(githubPublicGetEvidence);
 
@@ -858,10 +1074,32 @@ export function validateGitHubPublicationEvidence({
       conclusion: parentFreezeRun.conclusion,
       html_url: parentFreezeRun.html_url,
     },
+    immediate_parent_run: previousReceipt === null
+      ? null
+      : publicationRunRecord(parentPublicationRun),
+    previous_publication: previousReceipt === null ? null : {
+      receipt_path: githubPublicationReceiptPlan(previousReceipt).relativePath,
+      receipt_sha256: previousReceipt.receipt_sha256,
+      commitment_sequence: previousReceipt.commitment_sequence,
+      anchor_path: previousReceipt.anchor_path,
+      anchor_raw_bytes_sha256: previousReceipt.anchor_at_head.raw_bytes_sha256,
+      anchor_manifest_sha256: previousReceipt.manifest_sha256,
+      anchor_private_bundle_sha256: previousReceipt.anchor_at_head.private_bundle_sha256,
+      publication_commit_sha: previousReceipt.publication_commit.sha,
+      workflow_run_id: previousReceipt.run.id,
+      root_parent_sha: parentFreezeRun.head_sha,
+    },
+    frozen_context: {
+      activation: structuredClone(activation),
+      runtime_manifest: structuredClone(implementationBinding),
+    },
+    public_anchor_chain: structuredClone(publicAnchorChain),
+    public_anchor_chain_sha256: sha256Canonical(publicAnchorChain),
     anchor_at_head: {
       raw_bytes_sha256: sha256Bytes(anchorBytes),
       manifest_sha256: anchor.manifest_sha256,
       implementation_binding_sha256: anchor.formula.implementation_binding_sha256,
+      private_bundle_sha256: anchor.private_bundle_sha256,
       previous_private_bundle_sha256: anchor.previous_private_bundle_sha256,
     },
     verifier_at_parent: {
@@ -903,7 +1141,13 @@ function githubApiUrl(path) {
   return new URL(path, GITHUB_PUBLICATION_POLICY.api_origin).href;
 }
 
-function fixedGitHubRequests({ runId, headSha, parentSha, anchorPath }) {
+function fixedGitHubRequests({
+  runId,
+  headSha,
+  parentSha,
+  anchorPath,
+  previousAnchorPath = null,
+}) {
   return [
     { request_id: "repository", response_type: "json", path: "/repos/owlsowo/finly-bot" },
     { request_id: "anchor_workflow_run", response_type: "json", path: `/repos/owlsowo/finly-bot/actions/runs/${runId}` },
@@ -916,19 +1160,43 @@ function fixedGitHubRequests({ runId, headSha, parentSha, anchorPath }) {
       response_type: "raw",
       path: `/repos/owlsowo/finly-bot/contents/${encodeRepositoryPath(sourcePath)}?ref=${parentSha}`,
     })),
-    { request_id: "parent_freeze_workflow_runs", response_type: "json", path: `/repos/owlsowo/finly-bot/actions/workflows/${GITHUB_PUBLICATION_POLICY.workflow.id}/runs?branch=${GITHUB_PUBLICATION_POLICY.repository.default_branch}&event=push&status=success&head_sha=${parentSha}&per_page=10` },
+    { request_id: "parent_publication_workflow_runs", response_type: "json", path: `/repos/owlsowo/finly-bot/actions/workflows/${GITHUB_PUBLICATION_POLICY.workflow.id}/runs?branch=${GITHUB_PUBLICATION_POLICY.repository.default_branch}&event=push&status=success&head_sha=${parentSha}&per_page=10` },
+    ...(previousAnchorPath === null ? [] : [{
+      request_id: "previous_anchor_at_parent",
+      response_type: "raw",
+      path: `/repos/owlsowo/finly-bot/contents/${encodeRepositoryPath(previousAnchorPath)}?ref=${parentSha}`,
+    }]),
     { request_id: "anchor_at_head", response_type: "raw", path: `/repos/owlsowo/finly-bot/contents/${encodeRepositoryPath(anchorPath)}?ref=${headSha}` },
     { request_id: "workflow_at_parent", response_type: "raw", path: `/repos/owlsowo/finly-bot/contents/${encodeRepositoryPath(GITHUB_PUBLICATION_POLICY.workflow.path)}?ref=${parentSha}` },
     { request_id: "verifier_at_parent", response_type: "raw", path: `/repos/owlsowo/finly-bot/contents/${encodeRepositoryPath(GITHUB_PUBLICATION_POLICY.verifier_path)}?ref=${parentSha}` },
   ];
 }
 
-export function githubPublicApiRequestPlan({ runId, headSha, parentSha, anchorPath }) {
+export function githubPublicApiRequestPlan({
+  runId,
+  headSha,
+  parentSha,
+  anchorPath,
+  previousAnchorPath = null,
+}) {
   positiveInteger(runId, "GitHub request plan run ID");
   commitSha(headSha, "GitHub request plan head SHA");
   commitSha(parentSha, "GitHub request plan parent SHA");
-  anchorPathParts(anchorPath);
-  return Object.freeze(fixedGitHubRequests({ runId, headSha, parentSha, anchorPath }).map((request) => Object.freeze({
+  const { sequence } = anchorPathParts(anchorPath);
+  if ((sequence === 1) !== (previousAnchorPath === null)) {
+    fail("GitHub request plan requires exactly one previous anchor for every sequence after one");
+  }
+  if (previousAnchorPath !== null
+    && anchorPathParts(previousAnchorPath).sequence !== sequence - 1) {
+    fail("GitHub request plan previous anchor is not the immediate predecessor");
+  }
+  return Object.freeze(fixedGitHubRequests({
+    runId,
+    headSha,
+    parentSha,
+    anchorPath,
+    previousAnchorPath,
+  }).map((request) => Object.freeze({
     request_id: request.request_id,
     canonical_url: githubApiUrl(request.path),
     response_type: request.response_type,
@@ -937,8 +1205,10 @@ export function githubPublicApiRequestPlan({ runId, headSha, parentSha, anchorPa
 
 function validateGitHubApiResponses(apiResponses, context, responseValues) {
   const requests = fixedGitHubRequests(context);
-  if (requests.length !== 15 || !Array.isArray(apiResponses) || apiResponses.length !== requests.length) {
-    fail("GitHub public API response evidence must cover exactly fifteen fixed GETs");
+  if (![15, 16].includes(requests.length)
+    || !Array.isArray(apiResponses)
+    || apiResponses.length !== requests.length) {
+    fail("GitHub public API response evidence must cover the exact bounded GET plan");
   }
   exact(responseValues, requests.map(({ request_id: requestId }) => requestId), "GitHub public API response values");
   const observations = requests.map((request, index) => {
@@ -1033,7 +1303,7 @@ async function githubGet(path, {
       redirect: "error",
       headers: {
         accept,
-        "user-agent": "finly-forward-live-publication-verifier/3.0",
+        "user-agent": "finly-forward-live-publication-verifier/4.0",
         "x-github-api-version": GITHUB_PUBLICATION_POLICY.api_version,
       },
     });
@@ -1076,11 +1346,22 @@ export async function fetchAndValidateGitHubPublication({
   runId,
   anchorPath,
   expectedParentSha,
+  previousReceipt = null,
   fetchImpl = globalThis.fetch,
 }) {
   positiveInteger(runId, "GitHub workflow run ID");
-  anchorPathParts(anchorPath);
+  const { sequence } = anchorPathParts(anchorPath);
   commitSha(expectedParentSha, "expected publication parent SHA");
+  if (sequence === 1) {
+    if (previousReceipt !== null) fail("first-anchor publication cannot use a previous receipt");
+  } else {
+    if (previousReceipt === null) fail("successor publication requires a previous receipt");
+    validateGitHubPublicationReceipt(previousReceipt);
+    if (previousReceipt.commitment_sequence !== sequence - 1
+      || previousReceipt.publication_commit.sha !== expectedParentSha) {
+      fail("successor publication does not directly extend the previous receipt commit");
+    }
+  }
   if (typeof fetchImpl !== "function") fail("GitHub public fetch implementation is required");
 
   const repository = await githubGet("/repos/owlsowo/finly-bot", {
@@ -1145,8 +1426,18 @@ export async function fetchAndValidateGitHubPublication({
     `/repos/owlsowo/finly-bot/actions/workflows/${GITHUB_PUBLICATION_POLICY.workflow.id}/runs?branch=${GITHUB_PUBLICATION_POLICY.repository.default_branch}&event=push&status=success&head_sha=${expectedParentSha}&per_page=10`,
     {
       fetchImpl,
-      label: "parent-freeze workflow runs",
-      requestId: "parent_freeze_workflow_runs",
+      label: "parent-publication workflow runs",
+      requestId: "parent_publication_workflow_runs",
+    },
+  );
+  const previousAnchor = previousReceipt === null ? null : await githubGet(
+    `/repos/owlsowo/finly-bot/contents/${encodeRepositoryPath(previousReceipt.anchor_path)}?ref=${expectedParentSha}`,
+    {
+      fetchImpl,
+      accept: "application/vnd.github.raw+json",
+      responseType: "raw",
+      label: "previous anchor content",
+      requestId: "previous_anchor_at_parent",
     },
   );
   const anchor = await githubGet(
@@ -1198,6 +1489,7 @@ export async function fetchAndValidateGitHubPublication({
     runtimeManifest.apiResponse,
     ...runtimeSourceResponses.map(({ apiResponse }) => apiResponse),
     parentFreezeRuns.apiResponse,
+    ...(previousAnchor === null ? [] : [previousAnchor.apiResponse]),
     anchor.apiResponse,
     workflow.apiResponse,
     verifierScript.apiResponse,
@@ -1212,6 +1504,8 @@ export async function fetchAndValidateGitHubPublication({
     runtimeManifestBytes: runtimeManifest.value,
     runtimeSourceBytes,
     anchorBytes: anchor.value,
+    previousAnchorBytes: previousAnchor?.value ?? null,
+    previousReceipt,
     workflowBytes: workflow.value,
     verifierScriptBytes: verifierScript.value,
     executingVerifierBytes,
@@ -1339,36 +1633,106 @@ export async function publishGitHubPublicationReceiptWriteOnce(receipt, {
   });
 }
 
+export async function loadGitHubPublicationReceipt(
+  receiptPath,
+  { projectRoot = PROJECT_ROOT } = {},
+) {
+  const parts = receiptPathParts(receiptPath);
+  const rootStatus = await lstat(projectRoot).catch(() => fail("receipt project root is missing"));
+  if (rootStatus.isSymbolicLink() || !rootStatus.isDirectory()) {
+    fail("receipt project root must be a real directory");
+  }
+  const root = await realpath(projectRoot);
+  let current = root;
+  for (const component of GITHUB_PUBLICATION_RECEIPT_DIRECTORY.split("/")) {
+    current = resolve(current, component);
+    const status = await lstat(current).catch(() => fail("previous receipt directory is missing"));
+    if (status.isSymbolicLink() || !status.isDirectory()) {
+      fail("previous receipt directory contains a symlink or non-directory component");
+    }
+  }
+  if (await realpath(current) !== current) {
+    fail("previous receipt directory realpath is not fixed beneath the project root");
+  }
+  const path = resolve(current, parts.filename);
+  let handle;
+  try {
+    handle = await open(
+      path,
+      FS_CONSTANTS.O_RDONLY | FS_CONSTANTS.O_NOFOLLOW | FS_CONSTANTS.O_NONBLOCK,
+    );
+    const status = await handle.stat();
+    if (!status.isFile() || status.size < 1 || status.size > MAX_RAW_BYTES) {
+      fail("previous GitHub publication receipt is non-regular or oversized");
+    }
+    const bytes = await handle.readFile();
+    let receipt;
+    try {
+      receipt = JSON.parse(bytes.toString("utf8"));
+    } catch {
+      fail("previous GitHub publication receipt is not valid JSON");
+    }
+    validateGitHubPublicationReceipt(receipt);
+    if (!bytes.equals(Buffer.from(canonicalJson(receipt), "utf8"))
+      || receipt.commitment_sequence !== parts.sequence
+      || receipt.receipt_sha256.slice(7) !== parts.receiptHex) {
+      fail("previous GitHub publication receipt path or canonical bytes are invalid");
+    }
+    return Object.freeze(receipt);
+  } finally {
+    await handle?.close().catch(() => {});
+  }
+}
+
+const CLI_USAGE = "usage: node scripts/verify_forward_live_github_publication.mjs "
+  + "--run-id <id> --anchor-path <path> --expected-parent-sha <sha> "
+  + "[--previous-receipt-path <path>]";
+
 export function parseGitHubPublicationCli(argv) {
   if (!Array.isArray(argv)) fail("CLI arguments must be an array");
   const values = new Map();
   for (let index = 0; index < argv.length; index += 2) {
     const key = argv[index];
     const value = argv[index + 1];
-    if (!["--run-id", "--anchor-path", "--expected-parent-sha"].includes(key)
+    if (!["--run-id", "--anchor-path", "--expected-parent-sha", "--previous-receipt-path"].includes(key)
       || typeof value !== "string"
       || value.length === 0
       || values.has(key)) {
-      fail("usage: node scripts/verify_forward_live_github_publication.mjs --run-id <id> --anchor-path <path> --expected-parent-sha <sha>");
+      fail(CLI_USAGE);
     }
     values.set(key, value);
   }
-  if (values.size !== 3) {
-    fail("usage: node scripts/verify_forward_live_github_publication.mjs --run-id <id> --anchor-path <path> --expected-parent-sha <sha>");
-  }
+  if (![3, 4].includes(values.size)) fail(CLI_USAGE);
   if (!/^\d+$/.test(values.get("--run-id"))) fail("--run-id must be a positive integer");
   const runId = Number(values.get("--run-id"));
   positiveInteger(runId, "--run-id");
   const anchorPath = values.get("--anchor-path");
-  anchorPathParts(anchorPath);
+  const anchor = anchorPathParts(anchorPath);
   const expectedParentSha = values.get("--expected-parent-sha");
   commitSha(expectedParentSha, "--expected-parent-sha");
-  return Object.freeze({ runId, anchorPath, expectedParentSha });
+  const previousReceiptPath = values.get("--previous-receipt-path") ?? null;
+  if (anchor.sequence === 1) {
+    if (previousReceiptPath !== null) fail("sequence one cannot use --previous-receipt-path");
+  } else {
+    if (previousReceiptPath === null) fail("sequences after one require --previous-receipt-path");
+    if (receiptPathParts(previousReceiptPath).sequence !== anchor.sequence - 1) {
+      fail("--previous-receipt-path must name the immediate prior sequence");
+    }
+  }
+  return Object.freeze({ runId, anchorPath, expectedParentSha, previousReceiptPath });
 }
 
 async function main(argv = process.argv.slice(2)) {
   const options = parseGitHubPublicationCli(argv);
-  const receipt = await fetchAndValidateGitHubPublication(options);
+  const previousReceipt = options.previousReceiptPath === null
+    ? null
+    : await loadGitHubPublicationReceipt(options.previousReceiptPath);
+  const receipt = await fetchAndValidateGitHubPublication({
+    runId: options.runId,
+    anchorPath: options.anchorPath,
+    expectedParentSha: options.expectedParentSha,
+    previousReceipt,
+  });
   const publication = await publishGitHubPublicationReceiptWriteOnce(receipt);
   process.stdout.write(canonicalJson(publication));
 }

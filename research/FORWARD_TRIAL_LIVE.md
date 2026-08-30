@@ -62,4 +62,16 @@ npm run research:forward-trial-live:verify-github -- \
   --expected-parent-sha <frozen-v0.4.3-release-sha>
 ```
 
-That verifier performs fifteen fixed, unauthenticated GET requests. It checks the public activation, the pre-signal runtime manifest and all five frozen source files at the parent release, the verifier itself, a successful parent workflow recorded before the first close, the later anchor-only commit, and the strict sequence-one v2 anchor. It writes a content-addressed, write-once receipt containing the exact request URLs, GitHub HTTP dates, response-byte hashes, and byte lengths. The receipt is explicitly a reproducible public-API pointer—not self-contained offline evidence—and leaves `external_anchor_verified: false`: GitHub's platform record is useful publication evidence, not an independent cryptographic timestamp or broker-origin signature.
+For sequences 2 through 254, the expected parent must be the immediately prior anchor-publication commit and the immediately prior local receipt is mandatory:
+
+```bash
+npm run research:forward-trial-live:verify-github -- \
+  --run-id <github-actions-run-id> \
+  --anchor-path <research/forward_trial_live/anchors/00000002_hash.json> \
+  --expected-parent-sha <sequence-1-anchor-commit-sha> \
+  --previous-receipt-path <research/forward_trial_live/github_receipts/00000001_receipt-hash.json>
+```
+
+Sequence 1 performs fifteen fixed, unauthenticated GET requests; each successor performs sixteen, adding the prior public anchor at the exact parent commit. Every anchor commit must directly extend the preceding anchor commit and add only its one new anchor, so local receipts and unrelated changes must not be inserted into that Git chain. The verifier validates the complete canonical anchor prefix plus the prior receipt, workflow run, anchor bytes, private-hash link, and direct Git parent. Its bytes must be published before sequence 1 and remain byte-frozen after sequence 1 through sequence 254.
+
+Each content-addressed, write-once receipt contains the exact request URLs, GitHub HTTP dates, response-byte hashes, and byte lengths. It is explicitly a reproducible public-API pointer—not self-contained offline evidence—and leaves `external_anchor_verified: false`: GitHub's platform record is useful publication evidence, not an independent cryptographic timestamp or broker-origin signature.
