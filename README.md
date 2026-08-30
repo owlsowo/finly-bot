@@ -57,7 +57,9 @@ This allocation of rights is Finly's main technical claim. AI remains useful bec
 
 Historical data cannot become prospective merely because it is replayed again. Forward Trial 1 therefore begins with zero signal commitments and zero outcome settlements. It uses separate commitment and settlement phases, defines the benchmark books in advance, and keeps performance inference disabled until 252 settlements exist.
 
-The protocol is locally hash-bound and can be verified from a clean clone, but those properties have a strict limit. A local timestamp and hash cannot independently prove that a signal existed before market execution. An external pre-execution anchor, provider reconciliation, corporate-action handling, and outcome-price reconciliation are still required. For that reason, production commitment, settlement, broker authority, and performance inference all remain disabled.
+The original zero-row protocol remains locally hash-bound and can be verified from a clean clone, but those properties have a strict limit. A local timestamp and hash cannot independently prove that a signal existed before market execution. An external pre-execution anchor, provider reconciliation, corporate-action handling, and outcome-price reconciliation are still required. For that reason, settlement, broker authority, and performance inference remain disabled.
+
+Finly's separate live trial was activated before its first eligible session. The tracked activation freezes the unchanged production formula, an all-BIL starting state, the official Alpaca calendar boundary for 31 August 2026, write-once commitments, no backfill, and no broker authority. Its hash is `sha256:a9ad429e2094d7cb59300bab18727306121554b62ac112a8e297ce9e12b2800d`. No signal or return is implied by activation; the first signal cannot legally be captured until the August 31 close plus the fixed fifteen-minute availability delay. See [`research/FORWARD_TRIAL_LIVE.md`](research/FORWARD_TRIAL_LIVE.md).
 
 The `TEST_ONLY` path demonstrates the frozen schema and accounting mechanics. It does not prove prospectivity, provider origin, execution quality, profitability, or future returns. The full protocol and verification instructions are in [`research/FORWARD_TRIAL1.md`](research/FORWARD_TRIAL1.md).
 
@@ -84,6 +86,7 @@ npm test                                  # run the full behavior and evidence s
 npm run research:quant-extension-check   # verify the historical research ledger offline
 npm run research:g4-window-explorer      # rebuild the range explorer when the private ledger is present
 npm run research:forward-trial            # verify the zero-row two-phase forward protocol
+npm run research:forward-trial-live       # verify the pre-session live activation
 npm run economic:options-replay-check     # reconstruct the non-mutating options receipt
 npm run llama:decision-check              # reconstruct the bounded local-model trace
 npm run competitor:check                  # validate the public competitor evidence map

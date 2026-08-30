@@ -1,0 +1,75 @@
+{
+  "schema_version": "finly_forward_trial_live_activation.v1",
+  "trial_id": "finly_forward_trial_live_1a",
+  "entry_kind": "LIVE_ACTIVATION",
+  "payload": {
+    "frozen_at": "2026-08-30T02:02:35.624Z",
+    "pinned_first_eligible_session": "2026-08-31",
+    "activation_mode": "PINNED_FIRST_ELIGIBLE",
+    "activation_session": {
+      "calendar_provider": "Alpaca Trading API",
+      "calendar_endpoint": "/v2/calendar",
+      "calendar_request_sha256": "sha256:0dc27ce64201afc9d5be951ca9ab44355baf41ebf587d3af2aa8948132b5895a",
+      "calendar_response_sha256": "sha256:749cf7a9817aef1285c2b9741a0655a7e18cc89302f9027ed4ab163d5ebd81a5",
+      "provider_signature_verified": false,
+      "session_date": "2026-08-31",
+      "market_open_at": "2026-08-31T13:30:00.000Z",
+      "market_close_at": "2026-08-31T20:00:00.000Z",
+      "bar_eligible_at": "2026-08-31T20:15:00.000Z",
+      "next_session_date": "2026-09-01",
+      "next_market_open_at": "2026-09-01T13:30:00.000Z",
+      "next_market_close_at": "2026-09-01T20:00:00.000Z"
+    },
+    "formula_binding": {
+      "implementation": "buildCurrentEconomicDecision",
+      "policy_id": "tsmom_ensemble_vol",
+      "protocol_sha256": "sha256:215505acbe654021c792321e1fcd1bc4045b88c361d035cda3771bb08febb3ee"
+    },
+    "initial_state": {
+      "current_allocation": {
+        "SPY": 0,
+        "BIL": 1
+      },
+      "last_rebalance_date": null,
+      "last_signal_session_date": null,
+      "adjusted_return_index_levels": {
+        "SPY": 1,
+        "BIL": 1,
+        "QQQ": 1,
+        "IWM": 1,
+        "EFA": 1,
+        "EEM": 1,
+        "IEF": 1,
+        "TLT": 1,
+        "GLD": 1,
+        "DBC": 1,
+        "VNQ": 1,
+        "XLK": 1,
+        "XLF": 1,
+        "XLE": 1,
+        "XLY": 1,
+        "XLP": 1,
+        "XLI": 1,
+        "XLB": 1,
+        "XLV": 1,
+        "XLU": 1
+      }
+    },
+    "controls": {
+      "no_backfill": true,
+      "clock_override_permitted": false,
+      "same_vintage_interval_chaining_required": true,
+      "write_once_commitments_required": true
+    },
+    "authority": {
+      "research_only": true,
+      "broker_mutation_authorized": false,
+      "order_payload": null
+    },
+    "evaluation_gates": {
+      "settlement_enabled": false,
+      "inference_enabled": false
+    }
+  },
+  "activation_sha256": "sha256:a9ad429e2094d7cb59300bab18727306121554b62ac112a8e297ce9e12b2800d"
+}

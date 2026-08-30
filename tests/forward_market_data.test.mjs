@@ -12,11 +12,19 @@ const CREDENTIALS = Object.freeze({
   secretKey: "paper-secret-key-456",
 });
 
-function response(body, { status = 200, url, redirected = false } = {}) {
+function response(body, {
+  status = 200,
+  url,
+  redirected = false,
+  dateHeader = new Date().toUTCString(),
+} = {}) {
   const value = {
     ok: status >= 200 && status < 300,
     status,
     redirected,
+    headers: {
+      get: (name) => (name.toLowerCase() === "date" ? dateHeader : null),
+    },
     json: async () => structuredClone(body),
   };
   if (url !== undefined) value.url = String(url);
@@ -122,6 +130,15 @@ test("daily bars exhaust raw and all pagination using only fixed HTTPS GET reads
   assert.deepEqual(result.all.bars.map(({ session_date }) => session_date), ["2026-08-03", "2026-08-04"]);
   assert.equal(result.raw.provenance.page_count, 2);
   assert.equal(result.all.provenance.page_count, 2);
+  assert.equal(result.raw.provenance.transport_receipts.length, 2);
+  assert.equal(result.all.provenance.transport_receipts.length, 2);
+  assert.equal(result.retrieved_at, result.all.retrieved_at);
+  assert.equal(result.all.retrieved_at, result.all.provenance.response_received_at);
+  assert.match(result.raw.provenance.request_started_at, /^\d{4}-\d{2}-\d{2}T/);
+  assert.match(result.raw.provenance.response_received_at, /^\d{4}-\d{2}-\d{2}T/);
+  assert.match(result.raw.provenance.transport_receipts_sha256, /^sha256:[a-f0-9]{64}$/);
+  assert.equal(result.raw.provenance.transport_receipts[0].origin_http_date_source, "HTTPS_RESPONSE_DATE_HEADER");
+  assert.equal(result.raw.provenance.transport_receipts[0].provider_signature_verified, false);
   assert.equal(result.raw.provenance.request.adjustment, "raw");
   assert.equal(result.all.provenance.request.adjustment, "all");
   assert.match(result.raw.content_hash, /^sha256:[a-f0-9]{64}$/);
@@ -192,6 +209,8 @@ test("calendar and action reads use the exact paper origin and return normalized
   assert.match(calendar.content_hash, /^sha256:[a-f0-9]{64}$/);
   assert.match(actions.content_hash, /^sha256:[a-f0-9]{64}$/);
   assert.equal(calendar.provenance.authentication, "caller-supplied; redacted");
+  assert.equal(calendar.retrieved_at, calendar.provenance.response_received_at);
+  assert.equal(actions.retrieved_at, actions.provenance.response_received_at);
   assert.equal(actions.provenance.request.date_type, "ex_date");
   assert.deepEqual(actions.provenance.request.ca_types, ["Dividend", "Merger", "Spinoff", "Split"]);
   assertNoCredentialLeak(calendar);
@@ -397,6 +416,7 @@ test("redirects, malformed responses, and transport errors fail without leaking 
       ok: true,
       status: 200,
       redirected: false,
+      headers: { get: (name) => (name.toLowerCase() === "date" ? new Date().toUTCString() : null) },
       json: async () => { throw new SyntaxError(`bad ${CREDENTIALS.secretKey}`); },
     }),
     /not valid JSON/,
@@ -404,6 +424,29 @@ test("redirects, malformed responses, and transport errors fail without leaking 
   await t.test("credential-bearing thrown error", async () => expectSafeFailure(
     async () => { throw new Error(`${CREDENTIALS.keyId}:${CREDENTIALS.secretKey}`); },
     /HTTPS GET failed/,
+  ));
+});
+
+test("transport freshness evidence fails closed on missing, stale, or future origin Date headers", async (t) => {
+  const operation = (dateHeader) => new ForwardMarketDataClient({
+    fetchImpl: async () => response([], { dateHeader }),
+  }).getMarketCalendar({
+    start: "2026-08-03",
+    end: "2026-08-04",
+    credentials: CREDENTIALS,
+  });
+
+  await t.test("missing Date header", async () => assert.rejects(
+    () => operation(null),
+    /Date header must be a non-empty bounded string/,
+  ));
+  await t.test("stale Date header", async () => assert.rejects(
+    () => operation(new Date(Date.now() - 10 * 60_000).toUTCString()),
+    /Date header is stale or materially ahead/,
+  ));
+  await t.test("future Date header", async () => assert.rejects(
+    () => operation(new Date(Date.now() + 10 * 60_000).toUTCString()),
+    /Date header is stale or materially ahead/,
   ));
 });
 
