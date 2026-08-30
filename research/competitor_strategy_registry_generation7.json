@@ -1,0 +1,882 @@
+{
+  "schema_version": "finly_competitor_strategy_registry_generation7.v1",
+  "captured_at": "2026-08-30T07:34:56Z",
+  "purpose": "Freeze the final live public competitor census, separate financial evidence from mechanism evidence, and prevent missing or synthetic competitor outcomes from being relabeled as inferior P&L.",
+  "capture": {
+    "live_page_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/live",
+    "live_page_observed_at": "2026-08-30T07:27:00Z",
+    "live_page_timezone": "America/New_York",
+    "live_page_updated_label": "03:27",
+    "visible_submission_count": 20,
+    "visible_options_track_count": 16,
+    "repository_heads_verified_at": "2026-08-30T07:34:56Z",
+    "capture_method": "Authenticated read-only live-page expansion followed by read-only public repository inspection and git ls-remote HEAD verification.",
+    "complete_visible_census": true
+  },
+  "snapshot_delta": {
+    "baseline_registry": "research/competitor_strategy_registry_generation6.json",
+    "baseline_captured_at": "2026-08-29T12:34:00Z",
+    "baseline_visible_submission_count": 13,
+    "current_visible_submission_count": 20,
+    "new_visible_submission_count": 7,
+    "new_project_ids": [
+      "alphaguard-ai",
+      "vrp-engine",
+      "aura",
+      "vermiliion",
+      "optionguard",
+      "sogno-options-agent",
+      "futarchists-options"
+    ],
+    "material_existing_repository_changes": [
+      {
+        "project_id": "options-sniper",
+        "previous_commit_sha": "eebc95a574d42287a2266fb2db678fcef645f190",
+        "current_commit_sha": "57062e4a1c3e1cd97df7c0eebced6a748bcf55e6",
+        "summary": "Added dynamic movers discovery, Greeks/IV/liquidity scoring, and news/corporate-action checks; still no historical chain, fill, or outcome bundle.",
+        "evidence_url": "https://github.com/public321-ai/option-sniper/compare/eebc95a574d42287a2266fb2db678fcef645f190...57062e4a1c3e1cd97df7c0eebced6a748bcf55e6"
+      }
+    ],
+    "repository_access_changes": [
+      {
+        "project_id": "vega",
+        "status": "REPOSITORY_UNAVAILABLE_AT_REFRESH",
+        "last_accessible_generation6_commit_sha": "263da012325f46c00a0396e03c8d068c496d6531"
+      }
+    ]
+  },
+  "classification_definitions": {
+    "financial_evidence": {
+      "LEGACY_EQUITY_BUNDLE_NOT_SAME_PANEL": "A public legacy strategy and metric bundle exist, but they are not the submitted options system or an exact same-panel basis for public cross-project comparison.",
+      "NEGATIVE_VALIDATION_NO_PROMOTED_STRATEGY": "A reproducible empirical study reports that no tested strategy passed its own promotion gate.",
+      "SINGLE_PAPER_LOG_NO_INFERENCE": "A local paper-trade row or isolated probe exists, but no broker-bound return series or adequate sample supports performance inference.",
+      "SYNTHETIC_OR_DEMO_NOT_FINANCIAL": "Reported metrics, scenarios, or journal rows are generated from synthetic, randomized, mocked, or demonstration inputs and are not historical or prospective financial outcomes.",
+      "NONE": "No reproducible public financial outcome was located. Missing P&L is unknown, never zero."
+    },
+    "mechanism_evidence": {
+      "EXACT_IMPLEMENTED_MECHANISM": "The repository exposes executable, inspectable strategy, risk, execution, or evaluation logic at the pinned commit.",
+      "IMPLEMENTED_COMPONENTS_INPUT_INCOMPLETE": "A bounded component is inspectable, but point-in-time inputs or lifecycle evidence required for full replay are absent.",
+      "PROTOTYPE_OR_INFRASTRUCTURE": "The repository implements a prototype, governance surface, or evaluator but not a frozen financially reproducible strategy.",
+      "README_ONLY_OR_NOT_SELF_CONTAINED": "The claimed mechanism is not fully available in the repository or depends on absent modules.",
+      "NOT_A_TRADING_MECHANISM": "The visible submission does not expose a trading mechanism relevant to the comparison.",
+      "REPOSITORY_UNAVAILABLE": "The linked repository could not be accessed during the refresh; only the last frozen evidence may be described."
+    }
+  },
+  "finly_submission_visibility": {
+    "status": "NOT_VISIBLE_DRAFT_WARNING",
+    "visible_in_twenty_project_submission_list": false,
+    "visible_in_builder_leaderboard_association": true,
+    "associated_project_title": "Finly Bot: Proof-Carrying Options Agent",
+    "authenticated_submission_editor_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/hackingnoises/submission",
+    "editor_observed_at": "2026-08-30T07:31:00Z",
+    "editor_step": 1,
+    "editor_total_steps": 3,
+    "editor_completion_percent": 26,
+    "blank_social_post_link_fields": 5,
+    "interpretation": "A leaderboard project association is not evidence of a completed public submission. Finly was absent from the expanded live submission list and the authenticated editor remained on step 1 of 3.",
+    "required_action": "Complete all three submission steps and independently verify that Finly appears on the public live submission list before the deadline."
+  },
+  "primary_comparators": {
+    "financial": {
+      "project_id": null,
+      "eligible_project_count": 0,
+      "status": "NO_PUBLIC_SAME_PANEL_SUBMITTED_OPTIONS_COMPARATOR",
+      "scope": "No direct cross-project financial comparison is published. Competitor P&L remains unknown unless an exact submitted-options outcome path is available.",
+      "direct_submitted_options_pnl_comparison": false,
+      "cross_project_financial_rank_supported": false
+    },
+    "engineering": {
+      "project_id": "vrp-engine",
+      "status": "STRONGEST_NEW_ENGINEERING_MECHANISM",
+      "mechanisms": [
+        "40/20/40 blend of 10-session close-to-close, 21-session close-to-close, and 21-session Parkinson realized volatility",
+        "explicit normalized ATM IV-versus-RV stance with a fixed plus-or-minus 0.15 stand-down band",
+        "front-versus-next-expiry ATM IV term-slope event blackout at 0.08",
+        "model-versus-implied probability wedge and expected-value-per-max-loss gates",
+        "piecewise-linear whole-book payoff, two-sigma stress, beta-weighted delta, and concentration caps"
+      ],
+      "financial_outcome_status": "NO_VERIFIED_HISTORICAL_OR_PROSPECTIVE_OUTCOME_BUNDLE",
+      "finly_recommendation": "Preregister IV/RV and term-slope as a non-authorizing shadow challenger. Retain Finly's fixed bounded sizing; do not import fractional Kelly without prospective probability calibration.",
+      "fractional_kelly_verdict": "WOULD_WEAKEN_CURRENT_RIGOR_WITHOUT_CALIBRATED_PROBABILITIES"
+    }
+  },
+  "projects": [
+    {
+      "rank": 1,
+      "id": "alphapilot-ai",
+      "name": "AlphaPilot AI",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/quantum-coders/alphapilot-ai",
+      "repository": {
+        "url": "https://github.com/ibrahimjatt1313-prog/AlphaPilot",
+        "commit_sha": "29add3d4834323ef3b8e1254fed937d11d5e3ac7",
+        "tree_url": "https://github.com/ibrahimjatt1313-prog/AlphaPilot/tree/29add3d4834323ef3b8e1254fed937d11d5e3ac7",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "NO_LICENSE_FILE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy repository code without separate permission."
+      },
+      "financial_evidence": {
+        "classification": "SINGLE_PAPER_LOG_NO_INFERENCE",
+        "comparator_eligible": false,
+        "summary": "The repository contains one local CSV row for a SPY option closed at a 330-dollar loss (-22.68%). It is not a broker receipt or performance series and supports no return inference.",
+        "sources": [
+          "https://github.com/ibrahimjatt1313-prog/AlphaPilot/blob/29add3d4834323ef3b8e1254fed937d11d5e3ac7/agents/trade_history.csv"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "EXACT_IMPLEMENTED_MECHANISM",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "Paper-options signal, contract selection, risk, execution, and monitoring components are present.",
+        "sources": [
+          "https://github.com/ibrahimjatt1313-prog/AlphaPilot/blob/29add3d4834323ef3b8e1254fed937d11d5e3ac7/agents/decision_engine.py",
+          "https://github.com/ibrahimjatt1313-prog/AlphaPilot/blob/29add3d4834323ef3b8e1254fed937d11d5e3ac7/options/risk_manager.py"
+        ]
+      }
+    },
+    {
+      "rank": 2,
+      "id": "vibehedge",
+      "name": "VibeHedge: Autonomous AI Options Hedging Agent",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/shinydatatech/vibehedge-autonomous-ai-options-hedging-agent",
+      "repository": {
+        "url": "https://github.com/ShinyDataTech/VibeHedge",
+        "commit_sha": "eaf8f7a1715d043bd5eaae78bd4b9db9ca314284",
+        "tree_url": "https://github.com/ShinyDataTech/VibeHedge/tree/eaf8f7a1715d043bd5eaae78bd4b9db9ca314284",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "NO_LICENSE_FILE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy repository code without separate permission."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "No published validation or broker-bound P&L was located; option values are synthetic rather than historical listed-chain observations.",
+        "sources": [
+          "https://github.com/ShinyDataTech/VibeHedge/blob/eaf8f7a1715d043bd5eaae78bd4b9db9ca314284/src/options/options_lab.py"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "IMPLEMENTED_COMPONENTS_INPUT_INCOMPLETE",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "Forecast and hedging components exist, but backward-filling rolling training features creates a temporal-leakage risk.",
+        "sources": [
+          "https://github.com/ShinyDataTech/VibeHedge/blob/eaf8f7a1715d043bd5eaae78bd4b9db9ca314284/training/processors.py",
+          "https://github.com/ShinyDataTech/VibeHedge/blob/eaf8f7a1715d043bd5eaae78bd4b9db9ca314284/src/options/options_lab.py"
+        ]
+      }
+    },
+    {
+      "rank": 3,
+      "id": "options-sniper",
+      "name": "Options Sniper - Trading Agent",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/primehack-security-team/options-sniper-trading-agent",
+      "repository": {
+        "url": "https://github.com/public321-ai/option-sniper",
+        "commit_sha": "57062e4a1c3e1cd97df7c0eebced6a748bcf55e6",
+        "tree_url": "https://github.com/public321-ai/option-sniper/tree/57062e4a1c3e1cd97df7c0eebced6a748bcf55e6",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "NO_LICENSE_FILE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy repository code without separate permission."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "No historical option-chain archive, lifecycle outcome set, or performance result is published.",
+        "sources": [
+          "https://github.com/public321-ai/option-sniper/blob/57062e4a1c3e1cd97df7c0eebced6a748bcf55e6/README.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "IMPLEMENTED_COMPONENTS_INPUT_INCOMPLETE",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "The current head implements technical scanning, dynamic movers, Greeks/IV/liquidity scoring, and news/corporate-action vetoes.",
+        "sources": [
+          "https://github.com/public321-ai/option-sniper/blob/57062e4a1c3e1cd97df7c0eebced6a748bcf55e6/lib/scanner.ts",
+          "https://github.com/public321-ai/option-sniper/blob/57062e4a1c3e1cd97df7c0eebced6a748bcf55e6/lib/intelligence.ts",
+          "https://github.com/public321-ai/option-sniper/blob/57062e4a1c3e1cd97df7c0eebced6a748bcf55e6/lib/newsRisk.ts"
+        ]
+      }
+    },
+    {
+      "rank": 4,
+      "id": "tissue-regeneration-navigator",
+      "name": "Tissue Regeneration & Genetic Factor Navigator",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/tissulogic/tissue-regeneration-and-genetic-factor-navigator",
+      "repository": {
+        "url": "https://github.com/mahamtaqi3-cloud/Tissue-Regeneration-and-Genetic-Factor-Navigator",
+        "commit_sha": "06637f9e80301acda5ae09f18bc9568b1d544ca3",
+        "tree_url": "https://github.com/mahamtaqi3-cloud/Tissue-Regeneration-and-Genetic-Factor-Navigator/tree/06637f9e80301acda5ae09f18bc9568b1d544ca3",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "NO_LICENSE_FILE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy repository code without separate permission."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "No trading outcome exists in the public repository.",
+        "sources": [
+          "https://github.com/mahamtaqi3-cloud/Tissue-Regeneration-and-Genetic-Factor-Navigator/blob/06637f9e80301acda5ae09f18bc9568b1d544ca3/app.py"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "NOT_A_TRADING_MECHANISM",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "The repository is a tissue-regeneration/genetic-factor application rather than a public trading mechanism.",
+        "sources": [
+          "https://github.com/mahamtaqi3-cloud/Tissue-Regeneration-and-Genetic-Factor-Navigator/blob/06637f9e80301acda5ae09f18bc9568b1d544ca3/app.py"
+        ]
+      }
+    },
+    {
+      "rank": 5,
+      "id": "pin-desk",
+      "name": "Pin Desk",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/gasbin/pin-desk",
+      "repository": {
+        "url": "https://github.com/anujsuthar08/Pin-desk",
+        "commit_sha": "292825c37d2ca86843821e9119ecec4d4f9d2c5b",
+        "tree_url": "https://github.com/anujsuthar08/Pin-desk/tree/292825c37d2ca86843821e9119ecec4d4f9d2c5b",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": "MIT",
+        "file_status": "LICENSE_FILE_PRESENT",
+        "evidence_url": "https://github.com/anujsuthar08/Pin-desk/blob/292825c37d2ca86843821e9119ecec4d4f9d2c5b/LICENSE",
+        "reuse_rule": "Reuse requires preservation of the MIT copyright and permission notice."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "Point-in-time chains, gamma surfaces, fills, and lifecycle outcomes required for financial replay are absent.",
+        "sources": [
+          "https://github.com/anujsuthar08/Pin-desk/blob/292825c37d2ca86843821e9119ecec4d4f9d2c5b/WRITEUP.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "EXACT_IMPLEMENTED_MECHANISM",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "Gamma calculations, deterministic order construction, sizing, and risk gates are implemented.",
+        "sources": [
+          "https://github.com/anujsuthar08/Pin-desk/blob/292825c37d2ca86843821e9119ecec4d4f9d2c5b/src/pindesk/gamma.py",
+          "https://github.com/anujsuthar08/Pin-desk/blob/292825c37d2ca86843821e9119ecec4d4f9d2c5b/src/pindesk/risk.py",
+          "https://github.com/anujsuthar08/Pin-desk/blob/292825c37d2ca86843821e9119ecec4d4f9d2c5b/src/pindesk/orders.py"
+        ]
+      }
+    },
+    {
+      "rank": 6,
+      "id": "alphaguard-ai",
+      "name": "AlphaGuard AI: Autonomous Multi-Agent Trading Desk",
+      "new_since_generation6_snapshot": true,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/alphaguard-ai/alphaguard-ai-autonomous-multi-agent-trading-desk",
+      "repository": {
+        "url": "https://github.com/devenramanuj/finpulse-ai",
+        "commit_sha": "8aea3ee99c31018bd8f736cde68cff36dd2b56de",
+        "tree_url": "https://github.com/devenramanuj/finpulse-ai/tree/8aea3ee99c31018bd8f736cde68cff36dd2b56de",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "NO_LICENSE_FILE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy repository code without separate permission."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "No dataset, performance report, or broker-bound outcome record is published.",
+        "sources": [
+          "https://github.com/devenramanuj/finpulse-ai/blob/8aea3ee99c31018bd8f736cde68cff36dd2b56de/README.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "PROTOTYPE_OR_INFRASTRUCTURE",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "A small multi-agent prototype exposes a Gemini decision layer, one-percent risk claim, and Alpaca paper integration without a quantitative validation bundle.",
+        "sources": [
+          "https://github.com/devenramanuj/finpulse-ai/blob/8aea3ee99c31018bd8f736cde68cff36dd2b56de/services/gemini_agent.py",
+          "https://github.com/devenramanuj/finpulse-ai/blob/8aea3ee99c31018bd8f736cde68cff36dd2b56de/services/alpaca_service.py"
+        ]
+      }
+    },
+    {
+      "rank": 7,
+      "id": "continual-learning-agent",
+      "name": "a continual learning agent",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/trueintrinsics-agent/a-continual-learning-agent",
+      "repository": {
+        "url": "https://github.com/atlas-jj/finance-trueintrinsics-public",
+        "commit_sha": "08360a32eb24f5d7301cb69207d71206ccb8dd0c",
+        "tree_url": "https://github.com/atlas-jj/finance-trueintrinsics-public/tree/08360a32eb24f5d7301cb69207d71206ccb8dd0c",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": "Apache-2.0",
+        "file_status": "LICENSE_FILE_PRESENT",
+        "evidence_url": "https://github.com/atlas-jj/finance-trueintrinsics-public/blob/08360a32eb24f5d7301cb69207d71206ccb8dd0c/LICENSE",
+        "reuse_rule": "Reuse must comply with Apache-2.0 notice, attribution, and license terms."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "No public source, data, or financial result is released at the pinned commit.",
+        "sources": [
+          "https://github.com/atlas-jj/finance-trueintrinsics-public/blob/08360a32eb24f5d7301cb69207d71206ccb8dd0c/README.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "README_ONLY_OR_NOT_SELF_CONTAINED",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "The repository contains only a README and license and says the implementation will be released later.",
+        "sources": [
+          "https://github.com/atlas-jj/finance-trueintrinsics-public/blob/08360a32eb24f5d7301cb69207d71206ccb8dd0c/README.md"
+        ]
+      }
+    },
+    {
+      "rank": 8,
+      "id": "vega",
+      "name": "Vega — autonomous long-gamma options agent",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/isquividet/vega-autonomous-long-gamma-options-agent",
+      "repository": {
+        "url": "https://github.com/isquividet/vega",
+        "commit_sha": "263da012325f46c00a0396e03c8d068c496d6531",
+        "tree_url": "https://github.com/isquividet/vega/tree/263da012325f46c00a0396e03c8d068c496d6531",
+        "access_status": "UNAVAILABLE_AT_REFRESH",
+        "commit_basis": "GENERATION6_LAST_ACCESSIBLE_PIN"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "UNVERIFIABLE_REPOSITORY_UNAVAILABLE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy code; current license status could not be verified."
+      },
+      "financial_evidence": {
+        "classification": "SYNTHETIC_OR_DEMO_NOT_FINANCIAL",
+        "comparator_eligible": false,
+        "summary": "The last accessible snapshot contained a contest-probability simulation and one frozen scenario, not a historical option P&L path.",
+        "sources": [
+          "https://github.com/isquividet/vega/blob/263da012325f46c00a0396e03c8d068c496d6531/EVIDENCE.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "REPOSITORY_UNAVAILABLE",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "No live refresh was possible; only Generation 6's last accessible scenario evidence is retained.",
+        "sources": [
+          "https://github.com/isquividet/vega/blob/263da012325f46c00a0396e03c8d068c496d6531/tools/kickoff.py"
+        ]
+      }
+    },
+    {
+      "rank": 9,
+      "id": "odysseus",
+      "name": "Odysseus - AI-Powered Strategy Research",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/odysseus/odysseus-ai-powered-strategy-research",
+      "repository": {
+        "url": "https://github.com/thoonnadi2003/odysseus",
+        "commit_sha": "065a3d995e29762e5ba3ae706f1eb12e4ad64de0",
+        "tree_url": "https://github.com/thoonnadi2003/odysseus/tree/065a3d995e29762e5ba3ae706f1eb12e4ad64de0",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": "MIT",
+        "file_status": "LICENSE_FILE_PRESENT",
+        "evidence_url": "https://github.com/thoonnadi2003/odysseus/blob/065a3d995e29762e5ba3ae706f1eb12e4ad64de0/LICENSE",
+        "reuse_rule": "Reuse requires preservation of the MIT copyright and permission notice."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "No frozen candidate rule or financial result is published.",
+        "sources": [
+          "https://github.com/thoonnadi2003/odysseus/blob/065a3d995e29762e5ba3ae706f1eb12e4ad64de0/README.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "PROTOTYPE_OR_INFRASTRUCTURE",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "Hash-frozen data, formal specifications, cost stress, validation, and walk-forward evaluation infrastructure are implemented.",
+        "sources": [
+          "https://github.com/thoonnadi2003/odysseus/blob/065a3d995e29762e5ba3ae706f1eb12e4ad64de0/README.md",
+          "https://github.com/thoonnadi2003/odysseus/blob/065a3d995e29762e5ba3ae706f1eb12e4ad64de0/open/src/Odysseus.Application/EvaluationService.cs"
+        ]
+      }
+    },
+    {
+      "rank": 10,
+      "id": "newsflow-trader",
+      "name": "NewsFlow Trader",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/cubiczan/newsflow-trader",
+      "repository": {
+        "url": "https://github.com/icohangar-ops/newsflow-trader",
+        "commit_sha": "36cfd8dbf49f9228fe2f475c84db5cbae2719beb",
+        "tree_url": "https://github.com/icohangar-ops/newsflow-trader/tree/36cfd8dbf49f9228fe2f475c84db5cbae2719beb",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": "MIT",
+        "file_status": "LICENSE_FILE_PRESENT",
+        "evidence_url": "https://github.com/icohangar-ops/newsflow-trader/blob/36cfd8dbf49f9228fe2f475c84db5cbae2719beb/LICENSE",
+        "reuse_rule": "Reuse requires preservation of the MIT copyright and permission notice."
+      },
+      "financial_evidence": {
+        "classification": "SYNTHETIC_OR_DEMO_NOT_FINANCIAL",
+        "comparator_eligible": false,
+        "summary": "The implemented feed generates random mock headlines and supplies no frozen point-in-time news archive or outcome series.",
+        "sources": [
+          "https://github.com/icohangar-ops/newsflow-trader/blob/36cfd8dbf49f9228fe2f475c84db5cbae2719beb/mini-services/agent-service/src/news.ts"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "IMPLEMENTED_COMPONENTS_INPUT_INCOMPLETE",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "A news-to-trade orchestration path exists, but the current input path is mocked.",
+        "sources": [
+          "https://github.com/icohangar-ops/newsflow-trader/blob/36cfd8dbf49f9228fe2f475c84db5cbae2719beb/mini-services/agent-service/src/news.ts",
+          "https://github.com/icohangar-ops/newsflow-trader/blob/36cfd8dbf49f9228fe2f475c84db5cbae2719beb/mini-services/agent-service/src/orchestrator.ts"
+        ]
+      }
+    },
+    {
+      "rank": 11,
+      "id": "alphaswarm",
+      "name": "AlphaSwarm Sovereign Capital",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/intelliyash/alphaswarm-sovereign-capital",
+      "repository": {
+        "url": "https://github.com/fokrulanthro16-eng/alphaswarm-sovereign",
+        "commit_sha": "564521dd933f111c5c13b922ad9afd249c573cc6",
+        "tree_url": "https://github.com/fokrulanthro16-eng/alphaswarm-sovereign/tree/564521dd933f111c5c13b922ad9afd249c573cc6",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": "MIT",
+        "file_status": "LICENSE_FILE_PRESENT",
+        "evidence_url": "https://github.com/fokrulanthro16-eng/alphaswarm-sovereign/blob/564521dd933f111c5c13b922ad9afd249c573cc6/LICENSE",
+        "reuse_rule": "Reuse requires preservation of the MIT copyright and permission notice."
+      },
+      "financial_evidence": {
+        "classification": "SYNTHETIC_OR_DEMO_NOT_FINANCIAL",
+        "comparator_eligible": false,
+        "summary": "No submitted-strategy historical P&L is published; risk and debate demonstrations use synthetic or fallback inputs.",
+        "sources": [
+          "https://github.com/fokrulanthro16-eng/alphaswarm-sovereign/blob/564521dd933f111c5c13b922ad9afd249c573cc6/README.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "EXACT_IMPLEMENTED_MECHANISM",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "Multi-agent debate and deterministic risk-sentinel components are inspectable.",
+        "sources": [
+          "https://github.com/fokrulanthro16-eng/alphaswarm-sovereign/blob/564521dd933f111c5c13b922ad9afd249c573cc6/backend/debate_core.py",
+          "https://github.com/fokrulanthro16-eng/alphaswarm-sovereign/blob/564521dd933f111c5c13b922ad9afd249c573cc6/backend/risk_sentinel.py"
+        ]
+      }
+    },
+    {
+      "rank": 12,
+      "id": "spy-sentinel",
+      "name": "SPY Sentinel AI",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/spy-sentinel-ai/spy-sentinel-ai",
+      "repository": {
+        "url": "https://github.com/ajennings1974/SPY-Sentinel-AI",
+        "commit_sha": "efd7edab9b19f10e2a7de0d130e7e335ad262d50",
+        "tree_url": "https://github.com/ajennings1974/SPY-Sentinel-AI/tree/efd7edab9b19f10e2a7de0d130e7e335ad262d50",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "NO_LICENSE_FILE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy repository code without separate permission."
+      },
+      "financial_evidence": {
+        "classification": "NEGATIVE_VALIDATION_NO_PROMOTED_STRATEGY",
+        "comparator_eligible": false,
+        "summary": "The exact validation reports 99 signals, 55 wins, a bootstrap return interval from -1.68% to +2.65%, and zero of eight strategies surviving the promotion gate.",
+        "sources": [
+          "https://github.com/ajennings1974/SPY-Sentinel-AI/blob/efd7edab9b19f10e2a7de0d130e7e335ad262d50/SPY_SENTINEL_HACKATHON_CHECKPOINT.md",
+          "https://github.com/ajennings1974/SPY-Sentinel-AI/blob/efd7edab9b19f10e2a7de0d130e7e335ad262d50/spy_sentinel_statistical_validation.csv"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "EXACT_IMPLEMENTED_MECHANISM",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "Five-minute research rules and a rigorous reject-if-unproven validation process are publicly inspectable.",
+        "sources": [
+          "https://github.com/ajennings1974/SPY-Sentinel-AI/blob/efd7edab9b19f10e2a7de0d130e7e335ad262d50/spy_sentinel_v01.py",
+          "https://github.com/ajennings1974/SPY-Sentinel-AI/blob/efd7edab9b19f10e2a7de0d130e7e335ad262d50/SPY_SENTINEL_HACKATHON_CHECKPOINT.md"
+        ]
+      }
+    },
+    {
+      "rank": 13,
+      "id": "vrp-engine",
+      "name": "VRP Engine: Autonomous Options Agent on Alpaca",
+      "new_since_generation6_snapshot": true,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/participant/vrp-engine-autonomous-options-agent-on-alpaca",
+      "repository": {
+        "url": "https://github.com/Ander-IbBi/alpaca-vrp-engine",
+        "commit_sha": "84d6bff500b53a27cb2743a870b9533fc7d5c098",
+        "tree_url": "https://github.com/Ander-IbBi/alpaca-vrp-engine/tree/84d6bff500b53a27cb2743a870b9533fc7d5c098",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": "MIT",
+        "file_status": "LICENSE_FILE_PRESENT",
+        "evidence_url": "https://github.com/Ander-IbBi/alpaca-vrp-engine/blob/84d6bff500b53a27cb2743a870b9533fc7d5c098/LICENSE",
+        "reuse_rule": "Reuse requires preservation of the MIT copyright and permission notice."
+      },
+      "financial_evidence": {
+        "classification": "SYNTHETIC_OR_DEMO_NOT_FINANCIAL",
+        "comparator_eligible": false,
+        "summary": "The repository contains only app/fixtures/demo_journal.jsonl as an outcome-like artifact; no frozen historical chains, real paper journal, or verified P&L is supplied. README good-week/bad-week ranges are unsupported projections.",
+        "sources": [
+          "https://github.com/Ander-IbBi/alpaca-vrp-engine/blob/84d6bff500b53a27cb2743a870b9533fc7d5c098/app/fixtures/demo_journal.jsonl",
+          "https://github.com/Ander-IbBi/alpaca-vrp-engine/blob/84d6bff500b53a27cb2743a870b9533fc7d5c098/README.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "EXACT_IMPLEMENTED_MECHANISM",
+        "strongest_new_engineering_mechanism": true,
+        "summary": "IV-versus-RV stance, term-slope blackout, probability wedge, fractional-Kelly sizing, exact portfolio payoff, stress, beta-delta, and concentration gates are implemented.",
+        "sources": [
+          "https://github.com/Ander-IbBi/alpaca-vrp-engine/blob/84d6bff500b53a27cb2743a870b9533fc7d5c098/src/vrp_engine/strategy/signals.py",
+          "https://github.com/Ander-IbBi/alpaca-vrp-engine/blob/84d6bff500b53a27cb2743a870b9533fc7d5c098/src/vrp_engine/strategy/pricing.py",
+          "https://github.com/Ander-IbBi/alpaca-vrp-engine/blob/84d6bff500b53a27cb2743a870b9533fc7d5c098/src/vrp_engine/strategy/sizing.py",
+          "https://github.com/Ander-IbBi/alpaca-vrp-engine/blob/84d6bff500b53a27cb2743a870b9533fc7d5c098/src/vrp_engine/risk/portfolio.py"
+        ]
+      }
+    },
+    {
+      "rank": 14,
+      "id": "babil",
+      "name": "BABIL — Human-in-the-Loop AI Options Trading Agent",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/babil/babil-human-in-the-loop-ai-options-trading-agent",
+      "repository": {
+        "url": "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026",
+        "commit_sha": "9080b2a0d695bc5f733dc064926af7883a243441",
+        "tree_url": "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026/tree/9080b2a0d695bc5f733dc064926af7883a243441",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "NO_LICENSE_FILE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy repository code without separate permission."
+      },
+      "financial_evidence": {
+        "classification": "SINGLE_PAPER_LOG_NO_INFERENCE",
+        "comparator_eligible": false,
+        "summary": "An isolated paper submission/cancellation probe is not a historical or prospective return series.",
+        "sources": [
+          "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026/blob/9080b2a0d695bc5f733dc064926af7883a243441/probe_single_paper_order.py"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "EXACT_IMPLEMENTED_MECHANISM",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "One-time authorization, immutable execution records, pre-execution revalidation, and paper execution code are present.",
+        "sources": [
+          "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026/blob/9080b2a0d695bc5f733dc064926af7883a243441/ai_agent/proposal.py",
+          "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026/blob/9080b2a0d695bc5f733dc064926af7883a243441/babil_authorization.py",
+          "https://github.com/TAKA2SEA/babil-alpaca-hackathon-2026/blob/9080b2a0d695bc5f733dc064926af7883a243441/babil_paper_execution.py"
+        ]
+      }
+    },
+    {
+      "rank": 15,
+      "id": "aegis-q",
+      "name": "AEGIS-Q",
+      "new_since_generation6_snapshot": false,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/team-v/aegis-q",
+      "repository": {
+        "url": "https://github.com/VicensPaneque/aegis-q",
+        "commit_sha": "76bb97e9200c41c519440bb64ea40d2161367627",
+        "tree_url": "https://github.com/VicensPaneque/aegis-q/tree/76bb97e9200c41c519440bb64ea40d2161367627",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": "MIT",
+        "file_status": "LICENSE_FILE_PRESENT",
+        "evidence_url": "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/LICENSE",
+        "reuse_rule": "Reuse requires preservation of the MIT copyright and permission notice."
+      },
+      "financial_evidence": {
+        "classification": "LEGACY_EQUITY_BUNDLE_NOT_SAME_PANEL",
+        "comparator_eligible": false,
+        "summary": "A public archived legacy-equity rule and metric bundle exist, but the submitted options strategy is not financially reproducible and no public Finly head-to-head is supported.",
+        "local_reproduction_status": "PUBLISHED_BUNDLE_NOT_REPRODUCED",
+        "sources": [
+          "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/strategy.py",
+          "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/backtest.py",
+          "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/reports/metrics.json"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "EXACT_IMPLEMENTED_MECHANISM",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "The archived equity risk-on/risk-off allocation rule and backtester are inspectable; options execution components are also present but lack a reproducible submitted-strategy P&L path.",
+        "sources": [
+          "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/strategy.py",
+          "https://github.com/VicensPaneque/aegis-q/blob/76bb97e9200c41c519440bb64ea40d2161367627/src/pnl_agent/options.py"
+        ]
+      }
+    },
+    {
+      "rank": 16,
+      "id": "aura",
+      "name": "Autonomous Unified Risk & Alpha Agent",
+      "new_since_generation6_snapshot": true,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/ai-champians/autonomous-unified-risk-and-alpha-agent",
+      "repository": {
+        "url": "https://github.com/mirzayasirabdullahbaig07/AURA-Alpaca-AI-Project",
+        "commit_sha": "23369f31024f72009446c1cbfe245e414ac0d2b2",
+        "tree_url": "https://github.com/mirzayasirabdullahbaig07/AURA-Alpaca-AI-Project/tree/23369f31024f72009446c1cbfe245e414ac0d2b2",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "README_CLAIM_ONLY_NO_LICENSE_FILE",
+        "evidence_url": "https://github.com/mirzayasirabdullahbaig07/AURA-Alpaca-AI-Project/blob/23369f31024f72009446c1cbfe245e414ac0d2b2/README.md",
+        "reuse_rule": "The README's MIT label is not a substitute for a license grant; do not copy code without a license file or separate permission."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "Backtesting and buy-and-hold comparison are explicitly listed as roadmap work; no financial result is published.",
+        "sources": [
+          "https://github.com/mirzayasirabdullahbaig07/AURA-Alpaca-AI-Project/blob/23369f31024f72009446c1cbfe245e414ac0d2b2/README.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "PROTOTYPE_OR_INFRASTRUCTURE",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "LLM market/strategy/critic agents, deterministic validation, risk sizing, paper-only configuration, and decision memory are implemented as a prototype without tests or outcome validation.",
+        "sources": [
+          "https://github.com/mirzayasirabdullahbaig07/AURA-Alpaca-AI-Project/blob/23369f31024f72009446c1cbfe245e414ac0d2b2/src/risk/validator.py",
+          "https://github.com/mirzayasirabdullahbaig07/AURA-Alpaca-AI-Project/blob/23369f31024f72009446c1cbfe245e414ac0d2b2/src/core/orchestrator.py"
+        ]
+      }
+    },
+    {
+      "rank": 17,
+      "id": "vermiliion",
+      "name": "Vermiliion",
+      "new_since_generation6_snapshot": true,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/vermilion/vermiliion",
+      "repository": {
+        "url": "https://github.com/Prasannaverse13/Vermilion-",
+        "commit_sha": "a0e411ecb4436d0743403588660f4462ef5737b1",
+        "tree_url": "https://github.com/Prasannaverse13/Vermilion-/tree/a0e411ecb4436d0743403588660f4462ef5737b1",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "NO_LICENSE_FILE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy repository code without separate permission."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "No public historical strategy outcome, broker receipt set, or performance series was located.",
+        "sources": [
+          "https://github.com/Prasannaverse13/Vermilion-/blob/a0e411ecb4436d0743403588660f4462ef5737b1/WRITE_UP.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "EXACT_IMPLEMENTED_MECHANISM",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "A human-in-the-loop decision queue, Alpaca MCP surface, options strategy composition, and audit-oriented application are implemented.",
+        "sources": [
+          "https://github.com/Prasannaverse13/Vermilion-/blob/a0e411ecb4436d0743403588660f4462ef5737b1/lib/agent/queue.ts",
+          "https://github.com/Prasannaverse13/Vermilion-/blob/a0e411ecb4436d0743403588660f4462ef5737b1/mcp/alpaca-mcp/server.mjs"
+        ]
+      }
+    },
+    {
+      "rank": 18,
+      "id": "optionguard",
+      "name": "Autonomous Multi-Agent Options Trading System",
+      "new_since_generation6_snapshot": true,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/adventurouscat/autonomous-multi-agent-options-trading-system",
+      "repository": {
+        "url": "https://github.com/gokulmkrish/OptionGuard-Ai",
+        "commit_sha": "09938f4a2cc86e2e5534a7034e9d6d0daff51c1e",
+        "tree_url": "https://github.com/gokulmkrish/OptionGuard-Ai/tree/09938f4a2cc86e2e5534a7034e9d6d0daff51c1e",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": "MIT",
+        "file_status": "LICENSE_FILE_PRESENT",
+        "evidence_url": "https://github.com/gokulmkrish/OptionGuard-Ai/blob/09938f4a2cc86e2e5534a7034e9d6d0daff51c1e/LICENSE",
+        "reuse_rule": "Reuse requires preservation of the MIT copyright and permission notice."
+      },
+      "financial_evidence": {
+        "classification": "SYNTHETIC_OR_DEMO_NOT_FINANCIAL",
+        "comparator_eligible": false,
+        "summary": "Published 55.4% win rate, 1.73 profit factor, 1.82 Sharpe, and capital-saved figures come from randomized synthetic regimes, option drifts, proposals, and deliberately hallucinated veto cases.",
+        "sources": [
+          "https://github.com/gokulmkrish/OptionGuard-Ai/blob/09938f4a2cc86e2e5534a7034e9d6d0daff51c1e/scripts/backtest_simulation.py",
+          "https://github.com/gokulmkrish/OptionGuard-Ai/blob/09938f4a2cc86e2e5534a7034e9d6d0daff51c1e/scripts/quant_performance_audit.py",
+          "https://github.com/gokulmkrish/OptionGuard-Ai/blob/09938f4a2cc86e2e5534a7034e9d6d0daff51c1e/benchmarks/backtest_metrics_summary.json"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "EXACT_IMPLEMENTED_MECHANISM",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "A deterministic multi-gate options risk layer and tests are present, but its synthetic performance numbers are not financial evidence.",
+        "sources": [
+          "https://github.com/gokulmkrish/OptionGuard-Ai/blob/09938f4a2cc86e2e5534a7034e9d6d0daff51c1e/agents/risk_management.py",
+          "https://github.com/gokulmkrish/OptionGuard-Ai/blob/09938f4a2cc86e2e5534a7034e9d6d0daff51c1e/tests/test_risk_gates.py"
+        ]
+      }
+    },
+    {
+      "rank": 19,
+      "id": "sogno-options-agent",
+      "name": "SOGNO Options Agent",
+      "new_since_generation6_snapshot": true,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/sogno-options-agent/sogno-options-agent",
+      "repository": {
+        "url": "https://github.com/pedrogroppo2-cell/sogno-options-agent",
+        "commit_sha": "27a06e2bc71dbcb59dbe9321bb94f9fa39c40e22",
+        "tree_url": "https://github.com/pedrogroppo2-cell/sogno-options-agent/tree/27a06e2bc71dbcb59dbe9321bb94f9fa39c40e22",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": null,
+        "file_status": "NO_LICENSE_FILE",
+        "evidence_url": null,
+        "reuse_rule": "Do not copy repository code without separate permission."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "No outcome data, performance metrics, or broker receipts are supplied.",
+        "sources": [
+          "https://github.com/pedrogroppo2-cell/sogno-options-agent/blob/27a06e2bc71dbcb59dbe9321bb94f9fa39c40e22/run_options_cycle.py"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "README_ONLY_OR_NOT_SELF_CONTAINED",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "The eight-file repository imports absent competition, market_regime, data, analysis, decision, and portfolio modules, so the trading cycle is not self-contained.",
+        "sources": [
+          "https://github.com/pedrogroppo2-cell/sogno-options-agent/blob/27a06e2bc71dbcb59dbe9321bb94f9fa39c40e22/run_options_cycle.py",
+          "https://github.com/pedrogroppo2-cell/sogno-options-agent/blob/27a06e2bc71dbcb59dbe9321bb94f9fa39c40e22/signal_engine.py"
+        ]
+      }
+    },
+    {
+      "rank": 20,
+      "id": "futarchists-options",
+      "name": "Futarchists Options",
+      "new_since_generation6_snapshot": true,
+      "submission_url": "https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon/futarchists/futarchists-options",
+      "repository": {
+        "url": "https://github.com/VontariusF/options-tournament",
+        "commit_sha": "b068b7c5ad425202430c884a69d3733801e59037",
+        "tree_url": "https://github.com/VontariusF/options-tournament/tree/b068b7c5ad425202430c884a69d3733801e59037",
+        "access_status": "ACCESSIBLE",
+        "commit_basis": "LIVE_HEAD_VERIFIED"
+      },
+      "license": {
+        "spdx": "MIT",
+        "file_status": "LICENSE_FILE_PRESENT",
+        "evidence_url": "https://github.com/VontariusF/options-tournament/blob/b068b7c5ad425202430c884a69d3733801e59037/LICENSE",
+        "reuse_rule": "Reuse requires preservation of the MIT copyright, permission notice, and applicable NOTICE material."
+      },
+      "financial_evidence": {
+        "classification": "NONE",
+        "comparator_eligible": false,
+        "summary": "No backtest artifacts, certified return series, or paper outcome journal is published.",
+        "sources": [
+          "https://github.com/VontariusF/options-tournament/blob/b068b7c5ad425202430c884a69d3733801e59037/README.md"
+        ]
+      },
+      "mechanism_evidence": {
+        "classification": "IMPLEMENTED_COMPONENTS_INPUT_INCOMPLETE",
+        "strongest_new_engineering_mechanism": false,
+        "summary": "Paper broker, defined-risk execution, and multi-agent card proposal code exist. README claims one-point crossover, mutation, deflated Sharpe, PBO, and trial-charge selection, but repository code only accepts genomes/cards and does not implement those selection operators or certification tests.",
+        "sources": [
+          "https://github.com/VontariusF/options-tournament/blob/b068b7c5ad425202430c884a69d3733801e59037/README.md",
+          "https://github.com/VontariusF/options-tournament/blob/b068b7c5ad425202430c884a69d3733801e59037/src/options_tournament/agents.py",
+          "https://github.com/VontariusF/options-tournament/blob/b068b7c5ad425202430c884a69d3733801e59037/src/options_tournament/execute.py"
+        ]
+      }
+    }
+  ],
+  "license_summary": {
+    "license_file_present_mit": 8,
+    "license_file_present_apache_2_0": 1,
+    "no_license_file_or_readme_claim_only": 10,
+    "unverifiable_repository_unavailable": 1,
+    "total_projects": 20,
+    "rule": "Treat repositories without a license file as all-rights-reserved for code reuse. An idea may be independently reimplemented and cited, but code should not be copied."
+  },
+  "claim_boundaries": [
+    "Financial evidence and mechanism evidence are different axes. Executable code, tests, a dashboard, or a demo journal does not establish profitable historical or prospective performance.",
+    "No project supplies an exact same-panel submitted-options outcome path suitable for a public financial head-to-head.",
+    "No project exposes an exact same-panel submitted-options strategy suitable for a cross-project P&L ranking.",
+    "Missing competitor P&L is unknown, never zero, and cannot be treated as a Finly win.",
+    "Synthetic, randomized, mocked, scenario, and demo outputs are not competitor financial returns.",
+    "VRP Engine is the strongest new engineering mechanism, not a verified financial winner.",
+    "Finly's retrospective Generation 4 shadow was selected after viewing history, failed post-selection promotion standards, and is not evidence of future superiority.",
+    "Internal adversarial comparisons are decision aids only and are not public performance claims.",
+    "No source in this registry supports a promise that Finly will beat SPY, any competitor, or any future market period."
+  ],
+  "validation": {
+    "test_path": "tests/competitor_strategy_registry_generation7.test.mjs",
+    "report_path": "research/competitor_strategy_registry_generation7_report.md",
+    "expected_project_count": 20,
+    "expected_new_project_count": 7,
+    "expected_financial_comparator_count": 1,
+    "expected_strongest_new_engineering_mechanism_count": 1
+  }
+}
