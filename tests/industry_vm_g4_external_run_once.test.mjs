@@ -21,6 +21,7 @@ import {
   INDUSTRY_VM_G4_ARTIFACT_PATHS,
   INDUSTRY_VM_G4_FACTOR_ARTIFACT_RELATIVE_PATH,
   INDUSTRY_VM_G4_FIXED_OUTPUT_RELATIVE_PATH,
+  INDUSTRY_VM_G4_HTTP_ACCEPT,
   INDUSTRY_VM_G4_REQUIRED_EXEC_ARGV,
   INDUSTRY_VM_G4_REQUIRED_NODE_VERSION,
   INDUSTRY_VM_G4_RUN_ONCE_RELATIVE_PATH,
@@ -29,6 +30,7 @@ import {
 } from "../research/industry_vm_g4_external/protocol.mjs";
 import {
   assertIndustryVmG4Runtime,
+  buildIndustryVmG4OfficialRequestOptions,
   buildIndustryVmG4FailureReceipt,
   claimIndustryVmG4RunStart,
   computeIndustryVmG4ArtifactHashes,
@@ -50,7 +52,7 @@ function memoryProbeTest(...args) {
 }
 
 async function temporaryProject(context) {
-  const alias = await mkdtemp(join(tmpdir(), "finly-industry-attempt149-"));
+  const alias = await mkdtemp(join(tmpdir(), "finly-industry-attempt150-"));
   const root = await realpath(alias);
   context.after(() => rm(root, { recursive: true, force: true }));
   for (const relativePath of [
@@ -129,9 +131,22 @@ ordinaryTest("archive member matching is ASCII case-folded and traversal-safe", 
   }
 });
 
-ordinaryTest("the consuming Attempt149 runner is not an injectable module export", () => {
+ordinaryTest("the consuming Attempt150 runner is not an injectable module export", () => {
   assert.equal(Object.hasOwn(runOnceModule, "runIndustryVmG4ExternalOnce"), false);
   assert.equal(typeof runOnceModule.proveIndustryVmG4SyntheticPipeline, "function");
+});
+
+ordinaryTest("Attempt150 changes only the HTTP Accept media range in its request envelope", () => {
+  assert.equal(INDUSTRY_VM_G4_HTTP_ACCEPT, "*/*");
+  assert.deepEqual(buildIndustryVmG4OfficialRequestOptions(), {
+    method: "GET",
+    agent: false,
+    headers: {
+      Accept: "*/*",
+      "Accept-Encoding": "identity",
+      Connection: "close",
+    },
+  });
 });
 
 ordinaryTest("raw artifact hash binding detects any byte change", async (context) => {
@@ -305,7 +320,7 @@ memoryProbeTest("official-scale synthetic pipeline proof passed", { timeout: 110
     syntheticArchiveBytes,
   });
   assert.equal(result.synthetic_proof_only, true);
-  assert.equal(result.consumes_attempt149, false);
+  assert.equal(result.consumes_attempt150, false);
   assert.equal(result.outcomes_observed, true);
   assert.equal(result.source_observations, 26_274);
   assert.equal(result.primary_observations, 21_218);

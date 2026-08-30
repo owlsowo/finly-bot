@@ -1,7 +1,7 @@
 {
   "schema_version": "finly_industry_vm_g4_trial_ledger.v1",
-  "append_only_through": 149,
-  "counting_policy": "Append-only operational attempt numbers end at 149. Statistical inference uses an effective count of 200: every reconstructed formula, eligible control, aborted or consumed replay counts, plus a 51-cell reserve for any scratch variants whose exact commands were not retained.",
+  "append_only_through": 150,
+  "counting_policy": "Append-only operational attempt numbers end at 150. Statistical inference uses an effective count of 201: every reconstructed formula, eligible control, aborted or consumed replay counts, plus a 51-cell reserve for any scratch variants whose exact commands were not retained.",
   "blocks": [
     {
       "range": "1-113",
@@ -80,15 +80,73 @@
         "RF_CASH"
       ],
       "diagnostic_and_comparator_counting_boundary": "Mapping B and the four comparators were fixed before industry outcomes and cannot select, rescue, reverse, or modify primary A. They are not additional selection-eligible candidates; the 51-cell inferential reserve nevertheless overcharges any ambiguity."
+    },
+    {
+      "range": "150",
+      "count": 1,
+      "status": "registered_transport_only_successor_before_industry_source_acquisition",
+      "id": "industry_vm_g4_external_replay_attempt150",
+      "predecessor": {
+        "operational_attempt_number": 149,
+        "evaluation_id": "industry_vm_g4_external_replay_attempt149",
+        "frozen_protocol_relative_path": "research/industry_vm_g4_external/attempt149_frozen_protocol.json",
+        "frozen_protocol_raw_bytes_sha256": "sha256:c935a3c2f719fc0202c8820a39bffb4d87b70dd672a40d59ccf7ff1c7e154f2b",
+        "frozen_protocol_bytes": 12072,
+        "protocol_sha256": "sha256:6e5764b40949f3693f75c3bb18a851073c0c0a08b9ad704228b9c14aa6eb6763",
+        "run_start_relative_path": "research/industry_vm_g4_external/attempt149_run_start.json",
+        "run_start_raw_bytes_sha256": "sha256:82a0d0cf9413ea5e436019da7da1f4d3d5debef5693e14665f3b45e1d3f37e35",
+        "run_start_bytes": 555,
+        "run_start_marker_sha256": "sha256:f789f01b780c030561dde553c4bbae86a5998d4e8fb6ffdbd53649e865879dea",
+        "failure_receipt_relative_path": "research/industry_vm_g4_external/attempt149_failure_receipt.json",
+        "failure_receipt_raw_bytes_sha256": "sha256:32327d421625eadfc93038b990d3ff058450d27447a2deb3c09f6870d59721e6",
+        "failure_receipt_bytes": 813,
+        "failure_receipt_sha256": "sha256:c07fb5405f351fd74188c0999af97c3fbe47d6ca27cb1049036d81420d322135",
+        "outcomes_observed": false,
+        "failure_stage": "HTTP transport envelope validation before archive acceptance or industry parsing",
+        "error_message": "official response must be exact HTTP 200, non-redirected, and identity encoded"
+      },
+      "transport_only_correction": {
+        "changed_field": "HTTP Accept request header value",
+        "attempt149_value": "application/zip, application/octet-stream",
+        "attempt150_value": "*/*",
+        "retained_diagnosis_relative_path": "research/industry_vm_g4_external/attempt149_transport_diagnosis.json",
+        "retained_diagnosis_raw_bytes_sha256": "sha256:38eddfea6e232091be44b9f1d14dfd44006eadbea56e9ca4b2f84a31a5f461e8",
+        "retained_diagnosis_bytes": 2589,
+        "retained_diagnosis_sha256": "sha256:bc9ac712292af2515d1f91c8ef908f3378e192ef9057a354926afa1a88cc72c5",
+        "same_official_url_method_redirect_policy_identity_encoding_caps_deadline_and_extractor": true,
+        "same_candidate_mapping_dates_comparators_cost_model_inference_seed_resamples_and_nine_gates": true,
+        "header_only_diagnostic": {
+          "narrow_accept_status": 406,
+          "narrow_accept_content_type": "text/html",
+          "narrow_accept_content_length": 1346,
+          "corrected_accept_status": 200,
+          "corrected_accept_location": null,
+          "corrected_accept_content_encoding": null,
+          "corrected_accept_content_type": "application/x-zip-compressed",
+          "corrected_accept_content_length": 932676,
+          "response_body_or_official_source_values_read": false
+        }
+      },
+      "candidate_count": 1,
+      "diagnostic_mapping_count": 1,
+      "diagnostic_mapping_is_selection_eligible": false,
+      "diagnostic_mapping_can_rescue_reverse_select_or_modify_primary": false,
+      "deterministic_comparators": [
+        "MARKET_BUY_HOLD",
+        "MARKET_VOL20_CAP15",
+        "UNSCALED_A",
+        "RF_CASH"
+      ],
+      "diagnostic_and_comparator_counting_boundary": "Mapping B and the four comparators remain unchanged and cannot select, rescue, reverse, or modify primary A. Attempt150 charges one additional operational trial solely for the corrected acquisition envelope."
     }
   ],
-  "block_count_sum": 149,
-  "operational_attempt_count": 149,
+  "block_count_sum": 150,
+  "operational_attempt_count": 150,
   "inferential_multiplicity_reserve": {
     "additional_scratch_cells_charged": 51,
-    "reason": "Upper-bound reserve for unretained formula, target, cap, cadence, band, and rerun cells beyond the 149 operational attempts.",
+    "reason": "Upper-bound reserve for unretained formula, target, cap, cadence, band, and rerun cells beyond the 150 operational attempts.",
     "selection_or_claim_credit_created": false
   },
-  "inferential_cumulative_trial_count": 200,
-  "claim_boundary": "The 200-trial inferential count deliberately over-credits incomplete scratch history to the multiplicity penalty. It prevents the selected volatility-managed G4 formula from being represented as an untouched discovery and does not convert the new industry replay into live, forward, tradable-ETF, or options evidence."
+  "inferential_cumulative_trial_count": 201,
+  "claim_boundary": "The 201-trial inferential count deliberately over-credits incomplete scratch history to the multiplicity penalty. It prevents the selected volatility-managed G4 formula from being represented as an untouched discovery and does not convert the new industry replay into live, forward, tradable-ETF, or options evidence."
 }

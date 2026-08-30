@@ -1,0 +1,66 @@
+{
+  "schema_version": "finly_industry_vm_g4_attempt149_transport_diagnosis.v1",
+  "recorded_at": "2026-08-30T12:57:15.632Z",
+  "predecessor_evaluation_id": "industry_vm_g4_external_replay_attempt149",
+  "predecessor_failure_receipt_semantic_sha256": "sha256:c07fb5405f351fd74188c0999af97c3fbe47d6ca27cb1049036d81420d322135",
+  "predecessor_outcomes_observed": false,
+  "probes": [
+    {
+      "id": "rejected_narrow_accept",
+      "requested_at": "2026-08-30T12:57:15.633Z",
+      "headers_received_at": "2026-08-30T12:57:15.758Z",
+      "request": {
+        "method": "GET",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip",
+        "headers": {
+          "accept": "application/zip, application/octet-stream",
+          "accept-encoding": "identity",
+          "connection": "close"
+        }
+      },
+      "response": {
+        "status": 406,
+        "location": null,
+        "content_type": "text/html",
+        "content_encoding": null,
+        "content_length": "1346"
+      },
+      "body_reader_attached": false,
+      "body_bytes_read_by_process": 0,
+      "response_destroyed_synchronously_on_headers": true,
+      "archive_persisted": false
+    },
+    {
+      "id": "successor_standard_accept",
+      "requested_at": "2026-08-30T12:57:15.759Z",
+      "headers_received_at": "2026-08-30T12:57:15.891Z",
+      "request": {
+        "method": "GET",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip",
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "identity",
+          "connection": "close"
+        }
+      },
+      "response": {
+        "status": 200,
+        "location": null,
+        "content_type": "application/x-zip-compressed",
+        "content_encoding": null,
+        "content_length": "932676"
+      },
+      "body_reader_attached": false,
+      "body_bytes_read_by_process": 0,
+      "response_destroyed_synchronously_on_headers": true,
+      "archive_persisted": false
+    }
+  ],
+  "inference": {
+    "observed_transport_delta": "Accept request media range only",
+    "official_outcome_body_read": false,
+    "official_archive_acquired_or_persisted": false
+  },
+  "attestation_boundary": "Operator-recorded response metadata from GET requests destroyed synchronously on headers. No body reader was attached, no archive bytes were read by the process, and the server headers are not cryptographically signed.",
+  "diagnosis_sha256": "sha256:bc9ac712292af2515d1f91c8ef908f3378e192ef9057a354926afa1a88cc72c5"
+}

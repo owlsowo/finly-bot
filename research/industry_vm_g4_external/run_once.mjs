@@ -45,6 +45,7 @@ import {
   INDUSTRY_VM_G4_FACTOR_ARTIFACT_RELATIVE_PATH,
   INDUSTRY_VM_G4_FIXED_OUTPUT_RELATIVE_PATH,
   INDUSTRY_VM_G4_FROZEN_PROTOCOL_RELATIVE_PATH,
+  INDUSTRY_VM_G4_HTTP_ACCEPT,
   INDUSTRY_VM_G4_OFFICIAL_ARCHIVE_MEMBER,
   INDUSTRY_VM_G4_OFFICIAL_ARCHIVE_URL,
   INDUSTRY_VM_G4_OFFICIAL_SOURCE_FIRST_DATE,
@@ -100,15 +101,15 @@ export function assertIndustryVmG4Runtime({
   nodeOptions = nodeProcess.env.NODE_OPTIONS,
 } = {}) {
   if (nodeVersion !== INDUSTRY_VM_G4_REQUIRED_NODE_VERSION) {
-    fail(`Attempt149 requires exact Node ${INDUSTRY_VM_G4_REQUIRED_NODE_VERSION}`);
+    fail(`Attempt150 requires exact Node ${INDUSTRY_VM_G4_REQUIRED_NODE_VERSION}`);
   }
   if (!Array.isArray(execArgv)
     || execArgv.length !== INDUSTRY_VM_G4_REQUIRED_EXEC_ARGV.length
     || execArgv.some((value, index) => value !== INDUSTRY_VM_G4_REQUIRED_EXEC_ARGV[index])) {
-    fail(`Attempt149 requires exact Node execArgv: ${INDUSTRY_VM_G4_REQUIRED_EXEC_ARGV.join(" ")}`);
+    fail(`Attempt150 requires exact Node execArgv: ${INDUSTRY_VM_G4_REQUIRED_EXEC_ARGV.join(" ")}`);
   }
   if (nodeOptions !== undefined && nodeOptions !== "") {
-    fail("Attempt149 forbids NODE_OPTIONS because it can inject unbound Node runtime behavior");
+    fail("Attempt150 forbids NODE_OPTIONS because it can inject unbound Node runtime behavior");
   }
   return true;
 }
@@ -203,22 +204,22 @@ export async function claimIndustryVmG4RunStart({
   if (await lstat(markerPath).then(() => true, (error) => {
     if (error?.code === "ENOENT") return false;
     throw error;
-  })) fail("Attempt149 run-start is already claimed; retry is forbidden");
+  })) fail("Attempt150 run-start is already claimed; retry is forbidden");
   if (await lstat(outputPath).then(() => true, (error) => {
     if (error?.code === "ENOENT") return false;
     throw error;
-  })) fail("fixed Attempt149 output already exists; retry is forbidden");
+  })) fail("fixed Attempt150 output already exists; retry is forbidden");
   try {
     await mkdir(outputPath, { recursive: false, mode: 0o700 });
   } catch (error) {
-    if (error?.code === "EEXIST") fail("Attempt149 run-start is already claimed; retry is forbidden");
+    if (error?.code === "EEXIST") fail("Attempt150 run-start is already claimed; retry is forbidden");
     throw error;
   }
   try {
     const outputStatus = await lstat(outputPath);
     if (!outputStatus.isDirectory() || outputStatus.isSymbolicLink()
       || await realpath(outputPath) !== outputPath) {
-      fail("fixed Attempt149 output must be a newly-created real directory");
+      fail("fixed Attempt150 output must be a newly-created real directory");
     }
   } catch (error) {
     await rmdir(outputPath).catch(() => {});
@@ -238,7 +239,7 @@ export async function claimIndustryVmG4RunStart({
     await writeExclusive(markerPath, canonicalJson(marker), MAX_RECEIPT_BYTES);
   } catch (error) {
     await rmdir(outputPath).catch(() => {});
-    if (error?.code === "EEXIST") fail("Attempt149 run-start is already claimed; retry is forbidden");
+    if (error?.code === "EEXIST") fail("Attempt150 run-start is already claimed; retry is forbidden");
     throw error;
   }
   return Object.freeze({ marker, marker_path: markerPath, output_path: outputPath });
@@ -297,6 +298,18 @@ export function extractIndustryVmG4OfficialMember({ archivePath }) {
   return Object.freeze({ selected_member_name: selectedMemberName, member_bytes: bytes });
 }
 
+export function buildIndustryVmG4OfficialRequestOptions() {
+  return Object.freeze({
+    method: "GET",
+    agent: false,
+    headers: Object.freeze({
+      Accept: INDUSTRY_VM_G4_HTTP_ACCEPT,
+      "Accept-Encoding": "identity",
+      Connection: "close",
+    }),
+  });
+}
+
 function downloadOfficialArchive() {
   return new Promise((resolvePromise, rejectPromise) => {
     let settled = false;
@@ -307,16 +320,15 @@ function downloadOfficialArchive() {
       clearTimeout(wallClockTimer);
       callback(value);
     };
-    const request = httpsRequest(INDUSTRY_VM_G4_OFFICIAL_ARCHIVE_URL, {
-      method: "GET",
-      agent: false,
-      headers: {
-        accept: "application/zip, application/octet-stream",
-        "accept-encoding": "identity",
-        connection: "close",
-      },
-    }, (response) => {
+    const request = httpsRequest(
+      INDUSTRY_VM_G4_OFFICIAL_ARCHIVE_URL,
+      buildIndustryVmG4OfficialRequestOptions(),
+      (response) => {
       const encoding = response.headers["content-encoding"];
+      const contentTypeHeader = response.headers["content-type"];
+      const contentType = Array.isArray(contentTypeHeader)
+        ? contentTypeHeader.join(", ")
+        : contentTypeHeader ?? null;
       const location = response.headers.location;
       if (response.statusCode !== 200 || location !== undefined
         || (encoding !== undefined && String(encoding).toLowerCase() !== "identity")) {
@@ -356,15 +368,18 @@ function downloadOfficialArchive() {
           transport_evidence: Object.freeze({
             url: INDUSTRY_VM_G4_OFFICIAL_ARCHIVE_URL,
             method: "GET",
+            accept: INDUSTRY_VM_G4_HTTP_ACCEPT,
             status: response.statusCode,
             redirected: false,
             content_encoding: encoding ?? null,
+            content_type: contentType,
             timeout_ms: 30_000,
             response_bytes: total,
           }),
         }));
       });
-    });
+      },
+    );
     wallClockTimer = setTimeout(() => {
       const error = new TypeError("official request exceeded the absolute 30 second wall-clock deadline");
       request.destroy(error);
@@ -500,6 +515,7 @@ async function prepareIndustryVmG4EvaluationInput({
     schema_version: INDUSTRY_VM_G4_ACQUISITION_RECEIPT_SCHEMA,
     acquired_at: new Date().toISOString(),
     official_archive_url: INDUSTRY_VM_G4_OFFICIAL_ARCHIVE_URL,
+    request_accept: INDUSTRY_VM_G4_HTTP_ACCEPT,
     archive_raw_bytes_sha256: archiveRawBytesSha256,
     selected_member_name: extracted.selected_member_name,
     selected_member_raw_bytes_sha256: memberRawBytesSha256,
@@ -626,6 +642,8 @@ async function runIndustryVmG4ExternalOnce({
       outcome_observed: true,
       rerun_permitted: false,
       full_grid_persisted: false,
+      request_accept: INDUSTRY_VM_G4_HTTP_ACCEPT,
+      response_content_type: prepared.acquisitionReceipt.transport_evidence.content_type,
       output_raw_sha256: outputHashes,
       evaluation_sha256: evaluated.aggregate.evaluation_sha256,
       primary_series_sha256: evaluated.primary_paired_series.series_sha256,
@@ -643,7 +661,7 @@ async function runIndustryVmG4ExternalOnce({
       (sum, bytes) => sum + Buffer.byteLength(bytes),
       0,
     );
-    if (totalBytes > MAX_TOTAL_OUTPUT_BYTES) fail("Attempt149 output exceeds the 64 MiB cap");
+    if (totalBytes > MAX_TOTAL_OUTPUT_BYTES) fail("Attempt150 output exceeds the 64 MiB cap");
     for (const [name, bytes] of Object.entries(outputs)) {
       const maximum = name === "aggregate_evaluation.json"
         ? MAX_AGGREGATE_BYTES
@@ -661,7 +679,7 @@ async function runIndustryVmG4ExternalOnce({
     } catch (receiptError) {
       throw new AggregateError(
         [error, receiptError],
-        "Attempt149 failed and its mandatory consumed-attempt receipt could not be written",
+        "Attempt150 failed and its mandatory consumed-attempt receipt could not be written",
       );
     }
     throw error;
@@ -670,7 +688,7 @@ async function runIndustryVmG4ExternalOnce({
 
 /**
  * Non-consuming official-scale synthetic proof surface. It never reads or
- * writes the fixed Attempt149 marker/output paths and cannot emit an official
+ * writes the fixed Attempt150 marker/output paths and cannot emit an official
  * acquisition or run receipt. It exists solely to prove the bound heap against
  * the complete parser -> adapter -> evaluator pipeline before protocol freeze.
  */
@@ -710,7 +728,7 @@ export async function proveIndustryVmG4SyntheticPipeline({
     });
     return Object.freeze({
       synthetic_proof_only: true,
-      consumes_attempt149: false,
+      consumes_attempt150: false,
       outcomes_observed: outcomesObserved,
       source_observations: evaluated.aggregate.source.observations,
       primary_observations: evaluated.primary_paired_series.rows.length,
@@ -723,7 +741,7 @@ export async function proveIndustryVmG4SyntheticPipeline({
 }
 
 async function directMain() {
-  if (nodeProcess.argv.length !== 2) fail("Attempt149 direct CLI accepts no arguments");
+  if (nodeProcess.argv.length !== 2) fail("Attempt150 direct CLI accepts no arguments");
   assertIndustryVmG4Runtime();
   const scriptPath = await realpath(fileURLToPath(import.meta.url));
   const projectRoot = await realpath(resolve(dirname(scriptPath), "../.."));
@@ -738,7 +756,7 @@ async function directMain() {
 
 if (import.meta.main === true) {
   directMain().catch((error) => {
-    nodeProcess.stderr.write(`Attempt149 runner failed closed: ${error?.message ?? error}\n`);
+    nodeProcess.stderr.write(`Attempt150 runner failed closed: ${error?.message ?? error}\n`);
     nodeProcess.exitCode = 1;
   });
 }

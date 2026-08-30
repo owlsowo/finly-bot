@@ -1,15 +1,16 @@
 import { sha256, stableStringify } from "../../lib/canonical.mjs";
 
 export const INDUSTRY_VM_G4_PROTOCOL_SCHEMA =
-  "finly_industry_vm_g4_external_protocol.v1";
+  "finly_industry_vm_g4_external_protocol.v2";
 export const INDUSTRY_VM_G4_EVALUATION_ID =
-  "industry_vm_g4_external_replay_attempt149";
+  "industry_vm_g4_external_replay_attempt150";
 export const INDUSTRY_VM_G4_PROTOCOL_STATUS = "FROZEN_BEFORE_OFFICIAL_SOURCE_ACQUISITION";
-export const INDUSTRY_VM_G4_OPERATIONAL_ATTEMPT_NUMBER = 149;
-export const INDUSTRY_VM_G4_LEDGER_ATTEMPT_COUNT = 149;
+export const INDUSTRY_VM_G4_OPERATIONAL_ATTEMPT_NUMBER = 150;
+export const INDUSTRY_VM_G4_LEDGER_ATTEMPT_COUNT = 150;
 export const INDUSTRY_VM_G4_UNLOGGED_SCRATCH_RESERVE = 51;
-export const INDUSTRY_VM_G4_INFERENTIAL_EFFECTIVE_TRIAL_COUNT = 200;
-export const INDUSTRY_VM_G4_BONFERRONI_THRESHOLD = 0.00025;
+export const INDUSTRY_VM_G4_INFERENTIAL_EFFECTIVE_TRIAL_COUNT = 201;
+export const INDUSTRY_VM_G4_BONFERRONI_THRESHOLD =
+  0.05 / INDUSTRY_VM_G4_INFERENTIAL_EFFECTIVE_TRIAL_COUNT;
 export const INDUSTRY_VM_G4_REQUIRED_NODE_VERSION = "v26.7.0";
 export const INDUSTRY_VM_G4_REQUIRED_EXEC_ARGV = Object.freeze([
   "--max-old-space-size=256",
@@ -19,6 +20,7 @@ export const INDUSTRY_VM_G4_OFFICIAL_ARCHIVE_URL =
   "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip";
 export const INDUSTRY_VM_G4_OFFICIAL_ARCHIVE_MEMBER =
   "10_Industry_Portfolios_Daily.CSV";
+export const INDUSTRY_VM_G4_HTTP_ACCEPT = "*/*";
 export const INDUSTRY_VM_G4_OFFICIAL_SOURCE_OBSERVATIONS = 26_274;
 export const INDUSTRY_VM_G4_OFFICIAL_SOURCE_FIRST_DATE = "1926-07-01";
 export const INDUSTRY_VM_G4_OFFICIAL_SOURCE_LAST_DATE = "2026-06-30";
@@ -32,14 +34,45 @@ export const INDUSTRY_VM_G4_FACTOR_ARTIFACT_RAW_SHA256 =
 export const INDUSTRY_VM_G4_TRIAL_LEDGER_RELATIVE_PATH =
   "research/industry_vm_g4_external/trial_ledger.json";
 export const INDUSTRY_VM_G4_TRIAL_LEDGER_RAW_SHA256 =
-  "sha256:77a5aa425cc6b3afea991a0e36c2096744f272a23f585ee5a578b9dcb1fa770d";
+  "sha256:997a8da73450d7c49de67f8a1e509a9ced8dccfe6fd0f58ab9a48af01e88ab5b";
+
+export const INDUSTRY_VM_G4_ATTEMPT149_PROTOCOL_RELATIVE_PATH =
+  "research/industry_vm_g4_external/attempt149_frozen_protocol.json";
+export const INDUSTRY_VM_G4_ATTEMPT149_LEGACY_PROTOCOL_RELATIVE_PATH =
+  "research/industry_vm_g4_external/frozen_protocol.json";
+export const INDUSTRY_VM_G4_ATTEMPT149_PROTOCOL_RAW_SHA256 =
+  "sha256:c935a3c2f719fc0202c8820a39bffb4d87b70dd672a40d59ccf7ff1c7e154f2b";
+export const INDUSTRY_VM_G4_ATTEMPT149_PROTOCOL_BYTES = 12_072;
+export const INDUSTRY_VM_G4_ATTEMPT149_PROTOCOL_SHA256 =
+  "sha256:6e5764b40949f3693f75c3bb18a851073c0c0a08b9ad704228b9c14aa6eb6763";
+export const INDUSTRY_VM_G4_ATTEMPT149_RUN_START_RELATIVE_PATH =
+  "research/industry_vm_g4_external/attempt149_run_start.json";
+export const INDUSTRY_VM_G4_ATTEMPT149_RUN_START_RAW_SHA256 =
+  "sha256:82a0d0cf9413ea5e436019da7da1f4d3d5debef5693e14665f3b45e1d3f37e35";
+export const INDUSTRY_VM_G4_ATTEMPT149_RUN_START_BYTES = 555;
+export const INDUSTRY_VM_G4_ATTEMPT149_RUN_START_MARKER_SHA256 =
+  "sha256:f789f01b780c030561dde553c4bbae86a5998d4e8fb6ffdbd53649e865879dea";
+export const INDUSTRY_VM_G4_ATTEMPT149_FAILURE_RELATIVE_PATH =
+  "research/industry_vm_g4_external/attempt149_failure_receipt.json";
+export const INDUSTRY_VM_G4_ATTEMPT149_FAILURE_RAW_SHA256 =
+  "sha256:32327d421625eadfc93038b990d3ff058450d27447a2deb3c09f6870d59721e6";
+export const INDUSTRY_VM_G4_ATTEMPT149_FAILURE_BYTES = 813;
+export const INDUSTRY_VM_G4_ATTEMPT149_FAILURE_SHA256 =
+  "sha256:c07fb5405f351fd74188c0999af97c3fbe47d6ca27cb1049036d81420d322135";
+export const INDUSTRY_VM_G4_ATTEMPT149_DIAGNOSIS_RELATIVE_PATH =
+  "research/industry_vm_g4_external/attempt149_transport_diagnosis.json";
+export const INDUSTRY_VM_G4_ATTEMPT149_DIAGNOSIS_RAW_SHA256 =
+  "sha256:38eddfea6e232091be44b9f1d14dfd44006eadbea56e9ca4b2f84a31a5f461e8";
+export const INDUSTRY_VM_G4_ATTEMPT149_DIAGNOSIS_BYTES = 2_589;
+export const INDUSTRY_VM_G4_ATTEMPT149_DIAGNOSIS_SHA256 =
+  "sha256:bc9ac712292af2515d1f91c8ef908f3378e192ef9057a354926afa1a88cc72c5";
 
 export const INDUSTRY_VM_G4_FIXED_OUTPUT_RELATIVE_PATH =
-  "data/private/industry_vm_g4_external/attempt149";
+  "data/private/industry_vm_g4_external/attempt150";
 export const INDUSTRY_VM_G4_RUN_START_RELATIVE_PATH =
-  "data/private/industry_vm_g4_external/attempt149.run-start.json";
+  "data/private/industry_vm_g4_external/attempt150.run-start.json";
 export const INDUSTRY_VM_G4_FROZEN_PROTOCOL_RELATIVE_PATH =
-  "research/industry_vm_g4_external/frozen_protocol.json";
+  "research/industry_vm_g4_external/attempt150_frozen_protocol.json";
 export const INDUSTRY_VM_G4_RUN_ONCE_RELATIVE_PATH =
   "research/industry_vm_g4_external/run_once.mjs";
 
@@ -54,6 +87,11 @@ export const INDUSTRY_VM_G4_ARTIFACT_PATHS = Object.freeze({
     "research/industry_vm_g4_external/source.mjs",
     "research/industry_vm_g4_external/strategy.mjs",
     "research/industry_vm_g4_external/evaluation.mjs",
+    INDUSTRY_VM_G4_ATTEMPT149_PROTOCOL_RELATIVE_PATH,
+    INDUSTRY_VM_G4_ATTEMPT149_LEGACY_PROTOCOL_RELATIVE_PATH,
+    INDUSTRY_VM_G4_ATTEMPT149_RUN_START_RELATIVE_PATH,
+    INDUSTRY_VM_G4_ATTEMPT149_FAILURE_RELATIVE_PATH,
+    INDUSTRY_VM_G4_ATTEMPT149_DIAGNOSIS_RELATIVE_PATH,
     "research/industry_vm_g4_external/protocol.mjs",
     INDUSTRY_VM_G4_RUN_ONCE_RELATIVE_PATH,
     INDUSTRY_VM_G4_TRIAL_LEDGER_RELATIVE_PATH,
@@ -74,6 +112,7 @@ const TOP_LEVEL_KEYS = Object.freeze([
   "status",
   "frozen_at",
   "registration",
+  "predecessor_attempt",
   "source_freeze",
   "factor_binding",
   "policy_binding",
@@ -161,6 +200,56 @@ function template({ frozenAt, sourceFilesSha256, testFilesSha256 }) {
       candidate_selected_before_external_outcomes: true,
       repeat_or_replacement_primary_permitted: false,
     },
+    predecessor_attempt: {
+      operational_attempt_number: 149,
+      evaluation_id: "industry_vm_g4_external_replay_attempt149",
+      disposition: "CONSUMED_HTTP_TRANSPORT_FAILURE_BEFORE_OFFICIAL_OUTCOMES",
+      outcomes_observed: false,
+      frozen_protocol: {
+        relative_path: INDUSTRY_VM_G4_ATTEMPT149_PROTOCOL_RELATIVE_PATH,
+        legacy_relative_path: INDUSTRY_VM_G4_ATTEMPT149_LEGACY_PROTOCOL_RELATIVE_PATH,
+        raw_bytes_sha256: INDUSTRY_VM_G4_ATTEMPT149_PROTOCOL_RAW_SHA256,
+        bytes: INDUSTRY_VM_G4_ATTEMPT149_PROTOCOL_BYTES,
+        protocol_sha256: INDUSTRY_VM_G4_ATTEMPT149_PROTOCOL_SHA256,
+      },
+      run_start: {
+        relative_path: INDUSTRY_VM_G4_ATTEMPT149_RUN_START_RELATIVE_PATH,
+        raw_bytes_sha256: INDUSTRY_VM_G4_ATTEMPT149_RUN_START_RAW_SHA256,
+        bytes: INDUSTRY_VM_G4_ATTEMPT149_RUN_START_BYTES,
+        run_start_marker_sha256: INDUSTRY_VM_G4_ATTEMPT149_RUN_START_MARKER_SHA256,
+      },
+      failure_receipt: {
+        relative_path: INDUSTRY_VM_G4_ATTEMPT149_FAILURE_RELATIVE_PATH,
+        raw_bytes_sha256: INDUSTRY_VM_G4_ATTEMPT149_FAILURE_RAW_SHA256,
+        bytes: INDUSTRY_VM_G4_ATTEMPT149_FAILURE_BYTES,
+        failure_receipt_sha256: INDUSTRY_VM_G4_ATTEMPT149_FAILURE_SHA256,
+        error_message: "official response must be exact HTTP 200, non-redirected, and identity encoded",
+      },
+      successor_scope: "HTTP_ACCEPT_REQUEST_HEADER_ONLY",
+      attempt149_accept: "application/zip, application/octet-stream",
+      attempt150_accept: INDUSTRY_VM_G4_HTTP_ACCEPT,
+      transport_diagnosis: {
+        relative_path: INDUSTRY_VM_G4_ATTEMPT149_DIAGNOSIS_RELATIVE_PATH,
+        raw_bytes_sha256: INDUSTRY_VM_G4_ATTEMPT149_DIAGNOSIS_RAW_SHA256,
+        bytes: INDUSTRY_VM_G4_ATTEMPT149_DIAGNOSIS_BYTES,
+        diagnosis_sha256: INDUSTRY_VM_G4_ATTEMPT149_DIAGNOSIS_SHA256,
+        response_body_or_official_source_values_read: false,
+        narrow_accept: {
+          status: 406,
+          content_type: "text/html",
+          content_length: 1346,
+        },
+        corrected_accept: {
+          status: 200,
+          location: null,
+          content_encoding: null,
+          content_type: "application/x-zip-compressed",
+          content_length: 932676,
+        },
+      },
+      same_official_url_method_redirect_policy_identity_encoding_caps_deadline_and_extractor: true,
+      same_candidate_mapping_dates_comparators_cost_model_inference_seed_resamples_and_nine_gates: true,
+    },
     source_freeze: {
       provider: "Kenneth R. French Data Library",
       dataset: "10 Industry Portfolios daily",
@@ -181,12 +270,13 @@ function template({ frozenAt, sourceFilesSha256, testFilesSha256 }) {
       expected_last_date: INDUSTRY_VM_G4_OFFICIAL_SOURCE_LAST_DATE,
       expected_iso_date_sequence_sha256: INDUSTRY_VM_G4_EXPECTED_DATE_SEQUENCE_SHA256,
       date_sequence_hash_definition: "sha256(stable JSON array of ISO dates in source order)",
-      acquisition_state: "NOT_ACQUIRED_FOR_ATTEMPT149",
+      acquisition_state: "NOT_ACQUIRED_FOR_ATTEMPT150",
       source_values_observed_before_freeze: false,
       source_archive_sha256: null,
       source_member_sha256: null,
       http: {
         method: "GET",
+        accept: INDUSTRY_VM_G4_HTTP_ACCEPT,
         exact_status: 200,
         redirects_permitted: false,
         accept_encoding: "identity",
@@ -292,7 +382,7 @@ function template({ frozenAt, sourceFilesSha256, testFilesSha256 }) {
       ],
       all_nine_required: true,
       primary_direction: "anchor-0 5bp candidate net-log-growth edge over MARKET_BUY_HOLD > 0",
-      statistical_evidence: "bootstrap p<=0.05 and p<=0.00025, plus parametric null-maximum deflated Sharpe probability>=0.95",
+      statistical_evidence: "bootstrap p<=0.05 and p<=0.05/201, plus parametric null-maximum deflated Sharpe probability>=0.95",
       absolute_and_rf_performance: "candidate net log growth > 0 and candidate beats RF_CASH",
       cost_stress: "candidate edge positive at 5bp, 10bp, and 25bp",
       cadence_robustness: "anchor 0 positive, median of 21 positive, and at least 17 of 21 positive",
@@ -340,7 +430,7 @@ function template({ frozenAt, sourceFilesSha256, testFilesSha256 }) {
       public_claim_mutation_authority: "NONE",
       rerun_or_parameter_mutation_authority: "NONE",
     },
-    claim_boundary: "Retrospective external industry-proxy mechanism evidence only. It is not live or forward performance, an ETF or options P&L, a profitability promise, broker authorization, or competitor rank. Mapping B and post-2007 overlap are non-rescuing diagnostics.",
+    claim_boundary: "Attempt150 is a transport-only successor after Attempt149 failed before official outcomes. Retrospective external industry-proxy mechanism evidence only. It is not live or forward performance, an ETF or options P&L, a profitability promise, broker authorization, or competitor rank. Mapping B and post-2007 overlap are non-rescuing diagnostics.",
   };
 }
 
