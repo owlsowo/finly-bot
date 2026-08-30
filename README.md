@@ -4,11 +4,13 @@ Finly is a trading agent built around one rule: an AI may interpret evidence, bu
 
 Finly answers by separating market judgment from trading authority. An AI component may interpret a bounded evidence bundle, explain its assessment, reconsider that assessment when evidence is removed, or veto a proposal. It may not choose the direction, horizon, option structure, maximum loss, order fields, or final broker permission. Those decisions remain with deterministic code that can be tested, compared exactly, and made to fail closed.
 
-[Open the live case](https://owlsowo.github.io/finly-bot/) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Read the technical paper](public/judge/Finly_Technical_Proposal.pdf) · [Review the consulting deck](public/judge/Finly_Consulting_Deck.pdf)
+[Open the interactive historical case](https://owlsowo.github.io/finly-bot/#range) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Read the technical paper](public/judge/Finly_Technical_Proposal.pdf) · [Review the consulting deck](public/judge/Finly_Consulting_Deck.pdf)
 
-## The strongest historical result was not promoted
+## A modeled $100,000 reached $1,067,106 in the strongest consumed replay
 
 The most attractive candidate produced during the research program was the G4 shadow strategy. Every 21 trading sessions, it allocated half of the portfolio to QQQ and divided the other half equally among the three original sector ETFs with the strongest twelve-minus-six-month momentum. In a consumed adjusted-close replay from 2 January 2013 through 27 August 2026, after a modeled five-basis-point one-way cost, G4 recorded a higher annualized return and a shallower maximum drawdown than SPY.
+
+The result is now explorable rather than frozen in one favorable screenshot. The [live range tool](https://owlsowo.github.io/finly-bot/#range) recomputes the G4 shadow and SPY from a modeled $100,000 for any selectable calendar-year interval inside the public evidence boundary. Across the full consumed record, G4 beat SPY in all **2,175 of 2,175** overlapping five-year trading-session windows. Those windows overlap heavily and are descriptive rather than independent tests, but they show that the full-period difference was not created by one endpoint alone.
 
 | Consumed retrospective replay | G4 shadow | SPY buy-and-hold |
 | --- | ---: | ---: |
@@ -80,6 +82,7 @@ The complete release check runs the test suite, reconstructs the public receipts
 ```bash
 npm test                                  # run the full behavior and evidence suite
 npm run research:quant-extension-check   # verify the historical research ledger offline
+npm run research:g4-window-explorer      # rebuild the range explorer when the private ledger is present
 npm run research:forward-trial            # verify the zero-row two-phase forward protocol
 npm run economic:options-replay-check     # reconstruct the non-mutating options receipt
 npm run llama:decision-check              # reconstruct the bounded local-model trace

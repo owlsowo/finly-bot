@@ -1,6 +1,6 @@
 {
   "name": "finly-bot",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -26,6 +26,7 @@
     "research:economic-check": "node scripts/check_economic_research.mjs",
     "research:quant-extension": "node --env-file-if-exists=.env --env-file-if-exists=.env.local research/run_quant_candidate_extension.mjs",
     "research:quant-extension-check": "node research/check_quant_candidate_extension.mjs",
+    "research:g4-window-explorer": "node research/build_g4_window_explorer.mjs",
     "research:dca": "node research/run_recurring_contribution_analysis.mjs",
     "research:forward-trial": "node research/run_forward_trial1.mjs --verify-existing",
     "economic:decision": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/run_current_economic_decision.mjs",

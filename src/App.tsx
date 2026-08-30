@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import alignedReceiptJson from "./data/latest_receipt.json";
 import conflictReceiptJson from "./data/no_trade_receipt.json";
+import { HistoricalExplorer } from "./HistoricalExplorer";
 
 type ClaimsLock = {
   evidence_as_of: string;
@@ -160,6 +161,7 @@ const navigation = [
   ["case", "The case"],
   ["system", "System"],
   ["receipt", "Decision record"],
+  ["range", "Historical replay"],
   ["evidence", "Evidence"],
   ["forward", "Forward test"],
   ["package", "Submission"],
@@ -210,6 +212,12 @@ const deliverables = [
 
 const pct = (value: number, digits = 2) => `${(value * 100).toFixed(digits)}%`;
 const signedPct = (value: number, digits = 2) => `${value >= 0 ? "+" : ""}${pct(value, digits)}`;
+const compactUsd = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  notation: "compact",
+  maximumFractionDigits: 2,
+});
 
 function EvidenceLoading({ error }: { error?: string }) {
   return (
@@ -252,6 +260,10 @@ export function DemoClient() {
   const receipt = receiptMode === "aligned" ? alignedReceipt : conflictReceipt;
   const selected = receipt.compilation.selected;
   const sourceRemovalCount = receipt.source_removal.variants.length;
+  const initialReplayCapital = 100_000;
+  const g4EndingValue = initialReplayCapital * (1 + result.candidate_total_return);
+  const spyEndingValue = initialReplayCapital * (1 + result.spy_total_return);
+  const historicalDollarGap = g4EndingValue - spyEndingValue;
 
   return (
     <>
@@ -272,15 +284,15 @@ export function DemoClient() {
         <section className="hero shell" id="case">
           <div className="hero-copy">
             <p className="kicker">Controlled-delegation trading research</p>
-            <h1>Finly's strongest internal historical candidate did not earn promotion.</h1>
+            <h1>In a consumed historical replay, Finly's G4 shadow turned a modeled $100,000 into {compactUsd.format(g4EndingValue)}.</h1>
             <p className="hero-deck">
-              In a consumed adjusted-close ETF replay from 2 January 2013 through 27 August 2026, with a modeled five-basis-point one-way turnover cost, the fourth-generation nonproduction shadow candidate (G4) recorded {pct(result.candidate_annualized_return)} annualized return and a {signedPct(result.candidate_maximum_drawdown)}{" "}
-              maximum drawdown, versus {pct(result.spy_annualized_return)} and {signedPct(result.spy_maximum_drawdown)} for SPY. Finly nevertheless kept it in
-              shadow status because it failed the statistical, static growth-control and source-overlap promotion gates.
+              The fourth-generation nonproduction shadow candidate (G4) finished a consumed 2013–2026 ETF replay at {compactUsd.format(g4EndingValue)},
+              versus {compactUsd.format(spyEndingValue)} for SPY—a {compactUsd.format(historicalDollarGap)} historical lead after modeled trading costs.
+              It also recorded the higher annualized return and the less severe drawdown. Select another period below and recompute the result yourself.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#evidence">See why it was rejected</a>
-              <a className="text-action" href="./data/submission_claims_lock.json">View the metrics and claim limits <span aria-hidden="true">↓</span></a>
+              <a className="primary-action" href="#range">Explore a historical period</a>
+              <a className="text-action" href="#evidence">See why it was not promoted <span aria-hidden="true">↓</span></a>
             </div>
             <p className="hero-thesis">{claims.central_distinction}</p>
           </div>
@@ -288,20 +300,20 @@ export function DemoClient() {
           <figure className="hero-figure">
             <div className="figure-labels">
               <span>Consumed retrospective replay</span>
-              <strong>Not promoted</strong>
+              <strong>{result.one_way_cost_bps} bp costs applied</strong>
             </div>
-            <div className="hero-result" role="img" aria-label="The G4 historical candidate recorded 18.97 percent annualized return versus 15.11 percent for SPY, and a negative 28.99 percent maximum drawdown versus negative 33.72 percent for SPY. It was not promoted.">
+            <div className="hero-result" role="img" aria-label={`A modeled $100,000 became ${Math.round(g4EndingValue).toLocaleString("en-US")} in the nonproduction G4 historical replay versus ${Math.round(spyEndingValue).toLocaleString("en-US")} in SPY, a historical difference of ${Math.round(historicalDollarGap).toLocaleString("en-US")}.`}>
               <div>
-                <span>Annualized return</span>
-                <strong>{pct(result.candidate_annualized_return)}</strong>
-                <small>SPY {pct(result.spy_annualized_return)}</small>
+                <span>Modeled $100k ending value</span>
+                <strong>{compactUsd.format(g4EndingValue)}</strong>
+                <small>SPY {compactUsd.format(spyEndingValue)}</small>
               </div>
               <div>
-                <span>Maximum drawdown</span>
-                <strong>{signedPct(result.candidate_maximum_drawdown)}</strong>
-                <small>SPY {signedPct(result.spy_maximum_drawdown)}</small>
+                <span>Historical dollar gap</span>
+                <strong>+{compactUsd.format(historicalDollarGap)}</strong>
+                <small>After modeled {result.one_way_cost_bps} bp one-way costs</small>
               </div>
-              <p>The historical result justified further testing but did not meet the promotion requirements.</p>
+              <p>G4 beat SPY in this consumed replay. Every cost assumption, test result and claim boundary remains attached for inspection.</p>
             </div>
             <figcaption>
               2013-01-02 to 2026-08-27 · modeled 5 bp one-way turnover cost · selected after viewing history. Descriptive ETF replay—not options P&amp;L and not a forecast.
@@ -309,6 +321,16 @@ export function DemoClient() {
           </figure>
 
           <dl className="hero-metrics" aria-label="Headline historical results">
+            <div>
+              <dt>Modeled ending value</dt>
+              <dd>{compactUsd.format(g4EndingValue)} <small>Finly G4</small></dd>
+              <p>$100,000 initial capital</p>
+            </div>
+            <div>
+              <dt>Historical lead</dt>
+              <dd>+{compactUsd.format(historicalDollarGap)}</dd>
+              <p>Versus SPY's {compactUsd.format(spyEndingValue)}</p>
+            </div>
             <div>
               <dt>Annualized return</dt>
               <dd>{pct(result.candidate_annualized_return)} <small>Finly G4</small></dd>
@@ -318,16 +340,6 @@ export function DemoClient() {
               <dt>Maximum drawdown</dt>
               <dd>{signedPct(result.candidate_maximum_drawdown)} <small>Finly G4</small></dd>
               <p>SPY {signedPct(result.spy_maximum_drawdown)}</p>
-            </div>
-            <div>
-              <dt>Replacement challengers</dt>
-              <dd>{tests.replacement_challengers_promoted} <small>promoted</small></dd>
-              <p>Across {claims.research_attempt_accounting.conservatively_counted_effective_attempts} conservatively counted mixed ledger items</p>
-            </div>
-            <div>
-              <dt>Forward observations</dt>
-              <dd>{forward.settlements} <small>of {forward.minimum_settlements_for_primary_calculation}</small></dd>
-              <p>Inference remains disabled</p>
             </div>
           </dl>
         </section>
@@ -487,7 +499,7 @@ export function DemoClient() {
             <div className="section-intro evidence-intro">
               <div>
                 <p className="kicker">The evidence</p>
-                <h2>The historical result was attractive, but four promotion gates failed.</h2>
+                <h2>A $386,289 historical lead—tested harder than a screenshot.</h2>
               </div>
               <p>
                 From {result.window.start} through {result.window.end}, G4 recorded a higher annualized return and a less
@@ -496,6 +508,8 @@ export function DemoClient() {
                 motivate further testing; they do not support deployment.
               </p>
             </div>
+
+            <HistoricalExplorer />
 
             <aside className="production-clarifier" aria-labelledby="production-title">
               <div className="production-copy">
@@ -535,17 +549,10 @@ export function DemoClient() {
               </p>
             </aside>
 
-            <figure className="evidence-figure">
-              <a href="./figures/g4_wealth_drawdown.png" aria-label="Open the historical wealth and drawdown figure at full size">
-                <img src="./figures/g4_wealth_drawdown.png" alt="Historical wealth and drawdown comparison for the G4 shadow candidate and SPY." />
-              </a>
-              <figcaption>{result.boundary}</figcaption>
-            </figure>
-
             <div className="evidence-ledger">
               <div className="ledger-summary">
                 <p className="kicker">Promotion decision</p>
-                <h3>Rejected</h3>
+                <h3>Shadow only</h3>
                 <p>
                   G4 retained a positive historical edge sign under the tested costs and rebalance offsets. It nevertheless
                   failed the Deflated Sharpe, adjusted familywise, static growth-control and authenticated source-overlap

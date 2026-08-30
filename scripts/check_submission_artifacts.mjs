@@ -65,7 +65,48 @@ assert.equal(claims.options_and_broker_boundary.order_submitted_or_filled_as_evi
 assert.equal(claims.forward_trial.settlements, 0);
 assert.equal(claims.forward_trial.performance_inference_enabled, false);
 
+const explorer = JSON.parse(readFileSync(requireFile("public/data/g4_window_explorer.json", 1_000_000).path, "utf8"));
+assert.equal(explorer.schema_version, "finly_public_g4_window_explorer.v1");
+assert.equal(explorer.rows.length, 3434);
+assert.equal(explorer.default_window.exact_submission_claims_lock_match, true);
+assert.equal(explorer.default_window.ending_values.g4_ending_value_usd, 1067105.98);
+assert.equal(explorer.default_window.ending_values.spy_ending_value_usd, 680817.46);
+assert.equal(explorer.default_window.ending_values.g4_minus_spy_ending_value_usd, 386288.52);
+assert.deepEqual(explorer.robustness.windows.map(({ years, wins, total }) => ({ years, wins, total })), [
+  { years: 1, wins: 2466, total: 3183 },
+  { years: 3, wins: 2508, total: 2679 },
+  { years: 5, wins: 2175, total: 2175 },
+]);
+assert.match(explorer.robustness.boundary, /overlap heavily/i);
+
+function standaloneGrowth(rows, book, startIndex, sessions, costRate) {
+  let growth = 1;
+  for (let offset = 0; offset < sessions; offset += 1) {
+    const item = rows[startIndex + offset][book];
+    let transactionCost = offset === 0 ? item.entry_notional * costRate : item.base_transaction_cost;
+    if (offset === sessions - 1) transactionCost += item.terminal_liquidation_notional * costRate;
+    transactionCost = Math.round((transactionCost + Number.EPSILON) * 1e10) / 1e10;
+    const netReturn = Math.round((item.gross_return - item.financing_spread_cost - transactionCost + Number.EPSILON) * 1e10) / 1e10;
+    assert.ok(1 + netReturn > 0, `invalid ${book} return at window row ${startIndex + offset}`);
+    growth *= 1 + netReturn;
+  }
+  return growth;
+}
+
+const fiveYearSessions = 5 * 252;
+let recomputedFiveYearWins = 0;
+for (let startIndex = 0; startIndex + fiveYearSessions <= explorer.rows.length; startIndex += 1) {
+  const g4Growth = standaloneGrowth(explorer.rows, "g4", startIndex, fiveYearSessions, 5 / 10_000);
+  const spyGrowth = standaloneGrowth(explorer.rows, "spy", startIndex, fiveYearSessions, 5 / 10_000);
+  if (g4Growth - spyGrowth > 1e-14) recomputedFiveYearWins += 1;
+}
+assert.equal(recomputedFiveYearWins, 2175, "five-year wins must reproduce directly from public rows");
+
+const machineSummary = readFileSync(requireFile("public/llms.txt", 1_000).path, "utf8");
+assert.match(machineSummary, /\$1,067,106/);
+assert.match(machineSummary, /2,175 overlapping five-year/i);
+
 console.log(
   `submission artifacts verified: 1-page brief; 5-page paper; 9-slide deck; ` +
-  `${Number(probe.format.duration).toFixed(1)}s video; 16:9 cover; claim boundary intact`,
+  `${Number(probe.format.duration).toFixed(1)}s video; interactive 3,434-row replay; 16:9 cover; claim boundary intact`,
 );

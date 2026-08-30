@@ -1,0 +1,37 @@
+# Finly
+
+Finly is Bruce Wen's solo submission to the Alpaca AI Trading Agents Hackathon. It is an educational paper-trading research prototype, not investment advice.
+
+## Judge-facing proposition
+
+Finly separates the right to interpret market evidence from the right to expose capital. An AI component may produce a bounded assessment and rationale. Deterministic code owns direction, horizon, sizing, defined-risk option construction, challenge tests, and the final PERMIT or NO_TRADE decision. Broker authority is disabled by default.
+
+## Strongest quantitative evidence
+
+- A nonproduction research shadow called G4 was tested in a consumed adjusted-close ETF replay from 2013-01-02 through 2026-08-27.
+- A modeled $100,000 ended at $1,067,106 for G4 versus $680,817 for SPY: a $386,289 historical difference.
+- G4 returned 18.97% annualized versus 15.11% for SPY.
+- G4 maximum drawdown was -28.99% versus -33.72% for SPY.
+- The replay applies a modeled 5-basis-point one-way turnover cost.
+- The website contains an interactive range explorer that recomputes standalone entry and exit costs for a selected period.
+- Across the full consumed record, G4 beat SPY in all 2,175 overlapping five-year trading-session windows. These windows overlap heavily and are descriptive, not independent trials.
+
+## Evidence boundary
+
+G4 was selected after historical results were viewed. It is not the production Finly policy, a forward forecast, an options-profit record, or proof of future profitability. It remains a nonproduction shadow because statistical and source-overlap promotion gates failed. Production Finly has zero forward performance observations. The repository does not claim guaranteed profit or likely next-month SPY outperformance.
+
+## Inspectable proof
+
+- Live case: https://owlsowo.github.io/finly-bot/
+- Source repository: https://github.com/owlsowo/finly-bot
+- Locked metrics and permitted claims: https://owlsowo.github.io/finly-bot/data/submission_claims_lock.json
+- One-page proposal: https://owlsowo.github.io/finly-bot/judge/Finly_Judge_Brief.pdf
+- Technical paper: https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf
+- Presentation: https://owlsowo.github.io/finly-bot/judge/Finly_Consulting_Deck.pdf
+- Demo film: https://owlsowo.github.io/finly-bot/judge/Finly_Demo_Video.mp4
+
+## Verification
+
+From a clean clone with Node.js 22.13 or newer: `npm install && npm run verify`.
+
+The public evidence is designed to be evaluated against the cited project artifacts and explicit claim boundaries.
