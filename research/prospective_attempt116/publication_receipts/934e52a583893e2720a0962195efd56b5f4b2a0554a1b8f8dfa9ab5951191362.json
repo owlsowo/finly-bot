@@ -1,0 +1,226 @@
+{
+  "additional_commit_bound_dependencies": [
+    {
+      "git_blob_sha": "d1765487f84bc94f55046a0a9ba6bf5f04f45899",
+      "path": "lib/canonical.mjs",
+      "raw_bytes_sha256": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904"
+    }
+  ],
+  "assurance": {
+    "broker_execution_verified": false,
+    "broker_or_market_data_network_accessed": false,
+    "fixed_unauthenticated_get_requests": true,
+    "independent_cryptographic_timestamp_verified": false,
+    "network_access_limited_to_public_github_gets": true,
+    "network_mutation_authorized": false,
+    "no_credentials_sent": true,
+    "performance_inference_permitted": false,
+    "provider_origin_verified": false,
+    "provider_timing_independent": false,
+    "public_github_platform_record_only": true,
+    "self_contained_offline_evidence": false
+  },
+  "attempt_id": "finly_prospective_options_shadow_attempt_116",
+  "evidence_class": "PUBLIC_GITHUB_GET_COLLECTION_NOT_INDEPENDENT_TIMESTAMP",
+  "exclusive_deadline": "2026-08-31T13:30:00.000Z",
+  "executing_local_closure": {
+    "additional_dependencies_match_public_head": true,
+    "additional_dependencies_verified": 1,
+    "required_artifacts_match_public_head": true,
+    "required_artifacts_verified": 7,
+    "workflow_file_matches_public_head": true,
+    "workflow_file_sha256": "sha256:f23196c2cd6e070455395490e7fde6ad14b8ae31016771188269d85cb75e70e5"
+  },
+  "github_public_get_evidence": {
+    "request_count": 13,
+    "responses": [
+      {
+        "canonical_url": "https://api.github.com/repos/owlsowo/finly-bot",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "repository",
+        "response_byte_length": 5154,
+        "response_bytes_sha256": "sha256:3f721546ae13792a11886a6f14e3ec78509ceb0c0e29d42dd6ed266a92354f0a"
+      },
+      {
+        "canonical_url": "https://api.github.com/repos/owlsowo/finly-bot/commits/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f?per_page=100&page=1",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "publication_commit",
+        "response_byte_length": 91783,
+        "response_bytes_sha256": "sha256:a829662ea2001c95f47cfbabefa966b15d6c043fac24963707e6c4109660059a"
+      },
+      {
+        "canonical_url": "https://api.github.com/repos/owlsowo/finly-bot/actions/runs/33300509077",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "workflow_run",
+        "response_byte_length": 11895,
+        "response_bytes_sha256": "sha256:eba2e8808ffea0be5f072c403eaf70261d62302e6a316df203896d6ac568664e"
+      },
+      {
+        "canonical_url": "https://api.github.com/repos/owlsowo/finly-bot/actions/runs/33300509077/jobs?per_page=100",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "workflow_jobs",
+        "response_byte_length": 2559,
+        "response_bytes_sha256": "sha256:385a41b445274559930dfd4ebfa9ebc13027e391d90ab372068847cc47a510fe"
+      },
+      {
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f/.github/workflows/ci.yml",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "workflow_file",
+        "response_byte_length": 614,
+        "response_bytes_sha256": "sha256:f23196c2cd6e070455395490e7fde6ad14b8ae31016771188269d85cb75e70e5"
+      },
+      {
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f/research/prospective_attempt116/SOURCE_ATTRIBUTION.md",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "artifact:research/prospective_attempt116/SOURCE_ATTRIBUTION.md",
+        "response_byte_length": 4511,
+        "response_bytes_sha256": "sha256:7aa465ae3565c5a9670aa8287ed0add1e96aace83870ec6aa919ff4212a14d26"
+      },
+      {
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f/research/prospective_attempt116/UPSTREAM_LICENSE.txt",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "artifact:research/prospective_attempt116/UPSTREAM_LICENSE.txt",
+        "response_byte_length": 1182,
+        "response_bytes_sha256": "sha256:97ed157640064056357c7edceb8aeed5db11577dbdd381bdb556759d80ef9935"
+      },
+      {
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f/research/prospective_attempt116/protocol.json",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "artifact:research/prospective_attempt116/protocol.json",
+        "response_byte_length": 8993,
+        "response_bytes_sha256": "sha256:3baa380e02f982d1c0c892357cded0e24ad311c2e73c1c1cc38d1d1b5d1501a2"
+      },
+      {
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f/research/prospective_attempt116/protocol.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "artifact:research/prospective_attempt116/protocol.mjs",
+        "response_byte_length": 16577,
+        "response_bytes_sha256": "sha256:780ddb8aa3e3e8d48c7d75e8796db49aed8f111c9ad2eec271df6d09a390a27c"
+      },
+      {
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f/research/prospective_attempt116/signal.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "artifact:research/prospective_attempt116/signal.mjs",
+        "response_byte_length": 24101,
+        "response_bytes_sha256": "sha256:0028e1dc7965776d3bc4e0e79727eeb4fa4107f8496c677f7ad77b3511326dfb"
+      },
+      {
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f/tests/prospective_attempt116_protocol.test.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "artifact:tests/prospective_attempt116_protocol.test.mjs",
+        "response_byte_length": 6307,
+        "response_bytes_sha256": "sha256:b8c07d139f96be622c7e22fc3977f4ab207b338bd7059d1dd522028f9736025f"
+      },
+      {
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f/tests/prospective_attempt116_signal.test.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:51 GMT",
+        "request_id": "artifact:tests/prospective_attempt116_signal.test.mjs",
+        "response_byte_length": 17645,
+        "response_bytes_sha256": "sha256:805a53cdaa77b03e573c34c80210e6028446d20d0371e540d9b379c8ae34643b"
+      },
+      {
+        "canonical_url": "https://raw.githubusercontent.com/owlsowo/finly-bot/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f/lib/canonical.mjs",
+        "github_http_date": "Sun, 30 Aug 2026 08:10:52 GMT",
+        "request_id": "additional_dependency:lib/canonical.mjs",
+        "response_byte_length": 1465,
+        "response_bytes_sha256": "sha256:05d7803cff866893f3c97e3b15ee49cbd46eb2376c63a06fe142f8589a7e0904"
+      }
+    ]
+  },
+  "publication_commit": {
+    "authored_at": "2026-08-30T08:00:10Z",
+    "committed_at": "2026-08-30T08:00:10Z",
+    "html_url": "https://github.com/owlsowo/finly-bot/commit/a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f",
+    "parent_sha": "8cf491958e26e9da7e35c9c5c1d0d9dce2680b6a",
+    "sha": "a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f",
+    "tree_sha": "e3f5e9f71d3a9fb387ec81605e75fcd0c845bd91"
+  },
+  "published_artifacts": [
+    {
+      "git_blob_sha": "1ae70e2edf69c6e7e1cfa43ff00b9aa1f159b034",
+      "path": "research/prospective_attempt116/SOURCE_ATTRIBUTION.md",
+      "raw_bytes_sha256": "sha256:7aa465ae3565c5a9670aa8287ed0add1e96aace83870ec6aa919ff4212a14d26"
+    },
+    {
+      "git_blob_sha": "6da5b634b3a2a4fb9e3455fd6a7db02dbc81e692",
+      "path": "research/prospective_attempt116/UPSTREAM_LICENSE.txt",
+      "raw_bytes_sha256": "sha256:97ed157640064056357c7edceb8aeed5db11577dbdd381bdb556759d80ef9935"
+    },
+    {
+      "git_blob_sha": "2f73bfd6eb3ef880c533fa263e032c423a1652eb",
+      "path": "research/prospective_attempt116/protocol.json",
+      "raw_bytes_sha256": "sha256:3baa380e02f982d1c0c892357cded0e24ad311c2e73c1c1cc38d1d1b5d1501a2"
+    },
+    {
+      "git_blob_sha": "2d0998d6d72d478ecb7f05de502fe70190029431",
+      "path": "research/prospective_attempt116/protocol.mjs",
+      "raw_bytes_sha256": "sha256:780ddb8aa3e3e8d48c7d75e8796db49aed8f111c9ad2eec271df6d09a390a27c"
+    },
+    {
+      "git_blob_sha": "da898cc83ab6d23dbb58917fe9d447baf083f902",
+      "path": "research/prospective_attempt116/signal.mjs",
+      "raw_bytes_sha256": "sha256:0028e1dc7965776d3bc4e0e79727eeb4fa4107f8496c677f7ad77b3511326dfb"
+    },
+    {
+      "git_blob_sha": "fc275ad3e97ae147812196764aaba5b35a7ce09b",
+      "path": "tests/prospective_attempt116_protocol.test.mjs",
+      "raw_bytes_sha256": "sha256:b8c07d139f96be622c7e22fc3977f4ab207b338bd7059d1dd522028f9736025f"
+    },
+    {
+      "git_blob_sha": "79962c510be16902e17608b83383093bd6cbdc33",
+      "path": "tests/prospective_attempt116_signal.test.mjs",
+      "raw_bytes_sha256": "sha256:805a53cdaa77b03e573c34c80210e6028446d20d0371e540d9b379c8ae34643b"
+    }
+  ],
+  "receipt_sha256": "sha256:934e52a583893e2720a0962195efd56b5f4b2a0554a1b8f8dfa9ab5951191362",
+  "repository": {
+    "default_branch": "main",
+    "full_name": "owlsowo/finly-bot",
+    "id": 1350112497,
+    "public": true
+  },
+  "schema_version": "finly_attempt116_github_public_registration_receipt.v1",
+  "verification_observed_at": "2026-08-30T08:10:52.000Z",
+  "workflow_run": {
+    "conclusion": "success",
+    "created_at": "2026-08-30T08:00:16Z",
+    "event": "push",
+    "head_branch": "main",
+    "head_sha": "a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f",
+    "html_url": "https://github.com/owlsowo/finly-bot/actions/runs/33300509077",
+    "id": 33300509077,
+    "name": "Verify Finly",
+    "path": ".github/workflows/ci.yml",
+    "run_attempt": 1,
+    "status": "completed",
+    "updated_at": "2026-08-30T08:02:00Z",
+    "verification_job": {
+      "completed_at": "2026-08-30T08:01:59Z",
+      "conclusion": "success",
+      "head_sha": "a46ee3d2f9fc4ecbf1fc159fb20e56b0708a009f",
+      "id": 99227644173,
+      "name": "verify",
+      "required_steps": [
+        {
+          "completed_at": "2026-08-30T08:01:57Z",
+          "conclusion": "success",
+          "name": "Run npm run verify",
+          "number": 6,
+          "started_at": "2026-08-30T08:00:44Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-08-30T08:01:58Z",
+          "conclusion": "success",
+          "name": "Generated receipts are committed and reproducible",
+          "number": 7,
+          "started_at": "2026-08-30T08:01:57Z",
+          "status": "completed"
+        }
+      ],
+      "started_at": "2026-08-30T08:00:19Z",
+      "status": "completed"
+    },
+    "workflow_id": 344996171
+  }
+}
