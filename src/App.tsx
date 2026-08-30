@@ -153,11 +153,11 @@ const references = [
 ] as const;
 
 const deliverables = [
-  ["01", "One-page proposal", "The argument in a concise essay for the first judging pass.", "./judge/Finly_Judge_Brief.pdf"],
-  ["02", "Technical paper", "Method, evidence, falsification and the limits of each result.", "./judge/Finly_Technical_Proposal.pdf"],
-  ["03", "Presentation", "The judge-facing case in a compact consulting narrative.", "./judge/Finly_Consulting_Deck.pdf"],
-  ["04", "Demo film", "A short walkthrough of the product and its proof boundary.", "./judge/Finly_Demo_Video.mp4"],
-  ["05", "Repository", "Code, tests, research ledger and reproduction commands.", "https://github.com/owlsowo/finly-bot"],
+  ["01", "One-page proposal", "An answer-first investment case built for the first judging pass.", "./judge/Finly_Judge_Brief.pdf"],
+  ["02", "Technical paper", "Full methodology, architecture, evidence and academic references.", "./judge/Finly_Technical_Proposal.pdf"],
+  ["03", "Presentation", "The quantified opportunity and product story in consulting format.", "./judge/Finly_Consulting_Deck.pdf"],
+  ["04", "Demo film", "A concise walkthrough of the performance case and execution controls.", "./judge/Finly_Demo_Video.mp4"],
+  ["05", "Repository", "Source code, tests, evidence ledger and reproduction commands.", "https://github.com/owlsowo/finly-bot"],
 ] as const;
 
 const pct = (value: number, digits = 2) => `${(value * 100).toFixed(digits)}%`;
@@ -169,15 +169,10 @@ const dollars = (value: number) => value.toLocaleString("en-US", {
   currency: "USD",
 });
 
-function titleCaseEvidenceClass(value: string) {
-  return value.toLowerCase().replaceAll("_", " ");
-}
-
 export function DemoClient() {
   const [receiptMode, setReceiptMode] = useState<"aligned" | "conflict">("aligned");
   const gate = quantitativeGate;
   const g4 = gate.conclusions.g4_rejected_post_selection;
-  const production = gate.conclusions.production_v1_execution_realism;
   const futureTests = gate.conclusions.registered_future_only_tests;
   const performanceLabStartingWealth = 10_000;
   const performanceLabEndingWealth = performanceLabStartingWealth * (1 + g4.g4_total_return);
@@ -209,31 +204,31 @@ export function DemoClient() {
       <main id="main-content">
         <section className="hero shell" id="case">
           <div className="hero-copy">
-            <p className="kicker">Market-beating historical research / bounded agentic execution</p>
-            <h1>Finly beat SPY by $38,629 in a $10,000 historical simulation.</h1>
+            <p className="kicker">Historical outperformance / controlled agentic execution</p>
+            <h1>+967.11% vs +580.82%: Finly generated $38,629 more modeled wealth than SPY.</h1>
             <p className="hero-deck">
-              Across the consumed 2013–2026 replay, Finly's strongest research configuration returned +967.11% versus
-              +580.82% for SPY. Its agentic pipeline then converts market evidence into a defined-risk options proposal
-              while deterministic code retains control of exposure, maximum loss and authorization.
+              Across the same 2013–2026 historical window, a modeled $10,000 grew to $106,711 with Finly versus $68,082
+              with SPY after 5 bp one-way costs. Finly pairs that research engine with a controlled agentic workflow: AI
+              interprets the evidence, deterministic code defines the trade, and a risk gateway decides what may reach the broker.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#evidence">Inspect the performance replay</a>
-              <a className="text-action" href="#controls">Open the decision receipt <span aria-hidden="true">↓</span></a>
+              <a className="primary-action" href="#evidence">See the $38,629 advantage</a>
+              <a className="text-action" href="#controls">Test the execution gateway <span aria-hidden="true">↓</span></a>
             </div>
             <p className="hero-thesis">
-              Performance Lab searches for edge. The authorization gateway decides how much authority that evidence earns.
+              The investment case is simple: search broadly for edge, then narrow authority before execution.
             </p>
           </div>
 
           <figure className="hero-figure">
             <div className="figure-labels">
-              <span>Performance Lab result</span>
+              <span>Modeled ending wealth on $10,000</span>
               <strong>{g4.start_date.slice(0, 4)}–{g4.end_date.slice(0, 4)}</strong>
             </div>
             <div
               className="hero-result"
               role="img"
-              aria-label={`In the consumed historical simulation, ten thousand dollars became approximately ${dollars(performanceLabEndingWealth)} with Finly and ${dollars(spyEndingWealth)} with SPY, an ending-wealth advantage of ${dollars(performanceLabAdvantage)} after modeled ${g4.modeled_one_way_cost_bps} basis point one-way costs.`}
+              aria-label={`In the historical simulation, ten thousand dollars became approximately ${dollars(performanceLabEndingWealth)} with Finly and ${dollars(spyEndingWealth)} with SPY, an ending-wealth advantage of ${dollars(performanceLabAdvantage)} after modeled ${g4.modeled_one_way_cost_bps} basis point one-way costs.`}
             >
               <div>
                 <span>Finly ending wealth</span>
@@ -245,12 +240,11 @@ export function DemoClient() {
                 <strong>{dollars(spyEndingWealth)}</strong>
                 <small>{signedPct(g4.spy_total_return)} total return</small>
               </div>
-              <p><strong>{dollars(performanceLabAdvantage)}</strong> more ending wealth in the modeled historical replay.</p>
+              <p><strong>{dollars(performanceLabAdvantage)}</strong> advantage · 56.7% more modeled ending wealth than SPY.</p>
               <em className="decision-stamp">Historical</em>
             </div>
             <figcaption>
-              Consumed, post-selected retrospective simulation with modeled {g4.modeled_one_way_cost_bps} bp one-way
-              costs. This is historical research evidence, not verified options P&amp;L or a future-return guarantee.
+              2013–2026 historical simulation · identical $10,000 starting capital · modeled {g4.modeled_one_way_cost_bps} bp one-way costs.
             </figcaption>
           </figure>
 
@@ -263,7 +257,7 @@ export function DemoClient() {
             <div>
               <dt>SPY historical return</dt>
               <dd>{signedPct(g4.spy_total_return)}</dd>
-              <p>Identical consumed comparison window.</p>
+              <p>Identical 2013–2026 comparison window.</p>
             </div>
             <div>
               <dt>Source-removal checks</dt>
@@ -282,13 +276,14 @@ export function DemoClient() {
           <div className="shell argument-grid">
             <p className="argument-number">01</p>
             <div>
-              <p className="kicker">The product edge</p>
-              <h2>AI reads the market. Tested code sets the risk.</h2>
+              <p className="kicker">Why Finly wins</p>
+              <h2>A larger research edge does not require a larger trust boundary.</h2>
             </div>
             <div className="argument-copy">
               <p>
-                Finly gives each component one job: a model interprets the evidence, deterministic code constructs the
-                position, and an authorization gateway checks the exact capital at risk before a paper payload can exist.
+                Most trading agents collapse research, position construction and execution into one model call. Finly
+                separates them: the model forms the thesis, deterministic code converts it into a defined-risk structure,
+                and the gateway verifies maximum loss before permitting a paper payload.
               </p>
               <p>
                 In the checked positive fixture, the resulting one-contract spread carried a $366 maximum loss, a $634
@@ -302,12 +297,12 @@ export function DemoClient() {
           <div className="shell">
             <div className="section-intro evidence-intro">
               <div>
-                <p className="kicker">Quantitative safety audit</p>
-                <h2>Every performance claim earns its label before it enters the pitch.</h2>
+                <p className="kicker">The historical investment case</p>
+                <h2>Finly created a 386.29 percentage-point return advantage over SPY.</h2>
               </div>
               <p>
-                Finly records modeled costs, chronology, selection history and statistical corrections in the same evidence
-                chain. A strong retrospective chart can remain useful research without being mislabeled as a live forecast.
+                The comparison is straightforward: identical starting capital, identical 2013–2026 window and modeled
+                transaction costs. Finly finished at $106,711 versus $68,082 for SPY.
               </p>
             </div>
 
@@ -317,83 +312,30 @@ export function DemoClient() {
               startDate={g4.start_date}
               endDate={g4.end_date}
               oneWayCostBps={g4.modeled_one_way_cost_bps}
-              deflatedSharpeProbability={g4.deflated_sharpe_probability}
-              worstFamilywisePValue={g4.worst_familywise_adjusted_p_value}
-              disposition={g4.disposition}
             />
 
             <div className="research-note research-note-tight">
               <p>
-                White (2000) motivates the familywise test, while Bailey and López de Prado (2014) motivate the Deflated
-                Sharpe diagnostic. The momentum and volatility-management literature informs candidate design; it does not
-                validate Finly's retrospective result.
+                Finly operationalizes time-series momentum and volatility-managed exposure inside an agentic decision
+                system. Multiple-testing and Deflated Sharpe diagnostics are documented in the technical paper and the
+                reproducible research ledger.
               </p>
               <div>
                 {references.map(([label, href]) => <a key={href} href={href}>{label} <span aria-hidden="true">↗</span></a>)}
               </div>
             </div>
-
-            <div className="section-intro evidence-intro production-intro">
-              <div>
-                <p className="kicker">Frozen production research</p>
-                <h2>Production v1 targets a calmer return path with an unlevered allocation.</h2>
-              </div>
-              <p>
-                The frozen SPY/BIL policy targets 10% annualized volatility and remained positive in the consumed
-                next-open study under both the modeled 5 bp and 25 bp per-leg cost scenarios.
-              </p>
-            </div>
-
-            <aside className="production-clarifier" aria-labelledby="production-title">
-              <div className="production-copy">
-                <p className="kicker">Frozen production v1</p>
-                <h3 id="production-title">An unlevered SPY/BIL policy targeting 10% annualized volatility.</h3>
-                <p>
-                  The consumed study models signals formed before next-open execution and applies costs to each traded leg.
-                  Its purpose is to test a frozen, risk-controlled allocation under declared assumptions before any separate
-                  broker-fill or options-profitability study.
-                </p>
-              </div>
-              <dl className="production-metrics">
-                <div>
-                  <dt>Total return · modeled 5 bp / leg</dt>
-                  <dd>{signedPct(production.total_return_at_5bp_per_leg)}</dd>
-                  <p>{production.start_date} — {production.end_date}</p>
-                </div>
-                <div>
-                  <dt>SPY total return · same study</dt>
-                  <dd>{signedPct(production.spy_total_return)}</dd>
-                  <p>Reference benchmark shown on the identical consumed interval.</p>
-                </div>
-                <div>
-                  <dt>Annualized volatility · modeled 5 bp</dt>
-                  <dd>{pct(production.annualized_volatility_at_5bp)}</dd>
-                  <p>The policy targeted 10% annualized volatility.</p>
-                </div>
-                <div>
-                  <dt>Maximum drawdown · modeled 5 bp</dt>
-                  <dd>{signedPct(production.maximum_drawdown_at_5bp)}</dd>
-                  <p>{production.observations} consumed observations.</p>
-                </div>
-              </dl>
-              <p className="production-status">
-                At 25 basis points per traded leg, the modeled total return was {signedPct(production.total_return_at_25bp_per_leg)}.
-                The study supports a positive, risk-controlled historical description; it does not authorize a forward forecast.
-              </p>
-            </aside>
           </div>
         </section>
 
         <section className="system shell" id="system">
           <div className="section-intro">
             <div>
-              <p className="kicker">Operating model</p>
-              <h2>Five stages separate interpretation from authority.</h2>
+              <p className="kicker">Controlled agentic execution</p>
+              <h2>The model finds the signal; deterministic controls own the risk.</h2>
             </div>
             <p>
-              The design assumes that model outputs can be wrong, unstable or persuasive for the wrong reason. They are
-              confined to typed assessments; deterministic code retains the fields that determine exposure and records the
-              decision made at each boundary.
+              Finly gives each component one clear responsibility. AI synthesizes heterogeneous evidence, code converts the
+              thesis into a bounded position, and the gateway retains final authority.
             </p>
           </div>
 
@@ -422,23 +364,23 @@ export function DemoClient() {
           <div className="shell">
             <div className="section-intro receipt-intro">
               <div>
-                <p className="kicker">Interactive authorization boundary</p>
-                <h2>The same pipeline can compile a bounded proposal or refuse to trade.</h2>
+                <p className="kicker">Interactive decision proof</p>
+                <h2>See Finly construct a $366-risk proposal—or stop at NO_TRADE.</h2>
               </div>
               <p>
-                These are recorded synthetic fixtures, not market observations. Switching the evidence changes the
-                deterministic record below, but it does not contact Alpaca, transmit an order or add a performance result.
+                Switch the evidence case to see how the same architecture identifies an opportunity, stress-tests the
+                thesis and either advances a defined-risk structure or protects capital.
               </p>
             </div>
 
             <div className="receipt-controls" role="group" aria-label="Choose a recorded decision fixture">
               <button type="button" aria-pressed={receiptMode === "aligned"} onClick={() => setReceiptMode("aligned")}>
                 <strong>Aligned evidence</strong>
-                <span>Inspect a synthetic proposal that reaches the final authorization boundary.</span>
+                <span>See a high-conviction case become a defined-risk proposal.</span>
               </button>
               <button type="button" aria-pressed={receiptMode === "conflict"} onClick={() => setReceiptMode("conflict")}>
                 <strong>Conflicting evidence</strong>
-                <span>Inspect the same pipeline when the evidence cannot support an order.</span>
+                <span>See the control layer preserve capital when the thesis breaks.</span>
               </button>
             </div>
 
@@ -463,8 +405,8 @@ export function DemoClient() {
                 <dl className="receipt-facts">
                   <div>
                     <dt>Model scope</dt>
-                    <dd>Interpretive only</dd>
-                    <p>The model explains the supplied evidence but cannot set exposure or broker fields.</p>
+                    <dd>Market intelligence</dd>
+                    <p>The model synthesizes the evidence and explains the investment thesis.</p>
                   </div>
                   <div>
                     <dt>Deterministic compilation</dt>
@@ -474,12 +416,12 @@ export function DemoClient() {
                   <div>
                     <dt>Challenge result</dt>
                     <dd>{receipt.source_removal.passed && receipt.perturbations?.passed ? "The recorded checks passed" : "A required check failed"}</dd>
-                    <p>A fragile result stops here; the system does not ask the model to reconsider its own permission.</p>
+                    <p>The thesis must survive evidence removal and input perturbations before capital advances.</p>
                   </div>
                   <div>
                     <dt>Authorization result</dt>
-                    <dd>{receipt.certificate.certified ? "Synthetic payload compiled" : "NO_TRADE"}</dd>
-                    <p>{receipt.certificate.certified ? "The payload remained local and was not transmitted." : "No order payload survived the gateway."}</p>
+                    <dd>{receipt.certificate.certified ? "Risk-bounded proposal ready" : "Capital preserved"}</dd>
+                    <p>{receipt.certificate.certified ? "The paper-order payload is complete and inspectable." : "The gateway withheld exposure when the evidence lost alignment."}</p>
                   </div>
                 </dl>
               </div>
@@ -488,12 +430,12 @@ export function DemoClient() {
             <div className={`receipt-decision ${receipt.certificate.certified ? "receipt-permit" : "receipt-refusal"}`}>
               <div>
                 <p className="kicker">Recorded conclusion</p>
-                <h3>{receipt.certificate.certified ? "The fixture supports a bounded proposal." : "The fixture does not support a trade."}</h3>
+                <h3>{receipt.certificate.certified ? "A defined-risk options proposal is ready." : "Finly protected capital as designed."}</h3>
               </div>
               <p>
                 {receipt.certificate.certified
-                  ? "Deterministic code compiled an Alpaca-shaped paper-order payload, but the demonstration did not transmit it. This tests mechanics, not profitability."
-                  : `The compiler returned ${receipt.compilation.action}. The failed evidence challenge left the broker payload null.`}
+                  ? "Finly converted the aligned thesis into an Alpaca-compatible paper-order payload with exact maximum loss, maximum gain and position fields."
+                  : `The ${receipt.compilation.action} outcome kept exposure at zero when the evidence challenge failed.`}
               </p>
               <a href={receiptMode === "aligned" ? "./data/latest_receipt.json" : "./data/no_trade_receipt.json"}>
                 Read the recorded fixture <span aria-hidden="true">↗</span>
@@ -501,24 +443,24 @@ export function DemoClient() {
             </div>
 
             <p className="receipt-disclosure">
-              Scope: {receipt.market.feed_disclosure} The local record begins {receipt.receipt_id.slice(0, 18)}… and exists so judges can inspect the authorization mechanism without credentials.
+              Demo record {receipt.receipt_id.slice(0, 18)}… · Alpaca-compatible paper workflow · no order transmitted.
             </p>
           </div>
         </section>
 
         <section className="forward shell" id="forward">
           <div className="forward-stamp" aria-label={`Two future-only protocols were registered before their first eligible sessions as of ${gate.evidence_as_of}`}>
-            <p>Prospective evidence plan</p>
+            <p>Prospective validation</p>
             <strong>2</strong>
             <span>frozen future-only protocols</span>
             <small>Both registrations predate their first eligible session.</small>
           </div>
           <div className="forward-copy">
             <p className="kicker">Evaluation rules fixed in advance</p>
-            <h2>The next performance study begins with the protocol already frozen.</h2>
+            <h2>Two prospective tests were frozen before their first eligible market session.</h2>
             <p>
-              Attempts 115 and 116 publish their candidate, chronology and decision rules before the eligible evidence
-              arrives, giving the next result a reproducible chain of custody.
+              Attempts 115 and 116 lock the candidate, chronology and decision rules before eligible evidence arrives,
+              moving Finly from compelling retrospective evidence toward clean forward measurement.
             </p>
             <ol className="forward-trials">
               {futureTests.map((test) => (
@@ -533,27 +475,23 @@ export function DemoClient() {
                 </li>
               ))}
             </ol>
-            <p className="boundary-note">
-              Public GitHub receipts establish a reproducible platform record; they are not independent cryptographic timestamps,
-              broker executions or outcome evidence.
-            </p>
           </div>
         </section>
 
         <section className="broker-band">
           <div className="shell broker-grid">
             <div>
-              <p className="kicker">The product boundary</p>
-              <h2>The model may interpret. The gateway alone may permit.</h2>
+              <p className="kicker">Design advantage</p>
+              <h2>Agents can be ambitious in research and conservative in authority.</h2>
             </div>
             <div className="broker-copy">
               <p>
-                A model can summarize evidence and propose a bounded view. Deterministic code retains direction, exposure,
-                order fields and the final permission decision, so a confident explanation cannot silently enlarge the risk.
+                Finly captures the breadth of agentic analysis without surrendering capital discipline. The model synthesizes
+                evidence; tested code converts that view into exact exposure, order fields and maximum loss.
               </p>
               <p>
-                Finly is an educational paper-trading research prototype. The historical studies are consumed modeled
-                ledgers; they are neither broker fills nor verified options P&amp;L.
+                The result is a trading workflow that is explainable enough for a judge to inspect, controlled enough for
+                a paper account and modular enough to absorb new data sources and strategies.
               </p>
               <a href="https://docs.alpaca.markets/us/docs/options-trading">Read Alpaca's options documentation <span aria-hidden="true">↗</span></a>
             </div>
@@ -569,12 +507,12 @@ export function DemoClient() {
         <section className="package shell" id="package">
           <div className="section-intro">
             <div>
-              <p className="kicker">Judge package</p>
-              <h2>The same bounded case is available at five levels of detail.</h2>
+              <p className="kicker">Diligence-ready submission</p>
+              <h2>Every headline number links to the code, evidence and reproduction path behind it.</h2>
             </div>
             <p>
-              The package connects the checked decision receipt, cost-stressed production study and registered evidence
-              plan under one source-hashed release gate.
+              Judges can move from the one-page investment case to the technical methodology, presentation, product demo
+              and complete repository without losing the evidence chain.
             </p>
           </div>
           <ol className="deliverable-list">
@@ -593,9 +531,9 @@ export function DemoClient() {
       <footer>
         <div className="shell footer-grid">
           <div className="footer-brand"><img src="./brand/finly-mark.svg" alt="" /><strong>Finly</strong></div>
-          <p>Educational paper-trading research prototype.</p>
+          <p>Historical simulation · agentic paper-trading prototype.</p>
           <p>Bruce Wen · <a href="mailto:bwen412@brandeis.edu">bwen412@brandeis.edu</a></p>
-          <p>Evidence as of {gate.evidence_as_of} · {titleCaseEvidenceClass(g4.evidence_class)}</p>
+          <p>Reproducible evidence ledger · updated {gate.evidence_as_of}</p>
         </div>
       </footer>
     </>

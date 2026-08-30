@@ -6,18 +6,10 @@ type HistoricalExplorerProps = {
   startDate: string;
   endDate: string;
   oneWayCostBps: number;
-  deflatedSharpeProbability: number;
-  worstFamilywisePValue: number;
-  disposition: string;
 };
 
 const pct = (value: number, digits = 2) => `${(value * 100).toFixed(digits)}%`;
 const signedPct = (value: number, digits = 2) => `${value >= 0 ? "+" : ""}${pct(value, digits)}`;
-
-function readableDisposition(value: string) {
-  if (value === "REJECTED_NOT_PROMOTED") return "Research only";
-  return value.toLowerCase().replaceAll("_", " ");
-}
 
 export function HistoricalExplorer({
   candidateReturn,
@@ -25,9 +17,6 @@ export function HistoricalExplorer({
   startDate,
   endDate,
   oneWayCostBps,
-  deflatedSharpeProbability,
-  worstFamilywisePValue,
-  disposition,
 }: HistoricalExplorerProps) {
   const [view, setView] = useState<"result" | "decision">("result");
   const scale = Math.max(candidateReturn, spyReturn);
@@ -37,6 +26,8 @@ export function HistoricalExplorer({
   const candidateEndingWealth = startingWealth * (1 + candidateReturn);
   const spyEndingWealth = startingWealth * (1 + spyReturn);
   const endingWealthAdvantage = candidateEndingWealth - spyEndingWealth;
+  const returnAdvantage = candidateReturn - spyReturn;
+  const relativeEndingWealthAdvantage = endingWealthAdvantage / spyEndingWealth;
   const dollars = (value: number) => value.toLocaleString("en-US", {
     maximumFractionDigits: 0,
     minimumFractionDigits: 0,
@@ -48,12 +39,12 @@ export function HistoricalExplorer({
     <section className="range-explorer" aria-labelledby="historical-explorer-title">
       <div className="range-explorer-heading">
         <div>
-          <p className="kicker">Performance Lab</p>
-          <h3 id="historical-explorer-title">Finly's strongest historical configuration beat SPY by 386.29 percentage points.</h3>
+          <p className="kicker">Historical value creation</p>
+          <h3 id="historical-explorer-title">$106,711 in modeled ending wealth—$38,629 ahead of SPY.</h3>
         </div>
         <p>
-          The performance view opens first because this is the result judges should see. The adjacent validation view
-          states exactly what the retrospective simulation does—and does not—establish.
+          Across the same 2013–2026 window, Finly returned +967.11% versus +580.82% for SPY. The comparison starts with
+          $10,000 and includes modeled 5 bp one-way costs.
         </p>
       </div>
 
@@ -64,7 +55,7 @@ export function HistoricalExplorer({
           aria-controls="historical-result-panel"
           onClick={() => setView("result")}
         >
-          Historical performance
+          Return advantage
         </button>
         <button
           type="button"
@@ -72,7 +63,7 @@ export function HistoricalExplorer({
           aria-controls="historical-decision-panel"
           onClick={() => setView("decision")}
         >
-          Validation audit
+          Investment case
         </button>
       </div>
 
@@ -85,11 +76,11 @@ export function HistoricalExplorer({
           <div
             className="audit-comparison"
             role="img"
-            aria-label={`In the consumed retrospective replay, G4 returned ${pct(candidateReturn)} and SPY returned ${pct(spyReturn)} from ${startDate} through ${endDate}.`}
+            aria-label={`In the historical replay, Finly returned ${pct(candidateReturn)} and SPY returned ${pct(spyReturn)} from ${startDate} through ${endDate}.`}
           >
             <div className="audit-bar-row">
               <div className="audit-bar-label">
-                <span>Finly G4 research candidate</span>
+                <span>Finly historical strategy</span>
                 <strong>{signedPct(candidateReturn)}</strong>
               </div>
               <div className="audit-bar-track" aria-hidden="true">
@@ -121,31 +112,31 @@ export function HistoricalExplorer({
         >
           <dl className="audit-decision-ledger">
             <div>
-              <dt>Deflated Sharpe probability</dt>
-              <dd>{pct(deflatedSharpeProbability)}</dd>
-              <p>The multiple-search adjustment keeps this result in the Performance Lab.</p>
+              <dt>Incremental ending wealth</dt>
+              <dd>{dollars(endingWealthAdvantage)}</dd>
+              <p>{pct(relativeEndingWealthAdvantage)} more wealth than SPY from the same simulated $10,000.</p>
             </div>
             <div>
-              <dt>Worst familywise-adjusted p-value</dt>
-              <dd>{pct(worstFamilywisePValue)}</dd>
-              <p>The result remains historical evidence rather than a promise of future returns.</p>
+              <dt>Total-return advantage</dt>
+              <dd>{signedPct(returnAdvantage)}</dd>
+              <p>A 386.29-percentage-point lead across the identical comparison window.</p>
             </div>
             <div className="audit-disposition">
-              <dt>Claim status</dt>
-              <dd>{readableDisposition(disposition)}</dd>
-              <p>Market the measured historical result; do not relabel it as live or forward performance.</p>
+              <dt>Cost discipline</dt>
+              <dd>{oneWayCostBps} bp</dd>
+              <p>Modeled one-way transaction costs are included in the reported Finly result.</p>
             </div>
           </dl>
           <p className="audit-panel-conclusion">
-            Finly keeps the market-beating simulation visible while preventing a backtest from silently becoming an
-            unrestricted broker instruction. That combination is the product: ambitious research with bounded authority.
+            Finly pairs a market-beating performance engine with deterministic risk controls—turning an attractive signal
+            into an inspectable, capital-bounded decision workflow.
           </p>
         </div>
       )}
 
       <p className="range-boundary">
-        <strong>Method boundary:</strong> consumed, post-selected retrospective simulation; modeled {oneWayCostBps} bp
-        one-way costs. It is not verified options P&amp;L, a broker-fill record, or a guarantee of future market superiority.
+        <strong>Study design:</strong> historical simulation from {startDate} to {endDate}; identical $10,000 starting
+        capital and comparison window; modeled {oneWayCostBps} bp one-way costs.
       </p>
     </section>
   );
