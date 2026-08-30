@@ -33,6 +33,7 @@ function concat(...parts) {
 
 function zipFixture(memberBytes, {
   name = EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER,
+  localName = name,
   method = 0,
   flags = 0,
   crc = externalAttempt115Crc32(memberBytes),
@@ -41,6 +42,7 @@ function zipFixture(memberBytes, {
   archiveComment = new Uint8Array(),
 } = {}) {
   const encodedName = new TextEncoder().encode(name);
+  const encodedLocalName = new TextEncoder().encode(localName);
   const compressed = method === 8 ? new Uint8Array(deflateRawSync(memberBytes)) : memberBytes;
   const local = concat(
     uint32(0x04034b50),
@@ -52,9 +54,9 @@ function zipFixture(memberBytes, {
     uint32(crc),
     uint32(compressed.byteLength),
     uint32(declaredUncompressedSize),
-    uint16(encodedName.byteLength),
+    uint16(encodedLocalName.byteLength),
     uint16(0),
-    encodedName,
+    encodedLocalName,
     compressed,
   );
   const central = concat(
@@ -115,11 +117,24 @@ test("strict extractor accepts one exact stored or DEFLATE member and verifies i
   }
 });
 
-test("strict extractor rejects traversal, wrong names, directories, and unsupported flags", async () => {
+test("strict extractor accepts the logical member under ASCII-only case folding", async () => {
+  const member = new TextEncoder().encode("Invented case-variant member bytes.\n");
+  const caseVariant = EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER.toLowerCase();
+  const entries = await extractExternalAttempt115SingleZipMember(
+    zipFixture(member, { name: caseVariant }),
+    OPTIONS,
+  );
+  assert.equal(entries[0].name, caseVariant);
+  assert.deepEqual(entries[0].bytes, member);
+});
+
+test("strict extractor rejects paths, non-ASCII or wrong basenames, directories, and flags", async () => {
   const member = new TextEncoder().encode("invented");
   const cases = [
-    [zipFixture(member, { name: "../factors.csv" }), /traversal-like/u],
-    [zipFixture(member, { name: "factors.csv" }), /exact frozen name/u],
+    [zipFixture(member, { name: "../factors.csv" }), /ASCII basename/u],
+    [zipFixture(member, { name: `nested/${EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER}` }), /ASCII basename/u],
+    [zipFixture(member, { name: "F-F_Research_Data_Factors_dail\u00fd.CSV" }), /ASCII basename/u],
+    [zipFixture(member, { name: "factors.csv" }), /ASCII case-folded logical name/u],
     [zipFixture(member, { externalAttributes: 0x10 }), /directory/u],
     [zipFixture(member, { flags: 1 }), /encryption/u],
     [zipFixture(member, { flags: 8 }), /data descriptors/u],
@@ -131,6 +146,17 @@ test("strict extractor rejects traversal, wrong names, directories, and unsuppor
       expected,
     );
   }
+});
+
+test("strict extractor requires identical local and central actual member-name bytes", async () => {
+  const member = new TextEncoder().encode("invented");
+  await assert.rejects(
+    extractExternalAttempt115SingleZipMember(zipFixture(member, {
+      name: EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER,
+      localName: EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER.toLowerCase(),
+    }), OPTIONS),
+    /local and central member-name bytes disagree/u,
+  );
 });
 
 test("strict extractor rejects CRC, size, layout, EOCD, and trailing-byte corruption", async () => {
@@ -174,6 +200,8 @@ test("strict extractor requires the exact fixed option envelope", async () => {
   const archive = zipFixture(member);
   for (const options of [
     undefined,
+    { ...OPTIONS, expected_member_name: "factors.csv" },
+    { ...OPTIONS, expected_member_name: EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER.toLowerCase() },
     { ...OPTIONS, maximum_entry_count: 2 },
     { ...OPTIONS, maximum_uncompressed_member_bytes: 0 },
     { ...OPTIONS, extra: true },

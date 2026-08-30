@@ -77,25 +77,25 @@ test("equality counts as exceedance for an identically zero paired series", () =
   assert.equal(result.decision.passes_bonferroni_gate, false);
 });
 
-test("Bonferroni reporting is fixed to alpha 0.05 across all 117 disclosed trials", () => {
+test("Bonferroni reporting is fixed to alpha 0.05 across all 118 disclosed trials", () => {
   const result = runExternalAttempt115StationaryBootstrap(
     oscillatingFixture(401, 0.001),
   );
 
-  assert.equal(EXTERNAL_ATTEMPT115_CUMULATIVE_TRIAL_COUNT, 117);
+  assert.equal(EXTERNAL_ATTEMPT115_CUMULATIVE_TRIAL_COUNT, 118);
   assert.equal(EXTERNAL_ATTEMPT115_NOMINAL_ALPHA, 0.05);
-  assert.equal(EXTERNAL_ATTEMPT115_BONFERRONI_THRESHOLD, 0.05 / 117);
-  assert.equal(result.multiple_testing.cumulative_trial_count, 117);
-  assert.equal(result.multiple_testing.per_test_threshold, 0.05 / 117);
-  assert.equal(result.decision.bonferroni_threshold, 0.05 / 117);
+  assert.equal(EXTERNAL_ATTEMPT115_BONFERRONI_THRESHOLD, 0.05 / 118);
+  assert.equal(result.multiple_testing.cumulative_trial_count, 118);
+  assert.equal(result.multiple_testing.per_test_threshold, 0.05 / 118);
+  assert.equal(result.decision.bonferroni_threshold, 0.05 / 118);
   assert.equal(
     result.multiple_testing.adjusted_p_value,
-    Math.min(1, result.bootstrap.nominal_one_sided_p_value * 117),
+    Math.min(1, result.bootstrap.nominal_one_sided_p_value * 118),
   );
   assert.equal(
     result.decision.passes_bonferroni_gate,
     result.decision.positive_observed_edge
-      && result.bootstrap.nominal_one_sided_p_value <= 0.05 / 117,
+      && result.bootstrap.nominal_one_sided_p_value <= 0.05 / 118,
   );
 });
 

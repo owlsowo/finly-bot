@@ -10,7 +10,7 @@ import {
   symlink,
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import test from "node:test";
 
 import {
@@ -25,6 +25,10 @@ import {
 } from "../research/external_validation_attempt115/acquisition.mjs";
 import {
   EXTERNAL_ATTEMPT115_ARTIFACT_PATHS,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH,
   EXTERNAL_ATTEMPT115_SOURCE_URL,
   createExternalAttempt115ProtocolBody,
   sealExternalAttempt115Protocol,
@@ -39,11 +43,21 @@ function digest(byte) {
   return `sha256:${byte.repeat(64)}`;
 }
 
+function sourceDigest(path) {
+  if (path === EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH) {
+    return EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256;
+  }
+  if (path === EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH) {
+    return EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256;
+  }
+  return digest("1");
+}
+
 function frozenProtocol() {
   return sealExternalAttempt115Protocol(createExternalAttempt115ProtocolBody({
     frozenAt: "2026-08-30T09:00:00.000Z",
     sourceFilesSha256: Object.fromEntries(
-      EXTERNAL_ATTEMPT115_ARTIFACT_PATHS.source_files.map((path) => [path, digest("1")]),
+      EXTERNAL_ATTEMPT115_ARTIFACT_PATHS.source_files.map((path) => [path, sourceDigest(path)]),
     ),
     testFilesSha256: Object.fromEntries(
       EXTERNAL_ATTEMPT115_ARTIFACT_PATHS.test_files.map((path) => [path, digest("2")]),
@@ -104,9 +118,12 @@ function response({
   };
 }
 
-function exactExtractor(memberBytes = inventedRawMember()) {
+function exactExtractor(
+  memberBytes = inventedRawMember(),
+  name = EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER,
+) {
   return async () => [{
-    name: EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER,
+    name,
     bytes: memberBytes,
     uncompressedSize: memberBytes.byteLength,
   }];
@@ -199,6 +216,25 @@ test("fixed acquisition preserves invented raw artifacts and emits a canonical m
   for (const path of Object.values(result.paths)) {
     assert.equal((await stat(path)).mode & 0o777, 0o600);
   }
+});
+
+test("acquisition preserves an accepted ASCII case-variant name in its receipt", async (context) => {
+  const root = await temporaryRoot(context);
+  const outputDirectory = join(root, "case-variant");
+  const memberBytes = inventedRawMember();
+  const caseVariant = EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER.toLowerCase();
+  const result = await acquireExternalAttempt115KennethFrenchSource(acquisitionArgs(
+    outputDirectory,
+    { zipExtractor: exactExtractor(memberBytes, caseVariant) },
+  ));
+
+  assert.equal(result.receipt.selected_member_name, caseVariant);
+  assert.equal(basename(result.paths.member), EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER);
+  assert.deepEqual(await readFile(result.paths.member), Buffer.from(memberBytes));
+  assert.deepEqual(
+    validateExternalAttempt115AcquisitionReceipt(result.receipt, frozenProtocol()),
+    result.receipt,
+  );
 });
 
 test("acquisition refuses any non-frozen or previously acquired state before transport", async (context) => {
@@ -349,9 +385,10 @@ test("ZIP boundary accepts only one exact regular member and detects extractor m
       ],
       /exactly one member/u,
     ],
-    ["traversal", async () => [{ name: "../factor.csv", bytes: member }], /traversal-like/u],
-    ["nested", async () => [{ name: `nested/${EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER}`, bytes: member }], /traversal-like/u],
-    ["wrong-case", async () => [{ name: EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER.toLowerCase(), bytes: member }], /exact frozen member/u],
+    ["traversal", async () => [{ name: "../factor.csv", bytes: member }], /ASCII basename/u],
+    ["nested", async () => [{ name: `nested/${EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER}`, bytes: member }], /ASCII basename/u],
+    ["non-ascii", async () => [{ name: "F-F_Research_Data_Factors_dail\u00fd.CSV", bytes: member }], /ASCII basename/u],
+    ["wrong-basename", async () => [{ name: "factors.csv", bytes: member }], /ASCII case-folded logical name/u],
     ["directory", async () => [{ name: EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER, bytes: member, directory: true }], /regular file/u],
     ["size-mismatch", async () => [{ name: EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER, bytes: member, uncompressedSize: member.byteLength + 1 }], /disagrees/u],
     [

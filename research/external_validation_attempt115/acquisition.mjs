@@ -17,7 +17,7 @@ import {
 import { extractExternalAttempt115SingleZipMember } from "./strict_zip.mjs";
 
 export const EXTERNAL_ATTEMPT115_ACQUISITION_RECEIPT_SCHEMA =
-  "finly_attempt115_french_source_acquisition_receipt.v1";
+  "finly_attempt115_french_source_acquisition_receipt.v2";
 export const EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER =
   "F-F_Research_Data_Factors_daily.CSV";
 export const EXTERNAL_ATTEMPT115_MAX_ARCHIVE_BYTES = 8 * 1024 * 1024;
@@ -242,6 +242,34 @@ function traversalLikeMemberName(name) {
     || name.normalize("NFC") !== name;
 }
 
+function asciiCaseFoldedMemberBasename(name, label) {
+  if (typeof name !== "string" || traversalLikeMemberName(name)) {
+    fail(`${label} must be a traversal-safe ASCII basename`);
+  }
+  let folded = "";
+  for (let index = 0; index < name.length; index += 1) {
+    const code = name.charCodeAt(index);
+    if (code > 0x7f) fail(`${label} must be a traversal-safe ASCII basename`);
+    folded += code >= 0x41 && code <= 0x5a
+      ? String.fromCharCode(code + 0x20)
+      : name[index];
+  }
+  return folded;
+}
+
+const EXPECTED_ARCHIVE_MEMBER_ASCII_FOLD = asciiCaseFoldedMemberBasename(
+  EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER,
+  "Kenneth French logical ZIP member name",
+);
+
+function validateSelectedMemberName(name) {
+  if (asciiCaseFoldedMemberBasename(name, "Kenneth French ZIP member name")
+    !== EXPECTED_ARCHIVE_MEMBER_ASCII_FOLD) {
+    fail("Kenneth French ZIP archive member differs from the ASCII case-folded logical name");
+  }
+  return name;
+}
+
 async function extractExpectedMember(archiveBytes, zipExtractor) {
   if (typeof zipExtractor !== "function") {
     fail("Kenneth French acquisition requires an injected in-memory ZIP extractor");
@@ -268,14 +296,9 @@ async function extractExpectedMember(archiveBytes, zipExtractor) {
   if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
     fail("Kenneth French ZIP member metadata is invalid");
   }
-  if (typeof entry.name !== "string" || traversalLikeMemberName(entry.name)) {
-    fail("Kenneth French ZIP member name is empty, ambiguous, or traversal-like");
-  }
+  validateSelectedMemberName(entry.name);
   if (entry.directory === true || entry.isDirectory === true) {
     fail("Kenneth French ZIP archive member must be a regular file");
-  }
-  if (entry.name !== EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER) {
-    fail("Kenneth French ZIP archive does not contain the exact frozen member name");
   }
   const bytes = exactByteCopy(entry.bytes, "Kenneth French ZIP member");
   if (bytes.byteLength === 0 || bytes.byteLength > EXTERNAL_ATTEMPT115_MAX_MEMBER_BYTES) {
@@ -285,11 +308,11 @@ async function extractExpectedMember(archiveBytes, zipExtractor) {
     && entry.uncompressedSize !== bytes.byteLength) {
     fail("Kenneth French ZIP member byte count disagrees with extractor metadata");
   }
-  return bytes;
+  return Object.freeze({ name: entry.name, bytes });
 }
 
-/** Pure in-memory archive boundary shared by acquisition and evaluation. */
-export async function extractExternalAttempt115ArchiveMember(
+/** Pure in-memory archive boundary retaining the archive's actual ASCII basename. */
+export async function extractExternalAttempt115ArchiveMemberRecord(
   input,
   zipExtractor = extractExternalAttempt115SingleZipMember,
 ) {
@@ -305,10 +328,18 @@ export async function extractExternalAttempt115ArchiveMember(
   return extractExpectedMember(archiveBytes, zipExtractor);
 }
 
+/** Backwards-compatible bytes-only view over the receipt-aware archive boundary. */
+export async function extractExternalAttempt115ArchiveMember(
+  input,
+  zipExtractor = extractExternalAttempt115SingleZipMember,
+) {
+  return (await extractExternalAttempt115ArchiveMemberRecord(input, zipExtractor)).bytes;
+}
+
 function validateProtocolAcquisitionBoundary(protocol, acquisitionState) {
   const validated = validateExternalAttempt115Protocol(protocol);
   if (validated.status !== EXTERNAL_ATTEMPT115_PROTOCOL_STATUS
-    || validated.source_freeze.source_acquisition_state !== "NOT_ACQUIRED"
+    || validated.source_freeze.source_acquisition_state !== "NOT_ACQUIRED_FOR_ATTEMPT_118"
     || validated.source_freeze.source_acquired_before_freeze !== false
     || validated.source_freeze.source_values_observed_before_freeze !== false
     || validated.source_freeze.official_archive_url !== EXTERNAL_ATTEMPT115_SOURCE_URL
@@ -365,6 +396,7 @@ function acquisitionReceiptBody({
   acquiredAt,
   archiveBytes,
   responseHeadersBytes,
+  memberName,
   memberBytes,
   canonicalBytes,
   parsed,
@@ -406,7 +438,7 @@ function acquisitionReceiptBody({
     archive_raw_byte_count: archiveBytes.byteLength,
     response_headers_sha256: rawSha256(responseHeadersBytes),
     response_headers_byte_count: responseHeadersBytes.byteLength,
-    selected_member_name: EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER,
+    selected_member_name: memberName,
     selected_member_raw_bytes_sha256: rawSha256(memberBytes),
     selected_member_raw_byte_count: memberBytes.byteLength,
     canonical_member_sha256: rawSha256(canonicalBytes),
@@ -504,7 +536,6 @@ export function validateExternalAttempt115AcquisitionReceipt(receipt, protocol) 
     || receipt.protocol_sha256 !== validatedProtocol.protocol_sha256
     || receipt.source_data_acquired !== true
     || receipt.official_archive_url !== EXTERNAL_ATTEMPT115_SOURCE_URL
-    || receipt.selected_member_name !== EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER
     || receipt.parsed_first_date !== validatedProtocol.source_freeze.expected_source_first_date
     || !Number.isSafeInteger(receipt.parsed_valid_row_count)
     || receipt.parsed_valid_row_count < MINIMUM_PARSED_ROWS
@@ -538,6 +569,7 @@ export function validateExternalAttempt115AcquisitionReceipt(receipt, protocol) 
     || receipt.acquisition_receipt_sha256 !== hashExternalAttempt115AcquisitionReceipt(receipt)) {
     fail("Kenneth French acquisition receipt identity or self-hash is invalid");
   }
+  validateSelectedMemberName(receipt.selected_member_name);
   canonicalInstant(receipt.acquired_at, "Kenneth French receipt acquired_at");
   canonicalDate(receipt.parsed_first_date, "Kenneth French receipt parsed_first_date");
   canonicalDate(receipt.parsed_last_date, "Kenneth French receipt parsed_last_date");
@@ -663,10 +695,11 @@ export async function acquireExternalAttempt115KennethFrenchSource({
     throw error;
   }
   const archiveBytes = await readBoundedResponseBody(response, declaredLength);
-  const memberBytes = await extractExternalAttempt115ArchiveMember(
+  const selectedMember = await extractExternalAttempt115ArchiveMemberRecord(
     archiveBytes,
     zipExtractor,
   );
+  const memberBytes = selectedMember.bytes;
 
   const canonicalText = canonicalizeKennethFrenchDailyFactorZipMember(memberBytes);
   const canonicalBytes = new TextEncoder().encode(canonicalText);
@@ -686,6 +719,7 @@ export async function acquireExternalAttempt115KennethFrenchSource({
     acquiredAt,
     archiveBytes,
     responseHeadersBytes: headersBytes,
+    memberName: selectedMember.name,
     memberBytes,
     canonicalBytes,
     parsed,

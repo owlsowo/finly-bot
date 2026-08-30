@@ -1,7 +1,7 @@
 import { inflateRawSync } from "node:zlib";
 
 export const EXTERNAL_ATTEMPT115_ZIP_SCHEMA =
-  "finly_attempt115_strict_single_member_zip.v1";
+  "finly_attempt115_strict_single_member_zip.v2";
 
 const LOCAL_FILE_SIGNATURE = 0x04034b50;
 const CENTRAL_FILE_SIGNATURE = 0x02014b50;
@@ -11,6 +11,7 @@ const MAXIMUM_ZIP_COMMENT_BYTES = 65_535;
 const MAXIMUM_ENTRY_METADATA_BYTES = 16_384;
 const MAXIMUM_COMPRESSION_RATIO = 200;
 const UTF8_FLAG = 0x0800;
+const LOGICAL_MEMBER_NAME = "F-F_Research_Data_Factors_daily.CSV";
 
 function fail(message) {
   throw new TypeError(message);
@@ -68,6 +69,28 @@ function traversalLike(name) {
     || name.normalize("NFC") !== name;
 }
 
+function asciiCaseFoldedBasename(name, label) {
+  if (typeof name !== "string" || traversalLike(name)) {
+    fail(`ZIP ${label} must be a traversal-safe ASCII basename`);
+  }
+  let folded = "";
+  for (let index = 0; index < name.length; index += 1) {
+    const code = name.charCodeAt(index);
+    if (code > 0x7f) {
+      fail(`ZIP ${label} must be a traversal-safe ASCII basename`);
+    }
+    folded += code >= 0x41 && code <= 0x5a
+      ? String.fromCharCode(code + 0x20)
+      : name[index];
+  }
+  return folded;
+}
+
+function equalBytes(left, right) {
+  return left.byteLength === right.byteLength
+    && left.every((value, index) => value === right[index]);
+}
+
 const CRC32_TABLE = (() => {
   const table = new Uint32Array(256);
   for (let index = 0; index < table.length; index += 1) {
@@ -115,13 +138,13 @@ function exactOptions(options) {
     "maximum_uncompressed_member_bytes",
   ].sort();
   if (JSON.stringify(keys) !== JSON.stringify(expected)
-    || typeof options.expected_member_name !== "string"
-    || traversalLike(options.expected_member_name)
+    || options.expected_member_name !== LOGICAL_MEMBER_NAME
     || options.maximum_entry_count !== 1
     || !Number.isSafeInteger(options.maximum_uncompressed_member_bytes)
     || options.maximum_uncompressed_member_bytes <= 0) {
     fail("strict ZIP options changed from the single-member boundary");
   }
+  asciiCaseFoldedBasename(LOGICAL_MEMBER_NAME, "expected member name");
   return options;
 }
 
@@ -214,12 +237,14 @@ export async function extractExternalAttempt115SingleZipMember(input, options) {
   }
   const centralNameStart = centralOffset + 46;
   ensureRange(archive, centralNameStart, centralVariableLength, "central member metadata");
+  const centralNameBytes = archive.subarray(centralNameStart, centralNameStart + nameLength);
   const centralName = decodeName(
-    archive.subarray(centralNameStart, centralNameStart + nameLength),
+    centralNameBytes,
     "central member name",
   );
-  if (traversalLike(centralName) || centralName !== checked.expected_member_name) {
-    fail("ZIP member name is traversal-like or differs from the exact frozen name");
+  if (asciiCaseFoldedBasename(centralName, "central member name")
+    !== asciiCaseFoldedBasename(LOGICAL_MEMBER_NAME, "expected member name")) {
+    fail("ZIP member name differs from the ASCII case-folded logical name");
   }
 
   ensureRange(archive, localOffset, 30, "local file header");
@@ -241,8 +266,12 @@ export async function extractExternalAttempt115SingleZipMember(input, options) {
   }
   const localNameStart = localOffset + 30;
   ensureRange(archive, localNameStart, localNameLength + localExtraLength, "local metadata");
+  const localNameBytes = archive.subarray(localNameStart, localNameStart + localNameLength);
+  if (!equalBytes(localNameBytes, centralNameBytes)) {
+    fail("ZIP local and central member-name bytes disagree");
+  }
   const localName = decodeName(
-    archive.subarray(localNameStart, localNameStart + localNameLength),
+    localNameBytes,
     "local member name",
   );
   if (localName !== centralName) fail("ZIP local and central member names disagree");

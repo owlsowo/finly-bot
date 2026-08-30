@@ -1,9 +1,14 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
   EXTERNAL_ATTEMPT115_ARTIFACT_PATHS,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH,
   EXTERNAL_ATTEMPT115_CLAIM_BOUNDARY,
   EXTERNAL_ATTEMPT115_EVALUATION_ID,
   createExternalAttempt115ProtocolBody,
@@ -55,8 +60,8 @@ function concat(...parts) {
   return result;
 }
 
-function storedZip(member) {
-  const name = new TextEncoder().encode(EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER);
+function storedZip(member, memberName = EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER) {
+  const name = new TextEncoder().encode(memberName);
   const crc = externalAttempt115Crc32(member);
   const local = concat(uint32(0x04034b50), uint16(20), uint16(0), uint16(0),
     uint16(0), uint16(0), uint32(crc), uint32(member.byteLength), uint32(member.byteLength),
@@ -70,8 +75,26 @@ function storedZip(member) {
   return concat(local, central, end);
 }
 
+function digestForPath(path) {
+  if (path === EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH) {
+    return EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256;
+  }
+  if (path === EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH) {
+    return EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256;
+  }
+  return rawDigest(path);
+}
+
 function hashMap(paths) {
-  return Object.fromEntries(paths.map((path) => [path, rawDigest(path)]));
+  return Object.fromEntries(paths.map((path) => [path, digestForPath(path)]));
+}
+
+function artifactFixture(path) {
+  if (path === EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH
+    || path === EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH) {
+    return readFileSync(new URL(`../${path}`, import.meta.url));
+  }
+  return path;
 }
 
 function protocolFixture() {
@@ -134,6 +157,7 @@ function provenanceInput({
   marketReturnPercent = (_date, index) => [-1, -1, 0.92, 0.92, 0.92][index % 5],
   omitYear = null,
   overlapReturnPercent = null,
+  memberName = EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER,
 } = {}) {
   const protocol = protocolFixture();
   const dates = [];
@@ -166,7 +190,7 @@ function provenanceInput({
   const canonicalBytes = new TextEncoder().encode(
     canonicalizeKennethFrenchDailyFactorZipMember(rawMember),
   );
-  const archive = storedZip(rawMember);
+  const archive = storedZip(rawMember, memberName);
   const receiptBody = {
     ...acquisitionFixture(protocol),
     archive_raw_bytes_sha256: rawDigest(archive),
@@ -178,6 +202,7 @@ function provenanceInput({
     parsed_first_date: dates[0],
     parsed_last_date: dates.at(-1),
     parsed_valid_row_count: dates.length,
+    selected_member_name: memberName,
   };
   receiptBody.source_vintage.archive_raw_bytes_sha256 = receiptBody.archive_raw_bytes_sha256;
   receiptBody.source_vintage.selected_member_raw_bytes_sha256
@@ -193,7 +218,8 @@ function provenanceInput({
     sourceBytes: { archive },
     artifactBytes: {
       source_files: Object.fromEntries(
-        EXTERNAL_ATTEMPT115_ARTIFACT_PATHS.source_files.map((path) => [path, path]),
+        EXTERNAL_ATTEMPT115_ARTIFACT_PATHS.source_files
+          .map((path) => [path, artifactFixture(path)]),
       ),
       test_files: Object.fromEntries(
         EXTERNAL_ATTEMPT115_ARTIFACT_PATHS.test_files.map((path) => [path, path]),
@@ -202,7 +228,7 @@ function provenanceInput({
   };
 }
 
-test("DSR uses N=117, sample SD, uncorrected skew, Pearson kurtosis, and fails closed", () => {
+test("DSR uses N=118, sample SD, uncorrected skew, Pearson kurtosis, and fails closed", () => {
   const values = [0.001, 0.002, 0.004, 0.008, 0.016];
   const result = externalAttempt115DeflatedSharpe(values);
   const average = values.reduce((sum, value) => sum + value, 0) / values.length;
@@ -213,7 +239,7 @@ test("DSR uses N=117, sample SD, uncorrected skew, Pearson kurtosis, and fails c
     / values.length / populationVariance ** 1.5;
   const kurtosis = values.reduce((sum, value) => sum + (value - average) ** 4, 0)
     / values.length / populationVariance ** 2;
-  assert.equal(result.global_registered_attempt_count, 117);
+  assert.equal(result.global_registered_attempt_count, 118);
   assert.ok(Math.abs(result.sample_standard_deviation - sampleDeviation) < 1e-15);
   assert.ok(Math.abs(result.uncorrected_skewness - skew) < 1e-15);
   assert.ok(Math.abs(result.pearson_kurtosis - kurtosis) < 1e-15);
@@ -342,6 +368,23 @@ test("source-bound evaluation regenerates replay and rejects legacy booleans or 
   await assert.rejects(
     () => evaluateExternalAttempt115(substituted),
     /archive bytes do not match|ZIP/iu,
+  );
+});
+
+test("evaluation binds the receipt to the archive's actual ASCII case-variant name", async () => {
+  const caseVariant = EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER.toLowerCase();
+  const input = provenanceInput({ memberName: caseVariant });
+  const result = await evaluateExternalAttempt115(input);
+  assert.equal(result.gates.integrity.passed, true);
+
+  const mismatched = structuredClone(input);
+  mismatched.acquisitionReceipt.selected_member_name
+    = EXTERNAL_ATTEMPT115_EXPECTED_ARCHIVE_MEMBER;
+  mismatched.acquisitionReceipt.acquisition_receipt_sha256
+    = hashExternalAttempt115AcquisitionReceipt(mismatched.acquisitionReceipt);
+  await assert.rejects(
+    () => evaluateExternalAttempt115(mismatched),
+    /archive member name does not match the acquisition receipt/u,
   );
 });
 

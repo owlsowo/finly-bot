@@ -1,9 +1,14 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
   EXTERNAL_ATTEMPT115_ARTIFACT_PATHS,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256,
+  EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH,
   EXTERNAL_ATTEMPT115_CLAIM_BOUNDARY,
   EXTERNAL_ATTEMPT115_EVALUATION_ID,
   EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT,
@@ -37,6 +42,12 @@ function independentHash(value) {
 }
 
 function digestForPath(path) {
+  if (path === EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH) {
+    return EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256;
+  }
+  if (path === EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH) {
+    return EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256;
+  }
   return `sha256:${createHash("sha256").update(`synthetic:${path}`).digest("hex")}`;
 }
 
@@ -75,7 +86,10 @@ test("external Attempt115 preregistration is canonical, self-hashed, and no-I/O"
   assert.equal(protocol.protocol_sha256, independentHash(externalAttempt115ProtocolBody(protocol)));
   assert.equal(hashExternalAttempt115Protocol(protocol), protocol.protocol_sha256);
   assert.equal(protocol.source_freeze.official_archive_url, EXTERNAL_ATTEMPT115_SOURCE_URL);
-  assert.equal(protocol.source_freeze.source_acquisition_state, "NOT_ACQUIRED");
+  assert.equal(
+    protocol.source_freeze.source_acquisition_state,
+    "NOT_ACQUIRED_FOR_ATTEMPT_118",
+  );
   assert.equal(protocol.source_freeze.network_or_file_io_performed_by_protocol_module, false);
   assert.equal(protocol.authority.protocol_module_network_access_authorized, false);
   assert.equal(protocol.authority.protocol_module_file_io_authorized, false);
@@ -119,18 +133,31 @@ test("external Attempt115 pins the current revised French vintage rather than an
   assert.equal(source.daily_portfolio_treatment_changed_in_2015, true);
   assert.equal(source.current_us_returns_use_crsp_ciz_beginning, "2025-01");
   assert.equal(source.immutable_historical_tape_claim_permitted, false);
+  assert.equal(source.source_acquisition_state, "NOT_ACQUIRED_FOR_ATTEMPT_118");
+  assert.equal(source.attempt117_archive_downloaded_in_memory_before_attempt118_freeze, true);
+  assert.equal(source.attempt117_factor_values_parsed, false);
+  assert.equal(source.attempt117_performance_result_observed, false);
+  assert.equal(
+    source.archive_member_match_rule,
+    "SINGLE_TRAVERSAL_SAFE_ASCII_BASENAME_WITH_ASCII_CASE_FOLD_EQUAL_TO_LOGICAL_MEMBER",
+  );
+  assert.equal(source.archive_member_path_components_permitted, false);
+  assert.equal(source.archive_member_non_ascii_permitted, false);
   assert.match(source.vintage_binding, /acquired_at.*hashes define the tested current-provider vintage/iu);
   assert.match(EXTERNAL_ATTEMPT115_CLAIM_BOUNDARY, /revised\/reconstructed factor-return proxies/iu);
   assert.match(EXTERNAL_ATTEMPT115_CLAIM_BOUNDARY, /not an immutable historical tape/iu);
 });
 
-test("external Attempt115 freezes the sole pair, endpoint, bootstrap, and 117-attempt correction", () => {
+test("external Attempt115 freezes the sole pair, endpoint, bootstrap, and 118-attempt correction", () => {
   const protocol = validProtocol();
+  assert.equal(EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT, 118);
   assert.deepEqual(protocol.policy_binding.sole_primary_pair, [
     "tsmom_ensemble_downside_semivol",
     "tsmom_ensemble_vol",
   ]);
   assert.equal(protocol.registration.candidate_count, 1);
+  assert.equal(protocol.registration.packaging_only_successor_to_registered_attempt, 117);
+  assert.equal(protocol.registration.attempt117_failure_receipt_bound_before_freeze, true);
   assert.equal(
     protocol.registration.global_registered_attempt_count,
     EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT,
@@ -147,7 +174,7 @@ test("external Attempt115 freezes the sole pair, endpoint, bootstrap, and 117-at
   assert.equal(protocol.primary_inference.bootstrap.resamples, 4_999);
   assert.equal(protocol.primary_inference.bootstrap.expected_block_valid_observations, 20);
   assert.equal(protocol.primary_inference.bootstrap.restart_probability, 0.05);
-  assert.equal(protocol.primary_inference.multiple_testing.per_test_threshold, 0.05 / 117);
+  assert.equal(protocol.primary_inference.multiple_testing.per_test_threshold, 0.05 / 118);
   assert.deepEqual(
     protocol.primary_inference.multiple_testing.passing_attainable_raw_p_values,
     [0.0002, 0.0004],
@@ -170,6 +197,140 @@ test("external Attempt115 freezes the sole pair, endpoint, bootstrap, and 117-at
   assert.equal(dsr.degenerate_or_nonfinite_disposition, "GATE_FAILS_CLOSED");
   assert.match(dsr.calibration_assumption, /no outcome-derived.*moments may be substituted/iu);
   assert.equal(protocol.primary_inference.interim_or_repeat_inference_permitted, false);
+});
+
+test("Attempt118 binds the exact frozen Attempt117 protocol and failure receipt bytes", () => {
+  const protocolBytes = readFileSync(EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH);
+  const failureBytes = readFileSync(
+    EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH,
+  );
+  const rawHash = (bytes) => (
+    `sha256:${createHash("sha256").update(bytes).digest("hex")}`
+  );
+  assert.equal(rawHash(protocolBytes), EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256);
+  assert.equal(
+    rawHash(failureBytes),
+    EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256,
+  );
+  const receipt = JSON.parse(failureBytes);
+  const receiptBody = Object.fromEntries(
+    Object.entries(receipt).filter(([key]) => key !== "failure_receipt_sha256"),
+  );
+  assert.equal(receipt.registered_attempt_number, 117);
+  assert.equal(receipt.disposition, "ATTEMPT_117_CONSUMED_NO_RETRY");
+  assert.equal(receipt.outcome_observation.factor_values_parsed, false);
+  assert.equal(receipt.outcome_observation.performance_result_observed, false);
+  assert.equal(receipt.failure_receipt_sha256, independentHash(receiptBody));
+  const next = validProtocol();
+  assert.equal(
+    next.artifact_binding.source_files_sha256[
+      EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH
+    ],
+    EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256,
+  );
+  assert.equal(
+    next.artifact_binding.source_files_sha256[
+      EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH
+    ],
+    EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256,
+  );
+  assert.equal(
+    EXTERNAL_ATTEMPT115_ARTIFACT_PATHS.source_files.includes(
+      "research/external_validation_attempt115/attempt118_frozen_protocol.json",
+    ),
+    false,
+  );
+});
+
+test("Attempt118 changes only packaging acceptance and registered-trial accounting", () => {
+  const prior = JSON.parse(readFileSync(
+    EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH,
+    "utf8",
+  ));
+  const next = validProtocol();
+  const priorSource = structuredClone(prior.source_freeze);
+  const nextSource = structuredClone(next.source_freeze);
+  for (const key of [
+    "archive_member_match_rule",
+    "archive_member_path_components_permitted",
+    "archive_member_non_ascii_permitted",
+    "attempt117_frozen_protocol_relative_path",
+    "attempt117_failure_receipt_relative_path",
+    "attempt117_archive_downloaded_in_memory_before_attempt118_freeze",
+    "attempt117_factor_values_parsed",
+    "attempt117_performance_result_observed",
+  ]) delete nextSource[key];
+  nextSource.source_acquisition_state = priorSource.source_acquisition_state;
+  assert.deepEqual(nextSource, priorSource, "source endpoints or data semantics changed");
+
+  const priorRegistration = structuredClone(prior.registration);
+  const nextRegistration = structuredClone(next.registration);
+  for (const key of [
+    "packaging_only_successor_to_registered_attempt",
+    "attempt117_failure_receipt_bound_before_freeze",
+    "only_member_matching_and_multiplicity_accounting_changed_from_attempt117",
+  ]) delete nextRegistration[key];
+  nextRegistration.registered_attempt_number = priorRegistration.registered_attempt_number;
+  nextRegistration.prior_registered_attempt_count =
+    priorRegistration.prior_registered_attempt_count;
+  nextRegistration.global_registered_attempt_count =
+    priorRegistration.global_registered_attempt_count;
+  assert.deepEqual(
+    nextRegistration,
+    priorRegistration,
+    "registration changed beyond one disclosed successor attempt",
+  );
+
+  for (const key of [
+    "proxy_definition",
+    "sample_partition",
+    "policy_binding",
+    "execution_protocol",
+    "result_disposition",
+    "authority",
+    "claim_boundary",
+  ]) {
+    assert.deepEqual(next[key], prior[key], `${key} changed beyond the packaging repair`);
+  }
+  for (const key of [
+    "partition_id",
+    "challenger",
+    "comparator",
+    "cadence_anchor",
+    "one_way_cost_bps",
+    "sole_endpoint",
+    "daily_value_formula",
+    "null_hypothesis",
+    "alternative_hypothesis",
+    "bootstrap",
+    "interim_or_repeat_inference_permitted",
+  ]) {
+    assert.deepEqual(
+      next.primary_inference[key],
+      prior.primary_inference[key],
+      `primary_inference.${key} changed beyond multiplicity accounting`,
+    );
+  }
+  const priorInference = structuredClone(prior.primary_inference);
+  const nextInference = structuredClone(next.primary_inference);
+  nextInference.multiple_testing.global_registered_attempt_count =
+    priorInference.multiple_testing.global_registered_attempt_count;
+  nextInference.multiple_testing.per_test_threshold =
+    priorInference.multiple_testing.per_test_threshold;
+  nextInference.deflated_sharpe.global_registered_attempt_count =
+    priorInference.deflated_sharpe.global_registered_attempt_count;
+  nextInference.deflated_sharpe.calibration_assumption =
+    priorInference.deflated_sharpe.calibration_assumption;
+  assert.deepEqual(
+    nextInference,
+    priorInference,
+    "primary inference changed beyond 118-attempt multiplicity accounting",
+  );
+  const nextGates = structuredClone(next.mechanism_gates);
+  const priorGates = structuredClone(prior.mechanism_gates);
+  priorGates.statistical_evidence.bonferroni_raw_p_value_maximum =
+    nextGates.statistical_evidence.bonferroni_raw_p_value_maximum;
+  assert.deepEqual(nextGates, priorGates);
 });
 
 test("external Attempt115 makes pre-overlap primary and later overlap non-rescuing", () => {
@@ -197,7 +358,7 @@ test("external Attempt115 requires every prespecified mechanism gate without out
   assert.equal(gates.primary_direction.threshold, 0);
   assert.equal(gates.statistical_evidence.all_required, true);
   assert.equal(gates.statistical_evidence.nominal_bootstrap_p_value_maximum, 0.05);
-  assert.equal(gates.statistical_evidence.bonferroni_raw_p_value_maximum, 0.05 / 117);
+  assert.equal(gates.statistical_evidence.bonferroni_raw_p_value_maximum, 0.05 / 118);
   assert.equal(gates.statistical_evidence.deflated_sharpe_probability_minimum, 0.95);
   assert.equal(gates.absolute_and_rf_proxy_performance.both_policies_positive_net_log_growth, true);
   assert.equal(gates.absolute_and_rf_proxy_performance.both_policies_beat_rf_proxy_net_log_growth, true);

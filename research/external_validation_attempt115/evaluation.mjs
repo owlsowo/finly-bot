@@ -12,7 +12,7 @@ import {
 } from "./protocol.mjs";
 import {
   EXTERNAL_ATTEMPT115_ACQUISITION_RECEIPT_SCHEMA,
-  extractExternalAttempt115ArchiveMember,
+  extractExternalAttempt115ArchiveMemberRecord,
   validateExternalAttempt115AcquisitionReceipt,
 } from "./acquisition.mjs";
 import {
@@ -43,7 +43,7 @@ import {
 } from "../prospective_attempt115/policy.mjs";
 
 export const EXTERNAL_ATTEMPT115_EVALUATION_SCHEMA =
-  "finly_attempt115_external_mechanism_evaluation.v1";
+  "finly_attempt115_external_mechanism_evaluation.v2";
 
 export const EXTERNAL_ATTEMPT115_GATE_NAMES = Object.freeze([
   "primary_direction",
@@ -585,7 +585,11 @@ async function replayFromReceiptBoundArchive(sourceBytes, receipt) {
     || rawSha256(archive, "external Attempt115 archive") !== receipt.archive_raw_bytes_sha256) {
     fail("external Attempt115 archive bytes do not match the acquisition receipt");
   }
-  const member = await extractExternalAttempt115ArchiveMember(archive);
+  const selectedMember = await extractExternalAttempt115ArchiveMemberRecord(archive);
+  if (selectedMember.name !== receipt.selected_member_name) {
+    fail("external Attempt115 archive member name does not match the acquisition receipt");
+  }
+  const member = selectedMember.bytes;
   if (member.byteLength !== receipt.selected_member_raw_byte_count
     || rawSha256(member, "external Attempt115 member")
       !== receipt.selected_member_raw_bytes_sha256) {

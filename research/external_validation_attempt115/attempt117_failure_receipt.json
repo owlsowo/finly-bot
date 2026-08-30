@@ -1,0 +1,34 @@
+{
+  "claim_boundary": "Operational failure receipt only; it contains no factor values, policy outputs, performance result, profitability claim, or authorization.",
+  "disposition": "ATTEMPT_117_CONSUMED_NO_RETRY",
+  "evaluation_id": "finly_attempt115_french_century_mechanism_replay.v1",
+  "failure_message": "Kenneth French ZIP extraction failed: ZIP member name is traversal-like or differs from the exact frozen name",
+  "failure_phase": "ZIP_MEMBER_NAME_MATCH_BEFORE_PARSE",
+  "failure_receipt_sha256": "sha256:0ed298f043758eb49b7462786bb08ea356482c79f67c9c9c7303fe4934fe9152",
+  "fixed_output_relative_path": "data/external_validation_attempt115/attempt117",
+  "next_attempt_scope": "Packaging-only repair may alter ASCII member-name matching; strategy, dates, parameters, gates, and outcome definitions remain fixed.",
+  "observed_persistence": {
+    "evaluation_artifacts_persisted": 0,
+    "output_directory_created": false,
+    "run_receipt_exists": false,
+    "run_start_marker_exists": true,
+    "source_artifact_files_persisted": 0
+  },
+  "outcome_observation": {
+    "evaluation_invoked": false,
+    "factor_values_parsed": false,
+    "performance_result_observed": false,
+    "replay_generated": false,
+    "source_bytes_downloaded_in_memory": true
+  },
+  "protocol_sha256": "sha256:118142dadcab38281378e1ce78a8dacef2cdbd0d4e72f62b7280785613993f02",
+  "recorded_at": "2026-08-30T11:22:25.828Z",
+  "registered_attempt_number": 117,
+  "run_start_marker": {
+    "raw_bytes_sha256": "sha256:7f42b8997d3e7df6f66f22ac20337b94436cc8c8c1c24f718a4ca2e9bd542921",
+    "relative_path": "data/external_validation_attempt115/attempt117.run-start.json",
+    "run_start_marker_sha256": "sha256:b1e5864b66ee1a4e85c3531c9b01298ad69ccd3b30ef641016bd1497b65a24cb",
+    "started_at": "2026-08-30T11:21:10.873Z"
+  },
+  "schema_version": "finly_attempt115_external_attempt_failure_receipt.v1"
+}

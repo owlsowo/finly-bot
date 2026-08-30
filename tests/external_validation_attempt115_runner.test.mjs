@@ -114,6 +114,18 @@ test("artifact hashing binds every frozen raw source and test byte", async (cont
 
 test("authoritative runner exposes no caller-controlled one-shot API", () => {
   assert.equal(Object.hasOwn(runnerModule, "runExternalAttempt115Once"), false);
+  assert.equal(
+    EXTERNAL_ATTEMPT115_FROZEN_PROTOCOL_RELATIVE_PATH,
+    "research/external_validation_attempt115/attempt118_frozen_protocol.json",
+  );
+  assert.equal(
+    EXTERNAL_ATTEMPT115_FIXED_OUTPUT_RELATIVE_PATH,
+    "data/external_validation_attempt115/attempt118",
+  );
+  assert.equal(
+    EXTERNAL_ATTEMPT115_RUN_START_RELATIVE_PATH,
+    "data/external_validation_attempt115/attempt118.run-start.json",
+  );
 });
 
 test("one atomic marker wins and permanently blocks every same-protocol retry", async (context) => {

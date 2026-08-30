@@ -1,18 +1,26 @@
 import { sha256 } from "../../lib/canonical.mjs";
 
 export const EXTERNAL_ATTEMPT115_PROTOCOL_SCHEMA =
-  "finly_attempt115_external_french_mechanism_protocol.v1";
+  "finly_attempt115_external_french_mechanism_protocol.v2";
 export const EXTERNAL_ATTEMPT115_EVALUATION_ID =
-  "finly_attempt115_french_century_mechanism_replay.v1";
+  "finly_attempt115_french_century_mechanism_replay.v2";
 export const EXTERNAL_ATTEMPT115_PROTOCOL_STATUS =
   "FROZEN_BEFORE_SOURCE_ACQUISITION";
 export const EXTERNAL_ATTEMPT115_SOURCE_URL =
   "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip";
 export const EXTERNAL_ATTEMPT115_PRIMARY_END = "2007-05-29";
 export const EXTERNAL_ATTEMPT115_OVERLAP_START = "2007-05-30";
-// Attempts 115 and 116 were already registered before this separate external
-// mechanism replay.  This replay is therefore the 117th disclosed attempt.
-export const EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT = 117;
+export const EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH =
+  "research/external_validation_attempt115/frozen_protocol.json";
+export const EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH =
+  "research/external_validation_attempt115/attempt117_failure_receipt.json";
+export const EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256 =
+  "sha256:29e467273c9d6a9c958da5cb0ce1621f04da4cad5c303773d61e5f7b005345eb";
+export const EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256 =
+  "sha256:5a5c213ad4a218920ad6dba1a87d7bbd7676494383f98caec8e4434fd9b286e8";
+// Attempt 117 was consumed by a preregistered packaging mismatch before parsing
+// or evaluation. This packaging-only successor is the 118th disclosed attempt.
+export const EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT = 118;
 export const EXTERNAL_ATTEMPT115_CLAIM_BOUNDARY =
   "External fixed-sample mechanism portability evidence only on the acquisition-date current Kenneth French vintage. MARKET_PROXY and RF_PROXY are revised/reconstructed factor-return proxies, not an immutable historical tape and not SPY or BIL ETF histories. This replay is retrospective, not a pristine holdout, and cannot establish future alpha, live profitability, options profitability, policy superiority, or competitor rank; authorize capital or broker activity; change the frozen incumbent; or modify any public, site, deck, paper, video, or release claim.";
 
@@ -23,6 +31,8 @@ export const EXTERNAL_ATTEMPT115_ARTIFACT_PATHS = Object.freeze({
     "lib/canonical.mjs",
     "lib/policy.mjs",
     "lib/quant.mjs",
+    EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH,
+    EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH,
     "research/external_validation_attempt115/protocol.mjs",
     "research/external_validation_attempt115/kenneth_french_daily_factor_adapter.mjs",
     "research/external_validation_attempt115/inference.mjs",
@@ -147,15 +157,22 @@ function validateRegistration(value) {
     "candidate_selected_before_external_outcomes",
     "external_replay_is_new_attempt",
     "repeat_or_replacement_primary_permitted",
+    "packaging_only_successor_to_registered_attempt",
+    "attempt117_failure_receipt_bound_before_freeze",
+    "only_member_matching_and_multiplicity_accounting_changed_from_attempt117",
   ], "external Attempt115 registration");
-  if (value.registered_attempt_number !== 117
-    || value.prior_registered_attempt_count !== 116
+  if (value.registered_attempt_number !== 118
+    || value.prior_registered_attempt_count !== 117
     || value.additional_registered_attempt_count !== 1
     || value.global_registered_attempt_count !== EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT
     || value.candidate_count !== 1
     || value.candidate_selected_before_external_outcomes !== true
     || value.external_replay_is_new_attempt !== true
-    || value.repeat_or_replacement_primary_permitted !== false) {
+    || value.repeat_or_replacement_primary_permitted !== false
+    || value.packaging_only_successor_to_registered_attempt !== 117
+    || value.attempt117_failure_receipt_bound_before_freeze !== true
+    || value.only_member_matching_and_multiplicity_accounting_changed_from_attempt117
+      !== true) {
     fail("external Attempt115 registration or multiplicity boundary changed");
   }
 }
@@ -166,6 +183,14 @@ function validateSourceFreeze(value) {
     "dataset",
     "official_archive_url",
     "official_archive_member",
+    "archive_member_match_rule",
+    "archive_member_path_components_permitted",
+    "archive_member_non_ascii_permitted",
+    "attempt117_frozen_protocol_relative_path",
+    "attempt117_failure_receipt_relative_path",
+    "attempt117_archive_downloaded_in_memory_before_attempt118_freeze",
+    "attempt117_factor_values_parsed",
+    "attempt117_performance_result_observed",
     "official_data_library_documentation_url",
     "official_factor_description_url",
     "expected_source_first_date",
@@ -190,6 +215,17 @@ function validateSourceFreeze(value) {
     || value.dataset !== "Fama/French 3 Factors daily"
     || value.official_archive_url !== EXTERNAL_ATTEMPT115_SOURCE_URL
     || value.official_archive_member !== "F-F_Research_Data_Factors_daily.CSV"
+    || value.archive_member_match_rule
+      !== "SINGLE_TRAVERSAL_SAFE_ASCII_BASENAME_WITH_ASCII_CASE_FOLD_EQUAL_TO_LOGICAL_MEMBER"
+    || value.archive_member_path_components_permitted !== false
+    || value.archive_member_non_ascii_permitted !== false
+    || value.attempt117_frozen_protocol_relative_path
+      !== EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH
+    || value.attempt117_failure_receipt_relative_path
+      !== EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH
+    || value.attempt117_archive_downloaded_in_memory_before_attempt118_freeze !== true
+    || value.attempt117_factor_values_parsed !== false
+    || value.attempt117_performance_result_observed !== false
     || value.official_data_library_documentation_url
       !== "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.HTML"
     || value.official_factor_description_url
@@ -203,7 +239,7 @@ function validateSourceFreeze(value) {
     || value.daily_portfolio_treatment_changed_in_2015 !== true
     || value.current_us_returns_use_crsp_ciz_beginning !== "2025-01"
     || value.immutable_historical_tape_claim_permitted !== false
-    || value.source_acquisition_state !== "NOT_ACQUIRED"
+    || value.source_acquisition_state !== "NOT_ACQUIRED_FOR_ATTEMPT_118"
     || value.source_acquired_before_freeze !== false
     || value.source_values_observed_before_freeze !== false
     || value.source_archive_sha256 !== null
@@ -475,7 +511,8 @@ function validatePrimaryInference(value) {
     || value.multiple_testing.global_registered_attempt_count
       !== EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT
     || value.multiple_testing.familywise_alpha !== 0.05
-    || value.multiple_testing.per_test_threshold !== 0.05 / 117
+    || value.multiple_testing.per_test_threshold
+      !== 0.05 / EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT
     || value.multiple_testing.minimum_attainable_raw_p_value !== 1 / 5000
     || value.deflated_sharpe.required !== true
     || value.deflated_sharpe.method
@@ -490,7 +527,8 @@ function validatePrimaryInference(value) {
       !== "uncorrected third central moment divided by population_variance^(3/2), each central moment using denominator n"
     || value.deflated_sharpe.pearson_kurtosis_convention
       !== "uncorrected fourth central moment divided by population_variance^2, each central moment using denominator n; not excess kurtosis"
-    || value.deflated_sharpe.global_registered_attempt_count !== 117
+    || value.deflated_sharpe.global_registered_attempt_count
+      !== EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT
     || value.deflated_sharpe.trial_sharpe_mean_periodic !== 0
     || value.deflated_sharpe.trial_sharpe_standard_deviation_periodic !== "1 / sqrt(n - 1)"
     || value.deflated_sharpe.expected_maximum_coefficient_formula
@@ -506,7 +544,7 @@ function validatePrimaryInference(value) {
     || value.deflated_sharpe.minimum_probability !== 0.95
     || value.deflated_sharpe.degenerate_or_nonfinite_disposition !== "GATE_FAILS_CLOSED"
     || value.deflated_sharpe.calibration_assumption
-      !== "All N=117 registered trials are treated as independent draws from a zero-mean unit-variance normal-return null solely to predeclare the expected-maximum Sharpe benchmark; no outcome-derived cross-strategy Sharpe moments may be substituted."
+      !== "All N=118 registered trials are treated as independent draws from a zero-mean unit-variance normal-return null solely to predeclare the expected-maximum Sharpe benchmark; no outcome-derived cross-strategy Sharpe moments may be substituted."
     || value.interim_or_repeat_inference_permitted !== false) {
     fail("external Attempt115 endpoint, bootstrap, or multiple-testing plan changed");
   }
@@ -590,7 +628,8 @@ function validateMechanismGates(value) {
     || value.primary_direction.operator !== ">"
     || value.primary_direction.threshold !== 0
     || value.statistical_evidence.nominal_bootstrap_p_value_maximum !== 0.05
-    || value.statistical_evidence.bonferroni_raw_p_value_maximum !== 0.05 / 117
+    || value.statistical_evidence.bonferroni_raw_p_value_maximum
+      !== 0.05 / EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT
     || value.statistical_evidence.deflated_sharpe_probability_minimum !== 0.95
     || value.statistical_evidence.all_required !== true
     || value.absolute_and_rf_proxy_performance.both_policies_positive_net_log_growth !== true
@@ -684,6 +723,13 @@ function validateArtifactBinding(value) {
     EXTERNAL_ATTEMPT115_ARTIFACT_PATHS.test_files,
     "external Attempt115 test file hashes",
   );
+  if (value.source_files_sha256[EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH]
+      !== EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RAW_SHA256
+    || value.source_files_sha256[
+      EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH
+    ] !== EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RAW_SHA256) {
+    fail("external Attempt115 predecessor protocol or failure receipt binding changed");
+  }
 }
 
 function validateSemantics(value, includeHash) {
@@ -725,20 +771,34 @@ export function createExternalAttempt115ProtocolBody({
     status: EXTERNAL_ATTEMPT115_PROTOCOL_STATUS,
     frozen_at: frozenAt,
     registration: {
-      registered_attempt_number: 117,
-      prior_registered_attempt_count: 116,
+      registered_attempt_number: 118,
+      prior_registered_attempt_count: 117,
       additional_registered_attempt_count: 1,
-      global_registered_attempt_count: 117,
+      global_registered_attempt_count: EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT,
       candidate_count: 1,
       candidate_selected_before_external_outcomes: true,
       external_replay_is_new_attempt: true,
       repeat_or_replacement_primary_permitted: false,
+      packaging_only_successor_to_registered_attempt: 117,
+      attempt117_failure_receipt_bound_before_freeze: true,
+      only_member_matching_and_multiplicity_accounting_changed_from_attempt117: true,
     },
     source_freeze: {
       provider: "Kenneth R. French Data Library",
       dataset: "Fama/French 3 Factors daily",
       official_archive_url: EXTERNAL_ATTEMPT115_SOURCE_URL,
       official_archive_member: "F-F_Research_Data_Factors_daily.CSV",
+      archive_member_match_rule:
+        "SINGLE_TRAVERSAL_SAFE_ASCII_BASENAME_WITH_ASCII_CASE_FOLD_EQUAL_TO_LOGICAL_MEMBER",
+      archive_member_path_components_permitted: false,
+      archive_member_non_ascii_permitted: false,
+      attempt117_frozen_protocol_relative_path:
+        EXTERNAL_ATTEMPT115_ATTEMPT117_PROTOCOL_RELATIVE_PATH,
+      attempt117_failure_receipt_relative_path:
+        EXTERNAL_ATTEMPT115_ATTEMPT117_FAILURE_RECEIPT_RELATIVE_PATH,
+      attempt117_archive_downloaded_in_memory_before_attempt118_freeze: true,
+      attempt117_factor_values_parsed: false,
+      attempt117_performance_result_observed: false,
       official_data_library_documentation_url:
         "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.HTML",
       official_factor_description_url:
@@ -752,7 +812,7 @@ export function createExternalAttempt115ProtocolBody({
       daily_portfolio_treatment_changed_in_2015: true,
       current_us_returns_use_crsp_ciz_beginning: "2025-01",
       immutable_historical_tape_claim_permitted: false,
-      source_acquisition_state: "NOT_ACQUIRED",
+      source_acquisition_state: "NOT_ACQUIRED_FOR_ATTEMPT_118",
       source_acquired_before_freeze: false,
       source_values_observed_before_freeze: false,
       source_archive_sha256: null,
@@ -879,9 +939,9 @@ export function createExternalAttempt115ProtocolBody({
       },
       multiple_testing: {
         method: "Bonferroni",
-        global_registered_attempt_count: 117,
+        global_registered_attempt_count: EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT,
         familywise_alpha: 0.05,
-        per_test_threshold: 0.05 / 117,
+        per_test_threshold: 0.05 / EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT,
         minimum_attainable_raw_p_value: 1 / 5000,
         passing_attainable_raw_p_values: [0.0002, 0.0004],
       },
@@ -898,7 +958,7 @@ export function createExternalAttempt115ProtocolBody({
           "uncorrected third central moment divided by population_variance^(3/2), each central moment using denominator n",
         pearson_kurtosis_convention:
           "uncorrected fourth central moment divided by population_variance^2, each central moment using denominator n; not excess kurtosis",
-        global_registered_attempt_count: 117,
+        global_registered_attempt_count: EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT,
         trial_sharpe_mean_periodic: 0,
         trial_sharpe_standard_deviation_periodic: "1 / sqrt(n - 1)",
         expected_maximum_coefficient_formula:
@@ -914,7 +974,7 @@ export function createExternalAttempt115ProtocolBody({
         minimum_probability: 0.95,
         degenerate_or_nonfinite_disposition: "GATE_FAILS_CLOSED",
         calibration_assumption:
-          "All N=117 registered trials are treated as independent draws from a zero-mean unit-variance normal-return null solely to predeclare the expected-maximum Sharpe benchmark; no outcome-derived cross-strategy Sharpe moments may be substituted.",
+          "All N=118 registered trials are treated as independent draws from a zero-mean unit-variance normal-return null solely to predeclare the expected-maximum Sharpe benchmark; no outcome-derived cross-strategy Sharpe moments may be substituted.",
       },
       interim_or_repeat_inference_permitted: false,
     },
@@ -932,7 +992,8 @@ export function createExternalAttempt115ProtocolBody({
       },
       statistical_evidence: {
         nominal_bootstrap_p_value_maximum: 0.05,
-        bonferroni_raw_p_value_maximum: 0.05 / 117,
+        bonferroni_raw_p_value_maximum:
+          0.05 / EXTERNAL_ATTEMPT115_GLOBAL_ATTEMPT_COUNT,
         deflated_sharpe_probability_minimum: 0.95,
         all_required: true,
       },

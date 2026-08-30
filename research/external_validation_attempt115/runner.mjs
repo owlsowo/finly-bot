@@ -58,20 +58,20 @@ import {
 } from "../prospective_attempt115/policy.mjs";
 
 export const EXTERNAL_ATTEMPT115_FROZEN_PROTOCOL_RELATIVE_PATH =
-  "research/external_validation_attempt115/frozen_protocol.json";
+  "research/external_validation_attempt115/attempt118_frozen_protocol.json";
 export const EXTERNAL_ATTEMPT115_INTEGRITY_EVIDENCE_SCHEMA =
-  "finly_attempt115_external_integrity_evidence.v1";
+  "finly_attempt115_external_integrity_evidence.v2";
 export const EXTERNAL_ATTEMPT115_ONE_TIME_RUN_RECEIPT_SCHEMA =
-  "finly_attempt115_external_one_time_run_receipt.v1";
+  "finly_attempt115_external_one_time_run_receipt.v2";
 export const EXTERNAL_ATTEMPT115_REQUIRED_NODE_VERSION = "v26.7.0";
 export const EXTERNAL_ATTEMPT115_FIXED_OUTPUT_RELATIVE_PATH =
-  "data/external_validation_attempt115/attempt117";
+  "data/external_validation_attempt115/attempt118";
 export const EXTERNAL_ATTEMPT115_RUN_START_RELATIVE_PATH =
-  "data/external_validation_attempt115/attempt117.run-start.json";
+  "data/external_validation_attempt115/attempt118.run-start.json";
 export const EXTERNAL_ATTEMPT115_CLI_RELATIVE_PATH =
   "research/external_validation_attempt115/runner.mjs";
 export const EXTERNAL_ATTEMPT115_RUN_START_SCHEMA =
-  "finly_attempt115_external_run_start.v1";
+  "finly_attempt115_external_run_start.v2";
 
 const MARKET = "MARKET_PROXY";
 const RF = "RF_PROXY";
