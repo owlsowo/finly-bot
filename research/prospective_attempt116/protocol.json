@@ -1,0 +1,177 @@
+{
+  "schema_version": "finly_attempt116_vrp_shadow_protocol.v1",
+  "attempt_id": "finly_prospective_options_shadow_attempt_116",
+  "attempt_number": 116,
+  "status": "PROSPECTIVE_ONLY_SHADOW_COMPILER_REAL_DATA_RUNNER_DISABLED",
+  "draft_frozen_at": "2026-08-30T07:41:37.000Z",
+  "trial_accounting": {
+    "prior_registered_attempt_count": 115,
+    "additional_registered_attempt_count": 1,
+    "registered_attempt_count_after_publication": 116,
+    "historical_or_pre_registration_scoring_permitted": false,
+    "performance_family_membership": "SEPARATE_UNSCORED_OPTIONS_SHADOW_CHALLENGER"
+  },
+  "publication_boundary": {
+    "platform": "github",
+    "public_commit_must_include_exact_protocol_and_implementation": true,
+    "public_registration_receipt_required_before_prospective_input": true,
+    "public_registration_receipt_observation_required_before_prospective_input": true,
+    "public_registration_receipt_verified_by_this_pure_compiler": false,
+    "publication_deadline": "2026-08-31T13:30:00.000Z",
+    "publication_deadline_exclusive": true,
+    "required_artifact_paths": [
+      "research/prospective_attempt116/SOURCE_ATTRIBUTION.md",
+      "research/prospective_attempt116/UPSTREAM_LICENSE.txt",
+      "research/prospective_attempt116/protocol.json",
+      "research/prospective_attempt116/protocol.mjs",
+      "research/prospective_attempt116/signal.mjs",
+      "tests/prospective_attempt116_protocol.test.mjs",
+      "tests/prospective_attempt116_signal.test.mjs"
+    ],
+    "separate_per_signal_anchor_required": false
+  },
+  "first_eligible_input": {
+    "session_date": "2026-08-31",
+    "not_before": "2026-08-31T13:30:00.000Z",
+    "completed_underlying_history_last_session_on_or_before": "2026-08-28",
+    "must_be_strictly_after_public_registration": true,
+    "pre_registration_market_snapshot_eligible": false,
+    "pre_registration_signal_eligible": false,
+    "pre_registration_outcome_eligible": false,
+    "existing_historical_bundle_eligible_for_scoring": false,
+    "retrospective_runner_permitted": false
+  },
+  "source_basis": {
+    "repository": "https://github.com/Ander-IbBi/alpaca-vrp-engine",
+    "commit": "84d6bff500b53a27cb2743a870b9533fc7d5c098",
+    "tree": "bf92ba65ec09efdcc276ca07687887912a06b107",
+    "license": "MIT",
+    "attribution_path": "research/prospective_attempt116/SOURCE_ATTRIBUTION.md",
+    "license_notice_path": "research/prospective_attempt116/UPSTREAM_LICENSE.txt",
+    "license_notice_raw_bytes_sha256": "sha256:97ed157640064056357c7edceb8aeed5db11577dbdd381bdb556759d80ef9935",
+    "pinned_source_raw_bytes_sha256": {
+      "LICENSE": "sha256:97ed157640064056357c7edceb8aeed5db11577dbdd381bdb556759d80ef9935",
+      "src/vrp_engine/config.py": "sha256:7502cefb9f7177a66e45882cb8b025d5d264c13d5d93e8e33ac78887f5faa7a3",
+      "src/vrp_engine/risk/portfolio.py": "sha256:8a25317606d07b6a2c33ee6fc3c4d0f7461e16d1ce4b9431926713475ad447f0",
+      "src/vrp_engine/strategy/pricing.py": "sha256:43e4e788eb5bd86d0a96bfc1f61f945c055686146d4f8ee2aa6ccac8869d373a",
+      "src/vrp_engine/strategy/signals.py": "sha256:85047bb266ac75d18c055a90568a3c8de811583405e26c076b90b81581f97d99",
+      "src/vrp_engine/strategy/sizing.py": "sha256:492e43457eb9e6621fef3897c0d907058d78745b06edb943afda8730dad3f4de"
+    },
+    "principal_signal_source_blob": "d5c6a8c8764ce7dda74e54b28971c3656f6c4e10",
+    "independent_implementation": true
+  },
+  "signal_specification": {
+    "symbol": "SPY",
+    "option_expiry_calendar_dte_minimum_inclusive": 1,
+    "option_expiry_calendar_dte_maximum_inclusive": 9,
+    "annualization_sessions": 252,
+    "required_completed_underlying_bars": 22,
+    "close_to_close": {
+      "return_transform": "natural_log_of_current_close_divided_by_prior_close",
+      "short_window_returns": 10,
+      "long_window_returns": 21,
+      "estimator": "sample_standard_deviation",
+      "degrees_of_freedom": 1,
+      "annualization": "multiply_by_sqrt_252"
+    },
+    "parkinson": {
+      "window_bars": 21,
+      "formula": "sqrt(252 * sum(log(high / low)^2) / (4 * n * ln(2)))",
+      "equal_high_low_permitted": true
+    },
+    "realized_volatility_blend": {
+      "close_to_close_10_weight": 0.4,
+      "close_to_close_21_weight": 0.2,
+      "parkinson_21_weight": 0.4,
+      "blend_domain": "annualized_volatility_not_variance",
+      "missing_component_weight_renormalization_permitted": false
+    },
+    "atm_implied_volatility": {
+      "units": "annualized_decimal_volatility",
+      "nearest_strike_selected_separately_for_call_and_put": true,
+      "distance_measure": "absolute_strike_minus_spot",
+      "equal_distance_tie_break": "lower_strike",
+      "available_selected_sides_combination": "arithmetic_mean",
+      "one_valid_side_permitted": true,
+      "interpolation_permitted": false,
+      "selected_quotes_are_analytical_references_not_tradable_legs": true
+    },
+    "relative_gap": {
+      "formula": "(front_atm_iv - blended_realized_volatility) / blended_realized_volatility",
+      "statistical_z_score": false,
+      "sell_vol_shadow_minimum_inclusive": 0.15,
+      "buy_vol_shadow_maximum_inclusive": -0.15,
+      "strict_interior_action": "STAND_DOWN"
+    },
+    "term_slope_blackout": {
+      "formula": "front_atm_iv - next_atm_iv",
+      "units": "absolute_decimal_volatility_points",
+      "blackout_threshold": 0.08,
+      "comparison": "strict_raw_ieee754_greater_than",
+      "equality_blackout": false,
+      "negative_slope_blackout": false,
+      "missing_front_or_next_atm_iv_action": "STAND_DOWN",
+      "overrides_buy_and_sell_shadow_stances": true
+    },
+    "market_snapshot_timing": {
+      "surface_snapshot_as_of_utc_required": true,
+      "per_quote_observed_at_required": true,
+      "per_quote_observed_at_must_equal_surface_snapshot": true,
+      "prospective_snapshot_not_before_first_eligible_input": true,
+      "prospective_snapshot_at_or_after_public_registration_receipt_observation": true,
+      "snapshot_not_after_signal_observation": true,
+      "surface_and_quote_provider_origin_verified_by_pure_compiler": false,
+      "caller_asserted_source_receipt_hash_required": true,
+      "quote_underlying_symbol_required": true,
+      "eligible_expiries_derived_from_sorted_distinct_quote_expiries": true,
+      "caller_asserted_complete_1_to_9_dte_surface_required": true,
+      "surface_completeness_verified_by_pure_compiler": false
+    }
+  },
+  "adaptation_safety_deltas": {
+    "complete_windows_required_instead_of_three_observation_minimum": true,
+    "malformed_bars_rejected_instead_of_filtered": true,
+    "missing_component_renormalization_disabled": true,
+    "equal_distance_strike_tie_break_made_deterministic": true,
+    "missing_term_structure_stands_down_instead_of_failing_open": true
+  },
+  "excluded_surfaces": {
+    "fractional_kelly_excluded": true,
+    "probability_wedge_excluded": true,
+    "expected_value_gate_excluded": true,
+    "option_structure_selection_excluded": true,
+    "tradable_leg_or_order_contract_selection_excluded": true,
+    "quantity_or_notional_sizing_excluded": true,
+    "historical_scoring_excluded": true,
+    "broker_reads_excluded": true,
+    "broker_mutation_excluded": true,
+    "order_construction_excluded": true,
+    "production_integration_excluded": true,
+    "attempt115_modification_excluded": true
+  },
+  "authority": {
+    "real_data_runner_enabled": false,
+    "network_requests_permitted": false,
+    "broker_reads_permitted": false,
+    "broker_mutation_authorized": false,
+    "order_construction_authorized": false,
+    "contract_selection_authorized": false,
+    "quantity_or_notional_sizing_authorized": false,
+    "capital_allocation_authorized": false,
+    "retrospective_evaluation_authorized": false,
+    "performance_inference_authorized": false,
+    "production_policy_modification_authorized": false,
+    "attempt115_modification_authorized": false
+  },
+  "evaluation_gates": {
+    "public_registration_verified": false,
+    "first_prospective_input_observed": false,
+    "first_shadow_signal_compiled": false,
+    "outcome_observed": false,
+    "provider_origin_and_timing_verified": false,
+    "historical_performance_established": false,
+    "prospective_performance_established": false
+  },
+  "claim_boundary": "Attempt 116 preregisters one pure research-only SPY options volatility shadow signal adapted from a pinned MIT-licensed source. It selects ATM reference quotes only to calculate implied volatility and compiles no tradable leg, order contract, size, or option structure; its real-data runner is disabled; every authority flag is false; it scores no historical or pre-registration observation; its pure compiler checks caller-supplied timestamps, hashes, symbols, and expiry ordering but does not verify provider origin, independent timing, or surface completeness; and it establishes no profitability, forecast accuracy, execution quality, or production suitability.",
+  "protocol_sha256": "sha256:8703b78afabe6cfe39d981ed1399878ba219b8f92100982c43e2c88e24c5a677"
+}
