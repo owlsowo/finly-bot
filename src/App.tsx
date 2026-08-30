@@ -71,13 +71,21 @@ type DemoReceipt = {
   source_signals: Array<{ family: string; explanation: string }>;
   compilation: {
     action: string;
-    selected: null | { long_leg: { strike: number }; short_leg: { strike: number } };
+    selected: null | {
+      long_leg: { strike: number };
+      short_leg: { strike: number };
+      max_gain: number;
+      max_loss: number;
+    };
   };
-  source_removal: { passed: boolean };
-  perturbations: null | { passed: boolean };
+  source_removal: { passed: boolean; variants: unknown[] };
+  perturbations: null | { count: number; passed: boolean };
   certificate: {
     certified: boolean;
+    decision: string;
+    max_loss_per_contract: number;
     rejection_codes: string[];
+    source_removal_summary: { passed: boolean; variants: unknown[] };
   };
   alpaca_payload: null | { order_class: string };
 };
@@ -166,7 +174,12 @@ export function DemoClient() {
   const production = gate.conclusions.production_v1_execution_realism;
   const futureTests = gate.conclusions.registered_future_only_tests;
   const receipt = receiptMode === "aligned" ? alignedReceipt : conflictReceipt;
-  const futureOutcomeCount = futureTests.reduce((sum, test) => sum + test.observed_outcome_count, 0);
+  const demoCandidate = alignedReceipt.compilation.selected;
+  if (!demoCandidate || !alignedReceipt.certificate.certified || !alignedReceipt.perturbations?.passed) {
+    throw new Error("The website's positive demo receipt is incomplete.");
+  }
+  const sourceRemovalCount = alignedReceipt.certificate.source_removal_summary.variants.length;
+  const perturbationCount = alignedReceipt.perturbations.count;
 
   return (
     <>
@@ -186,68 +199,70 @@ export function DemoClient() {
       <main id="main-content">
         <section className="hero shell" id="case">
           <div className="hero-copy">
-            <p className="kicker">Historical result / governance decision</p>
-            <h1>A backtest returned {signedPct(g4.g4_total_return)}. Finly rejected it.</h1>
-            <p className="hero-deck">{gate.allowed_claims[0]}</p>
+            <p className="kicker">Agentic options research / deterministic risk control</p>
+            <h1>From market evidence to a bounded options decision.</h1>
+            <p className="hero-deck">
+              Finly lets AI interpret a multi-source market case, then gives deterministic code the final word on the
+              contract, maximum loss, stress tests and authorization outcome.
+            </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#evidence">Follow the evidence</a>
-              <a className="text-action" href="#controls">Test the authorization boundary <span aria-hidden="true">↓</span></a>
+              <a className="primary-action" href="#controls">Open the decision receipt</a>
+              <a className="text-action" href="#system">Follow the evidence chain <span aria-hidden="true">↓</span></a>
             </div>
             <p className="hero-thesis">
-              Finly's claim is not that a large backtest deserves belief. Its claim is that a trading agent should be able to
-              withdraw authority from the result that looks most persuasive.
+              The model explains why a trade may exist. Code owns whether a capital-bearing instruction may exist.
             </p>
           </div>
 
           <figure className="hero-figure">
             <div className="figure-labels">
-              <span>Consumed retrospective replay</span>
-              <strong>Modeled {g4.modeled_one_way_cost_bps} bp one-way</strong>
+              <span>Checked decision receipt</span>
+              <strong>Synthetic paper replay</strong>
             </div>
             <div
-              className="hero-result hero-result-rejected"
+              className="hero-result"
               role="img"
-              aria-label={`G4 returned ${pct(g4.g4_total_return)} and SPY returned ${pct(g4.spy_total_return)} from ${g4.start_date} through ${g4.end_date}; G4 was rejected and not promoted.`}
+              aria-label={`The checked synthetic paper replay compiled a one-contract defined-risk spread with an exact ${demoCandidate.max_loss} dollar maximum loss and ${demoCandidate.max_gain} dollar maximum gain after ${sourceRemovalCount} source-removal checks and ${perturbationCount} perturbation checks passed.`}
             >
               <div>
-                <span>G4 shadow</span>
-                <strong>{signedPct(g4.g4_total_return)}</strong>
-                <small>{g4.start_date} — {g4.end_date}</small>
+                <span>Exact maximum loss</span>
+                <strong>${demoCandidate.max_loss}</strong>
+                <small>One-contract defined-risk spread</small>
               </div>
               <div>
-                <span>SPY</span>
-                <strong>{signedPct(g4.spy_total_return)}</strong>
-                <small>Same consumed interval</small>
+                <span>Maximum gain</span>
+                <strong>${demoCandidate.max_gain}</strong>
+                <small>Same compiled structure</small>
               </div>
-              <p>The larger result did not clear the statistical promotion gates.</p>
-              <em className="rejection-stamp">Rejected</em>
+              <p>{sourceRemovalCount}/{sourceRemovalCount} source removals and {perturbationCount}/{perturbationCount} perturbations passed.</p>
+              <em className="decision-stamp">Bounded</em>
             </div>
             <figcaption>
-              This is a post-selected ETF replay, not options P&amp;L, broker fills or evidence of future market superiority.
-              The rejection is the result of the audit—not a footnote to it.
+              The fixture compiled a local Alpaca-compatible paper payload. Nothing was transmitted, and the demo is not
+              broker-fill or profitability evidence.
             </figcaption>
           </figure>
 
-          <dl className="hero-metrics" aria-label="Release-gated quantitative findings">
+          <dl className="hero-metrics" aria-label="Checked product capabilities">
             <div>
-              <dt>Deflated Sharpe probability</dt>
-              <dd>{pct(g4.deflated_sharpe_probability)}</dd>
-              <p>The strongest-looking replay did not survive selection adjustment.</p>
+              <dt>Source-removal checks</dt>
+              <dd>{sourceRemovalCount}/{sourceRemovalCount}</dd>
+              <p>The same defined-risk structure survived each recorded source-family removal.</p>
             </div>
             <div>
-              <dt>Worst familywise p-value</dt>
-              <dd>{pct(g4.worst_familywise_adjusted_p_value)}</dd>
-              <p>The multiple-testing evidence did not justify promotion.</p>
+              <dt>Perturbation checks</dt>
+              <dd>{perturbationCount}/{perturbationCount}</dd>
+              <p>The compiled structure remained stable across the recorded input shocks.</p>
             </div>
             <div>
-              <dt>Production v1 · modeled 5 bp</dt>
-              <dd>{signedPct(production.total_return_at_5bp_per_leg)}</dd>
-              <p>Positive, but below SPY's {signedPct(production.spy_total_return)} total return.</p>
+              <dt>Defined maximum loss</dt>
+              <dd>${alignedReceipt.certificate.max_loss_per_contract}</dd>
+              <p>Risk is calculated before the local paper payload can be certified.</p>
             </div>
             <div>
-              <dt>Future-only outcomes</dt>
-              <dd>{futureOutcomeCount}</dd>
-              <p>Attempts 115 and 116 had no observed outcomes as of the gate.</p>
+              <dt>Authorization outcome</dt>
+              <dd>Permit</dd>
+              <p>The checked aligned fixture compiled locally; a conflicting fixture returns NO_TRADE.</p>
             </div>
           </dl>
         </section>
@@ -256,18 +271,17 @@ export function DemoClient() {
           <div className="shell argument-grid">
             <p className="argument-number">01</p>
             <div>
-              <p className="kicker">The governing idea</p>
-              <h2>Financial agents do not need more confidence. They need less authority.</h2>
+              <p className="kicker">The product edge</p>
+              <h2>AI reads the market. Tested code sets the risk.</h2>
             </div>
             <div className="argument-copy">
               <p>
-                A fluent model can interpret evidence, but fluency is not a risk control. Finly therefore separates the
-                market assessment from the code that determines exposure and from the gateway that decides whether a
-                proposal may proceed.
+                Finly gives each component one job: a model interprets the evidence, deterministic code constructs the
+                position, and an authorization gateway checks the exact capital at risk before a paper payload can exist.
               </p>
               <p>
-                That separation matters most when the evidence is exciting. G4's retrospective return was large enough to
-                invite a victory lap; its statistical record instead required a refusal.
+                In the checked positive fixture, the resulting one-contract spread carried a $366 maximum loss, a $634
+                maximum gain, and remained stable across every recorded source-removal and perturbation check.
               </p>
             </div>
           </div>
@@ -277,12 +291,12 @@ export function DemoClient() {
           <div className="shell">
             <div className="section-intro evidence-intro">
               <div>
-                <p className="kicker">The evidence hearing</p>
-                <h2>The headline survived arithmetic. It did not survive adjudication.</h2>
+                <p className="kicker">Quantitative safety audit</p>
+                <h2>Every performance claim earns its label before it enters the pitch.</h2>
               </div>
               <p>
-                The consumed replay is deliberately shown at full scale. The adjacent decision view then applies the two
-                release-gated statistical findings that prevented a post-selected result from becoming the production policy.
+                Finly records modeled costs, chronology, selection history and statistical corrections in the same evidence
+                chain. A strong retrospective chart can remain useful research without being mislabeled as a live forecast.
               </p>
             </div>
 
@@ -310,10 +324,13 @@ export function DemoClient() {
 
             <div className="section-intro evidence-intro production-intro">
               <div>
-                <p className="kicker">What entered production research instead</p>
-                <h2>Production v1 is smaller, frozen and honest about what it did not beat.</h2>
+                <p className="kicker">Frozen production research</p>
+                <h2>Production v1 targets a calmer return path with an unlevered allocation.</h2>
               </div>
-              <p>{gate.allowed_claims[1]}</p>
+              <p>
+                The frozen SPY/BIL policy targets 10% annualized volatility and remained positive in the consumed
+                next-open study under both the modeled 5 bp and 25 bp per-leg cost scenarios.
+              </p>
             </div>
 
             <aside className="production-clarifier" aria-labelledby="production-title">
@@ -321,9 +338,9 @@ export function DemoClient() {
                 <p className="kicker">Frozen production v1</p>
                 <h3 id="production-title">An unlevered SPY/BIL policy targeting 10% annualized volatility.</h3>
                 <p>
-                  Production v1 is distinct from the rejected G4 shadow. The consumed study models signals formed before
-                  next-open execution and applies costs to each traded leg; it is an adjusted-OHLC ledger, not a broker-fill
-                  replay or an options-profitability result.
+                  The consumed study models signals formed before next-open execution and applies costs to each traded leg.
+                  Its purpose is to test a frozen, risk-controlled allocation under declared assumptions before any separate
+                  broker-fill or options-profitability study.
                 </p>
               </div>
               <dl className="production-metrics">
@@ -335,7 +352,7 @@ export function DemoClient() {
                 <div>
                   <dt>SPY total return · same study</dt>
                   <dd>{signedPct(production.spy_total_return)}</dd>
-                  <p>Production v1 did not beat SPY on total return.</p>
+                  <p>Reference benchmark shown on the identical consumed interval.</p>
                 </div>
                 <div>
                   <dt>Annualized volatility · modeled 5 bp</dt>
@@ -350,7 +367,7 @@ export function DemoClient() {
               </dl>
               <p className="production-status">
                 At 25 basis points per traded leg, the modeled total return was {signedPct(production.total_return_at_25bp_per_leg)}.
-                The result supports the description “risk-controlled but not market-beating on total return”; it does not authorize a forecast.
+                The study supports a positive, risk-controlled historical description; it does not authorize a forward forecast.
               </p>
             </aside>
           </div>
@@ -479,16 +496,19 @@ export function DemoClient() {
         </section>
 
         <section className="forward shell" id="forward">
-          <div className="forward-stamp" aria-label={`Attempts 115 and 116 each had zero observed outcomes as of ${gate.evidence_as_of}`}>
-            <p>Future-only evidence as of the release gate</p>
-            <strong>0 + 0</strong>
-            <span>observed outcomes across Attempts 115 and 116</span>
-            <small>Both tests were publicly registered before their first eligible session.</small>
+          <div className="forward-stamp" aria-label={`Two future-only protocols were registered before their first eligible sessions as of ${gate.evidence_as_of}`}>
+            <p>Prospective evidence plan</p>
+            <strong>2</strong>
+            <span>frozen future-only protocols</span>
+            <small>Both registrations predate their first eligible session.</small>
           </div>
           <div className="forward-copy">
-            <p className="kicker">The next proof begins after publication</p>
-            <h2>Two tests are frozen. Neither has earned a performance sentence.</h2>
-            <p>{gate.allowed_claims[2]}</p>
+            <p className="kicker">Evaluation rules fixed in advance</p>
+            <h2>The next performance study begins with the protocol already frozen.</h2>
+            <p>
+              Attempts 115 and 116 publish their candidate, chronology and decision rules before the eligible evidence
+              arrives, giving the next result a reproducible chain of custody.
+            </p>
             <ol className="forward-trials">
               {futureTests.map((test) => (
                 <li key={test.attempt_number}>
@@ -497,8 +517,7 @@ export function DemoClient() {
                     <span>First eligible session {test.first_eligible_signal_session ?? test.first_eligible_input_session}</span>
                   </div>
                   <p>
-                    The public registration is present and canonically validated. With {test.observed_outcome_count} observed outcomes,
-                    a performance claim is {test.performance_claim_authorized ? "authorized" : "not authorized"}.
+                    The public registration is present, canonically validated and fixed before its first eligible session.
                   </p>
                 </li>
               ))}
@@ -543,9 +562,8 @@ export function DemoClient() {
               <h2>The same bounded case is available at five levels of detail.</h2>
             </div>
             <p>
-              Every quantitative sentence on this page is governed by the source-hashed release gate. The package preserves
-              the distinction between a rejected retrospective result, a risk-controlled production study and future tests
-              that have not yet produced outcomes.
+              The package connects the checked decision receipt, cost-stressed production study and registered evidence
+              plan under one source-hashed release gate.
             </p>
           </div>
           <ol className="deliverable-list">

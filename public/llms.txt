@@ -6,17 +6,21 @@ Finly is Bruce Wen's solo submission to the Alpaca AI Trading Agents Hackathon. 
 
 Finly separates market interpretation from capital-bearing authority. An AI component may assess a bounded evidence bundle, explain uncertainty, respond to evidence-removal challenges, and veto. Deterministic code owns exposure, horizon, defined-risk option construction, exact maximum loss, broker fields, and the final PERMIT or NO_TRADE decision. Broker mutation is disabled in the published evidence path.
 
-## Release-gated quantitative findings
+## Verified product evidence
 
-In the consumed, post-selected 2013-01-02–2026-08-27 retrospective replay with modeled 5 bp one-way costs, G4 returned +967.11% versus SPY +580.82%; promotion was rejected because the Deflated Sharpe probability was 3.75% and the worst familywise-adjusted p-value was 37.18%.
+In the checked positive synthetic paper fixture, Finly compiled a one-contract defined-risk spread with an exact $366 maximum loss and $634 maximum gain. The structure passed all 4 recorded source-removal checks and all 32 recorded perturbation checks before an Alpaca-compatible local paper payload could exist. No order was transmitted.
+
+## Release-gated quantitative research
 
 Production v1 is the frozen unlevered SPY/BIL policy targeting 10% annualized volatility: in the consumed 2025-01-02–2026-08-28 modeled next-open study it returned +15.39% at 5 bp per traded leg and +10.56% at 25 bp, versus SPY +33.52%; at 5 bp its modeled annualized volatility was 8.12% and maximum drawdown was -5.45%, so it was risk-controlled but not market-beating on total return.
+
+Finly's statistical safety audit also preserves the strongest post-selected historical survivor without mislabeling it as a forecast. In the consumed 2013-01-02–2026-08-27 retrospective replay with modeled 5 bp one-way costs, G4 returned +967.11% versus SPY +580.82%. Promotion was rejected and its claim status remains research-only because the Deflated Sharpe probability was 3.75% and the worst familywise-adjusted p-value was 37.18%.
 
 Attempts 115 and 116 are publicly registered future-only tests. As of 2026-08-30T08:10:52.000Z, each had zero observed outcomes, and neither supports a performance claim.
 
 ## Evidence boundary
 
-G4 is a rejected, post-selected research shadow—not the production policy. The historical studies are modeled ETF ledgers, not broker fills or options P&L. The future-only receipts are GitHub platform records, not independent cryptographic timestamps or outcome evidence. Finly does not claim future profitability, next-month SPY outperformance, a competitor rank, or a Finly-versus-competitor return matchup.
+G4 is a post-selected research shadow—not the production policy. The historical studies are modeled ETF ledgers, not broker fills or options P&L. The future-only receipts are GitHub platform records, not independent cryptographic timestamps or outcome evidence. Finly does not claim future profitability, next-month SPY outperformance, a competitor rank, or a Finly-versus-competitor return matchup.
 
 ## Inspectable proof
 

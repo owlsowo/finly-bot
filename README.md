@@ -2,21 +2,21 @@
 
 Finly is an agentic options-research system built around a deliberately narrow grant of power: an AI may interpret evidence, explain a view, and veto a proposal, but deterministic code owns exposure, option structure, maximum loss, broker fields, and the final `PERMIT` or `NO_TRADE` decision.
 
-The project began with a conventional goal—find a strategy that could beat a simple benchmark—and arrived at a more consequential one. A persuasive forecast is not the same thing as permission to risk capital. Finly makes that distinction executable.
+Finly turns that division of responsibility into a working pipeline. In its checked positive synthetic fixture, a one-contract defined-risk spread carried an exact $366 maximum loss and $634 maximum gain, passed 4/4 source-removal checks and 32/32 perturbation checks, and compiled into a local Alpaca-compatible paper payload. No order was transmitted.
 
 [Open the live case](https://owlsowo.github.io/finly-bot/) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Read the technical paper](public/judge/Finly_Technical_Proposal.pdf) · [Review the consulting deck](public/judge/Finly_Consulting_Deck.pdf) · [Watch the demo film](public/judge/Finly_Demo_Video.mp4)
 
-## The strongest chart did not receive authority
+## A statistical safety audit travels with every claim
 
-In the consumed, post-selected 2013-01-02–2026-08-27 retrospective replay with modeled 5 bp one-way costs, G4 returned +967.11% versus SPY +580.82%; promotion was rejected because the Deflated Sharpe probability was 3.75% and the worst familywise-adjusted p-value was 37.18%.
+Finly keeps historical performance and evidentiary status in the same record. In the consumed, post-selected 2013-01-02–2026-08-27 retrospective replay with modeled 5 bp one-way costs, G4 returned +967.11% versus SPY +580.82%. The audit retained it as research-only because the Deflated Sharpe probability was 3.75% and the worst familywise-adjusted p-value was 37.18%.
 
-That refusal is the central product demonstration. G4 was discovered after history had been examined, so its attractive return is evidence about the research process—not permission to describe a validated strategy or forecast future superiority. Finly records the result, preserves the assumptions, and denies promotion when the correction-aware gates fail.
+Because G4 was selected after the historical outcomes were already visible, the audit treats it as hypothesis-generating evidence rather than a forward opportunity. The potentially useful research is preserved without turning a hindsight-selected chart into a live forecast.
 
-## The production policy accepts a visible tradeoff
+## The production policy targets a controlled risk path
 
 Production v1 is the frozen unlevered SPY/BIL policy targeting 10% annualized volatility: in the consumed 2025-01-02–2026-08-28 modeled next-open study it returned +15.39% at 5 bp per traded leg and +10.56% at 25 bp, versus SPY +33.52%; at 5 bp its modeled annualized volatility was 8.12% and maximum drawdown was -5.45%, so it was risk-controlled but not market-beating on total return.
 
-The production rule is intentionally simpler than the rejected research shadow. Three lagged SPY-minus-BIL trend horizons determine exposure, a volatility target scales it, and BIL receives the balance. AI can examine bounded evidence and stop the process. It cannot rewrite the allocation, enlarge the trade, or turn a rationale into a broker order.
+Three lagged SPY-minus-BIL trend horizons determine exposure, a volatility target scales it, and BIL receives the balance. AI can examine bounded evidence and stop the process. It cannot rewrite the allocation, enlarge the trade, or turn a rationale into a broker order.
 
 ## Authority is divided before an order is constructed
 
