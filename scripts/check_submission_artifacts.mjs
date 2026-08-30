@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+
+import {
+  canonicalQuantitativeReleaseGateJson,
+  EXACT_ALLOWED_CLAIMS,
+  validateQuantitativeReleaseGate,
+} from "../research/build_quantitative_release_gate.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const pathFor = (relativePath) => resolve(root, relativePath);
@@ -14,20 +20,23 @@ function requireFile(relativePath, minimumBytes) {
   return { path, size: stat.size };
 }
 
+function requireAbsent(relativePath) {
+  assert.equal(existsSync(pathFor(relativePath)), false, `${relativePath} is obsolete and must not ship`);
+}
+
 function requirePdf(relativePath, expectedPages) {
   const file = requireFile(relativePath, 40_000);
-  const header = readFileSync(file.path).subarray(0, 5).toString("ascii");
-  assert.equal(header, "%PDF-", `${relativePath} must be a PDF`);
+  assert.equal(readFileSync(file.path).subarray(0, 5).toString("ascii"), "%PDF-",
+    `${relativePath} must be a PDF`);
   const output = execFileSync("pdfinfo", [file.path], { encoding: "utf8" });
-  const pages = Number(/^Pages:\s+(\d+)$/m.exec(output)?.[1]);
+  const pages = Number(/^Pages:\s+(\d+)$/mu.exec(output)?.[1]);
   assert.equal(pages, expectedPages, `${relativePath} must contain ${expectedPages} pages`);
   return file;
 }
 
 function executablePath(command) {
   try {
-    const path = execFileSync("which", [command], { encoding: "utf8" }).trim();
-    return path || null;
+    return execFileSync("which", [command], { encoding: "utf8" }).trim() || null;
   } catch {
     return null;
   }
@@ -36,7 +45,6 @@ function executablePath(command) {
 function pdfTextTool() {
   const direct = executablePath("pdftotext");
   if (direct) return direct;
-
   const pdfinfo = executablePath("pdfinfo");
   const candidates = pdfinfo ? [
     resolve(dirname(pdfinfo), "pdftotext"),
@@ -66,6 +74,7 @@ function normalizedText(value) {
   return value
     .normalize("NFKC")
     .replace(/[‐‑‒–—−]/gu, "-")
+    .replace(/-\s+/gu, "-")
     .replace(/\s+/gu, " ")
     .trim();
 }
@@ -73,7 +82,7 @@ function normalizedText(value) {
 function requirePatterns(label, value, patterns) {
   const text = normalizedText(value);
   for (const pattern of patterns) {
-    assert.match(text, pattern, `${label} is stale or missing the current evidence statement: ${pattern}`);
+    assert.match(text, pattern, `${label} is stale or missing release-gated evidence: ${pattern}`);
   }
 }
 
@@ -89,9 +98,9 @@ function pngDimensions(relativePath) {
   return { width: data.readUInt32BE(16), height: data.readUInt32BE(20) };
 }
 
-requirePdf("public/judge/Finly_Judge_Brief.pdf", 1);
-requirePdf("public/judge/Finly_Technical_Proposal.pdf", 5);
-requirePdf("public/judge/Finly_Consulting_Deck.pdf", 9);
+const onePage = requirePdf("public/judge/Finly_Judge_Brief.pdf", 1);
+const paper = requirePdf("public/judge/Finly_Technical_Proposal.pdf", 8);
+const deck = requirePdf("public/judge/Finly_Consulting_Deck.pdf", 9);
 requireFile("public/judge/Finly_Judge_Proposal.docx", 20_000);
 requireFile("public/judge/Finly_Technical_Paper.docx", 40_000);
 requireFile("public/judge/Finly_Consulting_Deck.pptx", 100_000);
@@ -105,148 +114,113 @@ const probe = JSON.parse(execFileSync("ffprobe", [
 const videoStream = probe.streams.find((stream) => stream.width && stream.height);
 const audioStream = probe.streams.find((stream) => stream.codec_name === "aac");
 assert.equal(videoStream?.codec_name, "h264", "demo video must use H.264");
-assert.deepEqual([videoStream?.width, videoStream?.height], [1920, 1080], "demo video must be 1920×1080");
+assert.deepEqual([videoStream?.width, videoStream?.height], [1920, 1080],
+  "demo video must be 1920×1080");
 assert.ok(audioStream, "demo video must contain AAC narration");
-assert.ok(Number(probe.format.duration) > 60 && Number(probe.format.duration) <= 300, "demo video must run between one and five minutes");
-
-const captions = readFileSync(requireFile("public/judge/Finly_Demo_Video.srt", 500).path, "utf8");
-assert.match(captions, /Most trading demos begin/);
-assert.match(captions, /next-session-open fills/i);
-assert.match(captions, /SPY returned 33\.52 percent\. Finly did not beat it/i);
-assert.match(captions, /\$300 shadow ended at \$351\.88/i);
-assert.match(captions, /Attempt 114 answers that hindsight problem/i);
-assert.match(captions, /254 consecutive timely commitment anchors and 252 reconciled settlements/i);
-assert.match(captions, /not an independent cryptographic timestamp/i);
-assert.match(captions, /llama still does not get the keys/);
+assert.ok(Number(probe.format.duration) > 60 && Number(probe.format.duration) <= 300,
+  "demo video must run between one and five minutes");
 
 assert.deepEqual(pngDimensions("public/brand/finly-cover-16x9.png"), { width: 1920, height: 1080 });
 assert.deepEqual(pngDimensions("public/brand/finly-social-cover.png"), { width: 1200, height: 630 });
+assert.deepEqual(pngDimensions("public/judge/finly-product-home.png"), { width: 1280, height: 720 });
 
-const claims = JSON.parse(readFileSync(pathFor("public/data/submission_claims_lock.json"), "utf8"));
-assert.equal(claims.hindsight_boundary.fully_preregistered_claim_permitted, false);
-assert.equal(claims.options_and_broker_boundary.historical_g4_is_options_pnl, false);
-assert.equal(claims.options_and_broker_boundary.order_submitted_or_filled_as_evidence, false);
+const gateText = readFileSync(pathFor("research/output/quantitative_release_gate.json"), "utf8");
+const publicGateText = readFileSync(pathFor("public/data/quantitative_release_gate.json"), "utf8");
+const gate = JSON.parse(gateText);
+validateQuantitativeReleaseGate(gate);
+assert.equal(gateText, canonicalQuantitativeReleaseGateJson(gate));
+assert.equal(publicGateText, gateText, "public release gate must be an exact byte copy");
+assert.deepEqual(gate.allowed_claims, EXACT_ALLOWED_CLAIMS);
+assert.equal(gate.release_decision.status, "GO_BOUNDED_RELEASE_NO_GO_PERFORMANCE_MATCHUP");
+assert.equal(gate.conclusions.registered_future_only_tests.every((item) =>
+  item.observed_outcome_count === 0 && item.performance_claim_authorized === false), true);
 
-const execution = claims.execution_realism;
-assert.equal(execution.evidence_class, "CONSUMED_RETROSPECTIVE_EXECUTION_REALISM");
-assert.equal(execution.policy_id, "tsmom_ensemble_vol");
-assert.deepEqual(execution.window, { start: "2025-01-02", end: "2026-08-28", observations: 415 });
-assert.match(execution.fill_assumption, /next session open t\+1/i);
-assert.equal(execution.cost_unit, "basis points per absolute traded-notional leg");
-assert.deepEqual(execution.next_open_cost_stress.map(({ bps_per_leg }) => bps_per_leg), [1, 5, 25]);
-assert.equal(execution.next_open_cost_stress.every(({ total_return }) => total_return > 0), true);
-const fiveBasisPoint = execution.next_open_cost_stress.find(({ bps_per_leg }) => bps_per_leg === 5);
-const twentyFiveBasisPoint = execution.next_open_cost_stress.find(({ bps_per_leg }) => bps_per_leg === 25);
-assert.ok(fiveBasisPoint.total_return < fiveBasisPoint.spy_total_return,
-  "production policy must not be presented as beating SPY in the execution-realism window");
-assert.equal(execution.raw_no_distribution_proxy.bps_per_leg, 1);
-assert.ok(execution.raw_no_distribution_proxy.total_return > 0);
-assert.equal(execution.small_account_proxy.bps_per_leg, 1);
-assert.equal(execution.small_account_proxy.initial_equity_usd, 300);
-assert.equal(execution.small_account_proxy.minimum_order_notional_usd, 1);
-assert.equal(execution.small_account_proxy.quantity_decimals, 9);
-assert.equal(execution.small_account_proxy.skipped_minimum_orders, 12);
-assert.equal(execution.assurance.consumed_retrospective_only, true);
-assert.equal(execution.assurance.alpha_proven, false);
-assert.equal(execution.assurance.future_profitability_proven, false);
-assert.equal(execution.assurance.broker_fill_verified, false);
-assert.equal(execution.assurance.broker_mutation_authorized, false);
-assert.match(execution.exact_safe_claim, /underperformed SPY/i);
+for (const obsolete of [
+  "public/data/submission_claims_lock.json",
+  "public/data/g4_window_explorer.json",
+  "docs/COMPETITOR_BENCHMARK.md",
+  "evidence/competitor_benchmark.json",
+]) requireAbsent(obsolete);
 
-const attempt = claims.prospective_attempt114;
-assert.equal(attempt.attempt_id, "finly_prospective_profitability_attempt_114");
-assert.equal(attempt.attempt_number, 114);
-assert.equal(attempt.publication_status, "PUBLIC_PRE_DEADLINE_GITHUB_WORKFLOW_VERIFIED");
-assert.equal(attempt.required_signal_commitments, 254);
-assert.equal(attempt.required_settlements, 252);
-assert.equal(attempt.primary_intervals, 252);
-assert.equal(attempt.exclusive_deadline, "2026-08-31T20:00:00.000Z");
-assert.equal(attempt.publication_commit.sha, "38a999cdf5db98f3a831d137b799ff8a48248e71");
-assert.equal(attempt.publication_commit.url,
-  "https://github.com/owlsowo/finly-bot/commit/38a999cdf5db98f3a831d137b799ff8a48248e71");
-assert.equal(attempt.verification_workflow.run_id, 33293038439);
-assert.equal(attempt.verification_workflow.url,
-  "https://github.com/owlsowo/finly-bot/actions/runs/33293038439");
-assert.equal(attempt.bound_runtime_source_count, 17);
-assert.equal(attempt.public_get_count, 23);
-assert.equal(attempt.verification_workflow.conclusion, "success");
-assert.ok(Date.parse(attempt.verification_workflow.completed_at) < Date.parse(attempt.exclusive_deadline));
-assert.equal(attempt.assurance.public_pre_deadline_publication_observed, true);
-assert.equal(attempt.assurance.independent_cryptographic_timestamp_verified, false);
-assert.equal(attempt.assurance.provider_origin_verified, false);
-assert.equal(attempt.assurance.broker_execution_verified, false);
-assert.equal(attempt.assurance.performance_inference_permitted, false);
-assert.equal(attempt.assurance.broker_mutation_authorized, false);
-assert.deepEqual(attempt.sample_boundary, {
-  consecutive_official_sessions_required: true,
-  no_skips: true,
-  no_backfill: true,
-  replacement_window_permitted: false,
-  optional_stopping_permitted: false,
-  repeat_confirmatory_test_permitted: false,
-});
-assert.match(attempt.exact_safe_claim, /not an independent cryptographic timestamp/i);
+assert.deepEqual(
+  readdirSync(pathFor("dist/data"), { withFileTypes: true })
+    .filter((entry) => entry.isFile())
+    .map((entry) => entry.name)
+    .sort(),
+  ["latest_receipt.json", "no_trade_receipt.json", "quantitative_release_gate.json"],
+  "hosted data bundle must contain only the two synthetic receipts and exact release gate",
+);
 
-const explorer = JSON.parse(readFileSync(requireFile("public/data/g4_window_explorer.json", 1_000_000).path, "utf8"));
-assert.equal(explorer.schema_version, "finly_public_g4_window_explorer.v1");
-assert.equal(explorer.rows.length, 3434);
-assert.equal(explorer.default_window.exact_submission_claims_lock_match, true);
-assert.equal(explorer.default_window.ending_values.g4_ending_value_usd, 1067105.98);
-assert.equal(explorer.default_window.ending_values.spy_ending_value_usd, 680817.46);
-assert.equal(explorer.default_window.ending_values.g4_minus_spy_ending_value_usd, 386288.52);
-
-const machineSummary = readFileSync(requireFile("public/llms.txt", 1_000).path, "utf8");
-assert.match(machineSummary, /\$1,067,106/);
-assert.match(machineSummary, /Finly did not beat SPY's raw return/i);
-
-const percent = (value) => `${(value * 100).toFixed(2)}%`;
-const executionPatterns = [
-  /415(?:\s*-\s*observation| next-open observations| consumed sessions| observations)/i,
-  new RegExp(percent(fiveBasisPoint.total_return).replace(".", "\\.")),
-  new RegExp(percent(fiveBasisPoint.spy_total_return).replace(".", "\\.")),
-  new RegExp(percent(twentyFiveBasisPoint.total_return).replace(".", "\\.")),
-  new RegExp(execution.small_account_proxy.ending_equity_usd.toFixed(2).replace(".", "\\.")),
-  /(?:did not (?:beat|outperform) SPY|underperformed SPY|SPY (?:still )?won (?:on )?(?:raw )?return|not (?:claim )?(?:historical )?raw\s*-\s*return dominance)/i,
+const g4Patterns = [
+  /2013-01-02.{0,100}2026-08-27/iu,
+  /\+967\.11%/u,
+  /\+580\.82%/u,
+  /3\.75%/u,
+  /37\.18%/u,
+  /rejected/iu,
 ];
-const prospectivePatterns = [
-  /Attempt 114/i,
-  /(?:17\s*-\s*file|17 named source files|17 runtime source files|Seventeen runtime source files)/i,
-  /23 (?:fixed )?(?:unauthenticated )?(?:public )?(?:GET checks|GET requests|checks)/i,
-  /254 (?:consecutive )?(?:(?:pre\s*-\s*execution|timely|public|signal) )*(?:commitments|commitment anchors|anchors)/i,
-  /252 (?:settled returns|settlements|reconciled settlements)/i,
-  /not an independent cryptographic timestamp/i,
+const productionPatterns = [
+  /2025-01-02.{0,100}2026-08-28/iu,
+  /\+15\.39%/u,
+  /\+10\.56%/u,
+  /\+33\.52%/u,
+  /8\.12%/u,
+  /-5\.45%/u,
+  /(?:not market-beating|did not beat|below SPY)/iu,
 ];
+const futurePatterns = [
+  /Attempts 115 and 116/iu,
+  /(?:zero|0) observed outcomes/iu,
+  /neither supports a performance claim/iu,
+];
+const documentPatterns = [...g4Patterns, ...productionPatterns, ...futurePatterns];
 
-requirePatterns("machine-readable summary", machineSummary, [...executionPatterns, ...prospectivePatterns]);
 requireSourcePdfParity({
   label: "one-page proposal",
   sourcePath: "docs/paper/one_page_writeup.md",
   pdfPath: "public/judge/Finly_Judge_Brief.pdf",
-  patterns: [...executionPatterns, ...prospectivePatterns],
+  patterns: documentPatterns,
 });
 requireSourcePdfParity({
   label: "technical paper",
   sourcePath: "docs/paper/finly_technical_paper.md",
   pdfPath: "public/judge/Finly_Technical_Proposal.pdf",
-  patterns: [...executionPatterns, ...prospectivePatterns],
+  patterns: documentPatterns,
 });
 requireSourcePdfParity({
   label: "consulting deck",
   sourcePath: "scripts/build_finly_deck.mjs",
   pdfPath: "public/judge/Finly_Consulting_Deck.pdf",
-  patterns: [
-    /Attempt 114/i,
-    new RegExp(percent(fiveBasisPoint.total_return).replace(".", "\\.")),
-    new RegExp(percent(fiveBasisPoint.spy_total_return).replace(".", "\\.")),
-    new RegExp(percent(twentyFiveBasisPoint.total_return).replace(".", "\\.")),
-    /254 (?:consecutive )?(?:(?:pre\s*-\s*execution|timely|public|signal) )*(?:commitments|commitment anchors|anchors)/i,
-    /252.{0,100}(?:settled returns|settlements|reconciled settlements)/i,
-    /(?:did not (?:beat|outperform) SPY|underperformed SPY|SPY (?:still )?won (?:on )?(?:raw )?return|not (?:claim )?(?:historical )?raw\s*-\s*return dominance)/i,
-  ],
+  patterns: documentPatterns,
 });
 
+const captions = readFileSync(requireFile("public/judge/Finly_Demo_Video.srt", 500).path, "utf8");
+requirePatterns("video captions", captions, [
+  /967\.11 percent/iu,
+  /580\.82 percent/iu,
+  /3\.75 percent/iu,
+  /37\.18 percent/iu,
+  /15\.39 percent/iu,
+  /10\.56 percent/iu,
+  /33\.52 percent/iu,
+  /Attempts 115 and 116/iu,
+  /zero observed outcomes/iu,
+  /llama still does not get the keys/iu,
+]);
+
+const machineSummary = readFileSync(requireFile("public/llms.txt", 1_000).path, "utf8");
+requirePatterns("machine-readable summary", machineSummary, documentPatterns);
+assert.doesNotMatch(normalizedText(machineSummary), /Finly (?:will|is likely to) beat SPY/iu);
+
+const indexHtml = readFileSync(pathFor("index.html"), "utf8");
+requirePatterns("social metadata", indexHtml, g4Patterns);
+
+for (const [label, file] of [["one-page", onePage], ["paper", paper], ["deck", deck]]) {
+  assert.ok(file.size < 20 * 1024 * 1024, `${label} PDF is unexpectedly large`);
+}
+
 console.log(
-  `submission artifacts verified: 1-page brief; 5-page paper; 9-slide deck; ` +
-  `${Number(probe.format.duration).toFixed(1)}s video; interactive 3,434-row replay; 16:9 cover; ` +
-  `execution-realism and Attempt 114 claim boundaries intact`,
+  `submission artifacts verified: 1-page essay; 8-page paper; 9-slide deck; `
+  + `${Number(probe.format.duration).toFixed(1)}s video; exact public release gate; `
+  + `obsolete public claim surfaces absent`,
 );

@@ -85,9 +85,10 @@ test("artifact self-hash, canonical JSON, and checked-in outputs are determinist
   const first = await buildQuantitativeReleaseGate({ rootDir: projectRoot });
   const second = await buildQuantitativeReleaseGate({ rootDir: projectRoot });
   const json = canonicalQuantitativeReleaseGateJson(first.artifact);
-  const [checkedJson, checkedMarkdown] = await Promise.all([
+  const [checkedJson, checkedMarkdown, checkedPublicJson] = await Promise.all([
     readFile(resolve(projectRoot, OUTPUT_PATHS.json), "utf8"),
     readFile(resolve(projectRoot, OUTPUT_PATHS.markdown), "utf8"),
+    readFile(resolve(projectRoot, OUTPUT_PATHS.public_json), "utf8"),
   ]);
 
   assert.deepEqual(first, second);
@@ -97,6 +98,7 @@ test("artifact self-hash, canonical JSON, and checked-in outputs are determinist
     hashQuantitativeReleaseGate(quantitativeReleaseGateBody(first.artifact)));
   assert.equal(json, canonicalQuantitativeReleaseGateJson(second.artifact));
   assert.equal(checkedJson, json);
+  assert.equal(checkedPublicJson, json);
   assert.equal(checkedMarkdown, first.markdown);
   assert.doesNotThrow(() => validateQuantitativeReleaseGate(first.artifact));
 });

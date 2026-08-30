@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Finly — execution realism before trading authority</title>
-  <desc id="desc">A controlled-delegation trading agent whose frozen policy remained positive under next-open execution and severe cost stress.</desc>
+  <title id="title">Finly — the backtest that did not receive trading authority</title>
+  <desc id="desc">Finly rejected its strongest consumed, post-selected replay after the statistical promotion gates failed.</desc>
   <rect width="1200" height="630" fill="#f6f3ec"/>
   <rect x="0" y="0" width="28" height="630" fill="#0d2b43"/>
 
@@ -15,32 +15,29 @@
   <text x="1130" y="68" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.6" text-anchor="end">ALPACA AI TRADING AGENTS HACKATHON</text>
   <line x1="70" y1="124" x2="1130" y2="124" stroke="#0d2b43" stroke-width="1.5"/>
 
-  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">EXECUTION REALISM BEFORE AUTHORITY</text>
+  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">THE STRONGEST CHART DID NOT GET AUTHORITY</text>
   <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="50" font-weight="700" letter-spacing="-1.3">
-    <text x="70" y="252">Finly stayed positive when we made</text>
-    <text x="70" y="318">the backtest harder to flatter.</text>
+    <text x="70" y="252">A backtest returned +967.11%.</text>
+    <text x="70" y="318">Finly rejected it.</text>
   </g>
 
   <line x1="70" y1="367" x2="1130" y2="367" stroke="#c8ccc7" stroke-width="1"/>
   <g font-family="Arial, Helvetica, sans-serif">
-    <text x="70" y="410" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">NEXT-OPEN RETURN · 5 BP / LEG</text>
-    <text x="70" y="468" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="52" font-weight="700">+15.39%</text>
-    <text x="326" y="465" fill="#68706f" font-size="17">SPY +33.52%</text>
+    <text x="70" y="410" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">G4 SHADOW · MODELED 5 BP ONE-WAY</text>
+    <text x="70" y="468" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="52" font-weight="700">+967.11%</text>
 
-    <text x="486" y="410" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">RETURN · 25 BP / LEG STRESS</text>
-    <text x="486" y="468" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="52" font-weight="700">+10.56%</text>
-    <text x="742" y="465" fill="#68706f" font-size="17">same fixed policy</text>
+    <text x="486" y="410" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">SPY · SAME CONSUMED INTERVAL</text>
+    <text x="486" y="468" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="52" font-weight="700">+580.82%</text>
 
     <g transform="translate(936 402) rotate(-1)">
       <rect width="194" height="68" fill="#f3e8e5" stroke="#8b3a3a" stroke-width="2"/>
-      <text x="97" y="35" fill="#8b3a3a" font-size="14" font-weight="700" letter-spacing="1.2" text-anchor="middle">17/17 FILES</text>
-      <text x="97" y="53" fill="#8b3a3a" font-size="13" font-weight="700" letter-spacing="1.2" text-anchor="middle">PUBLICLY FROZEN</text>
+      <text x="97" y="42" fill="#8b3a3a" font-size="17" font-weight="700" letter-spacing="1.5" text-anchor="middle">REJECTED</text>
     </g>
   </g>
 
   <line x1="70" y1="516" x2="1130" y2="516" stroke="#0d2b43" stroke-width="1.5"/>
-  <text x="70" y="558" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="21">Controlled delegation · deterministic allocation and options compiler · fail-closed gateway</text>
-  <text x="70" y="578" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">2025-01-02 to 2026-08-28 · fractional next-open DAY-order assumption · 415 consumed sessions</text>
-  <text x="70" y="603" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Adjusted-OHLC theoretical ledger · not a broker fill, options P&amp;L, alpha claim or forecast</text>
+  <text x="70" y="558" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="21">3.75% Deflated Sharpe probability · 37.18% worst familywise-adjusted p-value</text>
+  <text x="70" y="578" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">2013-01-02 to 2026-08-27 · consumed, post-selected retrospective ETF replay</text>
+  <text x="70" y="603" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Not options P&amp;L, broker fills, or evidence of future market superiority</text>
   <text x="1130" y="603" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" text-anchor="end">BRUCE WEN · SOLO BUILDER</text>
 </svg>

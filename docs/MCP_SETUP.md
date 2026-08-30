@@ -160,4 +160,4 @@ are published through GitHub/GitHub Pages, not GPT Sites.
 
 - [Alpaca MCP server documentation](https://docs.alpaca.markets/us/docs/alpaca-mcp-server)
 - [Alpaca MCP server repository](https://github.com/alpacahq/alpaca-mcp-server)
-- [Alpaca multi-leg order documentation](https://docs.alpaca.markets/docs/multi-leg-options-trading)
+- [Alpaca order endpoint documentation](https://docs.alpaca.markets/reference/postorder)

@@ -1,66 +1,76 @@
-# Finly submission requirements and evidence boundary
+# Finly submission requirements and release checklist
 
-This document traces the public Finly package to the Alpaca AI Trading Agents Hackathon requirements. It is an internal release checklist, not a substitute for the Lablab submission form. The event page was rechecked on 29 August 2026 and lists the hackathon dates as 28 August through 4 September 2026. The working submission deadline is 4 September 2026 at 11:00 a.m. EDT; the form should be checked once more immediately before the final upload in case the organizer changes a field or deadline.
+This is the internal traceability checklist for the Alpaca AI Trading Agents Hackathon. It is not submission copy. The event and live gallery were rechecked on 30 August 2026. The stated deadline is **Friday, 4 September 2026 at 11:00 a.m. EDT** (15:00 UTC). Reopen the live form immediately before submission in case the organizer changes a field.
 
-Finly should be entered in the **Options Alpha Agents** track. The project is strongest when presented as a controlled-delegation options agent: AI contributes bounded judgment and veto power, deterministic code owns the trade and its loss, and the system refuses to promote even its most attractive historical candidate when the evidence does not satisfy its authorization standard.
+Finly should be entered in the **Options Alpha Agents** track. Its clearest proposition is controlled delegation: an AI may assess bounded evidence, explain uncertainty, and veto; deterministic code owns exposure, option structure, exact maximum loss, broker fields, and the final `PERMIT` or `NO_TRADE` decision.
 
-## The build satisfies the technical shape of the challenge, with one execution proof still outstanding
+## Event requirements
 
-| Published requirement | Evidence in the Finly repository | Boundary that must remain explicit |
+| Published requirement | Finly evidence | Boundary or remaining action |
 | --- | --- | --- |
-| Build an autonomous AI trading agent with Alpaca's Trading API. | Finly implements an evidence pipeline, bounded model assessment, deterministic economic intent, defined-risk option compilation, risk reservations, a guarded paper-order lifecycle, and machine-checkable decision receipts. The model can interpret, challenge, reduce, or veto; code owns direction, horizon, structure, quantity, maximum loss, order fields, and the final `PERMIT` or `NO_TRADE` result. | The authenticated broker evidence is currently read-only. No competition-account order or fill is claimed as proof of performance. |
-| Use Alpaca's MCP server or CLI. | The official `alpaca-mcp-server==2.2.1` was invoked over MCP stdio. An authenticated paper-mode `get_account_info` call succeeded, and the redacted, hashed trace is stored in [`evidence/alpaca_mcp_read_trace.json`](../evidence/alpaca_mcp_read_trace.json). The runtime schema for multi-leg option orders is pinned and checked separately. | The successful MCP call did not mutate the account. An MCP order acknowledgment, fill, exit, and exact read-back have not yet been captured. |
-| Every strategy must incorporate options. | The submitted architecture compiles defined-risk SPY bull-call or bear-put debit verticals, validates OCC symbols, calculates exact payoff bounds, projects an atomic Alpaca multi-leg payload, and tests lifecycle failures including partial fills and reconciliation errors. | The 2013–2026 G4 chart is an ETF allocation replay used to evaluate the economic candidate. It is not historical options profit and loss. The public vertical examples are synthetic compiler fixtures, not broker fills. |
-| Use a new dedicated Alpaca paper account reset to $100,000. | The authenticated trace records an active, unblocked dedicated paper account with the required starting balance and Level 3 options approval. The full account ID is retained locally for the Lablab form. | The public package should omit the full account ID together with credentials, the internal account UUID, buying power, and other unnecessary private fields. Account eligibility and the reset balance should be confirmed once more immediately before form submission. |
+| Autonomous AI trading agent using Alpaca's Trading API | Finly implements a bounded evidence pipeline, local-model assessment, deterministic economic intent, defined-risk options compilation, risk reservation, lifecycle state, and machine-checkable receipts. | The public demonstration is non-mutating. Do not describe a synthetic receipt as a broker order. |
+| Use Alpaca MCP or Alpaca CLI | The official `alpaca-mcp-server==2.2.1` completed an authenticated paper-mode `get_account_info` call. A redacted, hashed trace is stored in [`evidence/alpaca_mcp_read_trace.json`](../evidence/alpaca_mcp_read_trace.json). | The trace proves authenticated read access, not an order, fill, or profit. |
+| Incorporate options | A typed intent compiles into a defined-risk SPY bull-call or bear-put debit vertical. The implementation validates OCC symbols, payoff bounds, quote freshness, equality, aggregate risk, and Alpaca multi-leg payload shape. | The historical return studies are ETF policy replays, not historical options P&L. Public verticals are compiler fixtures, not fills. |
+| New dedicated Alpaca paper account reset to $100,000 | The authenticated account is recorded as active, unblocked, and approved for Level 3 options. Its identifier is kept outside the public package. | Reconfirm that the account is dedicated, begins at exactly $100,000, and paste its ID only into the private form. |
+| One-page explanation of AI logic, risk gates, and Alpaca infrastructure | [`Finly_Judge_Brief.pdf`](../public/judge/Finly_Judge_Brief.pdf) is a one-page analytical essay, with an editable [`DOCX`](../public/judge/Finly_Judge_Proposal.docx). | The public guidance does not expose a dedicated file type or field; add the PDF wherever the live form permits and repeat its link in Additional Information. |
+| Public, original, open-source work | Repository: <https://github.com/owlsowo/finly-bot>. The project is MIT-licensed. | Keep secrets, account identifiers, private audit material, and direct competitor matchups out of the public release. |
 
-The remaining integration proof is intentionally narrow: a minimum-size, defined-risk paper option order should be acknowledged, reconciled, closed, and read back during market hours. That action is not necessary to describe the architecture honestly, but it would materially strengthen the Technology Implementation and P&L evidence. It must not be represented as completed until the broker record exists.
+The event judges paper-account **P&L and trading activity**. Finly currently has no competition-account option order, fill, or realized P&L. That is a material scoring weakness, not a hidden technicality. No broker mutation should be claimed or performed as part of this release unless the builder separately authorizes it and the resulting record satisfies the existing safety gates.
 
-## The quantitative evidence is compelling enough to explain and not strong enough to oversell
+## Quantitative claims are governed by one release gate
 
-The locked retrospective object is the G4 shadow strategy. From 2 January 2013 through 27 August 2026, under a five-basis-point one-way cost, it recorded 967.11% total return and 18.97% annualized return, compared with SPY at 580.82% and 15.11%. Its maximum drawdown was -28.99%, compared with -33.72% for SPY, while its annualized volatility and turnover were higher.
+The only judge-facing performance language is in [`research/output/quantitative_release_gate.json`](../research/output/quantitative_release_gate.json). The downstream site, essay, paper, deck, film, metadata, and social copy must not paraphrase beyond these boundaries.
 
-Those figures belong in the submission because P&L Performance is an official judging criterion. They must be accompanied by the reason G4 was not promoted. Its Deflated Sharpe probability was 3.75% against a 95% gate; its worst adjusted familywise p-value was 0.3718 against a 0.05 gate; the static growth-control independence gate was unsupported; and the authenticated source-overlap gate did not pass. Although the sign of the historical edge remained positive across all 21 tested rebalance-anchor offsets and the tested 5, 10, and 25 basis-point costs, those local sensitivity checks did not repair the failed promotion evidence.
+1. “In the consumed, post-selected 2013-01-02–2026-08-27 retrospective replay with modeled 5 bp one-way costs, G4 returned +967.11% versus SPY +580.82%; promotion was rejected because the Deflated Sharpe probability was 3.75% and the worst familywise-adjusted p-value was 37.18%.”
+2. “Production v1 is the frozen unlevered SPY/BIL policy targeting 10% annualized volatility: in the consumed 2025-01-02–2026-08-28 modeled next-open study it returned +15.39% at 5 bp per traded leg and +10.56% at 25 bp, versus SPY +33.52%; at 5 bp its modeled annualized volatility was 8.12% and maximum drawdown was -5.45%, so it was risk-controlled but not market-beating on total return.”
+3. “Attempts 115 and 116 are publicly registered future-only tests. As of 2026-08-30T08:10:52.000Z, each had zero observed outcomes, and neither supports a performance claim.”
+4. “At the Generation 7 capture, 20 projects were visible and zero supplied an exact same-panel submitted-options comparator; missing P&L is unknown, never zero, and supports neither a return matchup nor a competitor rank.”
 
-Seven hash-frozen but fully retrospective Generation 6 challengers produced no selection. The research ledger conservatively counts 113 items, including controls, rejected or unexecuted suggestions, invalidated runs, one aborted attempt, and reruns. It is a multiple-testing record, not a claim that 113 independent viable strategies competed under identical conditions. The repository records a local hash freeze of the core G4 formula, date partitions, and costs before the first G4 output, but the local timestamp is not an independent time authority; the excess-Sharpe selection rule and later inferential corrections changed afterward. Accordingly, every market interval used in the reported analysis is treated as consumed, and the analysis is not described as fully preregistered.
+The live gallery later showed 21 total submissions and 17 Options Alpha Agents submissions at 04:59 EDT on 30 August. That does not invalidate the explicitly dated Generation 7 statement, but the 20-project count must never be presented as current.
 
-The exact judge-facing language is locked in [`public/data/submission_claims_lock.json`](../public/data/submission_claims_lock.json). The permitted conclusion is that G4 recorded a higher historical annualized return and a shallower maximum drawdown than SPY under the disclosed assumptions, but failed promotion. The package must not say that Finly consistently outperforms SPY, is proven profitable, has independently validated forward results, or has demonstrated historical options profitability.
+Finly must not claim future profitability, next-month SPY outperformance, verified options P&L, promotion or validation of G4, a result from Attempts 115 or 116, or superiority over a named project. The point of the G4 result is that an attractive backtest did **not** receive authority.
 
-G4 must not be confused with the production book. Production uses the frozen `tsmom_ensemble_vol` SPY/BIL policy. In its fixed 2025–2026 holdout it underperformed SPY's raw return while materially reducing volatility and drawdown, and it has zero forward observations. The latest 95.71% SPY / 4.29% BIL figure is a research-only proposal; the paper account remained in its prior defensive state and no mutation was requested.
+## Required form and media package
 
-## Forward Trial 1 preserves a real prospective boundary instead of inventing one
-
-Forward Trial 1 uses separate signal-commitment and outcome-settlement phases and begins at zero commitments and zero settlements. The protocol predefines the production, G4 shadow, and benchmark books; requires 252 settlements before the primary calculation; and keeps production commitment, production settlement, performance inference, and broker authority disabled.
-
-The protocol is clean-clone-verifiable and locally hash-bound. That does not independently prove when a signal existed, who supplied an input, or whether a market outcome was reconstructed correctly. The external pre-execution anchor, corporate-action reconciliation, provider-origin verification, and outcome-price reconciliation gates therefore remain closed. Its synthetic `TEST_ONLY` path demonstrates schema and accounting mechanics only. The safe, exact statement is recorded in the claim registry and in [`research/FORWARD_TRIAL1.md`](../research/FORWARD_TRIAL1.md).
-
-## Every required submission artifact has a named owner and a final-state check
-
-| Form field or upload | Current Finly artifact | Release status |
+| Form field or upload | Finly artifact or paste-ready source | Final check |
 | --- | --- | --- |
-| Project title, no more than 50 characters | `Finly: The Trading Agent That Can Say No` | Final copy is locked in [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md). |
-| Short description, no more than 255 characters | Paste-ready 186-character description in [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md). | Final; recheck form rendering before submission. |
-| Long description, at least 100 characters | Paste-ready human-edited description in [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md). | Final; paste only after public URLs resolve. |
-| Public repository | `https://github.com/owlsowo/finly-bot` | The 320-file release candidate passed the clean-snapshot verification; the final push remains pending the history-privacy decision. |
-| Hosted prototype | `https://owlsowo.github.io/finly-bot/` | The production build and local link checks pass; GitHub Pages will redeploy from the final `main` push. |
-| 16:9 cover image | [`public/brand/finly-cover-16x9.png`](../public/brand/finly-cover-16x9.png) | Complete and visually checked. |
-| Slide deck | [`public/judge/Finly_Consulting_Deck.pdf`](../public/judge/Finly_Consulting_Deck.pdf) and editable [`PPTX`](../public/judge/Finly_Consulting_Deck.pptx) | Nine-slide consulting-style deck complete; content, link, overflow and visual QA passed. |
-| Video, no more than five minutes and under 300 MB | [`public/judge/Finly_Demo_Video.mp4`](../public/judge/Finly_Demo_Video.mp4) | Final 176.9-second narrated, captioned 16:9 cut; duration, decode, audio level, captions, sampled frames and claims passed QA. |
-| One-page explanation of AI logic, risk gates, and Alpaca infrastructure | [`public/judge/Finly_Judge_Brief.pdf`](../public/judge/Finly_Judge_Brief.pdf), with editable [`DOCX`](../public/judge/Finly_Judge_Proposal.docx) | Complete as a one-page analytical essay; PDF/DOCX page, render and text-layer QA passed. |
-| Fuller technical paper | [`public/judge/Finly_Technical_Proposal.pdf`](../public/judge/Finly_Technical_Proposal.pdf), with editable [`DOCX`](../public/judge/Finly_Technical_Paper.docx) | Complete and visually checked. It is supplementary rather than a replacement for the required one-page submission. |
-| Alpaca paper account ID | Retained in the ignored local environment and entered directly in the Lablab form. | Ready for the form; do not publish the full identifier in the repository, deck, video, or social posts. Recheck eligibility before submission. |
-| Optional social-engagement entries, up to five posts | Five paste-ready, stand-alone drafts in [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md), plus the social cover. | Final copy; publish only after every linked public page works, and verify the organizer tags in the live form. |
+| Project title, maximum 50 characters | `Finly: The Trading Agent That Can Say No` | 40 characters. |
+| Short description, maximum 255 characters | [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md) | 186 characters. Recheck after pasting. |
+| Long description, minimum 100 words | [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md) | 269 words in the current draft. |
+| Main track | `Options Alpha Agents` | Select explicitly; do not rely on technology tags. |
+| Technologies and categories | Alpaca, Codex, Llama 3.2/Ollama, React, Vite, TypeScript, Python, Node.js | Choose the closest categories exposed by the final form. |
+| 16:9 cover image | [`finly-cover-16x9.png`](../public/brand/finly-cover-16x9.png) | Verify PNG/JPG acceptance and preview crop. |
+| Slide presentation | [`Finly_Consulting_Deck.pdf`](../public/judge/Finly_Consulting_Deck.pdf), with editable [`PPTX`](../public/judge/Finly_Consulting_Deck.pptx) | Final nine-page PDF; overflow, template fidelity, links, and rendered pages passed QA. |
+| Video presentation | [`Finly_Demo_Video.mp4`](../public/judge/Finly_Demo_Video.mp4) | Final 184.8-second, 20.5 MB, 1920×1080 H.264/AAC cut with neural narration and synchronized captions; codec, duration, loudness, claims, and sampled frames passed QA. |
+| Public repository | <https://github.com/owlsowo/finly-bot> | Open from a signed-out session after the final push. |
+| Demo application platform and URL | GitHub Pages at <https://owlsowo.github.io/finly-bot/> | The event page accepts a platform and URL, but the generic rule book names Streamlit, Replit, or Vercel. Obtain organizer confirmation or create a Vercel mirror if the form rejects GitHub Pages. |
+| Alpaca paper-account ID | Stored only in the ignored local environment | Enter directly into the private form; never paste it into Git, slides, video, or social posts. |
+| Optional Additional Information | Links to the one-page essay, paper, source gate, and accessibility notes | Use if the live form exposes the field. |
 
-Publishing a repository or website does not submit the project. The Lablab form, track selection, account ID, uploads, URLs, and optional social links remain a separate final action by the builder.
+The generic guide requests an IBM Bob report only where IBM Bob assisted. No evidence indicates that it was used for Finly, so that item is currently inapplicable.
 
-## The final review should follow the four published judging criteria
+## Judging criteria and honest position
 
-No public numerical weights were found, so Finly should not invent a composite score. The release review should instead ask what a judge can verify under each criterion.
+No numerical weights or tie-break formula are published. The event-specific criteria are the governing frame.
 
-| Judging criterion | Finly's strongest evidence | Principal weakness to close |
+| Criterion | Strongest verifiable evidence | Weakest point |
 | --- | --- | --- |
-| **P&L Performance** | The consumed G4 replay is economically attractive and unusually candid about costs, turnover, drawdown, multiplicity, failed gates, and hindsight. | There is no completed competition-account options P&L. A small paper round trip would improve credibility but would not prove strategy profitability. |
-| **Technology Implementation** | Controlled delegation, typed intents, deterministic option compilation, payoff verification, mutation guards, receipts, extensive tests, and a zero-row forward protocol form a coherent system rather than a single model prompt. | The broker path has authenticated read-only evidence but no final order/fill/read-back artifact. |
-| **Creativity & Originality** | Finly's novelty is the separation of informational judgment from capital-bearing authority, demonstrated by refusing its own strongest historical chart after correction-aware promotion gates fail. | Bounded models and risk gates are not unique by themselves. The submission must explain the evidence-governance distinction precisely. |
-| **Presentation & Execution** | The website, essay, technical paper, consulting deck, machine-readable claim registry, captioned film, and social drafts tell one inspectable story. | Rebuild the final artifacts after the last claim change and check every published link from a clean browser session. |
+| **P&L Performance** | The G4 replay is economically attractive and unusually explicit about costs, hindsight, multiplicity, and failed promotion gates. | There is no competition-account options P&L. Historical ETF replays cannot substitute for it. |
+| **Technology Implementation** | Controlled delegation, deterministic options compilation, exact payoff checks, mutation guards, risk reservations, idempotency, reconciliation logic, authenticated read-only Alpaca evidence, and a large automated test suite. | The broker path has no order/fill/read-back artifact. |
+| **Creativity & Originality** | Finly makes the distinction between model judgment and capital-bearing authority executable, then demonstrates it by rejecting its most marketable chart. | Risk gates alone are familiar; the presentation must make the authority boundary concrete. |
+| **Presentation & Execution** | One coherent story across a live interactive case, one-page essay, academic paper, consulting deck, captioned film, machine-readable gate, and source repository. | Every surface must be rebuilt and visually checked after the last claim change. |
 
-The release is ready only when the repository passes `npm run verify`, a clean clone reproduces the public checks, the website and documents agree with the claim registry, the final video opens with correct narration and captions, all uploaded files open correctly, and a final refresh confirms that no new submission materially changes the competitive framing.
+## Social-engagement prize
+
+The separate social prize accepts up to five X or LinkedIn post links created during the hackathon. The five drafts in [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md) use the required X handles `@lablabai` and `@AlpacaHQ`. Content quality and engagement may both matter; no minimum post count or scoring formula is published. Publishing the drafts and entering their resulting URLs remain manual actions for the builder.
+
+## Final release sequence
+
+1. Run `npm run verify` and reproduce it from a clean clone using the pinned runtime.
+2. Confirm the one-page brief, eight-page paper, nine-page deck, and final video open correctly; inspect their renders rather than relying only on text extraction.
+3. Sweep every public surface for stale claims, hidden internal audits, direct competitor matchup language, secrets, account identifiers, broken links, and incorrect organizer handles.
+4. Push the ordinary release commit, wait for CI and Pages, and open every final URL from a signed-out browser.
+5. Confirm the dedicated paper account and copy its ID only into the private form.
+6. Reopen the event rules and form, select the track, attach every required file/link, and submit before the stated deadline.
+
+Publishing the repository or website does not submit the project. The form submission, account ID, uploads, optional social links, and final approval remain the builder's actions.

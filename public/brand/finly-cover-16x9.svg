@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Finly — a backtest returned 967.11 percent and was rejected</title>
+  <desc id="desc">Hackathon cover showing the strongest consumed, post-selected replay beside the statistical decision that denied it trading authority.</desc>
+  <rect width="1920" height="1080" fill="#f6f3ec"/>
+  <rect x="0" y="0" width="44" height="1080" fill="#0d2b43"/>
+
+  <g transform="translate(112 76) scale(1.45)">
+    <path d="M8 9c8 2 14 8 18 18-8-3-13-8-15-15-2 5-2 10 0 16-5-5-6-12-3-19Z" fill="#e8efea" stroke="#0d2b43" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M56 9c-8 2-14 8-18 18 8-3 13-8 15-15 2 5 2 10 0 16 5-5 6-12 3-19Z" fill="#e8efea" stroke="#0d2b43" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M20 25c3-5 7-7 12-7s9 2 12 7l-2 20c-3 7-6 10-10 12-4-2-7-5-10-12l-2-20Z" fill="#2e6f5c" stroke="#0d2b43" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M27 27h12v4h-7v6h6v4h-6v10h-5V27Z" fill="#f6f3ec"/>
+    <text x="86" y="43" fill="#0d2b43" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="5">FINLY</text>
+  </g>
+
+  <text x="1808" y="118" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="2.5" text-anchor="end">ALPACA AI TRADING AGENTS HACKATHON</text>
+  <line x1="112" y1="202" x2="1808" y2="202" stroke="#0d2b43" stroke-width="2"/>
+
+  <text x="112" y="292" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="3">THE STRONGEST CHART DID NOT GET AUTHORITY</text>
+  <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="88" font-weight="700" letter-spacing="-2">
+    <text x="112" y="430">A backtest returned +967.11%.</text>
+    <text x="112" y="546">Finly rejected it.</text>
+  </g>
+
+  <line x1="112" y1="624" x2="1808" y2="624" stroke="#c8ccc7" stroke-width="2"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="112" y="692" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">G4 SHADOW · MODELED 5 BP ONE-WAY</text>
+    <text x="112" y="800" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="92" font-weight="700">+967.11%</text>
+
+    <text x="780" y="692" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">SPY · SAME CONSUMED INTERVAL</text>
+    <text x="780" y="800" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="92" font-weight="700">+580.82%</text>
+
+    <g transform="translate(1515 690) rotate(-1)">
+      <rect width="293" height="112" fill="#f3e8e5" stroke="#8b3a3a" stroke-width="3"/>
+      <text x="146.5" y="68" fill="#8b3a3a" font-size="28" font-weight="700" letter-spacing="2.5" text-anchor="middle">REJECTED</text>
+    </g>
+  </g>
+
+  <line x1="112" y1="884" x2="1808" y2="884" stroke="#0d2b43" stroke-width="2"/>
+  <text x="112" y="958" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="35">3.75% Deflated Sharpe probability · 37.18% worst familywise-adjusted p-value</text>
+  <text x="112" y="1000" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="19">2013-01-02 to 2026-08-27 · consumed, post-selected retrospective ETF replay</text>
+  <text x="112" y="1038" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="18">Not options P&amp;L, broker fills, or evidence of future market superiority</text>
+  <text x="1808" y="1038" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="end">BRUCE WEN · SOLO BUILDER</text>
+</svg>

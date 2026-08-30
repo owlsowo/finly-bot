@@ -1,6 +1,6 @@
 # Finly submission copy
 
-This file is the paste-ready public language for the Lablab form. The paper-account identifier is intentionally omitted and should be copied from the ignored local environment directly into the private form field.
+This file contains paste-ready public language for the Lablab form. The Alpaca paper-account identifier is intentionally omitted and should be copied from the ignored local environment directly into the private form field.
 
 ## Core fields
 
@@ -18,11 +18,19 @@ This file is the paste-ready public language for the Lablab form. The paper-acco
 
 **Long description**
 
-> Finly began with the same question as many trading agents: could an AI-assisted strategy beat a simple benchmark? Its strongest historical candidate appeared to do so, recording 18.97% annualized return against SPY's 15.11% in a consumed ETF replay from 2 January 2013 through 27 August 2026, with a modeled five-basis-point one-way turnover cost and a shallower maximum drawdown. That result created the harder question at the center of the project: when should a persuasive backtest be allowed to risk capital? Finly refused to promote G4 because its Deflated Sharpe, adjusted familywise, static growth-control, and authenticated source-overlap gates did not pass. The refusal matters because it turns an architectural promise into observable behavior. AI may assess bounded evidence and explain a view, but deterministic code owns direction, horizon, defined-risk option construction, exact maximum loss, broker fields, and the final PERMIT or NO_TRADE decision. G4 is not the production policy: the frozen production book underperformed SPY's raw return in its fixed holdout while materially reducing volatility and drawdown, and it has zero forward observations. A credential-free interactive record shows the same authority boundary producing a bounded synthetic proposal when evidence survives challenge and NO_TRADE when it does not. The repository includes 429 passing tests, a locked claim registry, a zero-row forward protocol, an authenticated read-only Alpaca paper-account check, a pinned and machine-checkable 14-project evidence-availability audit, and the complete judge package. The historical result is not options P&amp;L, and no order or fill is presented as performance evidence. Finly's contribution is a smaller, inspectable trust boundary for agentic options research—not a promise that a backtest predicts next month's winner.
+> Finly began with a result that would be easy to sell and difficult to trust. In the consumed, post-selected 2013-01-02–2026-08-27 retrospective replay with modeled 5 bp one-way costs, G4 returned +967.11% versus SPY +580.82%; promotion was rejected because the Deflated Sharpe probability was 3.75% and the worst familywise-adjusted p-value was 37.18%. That refusal is the project: an attractive forecast does not automatically earn the right to expose capital. Finly lets AI interpret a bounded evidence bundle, explain uncertainty, reconsider its view when sources are removed, and veto. Deterministic code owns direction, horizon, exposure, defined-risk option construction, exact maximum loss, broker fields, and the final PERMIT or NO_TRADE decision. Production v1 is the frozen unlevered SPY/BIL policy targeting 10% annualized volatility: in the consumed 2025-01-02–2026-08-28 modeled next-open study it returned +15.39% at 5 bp per traded leg and +10.56% at 25 bp, versus SPY +33.52%; at 5 bp its modeled annualized volatility was 8.12% and maximum drawdown was -5.45%, so it was risk-controlled but not market-beating on total return. The options layer compiles a typed intent into a bounded SPY debit vertical, checks payoff arithmetic and equality, and fails closed when evidence conflicts. An authenticated read-only Alpaca MCP call confirms the paper-account boundary; no order or fill is presented as performance evidence. Attempts 115 and 116 are publicly registered future-only tests. As of 2026-08-30T08:10:52.000Z, each had zero observed outcomes, and neither supports a performance claim. Finly is not a promise that a backtest predicts next month's winner. It is a working, inspectable answer to a harder question: how much authority should an AI receive when its output can move money?
 
 **Technologies to select where available**
 
 > Alpaca · Codex · Llama 3.2 / Ollama · React · Vite · TypeScript · Python · Node.js
+
+**Categories to select where available**
+
+> AI Agents · Finance · Trading · Developer Tools
+
+**Demo application platform**
+
+> GitHub Pages
 
 ## Public links
 
@@ -37,30 +45,30 @@ Do not paste these URLs into the form until the final commit has been pushed and
 
 ## Optional social-engagement drafts
 
-Each draft is written to stand alone. Attach the 1200×630 social cover to the first post and short clips or figures to the later posts. Tag both organizers exactly as shown.
+Each post is designed to stand alone. Attach the 1200×630 cover to the first post and a short product clip or figure to later posts. Recheck the organizer handles in the live form before publishing.
 
-### Post 1 — the premise
+### Post 1 — the hook
 
-> Most trading demos end when the line goes up. Finly starts there. In a consumed ETF replay from 2013-01-02 through 2026-08-27 with a modeled 5 bp one-way cost, its post-selected nonproduction shadow returned 18.97% annualized versus SPY's 15.11%—and Finly still rejected it. Historical, not a forecast or options P&amp;L. https://owlsowo.github.io/finly-bot/ @lablab_ai @AlpacaHQ
+> Finly found the kind of backtest every trading demo wants—and refused to deploy it. The consumed, post-selected G4 replay failed both selection-aware promotion tests, so the result stays visible without receiving trading authority. Historical ETF replay, not options P&L or a forecast. https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
 
 ### Post 2 — the architecture
 
-> Finly lets AI assess evidence and explain a view. Code owns direction, spread construction, maximum loss, broker fields, and PERMIT or NO_TRADE. The bull has horns; the llama does not get the keys. https://owlsowo.github.io/finly-bot/ @lablab_ai @AlpacaHQ
+> Finly lets AI assess evidence, explain uncertainty, and veto. Code owns exposure, option structure, maximum loss, broker fields, and PERMIT or NO_TRADE. The bull has horns; the llama does not get the keys. https://owlsowo.github.io/finly-bot/#system @lablabai @AlpacaHQ
 
-### Post 3 — the interactive proof
+### Post 3 — the product proof
 
-> Two credential-free Finly receipts, one pipeline: aligned synthetic evidence survives 4 source removals and 32 perturbations; conflicting evidence returns NO_TRADE and a null Alpaca payload. https://owlsowo.github.io/finly-bot/#receipt @lablab_ai @AlpacaHQ
+> One Finly pipeline, two outcomes: supportive synthetic evidence can compile a bounded SPY vertical; conflicting evidence returns NO_TRADE and a null payload. The same authority boundary is visible end to end. https://owlsowo.github.io/finly-bot/#controls @lablabai @AlpacaHQ
 
 ### Post 4 — the honest zero
 
-> Finly's forward trial begins at 0/252 settlements, with inference and broker authority disabled. That zero is deliberate: reported history has already been examined. A clean future record starts at zero. https://owlsowo.github.io/finly-bot/#forward @lablab_ai @AlpacaHQ
+> Attempts 115 and 116 are publicly registered future-only tests. As of 2026-08-30T08:10:52.000Z, each had zero observed outcomes, and neither supports a performance claim. A clean future record starts at zero. https://owlsowo.github.io/finly-bot/#forward @lablabai @AlpacaHQ
 
 ### Post 5 — the package
 
-> Finly is inspectable end to end: interactive demo, public code, 429 tests, a one-page proposal, five-page paper, nine-slide deck, and a captioned film. Useful AI judgment does not imply trading authority. https://owlsowo.github.io/finly-bot/ @lablab_ai @AlpacaHQ
+> Finly is inspectable end to end: live product, public code, automated release gates, a one-page essay, technical paper, consulting deck, and captioned film. Useful AI judgment does not imply trading authority. https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
 
 ## Disclosure sentence
 
 Use this sentence wherever a compact limitation is required:
 
-> Educational paper-trading research prototype. Historical ETF replays are descriptive, selected after history was viewed, and are neither options P&L nor forecasts of future profit; no broker order or fill is presented as performance evidence.
+> Educational paper-trading research prototype. Historical ETF replays are descriptive and consumed; they are neither options P&L nor forecasts of future profit, and no broker order or fill is presented as performance evidence.
