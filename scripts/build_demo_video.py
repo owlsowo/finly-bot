@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Build Finly's captioned judge film from original, claim-locked scenes.
+"""Build Finly's captioned judge film from claim-locked scenes.
 
-The script uses a free neural voice when `.venv-media/bin/edge-tts` is present,
-then renders original SVG scenes with FFmpeg. It never calls a broker or reads
-credentials. The resulting film is an explanatory artifact, not evidence of
-execution or performance.
+The builder accepts pre-rendered narration (including ElevenLabs exports) or,
+when none is supplied, uses a pinned free neural voice. It renders original SVG
+scenes with FFmpeg, never calls a broker, and never reads credentials. The film
+is an explanatory artifact, not evidence of execution or performance.
 """
 
 from __future__ import annotations
@@ -27,8 +27,9 @@ OUTPUT = ROOT / "public" / "judge" / "Finly_Demo_Video.mp4"
 SUBTITLE_OUTPUT = ROOT / "public" / "judge" / "Finly_Demo_Video.srt"
 CLAIMS_PATH = ROOT / "public" / "data" / "submission_claims_lock.json"
 CHART_PATH = ROOT / "public" / "figures" / "g4_wealth_drawdown.png"
-VOICE = "en-US-AndrewMultilingualNeural"
-VOICE_RATE = "+8%"
+PRODUCT_PATH = ROOT / "public" / "judge" / "finly-product-home.png"
+VOICE = "en-US-BrianMultilingualNeural"
+VOICE_RATE = "-2%"
 
 NAVY = "#0b2c46"
 NAVY_2 = "#102f4f"
@@ -51,16 +52,15 @@ class Scene:
 
 
 SCENES = [
-    Scene("familiar-chart", "Most trading demos begin with a chart going up and to the right. Ours does too. The difference is what happens next."),
-    Scene("attractive-result", "Finly's strongest retrospective nonproduction shadow combined a QQQ core with rotating sector momentum. In the consumed ETF replay from 2 January 2013 through 27 August 2026, with a modeled five-basis-point one-way turnover cost, it recorded an 18.97 percent annualized return against 15.11 percent for SPY, with a shallower maximum drawdown."),
-    Scene("refusal", "Finly still refused to promote it. Its Deflated Sharpe probability was 3.75 percent, the worst adjusted familywise p-value was 0.3718, and the growth-control and source-overlap gates failed."),
-    Scene("authority", "That refusal is the product. AI may assess bounded evidence and explain a view. Code still owns direction, horizon, spread construction, maximum loss, and every Alpaca field. The llama does not get the keys."),
-    Scene("challenge", "Code removes evidence families, perturbs market inputs, and recomputes the order. If the conclusion changes, Finly fails closed. A plausible rationale is not permission."),
-    Scene("two-fixtures", "Two synthetic receipts make the boundary visible. With aligned evidence, four source removals and thirty-two perturbations preserved the decision. With conflicting evidence, removing one source changed it, so the compiler returned no trade."),
-    Scene("options-compiler", "When a fixture survives, code constructs a defined-risk bear-put spread and calculates the payoff. Here, maximum loss is 366 dollars and maximum gain is 634. The Alpaca-shaped payload is compiled but never transmitted."),
-    Scene("research-ledger", "The chart is an ETF replay, not options profit and loss. The 113-item ledger includes controls, invalidated runs, and reruns—not 113 independent strategies. Seven later challengers promoted none. Reporting the limits is part of the result."),
-    Scene("forward-test", "G4 is not the production book. Production Finly is the lower-risk time-series-momentum volatility ensemble. In its now-consumed fixed holdout, it returned 11.13 percent annualized against 19.19 percent for SPY, with annualized volatility of 8.31 percent against 17.33 percent, and a maximum drawdown of minus 5.79 percent against minus 18.76 percent. Forward Trial One remains at zero of 252 settlements, so there is no next-month inference. Broker authority and performance inference remain disabled."),
-    Scene("closing", "Finly's contribution is not a bigger forecast. It is a smaller trust boundary: evidence may inform a trade, but verified authority must permit it. The bull has horns. The llama still does not get the keys."),
+    Scene("hook", "Most trading demos begin with a chart going up and to the right. Finly asks what survives before that chart gets anywhere near a broker."),
+    Scene("execution-realism", "We replaced the frozen S P Y and B I L policy's same-close assumption with next-session-open fills. Across 415 consumed sessions, after five basis points per traded-notional leg, it returned 15.39 percent with a 5.45 percent maximum drawdown. At 25 basis points, it still returned 10.56 percent. S P Y returned 33.52 percent. Finly did not beat it."),
+    Scene("small-account", "At one basis point per traded leg, a three-hundred-dollar shadow ended at three hundred fifty-one dollars and eighty-eight cents. The preview enforced a one-dollar order minimum, skipped twelve sub-dollar adjustments, used nine-decimal fractional sizing, and charged a seventy-cent sell-fee proxy. That tests affordability and mechanics. It is not a broker fill."),
+    Scene("authority", "The policy is deliberately boring. Three lagged S P Y minus B I L trend horizons set exposure, a ten-percent volatility target scales it, and B I L receives the rest. AI may interpret evidence and veto. Deterministic code owns exposure, order fields, maximum loss, and permission."),
+    Scene("challenge", "The supportive synthetic fixture survived four of four source removals and thirty-two of thirty-two perturbations. In the conflicting fixture, removing one source changed the decision, so Finly returned no trade. A surviving fixture can compile a defined-risk S P Y spread, here with 366 dollars maximum loss and 634 dollars maximum gain, without transmitting it."),
+    Scene("rejected-shadow", "Even the strongest backtest did not receive authority. G four turned a modeled one hundred thousand dollars into 1 million, 67 thousand, 106 dollars, versus 680 thousand, 817 dollars for S P Y. But it was selected after history was viewed and failed multiple-testing, growth-control, and source-overlap gates. Finly kept the chart, labeled it consumed, and rejected the strategy."),
+    Scene("attempt-114", "Attempt 114 answers that hindsight problem. Before the first eligible signal, a public GitHub workflow verified 17 bound runtime files through 23 fixed public G E T checks. The protocol requires 254 consecutive timely commitment anchors and 252 reconciled settlements, with no skipped sessions, backfill, replacement windows, optional stopping, or second confirmatory try."),
+    Scene("boundary", "That record is not an independent cryptographic timestamp, provider-origin proof, broker fill, or profitability result. Today there is no prospective performance inference and no broker mutation authority. Alpaca access remains read-only."),
+    Scene("closing", "Finly is not a bigger forecast. It is a smaller, testable trust boundary: let AI interpret more, authorize less, and make correction, rejection, and no trade visible. The bull has horns. The llama still does not get the keys."),
 ]
 
 
@@ -128,51 +128,50 @@ def frame(body: str, *, background: str = PAPER, footer: str = "FINLY · CONTROL
 def scene_one() -> str:
     body = f'''
       {finly_mark(104, 86, 70)}
-      {small_label('A message from the bot that said no', 214, 125)}
-      {text_lines(['Most trading demos', 'begin with this.'], 104, 315, 92, fill=NAVY, weight=500)}
-      <path d="M102 824 C260 792, 310 724, 432 744 S632 650, 742 677 S923 526, 1053 574 S1240 420, 1380 462 S1570 275, 1812 198" fill="none" stroke="{GREEN}" stroke-width="15" stroke-linecap="round"/>
-      <circle cx="1812" cy="198" r="18" fill="{GREEN}"/>
-      {text_lines(['The difference is what happens next.'], 106, 805, 32, fill=INK, family='Georgia')}
+      {small_label('Proof before authority', 214, 125)}
+      {text_lines(['Before a trading view', 'becomes an order.'], 104, 320, 88, fill=NAVY, weight=500)}
+      <path d="M106 790 C248 768, 332 700, 438 724 S630 616, 758 664 S940 500, 1072 550 S1272 390, 1402 444 S1608 260, 1812 190" fill="none" stroke="{GREEN}" stroke-width="14" stroke-linecap="round"/>
+      <circle cx="1812" cy="190" r="18" fill="{GREEN}"/>
+      <rect x="104" y="814" width="1090" height="88" fill="{NAVY}"/>
+      {text_lines(['Finly tests execution, challenge, and permission—not just the chart.'], 148, 870, 27, fill=WHITE, family='Helvetica Neue', weight=600)}
     '''
     return frame(body)
 
 
-def scene_two(chart_uri: str) -> str:
+def scene_two(product_uri: str) -> str:
     body = f'''
-      <image x="780" y="116" width="1050" height="660" preserveAspectRatio="xMidYMid slice" opacity="0.96" xlink:href="{chart_uri}"/>
-      <rect x="0" y="0" width="860" height="1000" fill="{PAPER}"/>
-      {small_label('The attractive result', 104, 137)}
-      {text_lines(['G4 looked', 'good enough to', 'test harder.'], 104, 292, 92, fill=NAVY)}
-      <line x1="104" y1="642" x2="690" y2="642" stroke="{RULE}" stroke-width="2"/>
-      {text_lines(['18.97%'], 104, 747, 82, fill=GREEN, weight=650, family='Helvetica Neue')}
-      {text_lines(['annualized return'], 108, 790, 22, fill=STONE, weight=600, family='Helvetica Neue')}
-      {text_lines(['SPY 15.11%'], 108, 850, 27, fill=NAVY, weight=650, family='Helvetica Neue')}
-      {text_lines(['2013-01-02–2026-08-27 · modeled 5 bp one-way turnover cost'], 780, 832, 18, fill=STONE, family='Helvetica Neue')}
-      {text_lines(['Consumed ETF replay · selected after history was viewed'], 780, 862, 18, fill=STONE, family='Helvetica Neue')}
+      {small_label('Execution realism', 104, 132)}
+      {text_lines(['Positive after', 'next-open fills.', 'Honest about SPY.'], 104, 238, 58, fill=NAVY, line_height=1.0)}
+      {text_lines(['+15.39%'], 104, 555, 82, fill=GREEN, weight=700, family='Helvetica Neue')}
+      {text_lines(['5 BP PER TRADED-NOTIONAL LEG'], 108, 602, 18, fill=STONE, weight=700, family='Helvetica Neue', letter_spacing=1.1)}
+      {text_lines(['+10.56%'], 104, 716, 58, fill=NAVY, weight=700, family='Helvetica Neue')}
+      {text_lines(['AT 25 BP PER LEG'], 108, 756, 17, fill=STONE, weight=700, family='Helvetica Neue', letter_spacing=1.1)}
+      <rect x="746" y="126" width="1074" height="672" fill="{WHITE}" stroke="{RULE}" stroke-width="2"/>
+      <image x="764" y="144" width="1038" height="636" preserveAspectRatio="xMidYMid slice" xlink:href="{product_uri}"/>
+      <rect x="746" y="814" width="1074" height="88" fill="{NAVY}"/>
+      {text_lines(['SPY +33.52%  ·  POSITIVE ≠ ALPHA'], 1283, 869, 27, fill=WHITE, weight=700, family='Helvetica Neue', anchor='middle', letter_spacing=1.0)}
+      {text_lines(['415 consumed sessions · adjusted OHLC', 'next-session-open assumption'], 104, 814, 17, fill=STONE, family='Georgia', line_height=1.15)}
     '''
     return frame(body)
 
 
 def scene_three() -> str:
-    rows = [
-        ("Deflated Sharpe probability", "3.75%", "≥95%"),
-        ("Worst adjusted familywise p-value", "0.3718", "≤0.05"),
-        ("Static growth-control independence", "Unsupported", "Supported"),
-        ("Authenticated source overlap", "Not passed", "Passed"),
-    ]
-    row_svg = []
-    for i, (gate, observed, required) in enumerate(rows):
-        y = 460 + i * 103
-        row_svg.append(f'<line x1="108" y1="{y+50}" x2="1812" y2="{y+50}" stroke="{RULE}" stroke-width="1"/>')
-        row_svg.append(text_lines([gate], 108, y, 25, fill=INK, weight=600, family="Helvetica Neue"))
-        row_svg.append(text_lines([observed], 1270, y, 25, fill=RED, weight=700, family="Helvetica Neue"))
-        row_svg.append(text_lines([required], 1740, y, 25, fill=STONE, weight=600, family="Helvetica Neue", anchor="end"))
-        row_svg.append(text_lines(["FAILED"], 1812, y, 16, fill=RED, weight=800, family="Helvetica Neue", anchor="end", letter_spacing=1.4))
     body = f'''
-      {small_label('The refusal', 108, 133, fill=RED)}
-      {text_lines(['Finly still refused', 'to promote it.'], 108, 274, 82, fill=NAVY)}
-      <g transform="translate(1340 132) rotate(-3)"><rect width="470" height="150" rx="4" fill="none" stroke="{RED}" stroke-width="9"/>{text_lines(['NOT PROMOTED'], 235, 95, 42, fill=RED, weight=800, family='Helvetica Neue', anchor='middle', letter_spacing=2)}</g>
-      {''.join(row_svg)}
+      {small_label('Small-account feasibility', 108, 132)}
+      {text_lines(['A realistic $300 shadow', 'did not invent tiny fills.'], 108, 270, 72, fill=NAVY)}
+      <line x1="108" y1="440" x2="1812" y2="440" stroke="{RULE}" stroke-width="2"/>
+      {text_lines(['$300.00'], 108, 588, 78, fill=STONE, weight=650, family='Helvetica Neue')}
+      {text_lines(['→'], 566, 582, 76, fill=GREEN, weight=500, family='Helvetica Neue')}
+      {text_lines(['$351.88'], 736, 588, 96, fill=GREEN, weight=700, family='Helvetica Neue')}
+      {text_lines(['+17.29% MODELED TOTAL RETURN'], 742, 638, 20, fill=STONE, weight=700, family='Helvetica Neue', letter_spacing=1.1)}
+      <line x1="108" y1="706" x2="1812" y2="706" stroke="{RULE}" stroke-width="2"/>
+      {text_lines(['$1'], 108, 807, 48, fill=NAVY, weight=700, family='Helvetica Neue')}
+      {text_lines(['minimum order'], 108, 850, 18, fill=STONE, weight=700, family='Helvetica Neue')}
+      {text_lines(['12'], 598, 807, 48, fill=NAVY, weight=700, family='Helvetica Neue')}
+      {text_lines(['sub-dollar orders skipped'], 598, 850, 18, fill=STONE, weight=700, family='Helvetica Neue')}
+      {text_lines(['$0.70'], 1196, 807, 48, fill=NAVY, weight=700, family='Helvetica Neue')}
+      {text_lines(['sell-day fee proxy'], 1196, 850, 18, fill=STONE, weight=700, family='Helvetica Neue')}
+      {text_lines(['Affordability and mechanics—not a broker fill.'], 1812, 850, 20, fill=RED, weight=650, family='Georgia', anchor='end')}
     '''
     return frame(body)
 
@@ -195,150 +194,111 @@ def scene_four() -> str:
             blocks.append(f'<path d="M{x+302} 585h30" stroke="{STONE}" stroke-width="3"/><path d="M{x+328} 577l10 8-10 8" fill="none" stroke="{STONE}" stroke-width="3"/>')
     body = f'''
       {small_label('The authority boundary', 108, 132)}
-      {text_lines(['That refusal', 'is the product.'], 108, 278, 86, fill=NAVY)}
+      {text_lines(['The model can interpret.', 'Code decides whether capital moves.'], 108, 270, 68, fill=NAVY)}
       {''.join(blocks)}
       <rect x="107" y="700" width="1704" height="120" fill="{NAVY}"/>
-      {text_lines(['In plain English: the llama does not get the keys.'], 959, 776, 42, fill=WHITE, weight=500, anchor='middle')}
+      {text_lines(['Three trend horizons · 10% volatility target · residual capital in BIL'], 959, 760, 31, fill=WHITE, weight=600, family='Helvetica Neue', anchor='middle')}
+      {text_lines(['AI may veto. It cannot size, compile, or transmit.'], 959, 804, 21, fill='#a8c6b9', weight=600, family='Georgia', anchor='middle')}
     '''
     return frame(body)
 
 
 def scene_five() -> str:
-    sources = [("MARKET", GREEN), ("OPTIONS", NAVY), ("EVENTS", RED), ("PREDICTION", "#9b865b")]
-    source_svg = []
-    for i, (label, color) in enumerate(sources):
-        x = 106 + i * 249
-        source_svg.append(f'<rect x="{x}" y="455" width="212" height="100" fill="{PAPER_BRIGHT}" stroke="{color}" stroke-width="3"/>')
-        source_svg.append(text_lines([label], x + 106, 515, 18, fill=color, weight=750, family="Helvetica Neue", anchor="middle", letter_spacing=1.3))
     body = f'''
-      {small_label('The challenge', 106, 134)}
-      {text_lines(['A proposal must survive', 'attempts to break it.'], 106, 280, 78, fill=NAVY)}
-      {''.join(source_svg)}
-      <path d="M1090 506h170" stroke="{STONE}" stroke-width="4"/><path d="M1248 494l18 12-18 12" fill="none" stroke="{STONE}" stroke-width="4"/>
-      <rect x="1298" y="410" width="514" height="288" fill="{NAVY}"/>
-      {text_lines(['REMOVE ONE SOURCE'], 1340, 464, 18, fill='#9ab0b6', weight=700, family='Helvetica Neue', letter_spacing=1.7)}
-      {text_lines(['recompute', 'perturb', 'compare'], 1340, 536, 44, fill=WHITE, weight=500, line_height=1.15)}
-      <rect x="107" y="700" width="1705" height="112" fill="{RED_PALE}"/>
-      {text_lines(['If the conclusion changes, the system fails closed.'], 959, 772, 38, fill=RED, weight=600, anchor='middle')}
+      {small_label('Challenge, then compile', 106, 132)}
+      {text_lines(['A rationale is not permission.'], 106, 248, 72, fill=NAVY)}
+      <rect x="106" y="358" width="786" height="306" fill="{PAPER_BRIGHT}" stroke="{GREEN}" stroke-width="3"/>
+      {text_lines(['ALIGNED EVIDENCE'], 148, 410, 18, fill=GREEN, weight=800, family='Helvetica Neue', letter_spacing=1.5)}
+      {text_lines(['4/4'], 148, 525, 76, fill=GREEN, weight=700, family='Helvetica Neue')}
+      {text_lines(['source removals'], 340, 510, 21, fill=STONE, weight=700, family='Helvetica Neue')}
+      {text_lines(['32/32'], 148, 614, 48, fill=NAVY, weight=700, family='Helvetica Neue')}
+      {text_lines(['perturbations survived'], 340, 604, 21, fill=STONE, weight=700, family='Helvetica Neue')}
+      <rect x="1026" y="358" width="786" height="306" fill="{RED_PALE}" stroke="{RED}" stroke-width="3"/>
+      {text_lines(['CONFLICTING EVIDENCE'], 1068, 410, 18, fill=RED, weight=800, family='Helvetica Neue', letter_spacing=1.5)}
+      {text_lines(['NO_TRADE'], 1068, 538, 70, fill=RED, weight=800, family='Helvetica Neue')}
+      {text_lines(['One source removal changed the decision.'], 1068, 612, 23, fill=INK, weight=600, family='Georgia')}
+      <rect x="106" y="712" width="1706" height="134" fill="{NAVY}"/>
+      {text_lines(['DEFINED-RISK FIXTURE'], 148, 758, 16, fill='#9ab0b6', weight=800, family='Helvetica Neue', letter_spacing=1.4)}
+      {text_lines(['$366 max loss'], 148, 817, 39, fill=WHITE, weight=700, family='Helvetica Neue')}
+      {text_lines(['$634 max gain'], 650, 817, 39, fill='#a8c6b9', weight=700, family='Helvetica Neue')}
+      {text_lines(['PAYLOAD COMPILED · NOT TRANSMITTED'], 1768, 817, 20, fill='#d7b0a9', weight=800, family='Helvetica Neue', anchor='end', letter_spacing=1.2)}
     '''
     return frame(body)
 
 
-def scene_six() -> str:
-    def panel(x: int, title: str, subtitle: str, color: str, decision: str, detail: str) -> str:
-        return f'''
-          <rect x="{x}" y="360" width="786" height="470" fill="{PAPER_BRIGHT}" stroke="{RULE}" stroke-width="2"/>
-          <rect x="{x}" y="360" width="786" height="12" fill="{color}"/>
-          {text_lines([title], x+42, 435, 35, fill=NAVY, weight=650, family='Helvetica Neue')}
-          {text_lines([subtitle], x+42, 474, 19, fill=STONE, family='Georgia')}
-          <line x1="{x+42}" y1="510" x2="{x+744}" y2="510" stroke="{RULE}" stroke-width="1"/>
-          {text_lines(['4/4'], x+42, 619, 76, fill=color, weight=700, family='Helvetica Neue')}
-          {text_lines(['SOURCE REMOVALS'], x+218, 605, 18, fill=STONE, weight=700, family='Helvetica Neue', letter_spacing=1.2)}
-          {text_lines([detail], x+42, 693, 25, fill=INK, weight=600, family='Helvetica Neue')}
-          <rect x="{x+42}" y="749" width="702" height="78" fill="{color}"/>
-          {text_lines([decision], x+393, 800, 26, fill=WHITE, weight=750, family='Helvetica Neue', anchor='middle', letter_spacing=1.4)}
-        '''
+def scene_six(chart_uri: str) -> str:
     body = f'''
-      {small_label('Two recorded synthetic fixtures', 106, 134)}
-      {text_lines(['Same pipeline.', 'Different authority.'], 106, 256, 66, fill=NAVY)}
-      {panel(106, 'Aligned evidence', 'The order-level decision survives challenge.', GREEN, 'BOUNDED PROPOSAL', '32/32 perturbations survived')}
-      {panel(1028, 'Conflicting evidence', 'The decision changes when evidence is removed.', RED, 'NO_TRADE', 'No option structure or payload')}
+      <image x="724" y="112" width="1096" height="700" preserveAspectRatio="xMidYMid slice" opacity="0.95" xlink:href="{chart_uri}"/>
+      <rect x="0" y="0" width="806" height="1000" fill="{PAPER}"/>
+      {small_label('The tempting result', 104, 132, fill=RED)}
+      {text_lines(['The best-looking', 'backtest was rejected.'], 104, 272, 76, fill=NAVY)}
+      {text_lines(['$1,067,106'], 104, 585, 65, fill=GREEN, weight=700, family='Helvetica Neue')}
+      {text_lines(['G4 ENDING VALUE'], 108, 626, 17, fill=STONE, weight=800, family='Helvetica Neue', letter_spacing=1.3)}
+      {text_lines(['SPY $680,817'], 108, 685, 28, fill=NAVY, weight=700, family='Helvetica Neue')}
+      <g transform="translate(124 742) rotate(-3)"><rect width="500" height="118" rx="4" fill="{PAPER}" stroke="{RED}" stroke-width="8"/>{text_lines(['NOT PROMOTED'], 250, 76, 38, fill=RED, weight=800, family='Helvetica Neue', anchor='middle', letter_spacing=2)}</g>
+      {text_lines(['Post-selected · multiplicity failed · control independence unsupported'], 724, 828, 18, fill=STONE, family='Helvetica Neue')}
+      {text_lines(['Consumed ETF replay—not options P&L or a forecast'], 724, 860, 18, fill=RED, weight=700, family='Helvetica Neue')}
     '''
     return frame(body)
 
 
 def scene_seven() -> str:
     body = f'''
-      {small_label('The options compiler', 106, 132)}
-      {text_lines(['The payoff is bounded', 'before the payload exists.'], 106, 275, 74, fill=NAVY)}
-      <rect x="108" y="490" width="520" height="332" fill="{NAVY}"/>
-      {text_lines(['SPY 560 / 550'], 150, 556, 25, fill='#9ab0b6', weight=700, family='Helvetica Neue', letter_spacing=1.2)}
-      {text_lines(['bear-put', 'debit spread'], 150, 643, 52, fill=WHITE, weight=500, line_height=1.02)}
-      {text_lines(['ONE CONTRACT · SYNTHETIC FIXTURE'], 150, 783, 16, fill='#9ab0b6', weight=700, family='Helvetica Neue', letter_spacing=1.1)}
-      <path d="M735 770L1010 770L1270 490L1694 490" fill="none" stroke="{GREEN}" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="735" y1="630" x2="1740" y2="630" stroke="{RULE}" stroke-width="2" stroke-dasharray="10 10"/>
-      {text_lines(['MAX LOSS'], 744, 772, 17, fill=STONE, weight=700, family='Helvetica Neue', letter_spacing=1.2)}
-      {text_lines(['$366'], 744, 830, 56, fill=RED, weight=700, family='Helvetica Neue')}
-      {text_lines(['MAX GAIN'], 1430, 425, 17, fill=STONE, weight=700, family='Helvetica Neue', letter_spacing=1.2)}
-      {text_lines(['$634'], 1430, 476, 50, fill=GREEN, weight=700, family='Helvetica Neue')}
-      <rect x="1176" y="748" width="564" height="74" fill="{RED_PALE}"/>
-      {text_lines(['PAYLOAD COMPILED · NOT TRANSMITTED'], 1458, 795, 18, fill=RED, weight=750, family='Helvetica Neue', anchor='middle', letter_spacing=1.1)}
+      {small_label('Prospective proof', 106, 132)}
+      {text_lines(['Attempt 114 freezes the next claim', 'before the first eligible signal.'], 106, 256, 64, fill=NAVY)}
+      <line x1="106" y1="430" x2="1812" y2="430" stroke="{RULE}" stroke-width="2"/>
+      {text_lines(['17/17'], 106, 574, 72, fill=GREEN, weight=700, family='Helvetica Neue')}
+      {text_lines(['runtime files bound'], 106, 616, 18, fill=STONE, weight=750, family='Helvetica Neue')}
+      {text_lines(['23'], 548, 574, 72, fill=NAVY, weight=700, family='Helvetica Neue')}
+      {text_lines(['fixed public GET checks'], 548, 616, 18, fill=STONE, weight=750, family='Helvetica Neue')}
+      {text_lines(['254'], 1010, 574, 72, fill=NAVY, weight=700, family='Helvetica Neue')}
+      {text_lines(['timely commitment anchors'], 1010, 616, 18, fill=STONE, weight=750, family='Helvetica Neue')}
+      {text_lines(['252'], 1480, 574, 72, fill=NAVY, weight=700, family='Helvetica Neue')}
+      {text_lines(['reconciled settlements'], 1480, 616, 18, fill=STONE, weight=750, family='Helvetica Neue')}
+      <rect x="106" y="700" width="1706" height="136" fill="{NAVY}"/>
+      {text_lines(['NO SKIPS · NO BACKFILL · NO REPLACEMENT WINDOW · NO OPTIONAL STOPPING · NO SECOND TRY'], 959, 764, 21, fill=WHITE, weight=750, family='Helvetica Neue', anchor='middle', letter_spacing=1.0)}
+      {text_lines(['Public GitHub workflow verified before the exclusive first-signal deadline'], 959, 808, 20, fill='#a8c6b9', weight=600, family='Georgia', anchor='middle')}
     '''
     return frame(body)
 
 
 def scene_eight() -> str:
-    facts = [
-        ("113", "mixed research items", "controls, invalidated runs and reruns included"),
-        ("0 / 7", "G6 challengers promoted", "hash-frozen but fully retrospective"),
-        ("NOT", "historical options P&L", "G4 remains an ETF allocation replay"),
-    ]
-    columns = []
-    for i, (value, label, note) in enumerate(facts):
-        x = 108 + i * 570
-        columns.append(f'<rect x="{x}" y="450" width="510" height="360" fill="{PAPER_BRIGHT}" stroke="{RULE}" stroke-width="2"/>')
-        columns.append(text_lines([value], x+38, 575, 76, fill=NAVY if i < 2 else RED, weight=700, family="Helvetica Neue"))
-        columns.append(text_lines([label], x+38, 636, 25, fill=INK, weight=650, family="Helvetica Neue"))
-        columns.append(text_lines([note], x+38, 704, 19, fill=STONE, family="Georgia"))
     body = f'''
-      {small_label('The research ledger', 108, 134)}
-      {text_lines(['The limitations are part', 'of the result.'], 108, 280, 82, fill=NAVY)}
-      {''.join(columns)}
-      {text_lines(['Reporting the limits is part of the result.'], 960, 830, 30, fill=GREEN_DARK, weight=600, anchor='middle')}
+      {small_label('The boundary', 108, 132, fill='#8eb8a7')}
+      {text_lines(['What the public record', 'does not prove.'], 108, 276, 78, fill=WHITE)}
+      <line x1="108" y1="486" x2="1812" y2="486" stroke="#527087" stroke-width="2"/>
+      {text_lines(['NOT AN INDEPENDENT', 'CRYPTOGRAPHIC TIMESTAMP'], 108, 570, 25, fill='#d7b0a9', weight=750, family='Helvetica Neue', line_height=1.25, letter_spacing=1.0)}
+      {text_lines(['NOT PROVIDER-ORIGIN', 'PROOF'], 560, 570, 25, fill='#d7b0a9', weight=750, family='Helvetica Neue', line_height=1.25, letter_spacing=1.0)}
+      {text_lines(['NOT A BROKER', 'FILL'], 1012, 570, 25, fill='#d7b0a9', weight=750, family='Helvetica Neue', line_height=1.25, letter_spacing=1.0)}
+      {text_lines(['NOT A PROFITABILITY', 'RESULT'], 1464, 570, 25, fill='#d7b0a9', weight=750, family='Helvetica Neue', line_height=1.25, letter_spacing=1.0)}
+      <rect x="108" y="718" width="1704" height="122" fill="#163b5a"/>
+      {text_lines(['PERFORMANCE INFERENCE · DISABLED'], 160, 775, 21, fill=WHITE, weight=750, family='Helvetica Neue', letter_spacing=1.1)}
+      {text_lines(['BROKER MUTATION · DISABLED'], 960, 775, 21, fill=WHITE, weight=750, family='Helvetica Neue', anchor='middle', letter_spacing=1.1)}
+      {text_lines(['ALPACA ACCESS · READ-ONLY'], 1760, 775, 21, fill='#a8c6b9', weight=750, family='Helvetica Neue', anchor='end', letter_spacing=1.1)}
     '''
-    return frame(body)
+    return frame(body, background=NAVY, footer="FINLY · PUBLIC CLAIM BOUNDARY")
 
 
 def scene_nine() -> str:
     body = f'''
-      {small_label('Production is not G4', 108, 134)}
-      {text_lines(['Lower historical risk.', 'Zero forward proof.'], 108, 272, 72, fill=NAVY)}
-      <rect x="108" y="420" width="840" height="410" fill="{PAPER_BRIGHT}" stroke="{RULE}" stroke-width="2"/>
-      {text_lines(['PRODUCTION POLICY'], 150, 470, 17, fill=GREEN, weight=750, family='Helvetica Neue', letter_spacing=1.5)}
-      {text_lines(['TSMOM_ENSEMBLE_VOL'], 904, 470, 17, fill=NAVY, weight=750, family='Helvetica Neue', anchor='end', letter_spacing=1.1)}
-      <line x1="150" y1="500" x2="904" y2="500" stroke="{RULE}" stroke-width="1"/>
-      {text_lines(['FINLY'], 718, 535, 15, fill=STONE, weight=700, family='Helvetica Neue', anchor='end', letter_spacing=1.1)}
-      {text_lines(['SPY'], 886, 535, 15, fill=STONE, weight=700, family='Helvetica Neue', anchor='end', letter_spacing=1.1)}
-      {text_lines(['Annualized return'], 150, 594, 20, fill=INK, weight=600, family='Helvetica Neue')}
-      {text_lines(['11.13%'], 718, 596, 31, fill=NAVY, weight=700, family='Helvetica Neue', anchor='end')}
-      {text_lines(['19.19%'], 886, 596, 31, fill=STONE, weight=700, family='Helvetica Neue', anchor='end')}
-      {text_lines(['Annualized volatility'], 150, 663, 20, fill=INK, weight=600, family='Helvetica Neue')}
-      {text_lines(['8.31%'], 718, 665, 31, fill=GREEN, weight=700, family='Helvetica Neue', anchor='end')}
-      {text_lines(['17.33%'], 886, 665, 31, fill=STONE, weight=700, family='Helvetica Neue', anchor='end')}
-      {text_lines(['Maximum drawdown'], 150, 732, 20, fill=INK, weight=600, family='Helvetica Neue')}
-      {text_lines(['−5.79%'], 718, 734, 31, fill=GREEN, weight=700, family='Helvetica Neue', anchor='end')}
-      {text_lines(['−18.76%'], 886, 734, 31, fill=STONE, weight=700, family='Helvetica Neue', anchor='end')}
-      <line x1="150" y1="764" x2="904" y2="764" stroke="{RULE}" stroke-width="1"/>
-      {text_lines(['Fixed 2025-01-02–2026-08-28 holdout · now consumed'], 150, 801, 17, fill=STONE, family='Georgia')}
-      <rect x="1000" y="420" width="812" height="410" fill="{NAVY}"/>
-      {text_lines(['FORWARD TRIAL ONE'], 1048, 472, 18, fill='#9ab0b6', weight=700, family='Helvetica Neue', letter_spacing=1.5)}
-      {text_lines(['0'], 1050, 662, 176, fill=WHITE, weight=500, family='Helvetica Neue')}
-      {text_lines(['/ 252 settlements'], 1280, 624, 32, fill='#9ab0b6', weight=650, family='Helvetica Neue')}
-      <line x1="1048" y1="700" x2="1762" y2="700" stroke="#527087" stroke-width="1"/>
-      {text_lines(['NO NEXT-MONTH INFERENCE'], 1048, 751, 18, fill='#d7b0a9', weight=750, family='Helvetica Neue', letter_spacing=1.2)}
-      {text_lines(['BROKER AUTHORITY · NONE    INFERENCE · DISABLED'], 1048, 796, 16, fill='#9ab0b6', weight=700, family='Helvetica Neue', letter_spacing=1.0)}
-    '''
-    return frame(body)
-
-
-def scene_ten() -> str:
-    body = f'''
-      {finly_mark(838, 102, 244, light=True)}
-      {text_lines(['Finly'], 960, 440, 90, fill=WHITE, weight=600, family='Helvetica Neue', anchor='middle')}
-      {text_lines(["Not a bigger forecast."], 960, 550, 43, fill='#a8c6b9', weight=600, anchor='middle')}
-      {text_lines(['A smaller trust boundary.'], 960, 625, 62, fill=WHITE, weight=500, anchor='middle')}
-      <line x1="650" y1="700" x2="1270" y2="700" stroke="#527087" stroke-width="2"/>
-      {text_lines(['The bull has horns. The llama still does not get the keys.'], 960, 777, 27, fill='#d6e0dc', family='Georgia', anchor='middle')}
-      {text_lines(['owlsowo.github.io/finly-bot'], 960, 830, 22, fill='#a8c6b9', weight=700, family='Helvetica Neue', anchor='middle', letter_spacing=1)}
+      {finly_mark(838, 96, 244, light=True)}
+      {text_lines(['Finly'], 960, 426, 90, fill=WHITE, weight=600, family='Helvetica Neue', anchor='middle')}
+      {text_lines(['Not a bigger forecast.'], 960, 548, 42, fill='#a8c6b9', weight=600, anchor='middle')}
+      {text_lines(['A smaller, testable trust boundary.'], 960, 630, 58, fill=WHITE, weight=500, anchor='middle')}
+      <line x1="610" y1="710" x2="1310" y2="710" stroke="#527087" stroke-width="2"/>
+      {text_lines(['Let AI interpret more. Authorize less. Make NO_TRADE visible.'], 960, 778, 28, fill='#d6e0dc', family='Georgia', anchor='middle')}
+      {text_lines(['The bull has horns. The llama still does not get the keys.'], 960, 830, 23, fill='#a8c6b9', family='Georgia', anchor='middle')}
+      {text_lines(['owlsowo.github.io/finly-bot'], 960, 852, 20, fill='#a8c6b9', weight=700, family='Helvetica Neue', anchor='middle', letter_spacing=1)}
     '''
     return frame(body, background=NAVY, footer="FINLY · EDUCATIONAL PAPER-TRADING RESEARCH PROTOTYPE")
 
 
 def scene_svgs() -> list[str]:
     chart_uri = image_data(CHART_PATH)
+    product_uri = image_data(PRODUCT_PATH)
     return [
-        scene_one(), scene_two(chart_uri), scene_three(), scene_four(), scene_five(),
-        scene_six(), scene_seven(), scene_eight(), scene_nine(), scene_ten(),
+        scene_one(), scene_two(product_uri), scene_three(), scene_four(), scene_five(),
+        scene_six(chart_uri), scene_seven(), scene_eight(), scene_nine(),
     ]
 
 
@@ -370,6 +330,28 @@ def caption_chunks(text: str, limit: int = 70) -> list[str]:
     return chunks
 
 
+def display_narration(text: str) -> str:
+    """Keep pronunciation hints out of human-facing captions."""
+    replacements = {
+        "S P Y": "SPY",
+        "B I L": "BIL",
+        "G E T": "GET",
+        "G four": "G4",
+        "three-hundred-dollar": "$300",
+        "three hundred fifty-one dollars and eighty-eight cents": "$351.88",
+        "one-dollar": "$1",
+        "seventy-cent": "$0.70",
+        "366 dollars": "$366",
+        "634 dollars": "$634",
+        "one hundred thousand dollars": "$100,000",
+        "1 million, 67 thousand, 106 dollars": "$1,067,106",
+        "680 thousand, 817 dollars": "$680,817",
+    }
+    for spoken, displayed in replacements.items():
+        text = text.replace(spoken, displayed)
+    return text
+
+
 def caption_svg(caption: str) -> str:
     words = caption.split()
     lines: list[str] = []
@@ -386,69 +368,110 @@ def caption_svg(caption: str) -> str:
     if len(lines) > 2:
         midpoint = math.ceil(len(words) / 2)
         lines = [" ".join(words[:midpoint]), " ".join(words[midpoint:])]
-    first_y = 75 if len(lines) == 1 else 58
-    line_height = 1.28
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="180" viewBox="0 0 1920 180">
-      <rect x="276" y="14" width="1368" height="142" rx="12" fill="{INK}" opacity="0.92"/>
-      {text_lines(lines, 960, first_y, 34, fill=WHITE, weight=600, family='Helvetica Neue', line_height=line_height, anchor='middle')}
+    first_y = 64 if len(lines) == 1 else 48
+    line_height = 1.22
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="150" viewBox="0 0 1920 150">
+      <rect x="276" y="8" width="1368" height="128" rx="12" fill="{INK}" opacity="0.92"/>
+      {text_lines(lines, 960, first_y, 31, fill=WHITE, weight=600, family='Helvetica Neue', line_height=line_height, anchor='middle')}
     </svg>'''
 
 
 def verify_claims() -> None:
     claims = json.loads(CLAIMS_PATH.read_text())
-    result = claims["retrospective_result"]
-    falsification = claims["falsification"]
-    forward = claims["forward_trial"]
-    expected = {
-        "candidate_annualized_return": 0.1897,
-        "spy_annualized_return": 0.1511,
-        "candidate_maximum_drawdown": -0.2899,
-        "spy_maximum_drawdown": -0.3372,
+    execution = claims["execution_realism"]
+    if execution["evidence_class"] != "CONSUMED_RETROSPECTIVE_EXECUTION_REALISM":
+        raise RuntimeError("Claim lock changed: execution-realism evidence class")
+    if execution["policy_id"] != "tsmom_ensemble_vol":
+        raise RuntimeError("Claim lock changed: production policy identity")
+    if execution["window"] != {"start": "2025-01-02", "end": "2026-08-28", "observations": 415}:
+        raise RuntimeError("Claim lock changed: execution-realism window")
+    if "next session open t+1" not in execution["fill_assumption"]:
+        raise RuntimeError("Claim lock changed: next-open fill assumption")
+    cost_rows = {row["bps_per_leg"]: row for row in execution["next_open_cost_stress"]}
+    expected_cost_rows = {
+        1: (0.1637768834, -0.0537699288),
+        5: (0.1538759778, -0.0544710489),
+        25: (0.1055891073, -0.0579709322),
     }
-    for key, value in expected.items():
-        if not math.isclose(round(result[key], 4), value, abs_tol=1e-9):
-            raise RuntimeError(f"Claim lock changed: {key}={result[key]!r}")
-    if result["window"] != {"start": "2013-01-02", "end": "2026-08-27"}:
-        raise RuntimeError("Claim lock changed: retrospective replay window")
-    if result["one_way_cost_bps"] != 5:
-        raise RuntimeError("Claim lock changed: modeled one-way turnover cost")
-    if not math.isclose(round(falsification["deflated_sharpe_probability"], 4), 0.0375, abs_tol=1e-9):
-        raise RuntimeError("Claim lock changed: deflated Sharpe probability")
-    if not math.isclose(round(falsification["worst_familywise_adjusted_p_value"], 4), 0.3718, abs_tol=1e-9):
-        raise RuntimeError("Claim lock changed: adjusted familywise p-value")
+    if set(cost_rows) != set(expected_cost_rows):
+        raise RuntimeError("Claim lock changed: execution-realism cost grid")
+    for bps, (expected_return, expected_drawdown) in expected_cost_rows.items():
+        row = cost_rows[bps]
+        if not math.isclose(row["total_return"], expected_return, abs_tol=1e-10):
+            raise RuntimeError(f"Claim lock changed: {bps} bp return")
+        if not math.isclose(row["maximum_drawdown"], expected_drawdown, abs_tol=1e-10):
+            raise RuntimeError(f"Claim lock changed: {bps} bp drawdown")
+        if not math.isclose(row["spy_total_return"], 0.3352366407, abs_tol=1e-10):
+            raise RuntimeError(f"Claim lock changed: {bps} bp SPY comparator")
+        if row["total_return"] >= row["spy_total_return"]:
+            raise RuntimeError("Claim lock changed: production must not be narrated as beating SPY")
+    small = execution["small_account_proxy"]
+    expected_small = {
+        "initial_equity_usd": 300,
+        "ending_equity_usd": 351.88433421,
+        "total_return": 0.1729477807,
+        "minimum_order_notional_usd": 1,
+        "quantity_decimals": 9,
+        "sell_day_fees_total_usd": 0.7,
+        "skipped_minimum_orders": 12,
+    }
+    for key, value in expected_small.items():
+        if not math.isclose(float(small[key]), float(value), abs_tol=1e-10):
+            raise RuntimeError(f"Claim lock changed: small-account {key}")
+    if execution["assurance"]["future_profitability_proven"] is not False:
+        raise RuntimeError("Claim lock changed: future profitability boundary")
+    if execution["assurance"]["broker_fill_verified"] is not False:
+        raise RuntimeError("Claim lock changed: broker-fill boundary")
+
+    result = claims["retrospective_result"]
+    if result["promotion_status"] != "NOT_PROMOTED_DESCRIPTIVE_ONLY":
+        raise RuntimeError("Claim lock changed: G4 promotion boundary")
+    if not math.isclose(100_000 * (1 + result["candidate_total_return"]), 1_067_105.97833, abs_tol=1e-5):
+        raise RuntimeError("Claim lock changed: G4 ending value")
+    if not math.isclose(100_000 * (1 + result["spy_total_return"]), 680_817.46189, abs_tol=1e-5):
+        raise RuntimeError("Claim lock changed: G4 SPY ending value")
+    falsification = claims["falsification"]
     if falsification["growth_control_independence_supported"] is not False:
         raise RuntimeError("Claim lock changed: growth-control gate")
     if falsification["authenticated_source_overlap_passed"] is not False:
         raise RuntimeError("Claim lock changed: source-overlap gate")
-    production = claims["production_policy"]
-    if production["policy_id"] != "tsmom_ensemble_vol" or production["distinct_from_g4_shadow"] is not True:
-        raise RuntimeError("Claim lock changed: production policy identity")
-    if production["window"] != {"start": "2025-01-02", "end": "2026-08-28", "observations": 415}:
-        raise RuntimeError("Claim lock changed: production fixed holdout")
-    production_expected = {
-        "candidate": {
-            "annualized_return": 0.1113,
-            "annualized_volatility": 0.0831,
-            "maximum_drawdown": -0.0579,
-        },
-        "spy": {
-            "annualized_return": 0.1919,
-            "annualized_volatility": 0.1733,
-            "maximum_drawdown": -0.1876,
-        },
+    if falsification["worst_familywise_adjusted_p_value"] <= 0.05:
+        raise RuntimeError("Claim lock changed: multiplicity gate")
+
+    attempt = claims["prospective_attempt114"]
+    if attempt["attempt_number"] != 114:
+        raise RuntimeError("Claim lock changed: prospective attempt number")
+    if attempt["publication_status"] != "PUBLIC_PRE_DEADLINE_GITHUB_WORKFLOW_VERIFIED":
+        raise RuntimeError("Claim lock changed: Attempt 114 publication status")
+    expected_attempt = {
+        "bound_runtime_source_count": 17,
+        "public_get_count": 23,
+        "required_signal_commitments": 254,
+        "required_settlements": 252,
     }
-    for owner, metrics in production_expected.items():
-        for key, value in metrics.items():
-            observed = round(production[owner][key], 4)
-            if not math.isclose(observed, value, abs_tol=1e-9):
-                raise RuntimeError(f"Claim lock changed: production {owner} {key}={observed!r}")
-    if (forward["settlements"], forward["minimum_settlements_for_primary_calculation"]) != (0, 252):
-        raise RuntimeError("Claim lock changed: Forward Trial 1 genesis")
-    if forward["broker_authority"] is not False or forward["performance_inference_enabled"] is not False:
-        raise RuntimeError("Claim lock changed: forward authority or inference state")
+    for key, value in expected_attempt.items():
+        if attempt[key] != value:
+            raise RuntimeError(f"Claim lock changed: Attempt 114 {key}")
+    if attempt["assurance"]["independent_cryptographic_timestamp_verified"] is not False:
+        raise RuntimeError("Claim lock changed: timestamp boundary")
+    if attempt["assurance"]["performance_inference_permitted"] is not False:
+        raise RuntimeError("Claim lock changed: prospective inference boundary")
+    if attempt["assurance"]["broker_mutation_authorized"] is not False:
+        raise RuntimeError("Claim lock changed: broker mutation boundary")
+    if claims["options_and_broker_boundary"]["order_submitted_or_filled_as_evidence"] is not False:
+        raise RuntimeError("Claim lock changed: order evidence boundary")
 
 
-def build(keep_work: bool) -> None:
+def supplied_audio(audio_dir: Path, index: int, scene: Scene) -> Path:
+    stem = f"{index:02d}-{scene.slug}"
+    matches = [audio_dir / f"{stem}{suffix}" for suffix in (".wav", ".mp3", ".m4a", ".flac")]
+    found = [path for path in matches if path.is_file()]
+    if len(found) != 1:
+        raise RuntimeError(f"Expected exactly one supplied narration file for {stem}; found {len(found)}")
+    return found[0]
+
+
+def build(keep_work: bool, audio_dir: Path | None, voice: str) -> None:
     verify_claims()
     if WORK.exists():
         shutil.rmtree(WORK)
@@ -457,11 +480,14 @@ def build(keep_work: bool) -> None:
     (WORK / "segments").mkdir()
 
     tts = ROOT / ".venv-media" / "bin" / "edge-tts"
-    if not tts.exists():
-        raise RuntimeError("Install the free media voice first: python3 -m venv .venv-media && .venv-media/bin/pip install edge-tts==7.2.3")
+    if audio_dir is not None:
+        audio_dir = audio_dir.expanduser().resolve()
+        if not audio_dir.is_dir():
+            raise RuntimeError(f"Supplied narration directory does not exist: {audio_dir}")
+    elif not tts.exists():
+        raise RuntimeError("Provide --audio-dir or install the pinned free media voice in .venv-media")
 
     scene_files: list[Path] = []
-    audio_files: list[Path] = []
     durations: list[float] = []
     srt_entries: list[tuple[float, float, str]] = []
     cursor = 0.0
@@ -469,12 +495,16 @@ def build(keep_work: bool) -> None:
     for index, (scene, svg) in enumerate(zip(SCENES, scene_svgs()), start=1):
         svg_path = WORK / "scenes" / f"{index:02d}-{scene.slug}.svg"
         png_path = WORK / "scenes" / f"{index:02d}-{scene.slug}.png"
-        raw_audio = WORK / "audio" / f"{index:02d}-{scene.slug}.mp3"
+        generated_audio = WORK / "audio" / f"{index:02d}-{scene.slug}.mp3"
         audio_path = WORK / "audio" / f"{index:02d}-{scene.slug}.wav"
         segment_path = WORK / "segments" / f"{index:02d}-{scene.slug}.mp4"
         svg_path.write_text(svg)
         run("node", str(ROOT / "scripts" / "render_svg.mjs"), str(svg_path), str(png_path))
-        run(str(tts), "--voice", VOICE, "--rate", VOICE_RATE, "--text", scene.narration, "--write-media", str(raw_audio))
+        if audio_dir is not None:
+            raw_audio = supplied_audio(audio_dir, index, scene)
+        else:
+            raw_audio = generated_audio
+            run(str(tts), "--voice", voice, "--rate", VOICE_RATE, "--text", scene.narration, "--write-media", str(raw_audio))
         raw_duration = duration(raw_audio)
         pause = 0.42 if index < len(SCENES) else 0.85
         scene_duration = raw_duration + pause
@@ -487,7 +517,7 @@ def build(keep_work: bool) -> None:
             f"[0:v]scale=1980:1114,zoompan=z='min(zoom+0.00010,1.025)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={frame_count}:s=1920x1080:fps=30,fade=t=in:st=0:d=0.28,fade=t=out:st={fade_out:.3f}:d=0.32,format=yuv420p[v]",
             "-map", "[v]", "-map", "1:a", "-t", f"{scene_duration:.3f}", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", str(segment_path))
 
-        chunks = caption_chunks(scene.narration)
+        chunks = caption_chunks(display_narration(scene.narration))
         total_words = sum(len(chunk.split()) for chunk in chunks)
         local_cursor = cursor
         for chunk in chunks:
@@ -496,7 +526,6 @@ def build(keep_work: bool) -> None:
             local_cursor += share
         cursor += scene_duration
         scene_files.append(segment_path)
-        audio_files.append(audio_path)
         durations.append(scene_duration)
 
     concat_path = WORK / "segments.txt"
@@ -527,7 +556,7 @@ def build(keep_work: bool) -> None:
     for index, (start, end, _) in enumerate(srt_entries, start=1):
         output_label = f"captioned{index}"
         filters.append(
-            f"[{previous}][{index}:v]overlay=x=0:y=842:"
+            f"[{previous}][{index}:v]overlay=x=0:y=872:"
             f"enable='between(t,{start:.3f},{end:.3f})'[{output_label}]"
         )
         previous = output_label
@@ -554,8 +583,11 @@ def build(keep_work: bool) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--keep-work", action="store_true", help="Retain rendered scene files under tmp/video_build")
+    parser.add_argument("--audio-dir", type=Path,
+                        help="Directory with 01-slug.wav/mp3/... narration files, including ElevenLabs exports")
+    parser.add_argument("--voice", default=VOICE, help="Edge neural voice used when --audio-dir is omitted")
     args = parser.parse_args()
-    build(args.keep_work)
+    build(args.keep_work, args.audio_dir, args.voice)
 
 
 if __name__ == "__main__":

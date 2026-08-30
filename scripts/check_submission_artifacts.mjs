@@ -111,6 +111,12 @@ assert.ok(Number(probe.format.duration) > 60 && Number(probe.format.duration) <=
 
 const captions = readFileSync(requireFile("public/judge/Finly_Demo_Video.srt", 500).path, "utf8");
 assert.match(captions, /Most trading demos begin/);
+assert.match(captions, /next-session-open fills/i);
+assert.match(captions, /SPY returned 33\.52 percent\. Finly did not beat it/i);
+assert.match(captions, /\$300 shadow ended at \$351\.88/i);
+assert.match(captions, /Attempt 114 answers that hindsight problem/i);
+assert.match(captions, /254 consecutive timely commitment anchors and 252 reconciled settlements/i);
+assert.match(captions, /not an independent cryptographic timestamp/i);
 assert.match(captions, /llama still does not get the keys/);
 
 assert.deepEqual(pngDimensions("public/brand/finly-cover-16x9.png"), { width: 1920, height: 1080 });

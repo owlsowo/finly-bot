@@ -1,179 +1,175 @@
 1
-00:00:00,000 --> 00:00:04,084
+00:00:00,000 --> 00:00:04,692
 Most trading demos begin with a chart going up and to the right.
 
 2
-00:00:04,084 --> 00:00:06,912
-Ours does too. The difference is what happens next.
+00:00:04,692 --> 00:00:09,024
+Finly asks what survives before that chart gets anywhere near a broker.
 
 3
-00:00:07,332 --> 00:00:14,046
-Finly's strongest retrospective nonproduction shadow combined a QQQ core with rotating sector momentum.
+00:00:09,444 --> 00:00:16,764
+We replaced the frozen SPY and BIL policy's same-close assumption with next-session-open fills.
 
 4
-00:00:14,046 --> 00:00:20,760
-In the consumed ETF replay from 2 January 2013 through 27 August 2026,
+00:00:16,764 --> 00:00:19,016
+Across 415 consumed sessions,
 
 5
-00:00:20,760 --> 00:00:24,376
-with a modeled five-basis-point one-way turnover cost,
+00:00:19,016 --> 00:00:22,958
+after five basis points per traded-notional leg,
 
 6
-00:00:24,376 --> 00:00:30,574
-it recorded an 18.97 percent annualized return against 15.11 percent for SPY,
+00:00:22,958 --> 00:00:28,589
+it returned 15.39 percent with a 5.45 percent maximum drawdown.
 
 7
-00:00:30,574 --> 00:00:33,156
-with a shallower maximum drawdown.
+00:00:28,589 --> 00:00:33,656
+At 25 basis points, it still returned 10.56 percent.
 
 8
-00:00:33,576 --> 00:00:36,691
-Finly still refused to promote it.
+00:00:33,656 --> 00:00:38,724
+SPY returned 33.52 percent. Finly did not beat it.
 
 9
-00:00:36,691 --> 00:00:40,324
-Its Deflated Sharpe probability was 3.75 percent,
+00:00:39,144 --> 00:00:45,953
+At one basis point per traded leg, a $300 shadow ended at $351.88.
 
 10
-00:00:40,324 --> 00:00:43,958
-the worst adjusted familywise p-value was 0.3718,
+00:00:45,953 --> 00:00:49,619
+The preview enforced a $1 order minimum,
 
 11
-00:00:43,958 --> 00:00:47,592
-and the growth-control and source-overlap gates failed.
+00:00:49,619 --> 00:00:51,714
+skipped twelve sub-dollar adjustments,
 
 12
-00:00:48,012 --> 00:00:50,080
-That refusal is the product.
+00:00:51,714 --> 00:00:53,809
+used nine-decimal fractional sizing,
 
 13
-00:00:50,080 --> 00:00:53,803
-AI may assess bounded evidence and explain a view.
+00:00:53,809 --> 00:00:56,951
+and charged a $0.70 sell-fee proxy.
 
 14
-00:00:53,803 --> 00:00:57,526
-Code still owns direction, horizon, spread construction, maximum loss,
+00:00:56,951 --> 00:01:02,712
+That tests affordability and mechanics. It is not a broker fill.
 
 15
-00:00:57,526 --> 00:01:02,076
-and every Alpaca field. The llama does not get the keys.
+00:01:03,132 --> 00:01:05,678
+The policy is deliberately boring.
 
 16
-00:01:02,496 --> 00:01:05,870
-Code removes evidence families, perturbs market inputs,
+00:01:05,678 --> 00:01:10,262
+Three lagged SPY minus BIL trend horizons set exposure,
 
 17
-00:01:05,870 --> 00:01:09,726
-and recomputes the order. If the conclusion changes,
+00:01:10,262 --> 00:01:15,864
+a ten-percent volatility target scales it, and BIL receives the rest.
 
 18
-00:01:09,726 --> 00:01:14,064
-Finly fails closed. A plausible rationale is not permission.
+00:01:15,864 --> 00:01:20,956
+AI may interpret evidence and veto. Deterministic code owns exposure,
 
 19
-00:01:14,484 --> 00:01:17,727
-Two synthetic receipts make the boundary visible.
+00:01:20,956 --> 00:01:24,012
+order fields, maximum loss, and permission.
 
 20
-00:01:17,727 --> 00:01:19,117
-With aligned evidence,
+00:01:24,432 --> 00:01:31,632
+The supportive synthetic fixture survived four of four source removals and thirty-two of thirty-two perturbations.
 
 21
-00:01:19,117 --> 00:01:23,286
-four source removals and thirty-two perturbations preserved the decision.
+00:01:31,632 --> 00:01:36,432
+In the conflicting fixture, removing one source changed the decision,
 
 22
-00:01:23,286 --> 00:01:26,992
-With conflicting evidence, removing one source changed it,
+00:01:36,432 --> 00:01:38,832
+so Finly returned no trade.
 
 23
-00:01:26,992 --> 00:01:29,772
-so the compiler returned no trade.
+00:01:38,832 --> 00:01:43,152
+A surviving fixture can compile a defined-risk SPY spread,
 
 24
-00:01:30,192 --> 00:01:32,179
-When a fixture survives,
+00:01:43,152 --> 00:01:47,472
+here with $366 maximum loss and $634 maximum gain,
 
 25
-00:01:32,179 --> 00:01:37,146
-code constructs a defined-risk bear-put spread and calculates the payoff.
+00:01:47,472 --> 00:01:48,912
+without transmitting it.
 
 26
-00:01:37,146 --> 00:01:42,610
-Here, maximum loss is 366 dollars and maximum gain is 634.
+00:01:49,332 --> 00:01:54,610
+Even the strongest backtest did not receive authority.
 
 27
-00:01:42,610 --> 00:01:46,584
-The Alpaca-shaped payload is compiled but never transmitted.
+00:01:54,610 --> 00:02:01,867
+G4 turned a modeled $100,000 into $1,067,106, versus $680,817 for SPY.
 
 28
-00:01:47,004 --> 00:01:52,255
-The chart is an ETF replay, not options profit and loss.
+00:02:01,867 --> 00:02:09,124
+But it was selected after history was viewed and failed multiple-testing,
 
 29
-00:01:52,255 --> 00:01:55,596
-The 113-item ledger includes controls, invalidated runs,
+00:02:09,124 --> 00:02:14,402
+growth-control, and source-overlap gates. Finly kept the chart,
 
 30
-00:01:55,596 --> 00:01:57,983
-and reruns—not 113 independent strategies.
+00:02:14,402 --> 00:02:19,020
+labeled it consumed, and rejected the strategy.
 
 31
-00:01:57,983 --> 00:02:00,369
-Seven later challengers promoted none.
+00:02:19,440 --> 00:02:22,416
+Attempt 114 answers that hindsight problem.
 
 32
-00:02:00,369 --> 00:02:04,188
-Reporting the limits is part of the result.
+00:02:22,416 --> 00:02:24,896
+Before the first eligible signal,
 
 33
-00:02:04,608 --> 00:02:07,764
-G4 is not the production book.
+00:02:24,896 --> 00:02:32,336
+a public GitHub workflow verified 17 bound runtime files through 23 fixed public GET checks.
 
 34
-00:02:07,764 --> 00:02:11,972
-Production Finly is the lower-risk time-series-momentum volatility ensemble.
+00:02:32,336 --> 00:02:38,288
+The protocol requires 254 consecutive timely commitment anchors and 252 reconciled settlements,
 
 35
-00:02:11,972 --> 00:02:14,602
-In its now-consumed fixed holdout,
+00:02:38,288 --> 00:02:41,760
+with no skipped sessions, backfill, replacement windows,
 
 36
-00:02:14,602 --> 00:02:19,862
-it returned 11.13 percent annualized against 19.19 percent for SPY,
+00:02:41,760 --> 00:02:44,736
+optional stopping, or second confirmatory try.
 
 37
-00:02:19,862 --> 00:02:24,596
-with annualized volatility of 8.31 percent against 17.33 percent,
+00:02:45,156 --> 00:02:49,392
+That record is not an independent cryptographic timestamp,
 
 38
-00:02:24,596 --> 00:02:30,908
-and a maximum drawdown of minus 5.79 percent against minus 18.76 percent.
+00:02:49,392 --> 00:02:53,099
+provider-origin proof, broker fill, or profitability result.
 
 39
-00:02:30,908 --> 00:02:35,642
-Forward Trial One remains at zero of 252 settlements,
+00:02:53,099 --> 00:02:59,454
+Today there is no prospective performance inference and no broker mutation authority.
 
 40
-00:02:35,642 --> 00:02:38,798
-so there is no next-month inference.
+00:02:59,454 --> 00:03:01,572
+Alpaca access remains read-only.
 
 41
-00:02:38,798 --> 00:02:42,480
-Broker authority and performance inference remain disabled.
+00:03:01,992 --> 00:03:06,103
+Finly is not a bigger forecast. It is a smaller,
 
 42
-00:02:42,900 --> 00:02:45,420
-Finly's contribution is not a bigger forecast.
+00:03:06,103 --> 00:03:09,802
+testable trust boundary: let AI interpret more, authorize less,
 
 43
-00:02:45,420 --> 00:02:49,380
-It is a smaller trust boundary: evidence may inform a trade,
+00:03:09,802 --> 00:03:13,091
+and make correction, rejection, and no trade visible.
 
 44
-00:02:49,380 --> 00:02:52,980
-but verified authority must permit it. The bull has horns.
-
-45
-00:02:52,980 --> 00:02:55,860
-The llama still does not get the keys.
+00:03:13,091 --> 00:03:18,024
+The bull has horns. The llama still does not get the keys.
