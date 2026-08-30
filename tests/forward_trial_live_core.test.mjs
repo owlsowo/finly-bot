@@ -7,6 +7,7 @@ import {
   buildForwardTrialLiveActivation,
   buildForwardTrialLiveAnchorManifest,
   buildForwardTrialLiveCommitment,
+  FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING,
   FORWARD_TRIAL_LIVE_SYMBOLS,
   forwardTrialLiveCommitmentFilename,
   hashForwardTrialLiveValue,
@@ -14,10 +15,18 @@ import {
   validateForwardTrialLiveActivation,
   validateForwardTrialLiveAnchorManifest,
   validateForwardTrialLiveCommitment,
+  validateForwardTrialLiveImplementationBinding,
 } from "../research/forward_trial_live_core.mjs";
 
 const clone = structuredClone;
 const digest = (character) => `sha256:${character.repeat(64)}`;
+
+function rehashRuntimeManifest(value) {
+  const body = clone(value);
+  delete body.manifest_sha256;
+  value.manifest_sha256 = hashForwardTrialLiveValue(body);
+  return value;
+}
 
 function weekdaysEnding(endDate, count) {
   const result = [];
@@ -495,6 +504,49 @@ test("secret-bearing, malformed-schema, and invalid corporate-action acquisition
     corporate_action_digests: badDigest.corporate_action_digests,
   });
   assert.throws(() => validateForwardTrialLiveAcquisition(badDigest), /do not bind/);
+});
+
+test("runtime profile authorization rejects expansion, duplication, reordering, and Linux capture", () => {
+  const thirdProfile = clone(FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING);
+  thirdProfile.runtime_environment.profiles.push({
+    ...clone(thirdProfile.runtime_environment.profiles[1]),
+    profile_id: "linux-arm64-node-26.7.0-tz-2026c",
+    arch: "arm64",
+  });
+  thirdProfile.runtime_environment.verification_profile_ids.push(
+    thirdProfile.runtime_environment.profiles[2].profile_id,
+  );
+  assert.throws(
+    () => validateForwardTrialLiveImplementationBinding(rehashRuntimeManifest(thirdProfile)),
+    /exactly two runtime profiles/,
+  );
+
+  const duplicateProfile = clone(FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING);
+  duplicateProfile.runtime_environment.profiles[1] = clone(
+    duplicateProfile.runtime_environment.profiles[0],
+  );
+  duplicateProfile.runtime_environment.verification_profile_ids[1] =
+    duplicateProfile.runtime_environment.profiles[0].profile_id;
+  assert.throws(
+    () => validateForwardTrialLiveImplementationBinding(rehashRuntimeManifest(duplicateProfile)),
+    /profile 2 identity is invalid/,
+  );
+
+  const reorderedProfiles = clone(FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING);
+  reorderedProfiles.runtime_environment.profiles.reverse();
+  reorderedProfiles.runtime_environment.verification_profile_ids.reverse();
+  assert.throws(
+    () => validateForwardTrialLiveImplementationBinding(rehashRuntimeManifest(reorderedProfiles)),
+    /profile 1 identity is invalid/,
+  );
+
+  const linuxCapture = clone(FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING);
+  linuxCapture.runtime_environment.capture_profile_id =
+    linuxCapture.runtime_environment.profiles[1].profile_id;
+  assert.throws(
+    () => validateForwardTrialLiveImplementationBinding(rehashRuntimeManifest(linuxCapture)),
+    /profile authorization is invalid/,
+  );
 });
 
 test("formula and authority substitutions fail even when the attacker recomputes the outer hash", () => {

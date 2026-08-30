@@ -94,6 +94,9 @@ export async function verifyFrozenImplementationSources({
 
 export function verifyFrozenRuntimeEnvironment({
   implementationBinding = FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING,
+  purpose = "capture",
+  platform = process.platform,
+  arch = process.arch,
   execArgv = process.execArgv,
   environment = process.env,
   versions = process.versions,
@@ -101,6 +104,24 @@ export function verifyFrozenRuntimeEnvironment({
 } = {}) {
   validateForwardTrialLiveImplementationBinding(implementationBinding);
   const expected = implementationBinding.runtime_environment;
+  if (purpose !== "capture" && purpose !== "verification") {
+    fail("runtime purpose must be capture or verification");
+  }
+  if (typeof platform !== "string" || typeof arch !== "string") {
+    fail("runtime platform and architecture must be strings");
+  }
+  const matchingProfiles = expected.profiles.filter((profile) => (
+    profile.platform === platform && profile.arch === arch
+  ));
+  if (matchingProfiles.length !== 1) {
+    fail("runtime platform and architecture do not match a frozen profile");
+  }
+  const profile = matchingProfiles[0];
+  if ((purpose === "capture" && profile.profile_id !== expected.capture_profile_id)
+    || (purpose === "verification"
+      && !expected.verification_profile_ids.includes(profile.profile_id))) {
+    fail(`runtime profile is not authorized for ${purpose}`);
+  }
   if (!Array.isArray(execArgv)
     || !expected.permitted_exec_argv.some((permitted) => (
       hashForwardTrialLiveValue(execArgv) === hashForwardTrialLiveValue(permitted)
@@ -116,7 +137,7 @@ export function verifyFrozenRuntimeEnvironment({
     }
   }
   for (const key of ["node", "v8", "icu", "tz", "unicode", "openssl"]) {
-    if (versions?.[key] !== expected[key]) {
+    if (versions?.[key] !== profile[key]) {
       fail(`runtime engine version differs from the frozen manifest: ${key}`);
     }
   }
@@ -124,12 +145,16 @@ export function verifyFrozenRuntimeEnvironment({
   const fetchSourceSha256 = `sha256:${createHash("sha256")
     .update(Function.prototype.toString.call(fetchFunction), "utf8")
     .digest("hex")}`;
-  if (fetchSourceSha256 !== expected.global_fetch_source_sha256) {
+  if (fetchSourceSha256 !== profile.global_fetch_source_sha256) {
     fail("runtime global fetch differs from the frozen Node implementation");
   }
   return {
-    schema_version: "finly_forward_trial_live_runtime_environment_verification.v1",
+    schema_version: "finly_forward_trial_live_runtime_environment_verification.v2",
     runtime_manifest_sha256: implementationBinding.manifest_sha256,
+    purpose,
+    profile_id: profile.profile_id,
+    platform,
+    arch,
     node: versions.node,
     v8: versions.v8,
     icu: versions.icu,
@@ -962,6 +987,7 @@ export async function verifyExistingLiveActivation({
   }
   const runtimeEnvironment = verifyFrozenRuntimeEnvironment({
     implementationBinding,
+    purpose: "verification",
     ...(runtimeEnvironmentInputs ?? {}),
   });
   await verifyFrozenImplementationSources({
@@ -1039,7 +1065,7 @@ async function appendSignalCommitment() {
       projectRoot: PROJECT_ROOT,
       activation,
     });
-    verifyFrozenRuntimeEnvironment({ implementationBinding });
+    verifyFrozenRuntimeEnvironment({ implementationBinding, purpose: "capture" });
     await verifyFrozenImplementationSources({ activation, implementationBinding });
     const state = await loadConsistentLocalState({ projectRoot: PROJECT_ROOT, activation });
     const { commitments, anchors } = state;

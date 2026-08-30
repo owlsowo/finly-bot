@@ -12,7 +12,7 @@ export const FORWARD_TRIAL_LIVE_ACQUISITION_SCHEMA = "finly_forward_trial_live_a
 export const FORWARD_TRIAL_LIVE_COMMITMENT_SCHEMA = "finly_forward_trial_live_commitment.v2";
 export const FORWARD_TRIAL_LIVE_ANCHOR_SCHEMA = "finly_forward_trial_live_public_anchor.v2";
 export const FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING_SCHEMA =
-  "finly_forward_trial_live_runtime_manifest.v1";
+  "finly_forward_trial_live_runtime_manifest.v2";
 
 export const FORWARD_TRIAL_LIVE_SYMBOLS = Object.freeze([
   "SPY", "BIL", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "GLD", "DBC", "VNQ",
@@ -303,15 +303,45 @@ export function validateForwardTrialLiveImplementationBinding(value, { activatio
     fail("runtime implementation source-map hash is invalid");
   }
   exact(value.runtime_environment, [
-    "node", "v8", "icu", "tz", "unicode", "openssl", "permitted_exec_argv",
-    "forbidden_environment_variables", "global_fetch_source_sha256",
+    "capture_profile_id", "verification_profile_ids", "profiles", "permitted_exec_argv",
+    "forbidden_environment_variables",
   ], "runtime implementation environment");
-  for (const key of ["node", "v8", "icu", "tz", "unicode", "openssl"]) {
-    if (typeof value.runtime_environment[key] !== "string"
-      || value.runtime_environment[key].length < 1
-      || value.runtime_environment[key].length > 128) {
-      fail(`runtime implementation environment.${key} must be a bounded version string`);
+  const runtimeProfiles = value.runtime_environment.profiles;
+  if (!Array.isArray(runtimeProfiles) || runtimeProfiles.length !== 2) {
+    fail("runtime implementation environment must freeze exactly two runtime profiles");
+  }
+  const profileIds = [];
+  const platformArchitectures = [];
+  for (const [index, profile] of runtimeProfiles.entries()) {
+    exact(profile, [
+      "profile_id", "platform", "arch", "node", "v8", "icu", "tz", "unicode",
+      "openssl", "global_fetch_source_sha256",
+    ], `runtime implementation environment profile ${index + 1}`);
+    for (const key of [
+      "profile_id", "platform", "arch", "node", "v8", "icu", "tz", "unicode", "openssl",
+    ]) {
+      if (typeof profile[key] !== "string"
+        || profile[key].length < 1
+        || profile[key].length > 128) {
+        fail(`runtime implementation environment profile ${index + 1}.${key} must be bounded text`);
+      }
     }
+    if (!same([profile.platform, profile.arch], index === 0 ? ["darwin", "arm64"] : ["linux", "x64"])
+      || profile.profile_id !== `${profile.platform}-${profile.arch}-node-${profile.node}-tz-${profile.tz}`) {
+      fail(`runtime implementation environment profile ${index + 1} identity is invalid`);
+    }
+    digest(
+      profile.global_fetch_source_sha256,
+      `runtime implementation environment profile ${index + 1} global fetch source hash`,
+    );
+    profileIds.push(profile.profile_id);
+    platformArchitectures.push(`${profile.platform}/${profile.arch}`);
+  }
+  if (new Set(profileIds).size !== runtimeProfiles.length
+    || new Set(platformArchitectures).size !== runtimeProfiles.length
+    || value.runtime_environment.capture_profile_id !== profileIds[0]
+    || !same(value.runtime_environment.verification_profile_ids, profileIds)) {
+    fail("runtime implementation environment profile authorization is invalid");
   }
   if (!same(value.runtime_environment.permitted_exec_argv, [
     [],
@@ -323,10 +353,6 @@ export function validateForwardTrialLiveImplementationBinding(value, { activatio
     )) {
     fail("runtime implementation environment changes the frozen launch contract");
   }
-  digest(
-    value.runtime_environment.global_fetch_source_sha256,
-    "runtime implementation global fetch source hash",
-  );
   exact(value.authority, ["research_only", "broker_mutation_authorized", "order_payload"], "runtime implementation authority");
   if (!same(value.authority, AUTHORITY)) fail("runtime implementation manifest crosses the research-only authority boundary");
   exact(value.assurance, [

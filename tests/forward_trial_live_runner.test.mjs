@@ -675,43 +675,113 @@ test("capture verifies the frozen implementation source bytes", async () => {
 });
 
 test("capture rejects preload, loader, engine, TLS, and global-fetch environment drift", () => {
-  const verified = verifyFrozenRuntimeEnvironment({
+  const [captureProfile, linuxVerificationProfile] =
+    FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING.runtime_environment.profiles;
+  const profileVersions = (profile) => ({
+    ...process.versions,
+    node: profile.node,
+    v8: profile.v8,
+    icu: profile.icu,
+    tz: profile.tz,
+    unicode: profile.unicode,
+    openssl: profile.openssl,
+  });
+  const captureInputs = {
     implementationBinding: FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING,
+    purpose: "capture",
+    platform: captureProfile.platform,
+    arch: captureProfile.arch,
     execArgv: [],
     environment: {},
-    versions: process.versions,
+    versions: profileVersions(captureProfile),
     fetchFunction: globalThis.fetch,
-  });
+  };
+  const verified = verifyFrozenRuntimeEnvironment(captureInputs);
   assert.equal(verified.visible_runtime_configuration_matches_manifest, true);
   assert.equal(verified.hostile_preexecution_environment_excluded, false);
   assert.equal(verified.node, "26.7.0");
+  assert.equal(verified.purpose, "capture");
+  assert.equal(verified.profile_id, captureProfile.profile_id);
+  const linuxVerified = verifyFrozenRuntimeEnvironment({
+    ...captureInputs,
+    purpose: "verification",
+    platform: linuxVerificationProfile.platform,
+    arch: linuxVerificationProfile.arch,
+    versions: profileVersions(linuxVerificationProfile),
+  });
+  assert.equal(linuxVerified.profile_id, linuxVerificationProfile.profile_id);
   assert.throws(
-    () => verifyFrozenRuntimeEnvironment({ execArgv: ["--import=data:text/javascript,export{}"] }),
+    () => verifyFrozenRuntimeEnvironment({
+      ...captureInputs,
+      execArgv: ["--import=data:text/javascript,export{}"],
+    }),
     /launch arguments/,
   );
-  assert.throws(
-    () => verifyFrozenRuntimeEnvironment({ execArgv: [], environment: { NODE_OPTIONS: "--no-warnings" } }),
-    /environment variable is forbidden/,
-  );
-  assert.throws(
-    () => verifyFrozenRuntimeEnvironment({ execArgv: [], environment: { NODE_EXTRA_CA_CERTS: "/tmp/ca.pem" } }),
-    /environment variable is forbidden/,
-  );
+  for (const name of FORWARD_TRIAL_LIVE_IMPLEMENTATION_BINDING
+    .runtime_environment.forbidden_environment_variables) {
+    assert.throws(
+      () => verifyFrozenRuntimeEnvironment({
+        ...captureInputs,
+        environment: { [name]: "forbidden" },
+      }),
+      /environment variable is forbidden/,
+      `${name} must fail closed`,
+    );
+  }
+  for (const key of ["node", "v8", "icu", "tz", "unicode", "openssl"]) {
+    assert.throws(
+      () => verifyFrozenRuntimeEnvironment({
+        ...captureInputs,
+        versions: { ...captureInputs.versions, [key]: "invalid" },
+      }),
+      new RegExp(`engine version differs.*${key}`),
+      `${key} drift must fail closed`,
+    );
+  }
   assert.throws(
     () => verifyFrozenRuntimeEnvironment({
-      execArgv: [],
-      environment: {},
-      versions: { ...process.versions, node: "99.0.0" },
-    }),
-    /engine version differs/,
-  );
-  assert.throws(
-    () => verifyFrozenRuntimeEnvironment({
-      execArgv: [],
-      environment: {},
+      ...captureInputs,
       fetchFunction: async function attackerControlledFetch() {},
     }),
     /global fetch differs/,
+  );
+  assert.throws(
+    () => verifyFrozenRuntimeEnvironment({
+      ...captureInputs,
+      platform: linuxVerificationProfile.platform,
+      arch: linuxVerificationProfile.arch,
+      versions: profileVersions(linuxVerificationProfile),
+    }),
+    /not authorized for capture/,
+  );
+  for (const [key, value] of [["tz", captureProfile.tz], ["openssl", captureProfile.openssl]]) {
+    assert.throws(
+      () => verifyFrozenRuntimeEnvironment({
+        ...captureInputs,
+        purpose: "verification",
+        platform: linuxVerificationProfile.platform,
+        arch: linuxVerificationProfile.arch,
+        versions: {
+          ...profileVersions(linuxVerificationProfile),
+          [key]: value,
+        },
+      }),
+      new RegExp(`engine version differs.*${key}`),
+      `Linux verification must reject the Darwin ${key}`,
+    );
+  }
+  assert.throws(
+    () => verifyFrozenRuntimeEnvironment({
+      ...captureInputs,
+      purpose: "verification",
+      platform: "freebsd",
+      arch: "x64",
+    }),
+    /do not match a frozen profile/,
+  );
+  assert.throws(
+    () => verifyFrozenRuntimeEnvironment({ ...captureInputs, purpose: "deployment" }),
+    /purpose must be capture or verification/,
   );
 });
 

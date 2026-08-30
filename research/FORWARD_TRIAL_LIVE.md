@@ -14,9 +14,9 @@ The write-once activation in [`forward_trial_live/activation.json`](forward_tria
 - settlement and performance-inference gates that remain closed; and
 - `broker_mutation_authorized: false` with no order payload.
 
-The activation is not a signal, trade, return, or profitability result. Its purpose is to prevent a favorable first observation from being selected retrospectively. The supplemental [`forward_trial_live/runtime_manifest.json`](forward_trial_live/runtime_manifest.json) binds the activation hash to the complete capture-time source closure: canonical hashing, the production policy, the Alpaca response normalizer, the commitment core, and the live runner. Before capture and during clean-clone verification, the runner rehashes all five files, checks the pinned Node/V8/ICU/time-zone/OpenSSL versions and built-in fetch source, and rejects visible preload, loader, proxy, or alternate-CA configuration. The manifest must be published on GitHub before the activated first session closes; every private commitment and price-free public anchor carries its self-hash.
+The activation is not a signal, trade, return, or profitability result. Its purpose is to prevent a favorable first observation from being selected retrospectively. The supplemental [`forward_trial_live/runtime_manifest.json`](forward_trial_live/runtime_manifest.json) binds the activation hash to the complete capture-time source closure: canonical hashing, the production policy, the Alpaca response normalizer, the commitment core, and the live runner. Before capture and during clean-clone verification, the runner rehashes all five files, checks the pinned Node/V8/ICU/time-zone/OpenSSL versions and visible global-fetch wrapper source, and rejects visible preload, loader, proxy, or alternate-CA configuration. The manifest must be published on GitHub before the activated first session closes; every private commitment and price-free public anchor carries its self-hash.
 
-That runtime check is an accidental-drift control, not a hostile-host attestation. Code executed before the runner could conceal its own launch flags or monkey-patch the checks; Finly therefore records `hostile_preexecution_environment_excluded: false`. GitHub proves which source bytes were public, not that a local operating system executed them faithfully.
+The manifest freezes two exact Node.js 26.7.0 profiles because the Darwin-arm64 Homebrew and Linux-x64 official builds carry different time-zone and OpenSSL data. Both profiles may verify; only the Darwin profile may capture a signal. That runtime check is an accidental-drift control, not a hostile-host attestation. Code executed before the runner could conceal its own launch flags or monkey-patch the checks; Finly therefore records `hostile_preexecution_environment_excluded: false`. GitHub proves which source bytes were public, not that a local operating system executed them faithfully.
 
 ## Read-only transport evidence
 
@@ -59,7 +59,7 @@ After the anchor-only commit's `Verify Finly` workflow succeeds, verify the publ
 npm run research:forward-trial-live:verify-github -- \
   --run-id <github-actions-run-id> \
   --anchor-path <research/forward_trial_live/anchors/00000001_hash.json> \
-  --expected-parent-sha <frozen-v0.4.2-release-sha>
+  --expected-parent-sha <frozen-v0.4.3-release-sha>
 ```
 
 That verifier performs fifteen fixed, unauthenticated GET requests. It checks the public activation, the pre-signal runtime manifest and all five frozen source files at the parent release, the verifier itself, a successful parent workflow recorded before the first close, the later anchor-only commit, and the strict sequence-one v2 anchor. It writes a content-addressed, write-once receipt containing the exact request URLs, GitHub HTTP dates, response-byte hashes, and byte lengths. The receipt is explicitly a reproducible public-API pointer—not self-contained offline evidence—and leaves `external_anchor_verified: false`: GitHub's platform record is useful publication evidence, not an independent cryptographic timestamp or broker-origin signature.
