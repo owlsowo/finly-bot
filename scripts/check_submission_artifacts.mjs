@@ -175,8 +175,8 @@ const futurePatterns = [
 ];
 const documentPatterns = [...g4Patterns, ...productionPatterns, ...futurePatterns];
 const productMetadataPatterns = [
-  /From market evidence to a bounded options decision/iu,
-  /deterministic code owns the contract, maximum loss, stress tests, and final authorization outcome/iu,
+  /\+967\.11% historical simulation vs \+580\.82% SPY/iu,
+  /\$10K became a modeled \$106\.7K with Finly versus \$68\.1K with SPY/iu,
 ];
 
 requireSourcePdfParity({
