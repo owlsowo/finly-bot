@@ -51,7 +51,14 @@ function readinessFailureCode(error) {
   }
   if (message.includes("response is missing or oversized")) return "RESPONSE_SHAPE";
   if (error instanceof SyntaxError) return "RESPONSE_JSON";
-  if (message.includes("evidence assessment")) return "ASSESSMENT_SCHEMA";
+  if (message.startsWith("evidence assessment contains")) return "ASSESSMENT_TOP_LEVEL_KEYS";
+  if (message === "unsupported evidence assessment schema") return "ASSESSMENT_VERSION";
+  if (message === "evidence assessment count differs from request") return "ASSESSMENT_COUNT";
+  if (message === "assessment row must be an object") return "ASSESSMENT_ROW_SHAPE";
+  if (message.startsWith("assessment row contains")) return "ASSESSMENT_ROW_KEYS";
+  if (message === "assessment evidence IDs differ from request") return "ASSESSMENT_IDS";
+  if (message.startsWith("direction_score") || message.startsWith("volatility_score")) return "ASSESSMENT_SCORES";
+  if (message.startsWith("assessment rationale")) return "ASSESSMENT_RATIONALE";
   return "INTEGRATION_FAILURE";
 }
 
