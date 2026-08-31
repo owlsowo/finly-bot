@@ -1,6 +1,6 @@
 {
   "schema_version": "finly_competition_dashboard.v2",
-  "snapshot_at": "2026-08-31T16:42:55.170Z",
+  "snapshot_at": "2026-08-31T16:51:31.377Z",
   "competition": {
     "phase": "LIVE",
     "baseline_equity": 100000,
@@ -8,9 +8,9 @@
     "official_window_end": "2026-09-04T13:30:00.000Z"
   },
   "account": {
-    "equity": 99712.07,
+    "equity": 99737.65,
     "cash": 3000.06,
-    "buying_power": 51356.06
+    "buying_power": 51368.85
   },
   "market": {
     "status": "OPEN",
@@ -19,7 +19,7 @@
   },
   "decision": {
     "status": "MONITORING",
-    "code": "NO_CERTIFIED_TRADE",
+    "code": "FAIL_CLOSED",
     "headline": "Finly's diversified equity sleeve is invested and under continuous supervision.",
     "explanation": "The strategic sleeve remains in the market while Finly monitors risk and waits for a separately certified options setup."
   },
@@ -29,12 +29,12 @@
     "open_positions": 4,
     "open_orders": 0,
     "g4_equity_positions": 4,
-    "g4_equity_market_value_dollars": 96712.01,
+    "g4_equity_market_value_dollars": 96737.59,
     "option_positions": 0,
     "option_open_orders": 0,
     "options_defined_risk_dollars": 0,
-    "per_trade_risk_limit_dollars": 498.56,
-    "aggregate_risk_limit_dollars": 2991.36
+    "per_trade_risk_limit_dollars": 498.69,
+    "aggregate_risk_limit_dollars": 2992.13
   },
   "integrity": {
     "paper_account": true,
