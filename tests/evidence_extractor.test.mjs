@@ -113,7 +113,7 @@ test("hosted Hermes extractor is endpoint-pinned, news-only, schema-bound, and t
         json: async () => ({
           model: FINLY_FEATHERLESS_MODEL,
           choices: [{ message: { content: JSON.stringify({
-            schema_version: "evidence_assessment.v1",
+            schema_version: "model-output-is-not-schema-authority",
             assessments: documents.map(({ record }) => ({
               evidence_id: record.evidence_id,
               direction_score: -0.2,
@@ -129,6 +129,7 @@ test("hosted Hermes extractor is endpoint-pinned, news-only, schema-bound, and t
     underlying: "SPY",
     asOf: fixture.decision_time,
   });
+  assert.equal(result.schema_version, "evidence_assessment.v1");
   assert.equal(result.assessments.length, documents.length);
   assert.equal(requestUrl, "https://api.featherless.ai/v1/chat/completions");
   assert.equal(request.redirect, "error");
