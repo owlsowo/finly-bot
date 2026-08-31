@@ -195,7 +195,25 @@ jobs:
           FINLY_CLOUD_STATE_PUBLICATION_DIR: ${{ steps.state.outputs.publication_dir }}
           FINLY_MCP_PYTHON: ${{ github.workspace }}/.venv-alpaca-mcp/bin/python
           FINLY_MCP_SERVER_COMMAND: ${{ github.workspace }}/.venv-alpaca-mcp/bin/alpaca-mcp-server
-        run: node scripts/autonomous_paper_agent.mjs
+        run: |
+          # Compress only the initial four-ETF build. Each invocation can make
+          # at most one checkpointed mutation; normal READY cycles stop after
+          # the first invocation, and final reconciliation is never rushed.
+          for cycle in 1 2 3 4; do
+            node scripts/autonomous_paper_agent.mjs
+            if node --input-type=module -e '
+              import { readFile } from "node:fs/promises";
+              import { resolve } from "node:path";
+              try {
+                const path = resolve(process.env.FINLY_G4_CHECKPOINT_PATH, "g4-official-production-2026-08-31.json");
+                const envelope = JSON.parse(await readFile(path, "utf8"));
+                process.exit(["RECONCILING", "READY", "FROZEN"].includes(envelope?.state?.phase) ? 0 : 1);
+              } catch { process.exit(1); }
+            '; then
+              break
+            fi
+            if [ "$cycle" -lt 4 ]; then sleep 2; fi
+          done
 
       - name: Build a sanitized read-only dashboard snapshot
         env:

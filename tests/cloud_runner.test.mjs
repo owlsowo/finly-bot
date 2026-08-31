@@ -361,6 +361,10 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
   assert.match(workflow, /FINLY_G4_CHECKPOINT_PATH:\s*data\/private\/g4-official-equity/);
   assert.match(workflow, /FINLY_G4_LOG_PATH:\s*outputs\/g4_official_equity\.jsonl/);
   assert.match(workflow, /FINLY_AGENT_INTERVAL_SECONDS:\s*"0"/);
+  assert.match(workflow, /for cycle in 1 2 3 4; do/);
+  assert.match(workflow, /node scripts\/autonomous_paper_agent\.mjs/);
+  assert.match(workflow, /\["RECONCILING", "READY", "FROZEN"\]\.includes/);
+  assert.match(workflow, /if \[ "\$cycle" -lt 4 \]; then sleep 2; fi/);
   assert.match(workflow, /FINLY_USE_LOCAL_LLAMA_EVENTS:\s*"false"/);
   assert.match(workflow, /FINLY_USE_FEATHERLESS_EVENTS:\s*"true"/);
   assert.match(workflow, /FINLY_FEATHERLESS_MODEL:\s*Qwen\/Qwen3-32B/);

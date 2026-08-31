@@ -345,6 +345,35 @@ test("a post-fill broker quantity change invalidates READY before options can ru
   assert.equal(drifted.options_authorized, false);
 });
 
+test("a transient READY broker-read outage defers and recovers without rewriting signed state", async () => {
+  const protocol = await loadG4OfficialProductionProtocol();
+  const events = [];
+  const store = new MemoryStore(events);
+  const broker = fakeBroker({ events });
+  for (let index = 0; index < 5; index += 1) await cycle(protocol, store, broker);
+  const readyRevision = JSON.parse(store.serialized).state.revision;
+  const healthyGetPositions = broker.client.getPositions;
+  let unavailable = true;
+  broker.client.getPositions = async () => {
+    if (unavailable) {
+      unavailable = false;
+      throw new Error("temporary transport failure");
+    }
+    return healthyGetPositions();
+  };
+
+  const deferred = await cycle(protocol, store, broker);
+  assert.equal(deferred.status, "G4_RECONCILIATION_DEFERRED");
+  assert.equal(deferred.options_authorized, false);
+  assert.equal(deferred.reason, "BROKER_READ_UNAVAILABLE");
+  assert.equal(JSON.parse(store.serialized).state.phase, "READY");
+  assert.equal(JSON.parse(store.serialized).state.revision, readyRevision);
+
+  const recovered = await cycle(protocol, store, broker);
+  assert.equal(recovered.status, "G4_EQUITY_READY");
+  assert.equal(recovered.options_authorized, true);
+});
+
 test("stock bridge source is a separate pinned tool and cannot accept shadow authority", async () => {
   const source = await readFile(new URL("../scripts/alpaca_stock_mcp_bridge.py", import.meta.url), "utf8");
   assert.match(source, /EXPECTED_TOOL = "place_stock_order"/u);
