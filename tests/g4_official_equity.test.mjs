@@ -282,6 +282,49 @@ test("cash-floor failure freezes final reconciliation", async () => {
   assert.equal(result.options_authorized, false);
 });
 
+test("an incomplete final broker snapshot defers and later reconciles without rewriting state", async () => {
+  const protocol = await loadG4OfficialProductionProtocol();
+  const store = new MemoryStore();
+  const broker = fakeBroker();
+  for (let index = 0; index < 4; index += 1) await cycle(protocol, store, broker);
+  const reconcilingRevision = JSON.parse(store.serialized).state.revision;
+  const temporarilyMissing = broker.positions.pop();
+
+  const deferred = await cycle(protocol, store, broker);
+  assert.equal(deferred.status, "G4_RECONCILIATION_DEFERRED");
+  assert.equal(deferred.options_authorized, false);
+  assert.equal(deferred.reason, "BROKER_SETTLEMENT_PENDING");
+  assert.equal(JSON.parse(store.serialized).state.phase, "RECONCILING");
+  assert.equal(JSON.parse(store.serialized).state.revision, reconcilingRevision);
+
+  broker.positions.push(temporarilyMissing);
+  const recovered = await cycle(protocol, store, broker);
+  assert.equal(recovered.status, "G4_EQUITY_READY");
+  assert.equal(recovered.options_authorized, true);
+});
+
+test("a transient final quantity mismatch remains closed until the broker snapshot converges", async () => {
+  const protocol = await loadG4OfficialProductionProtocol();
+  const store = new MemoryStore();
+  const broker = fakeBroker();
+  for (let index = 0; index < 4; index += 1) await cycle(protocol, store, broker);
+  const reconcilingRevision = JSON.parse(store.serialized).state.revision;
+  const finalQuantity = broker.positions[0].qty;
+  broker.positions[0].qty = (Number(finalQuantity) / 2).toFixed(8);
+
+  const deferred = await cycle(protocol, store, broker);
+  assert.equal(deferred.status, "G4_RECONCILIATION_DEFERRED");
+  assert.equal(deferred.options_authorized, false);
+  assert.equal(deferred.reason, "BROKER_QUANTITY_SETTLEMENT_PENDING");
+  assert.equal(JSON.parse(store.serialized).state.phase, "RECONCILING");
+  assert.equal(JSON.parse(store.serialized).state.revision, reconcilingRevision);
+
+  broker.positions[0].qty = finalQuantity;
+  const recovered = await cycle(protocol, store, broker);
+  assert.equal(recovered.status, "G4_EQUITY_READY");
+  assert.equal(recovered.options_authorized, true);
+});
+
 test("READY receipt strictly segregates G4 equities from SPY option overlay", async () => {
   const protocol = await loadG4OfficialProductionProtocol();
   const store = new MemoryStore();
