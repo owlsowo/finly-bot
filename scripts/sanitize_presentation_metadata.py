@@ -14,7 +14,7 @@ CORE_REPLACEMENTS = {
     "dc:subject": "Alpaca AI Trading Agents Hackathon presentation",
     "dc:creator": "Bruce Wen",
     "lastModifiedBy": "Bruce Wen",
-    "keywords": "Finly, Alpaca, trading agent, controlled delegation",
+    "keywords": "Finly, Alpaca, AI trading, built-in risk checks",
     "dc:description": "Finly judge presentation prepared by Bruce Wen.",
 }
 

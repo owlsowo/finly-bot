@@ -15,7 +15,7 @@
   <text x="1130" y="68" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.6" text-anchor="end">ALPACA AI TRADING AGENTS HACKATHON</text>
   <line x1="70" y1="124" x2="1130" y2="124" stroke="#0d2b43" stroke-width="1.5"/>
 
-  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">PERFORMANCE LAB · 2013–2026 RETROSPECTIVE SIMULATION</text>
+  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">HISTORICAL SIMULATION · 2013–2026</text>
   <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-weight="700" letter-spacing="-1.5">
     <text x="70" y="248" font-size="54">Finly beat SPY by</text>
     <text x="70" y="330" font-size="76">$38,629</text>
@@ -26,7 +26,7 @@
     <rect width="420" height="330" fill="#fbfaf6" stroke="#c8ccc7" stroke-width="1"/>
     <text x="28" y="38" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">ENDING WEALTH · MODELED 5 BP ONE-WAY COSTS</text>
     <line x1="28" y1="57" x2="392" y2="57" stroke="#c8ccc7" stroke-width="1"/>
-    <text x="28" y="91" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">FINLY G4 RESEARCH</text>
+    <text x="28" y="91" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">FINLY STRATEGY</text>
     <text x="28" y="149" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="50" font-weight="700">$106,711</text>
     <text x="287" y="145" fill="#2e6f5c" font-size="18" font-weight="700">+967.11%</text>
     <line x1="28" y1="174" x2="392" y2="174" stroke="#d7d9d5" stroke-width="1"/>
@@ -40,8 +40,8 @@
   </g>
 
   <line x1="70" y1="516" x2="1130" y2="516" stroke="#0d2b43" stroke-width="1.5"/>
-  <text x="70" y="556" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="20">Market-beating research · 4/4 source removals · 32/32 perturbations</text>
-  <text x="70" y="582" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Consumed, post-selected historical replay; not verified options P&amp;L or a future-return guarantee.</text>
-  <text x="70" y="603" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Agentic evidence synthesis · deterministic defined-risk options authorization</text>
+  <text x="70" y="556" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="20">Historical result · 4/4 source checks · 32/32 stress tests</text>
+  <text x="70" y="582" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Historical simulation after modeled costs. Paper trading only; past results are not a promise.</text>
+  <text x="70" y="603" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">AI reads the market · code checks the trade · Alpaca paper trading</text>
   <text x="1130" y="603" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" text-anchor="end">BRUCE WEN · SOLO BUILDER</text>
 </svg>

@@ -86,6 +86,13 @@ function requirePatterns(label, value, patterns) {
   }
 }
 
+function requireNoPatterns(label, value, patterns) {
+  const text = normalizedText(value);
+  for (const pattern of patterns) {
+    assert.doesNotMatch(text, pattern, `${label} contains stale, unsafe, or evaluator-directed copy: ${pattern}`);
+  }
+}
+
 function requireSourcePdfParity({ label, sourcePath, pdfPath, patterns }) {
   requirePatterns(`${label} source`, readFileSync(pathFor(sourcePath), "utf8"), patterns);
   requirePatterns(`${label} PDF`, extractPdfText(pathFor(pdfPath)), patterns);
@@ -99,7 +106,7 @@ function pngDimensions(relativePath) {
 }
 
 const onePage = requirePdf("public/judge/Finly_Judge_Brief.pdf", 1);
-const paper = requirePdf("public/judge/Finly_Technical_Proposal.pdf", 8);
+const paper = requirePdf("public/judge/Finly_Technical_Proposal.pdf", 6);
 const deck = requirePdf("public/judge/Finly_Consulting_Deck.pdf", 9);
 requireFile("public/judge/Finly_Judge_Proposal.docx", 20_000);
 requireFile("public/judge/Finly_Technical_Paper.docx", 40_000);
@@ -108,7 +115,8 @@ requireFile("public/judge/Finly_Consulting_Deck.pptx", 100_000);
 const video = requireFile("public/judge/Finly_Demo_Video.mp4", 1_000_000);
 assert.ok(video.size < 300 * 1024 * 1024, "demo video must be under 300 MB");
 const probe = JSON.parse(execFileSync("ffprobe", [
-  "-v", "error", "-show_entries", "stream=codec_name,width,height:format=duration,size",
+  "-v", "error",
+  "-show_entries", "stream=codec_name,width,height,sample_rate,channels:format=duration,size",
   "-of", "json", video.path,
 ], { encoding: "utf8" }));
 const videoStream = probe.streams.find((stream) => stream.width && stream.height);
@@ -117,12 +125,25 @@ assert.equal(videoStream?.codec_name, "h264", "demo video must use H.264");
 assert.deepEqual([videoStream?.width, videoStream?.height], [1920, 1080],
   "demo video must be 1920×1080");
 assert.ok(audioStream, "demo video must contain AAC narration");
-assert.ok(Number(probe.format.duration) > 60 && Number(probe.format.duration) <= 300,
-  "demo video must run between one and five minutes");
+assert.equal(audioStream.sample_rate, "48000", "demo narration must use 48 kHz audio");
+assert.equal(audioStream.channels, 2, "demo narration must use stereo audio");
+const videoDuration = Number(probe.format.duration);
+assert.ok(videoDuration >= 65 && videoDuration <= 80,
+  `final demo video must run between 65 and 80 seconds; found ${videoDuration.toFixed(1)}s`);
 
 assert.deepEqual(pngDimensions("public/brand/finly-cover-16x9.png"), { width: 1920, height: 1080 });
 assert.deepEqual(pngDimensions("public/brand/finly-social-cover.png"), { width: 1200, height: 630 });
-assert.deepEqual(pngDimensions("public/judge/finly-product-home.png"), { width: 1280, height: 720 });
+assert.deepEqual(pngDimensions("public/judge/finly-live-account.png"), { width: 1280, height: 720 });
+for (const still of [
+  "public/judge/video-hero.jpg",
+  "public/judge/video-controls-aligned.jpg",
+  "public/judge/video-controls-conflict.jpg",
+  "public/judge/video-live.jpg",
+]) {
+  const file = requireFile(still, 50_000);
+  const magic = readFileSync(file.path).subarray(0, 3);
+  assert.deepEqual([...magic], [0xff, 0xd8, 0xff], `${still} must be a JPEG`);
+}
 
 const gateText = readFileSync(pathFor("research/output/quantitative_release_gate.json"), "utf8");
 const publicGateText = readFileSync(pathFor("public/data/quantitative_release_gate.json"), "utf8");
@@ -135,110 +156,251 @@ assert.equal(gate.release_decision.status, "GO_BOUNDED_RELEASE_NO_GO_PERFORMANCE
 assert.equal(gate.conclusions.registered_future_only_tests.every((item) =>
   item.observed_outcome_count === 0 && item.performance_claim_authorized === false), true);
 
+const g4 = gate.conclusions.g4_rejected_post_selection;
+const finlyEndingWealth = Math.round(10_000 * (1 + g4.g4_total_return));
+const spyEndingWealth = Math.round(10_000 * (1 + g4.spy_total_return));
+assert.deepEqual(
+  [finlyEndingWealth, spyEndingWealth, finlyEndingWealth - spyEndingWealth],
+  [106_711, 68_082, 38_629],
+  "historical ending-wealth proof changed",
+);
+
+const external = JSON.parse(readFileSync(pathFor("public/data/attempt150_public_evidence.json"), "utf8"));
+assert.equal(external.evidence_class, "PRE_SPECIFIED_OUT_OF_ERA_EXTERNAL_REPLAY");
+assert.equal(external.primary_window.observations, 21_218);
+assert.deepEqual(
+  [external.robustness.positive_rebalance_anchors, external.robustness.tested_rebalance_anchors],
+  [21, 21],
+);
+assert.ok(external.robustness.positive_at_modeled_cost_bps.includes(25),
+  "external replay must retain a positive result at the 25 bp cost stress");
+
+const receipt = JSON.parse(readFileSync(pathFor("public/data/latest_receipt.json"), "utf8"));
+assert.deepEqual(
+  [receipt.compilation.selected.max_loss, receipt.compilation.selected.max_gain],
+  [366, 634],
+  "checked options payoff changed",
+);
+assert.equal(receipt.source_removal.variants.length, 4);
+assert.equal(receipt.source_removal.passed, true);
+assert.equal(receipt.perturbations.count, 32);
+assert.equal(receipt.perturbations.passed, true);
+
+const liveSnapshot = JSON.parse(readFileSync(pathFor("public/data/competition_live.json"), "utf8"));
+assert.equal(liveSnapshot.account.equity, 100_000);
+assert.equal(liveSnapshot.integrity.paper_account, true);
+assert.equal(liveSnapshot.integrity.account_verified, true);
+assert.equal(liveSnapshot.integrity.sanitized, true);
+assert.equal(liveSnapshot.integrity.source, "Alpaca paper account");
+
 for (const obsolete of [
   "public/data/submission_claims_lock.json",
   "public/data/g4_window_explorer.json",
   "docs/COMPETITOR_BENCHMARK.md",
   "evidence/competitor_benchmark.json",
+  "public/.env",
+  "public/.env.local",
+  "dist/.env",
+  "dist/.env.local",
 ]) requireAbsent(obsolete);
 
-assert.deepEqual(
-  readdirSync(pathFor("dist/data"), { withFileTypes: true })
+const reviewedPublicData = [
+  "attempt150_public_evidence.json",
+  "competition_live.json",
+  "current_economic_decision.json",
+  "economic_options_overlay_replay.json",
+  "economic_research.json",
+  "g4_wealth_drawdown.json",
+  "historical_backtest.json",
+  "latest_receipt.json",
+  "llama_decision_trace.json",
+  "no_trade_receipt.json",
+  "quantitative_release_gate.json",
+];
+const hostedData = [
+  "competition_live.json",
+  "latest_receipt.json",
+  "no_trade_receipt.json",
+  "quantitative_release_gate.json",
+];
+for (const [dataDirectory, expectedNames] of [
+  ["public/data", reviewedPublicData],
+  ["dist/data", hostedData],
+]) {
+  const names = readdirSync(pathFor(dataDirectory), { withFileTypes: true })
     .filter((entry) => entry.isFile())
     .map((entry) => entry.name)
-    .sort(),
-  ["latest_receipt.json", "no_trade_receipt.json", "quantitative_release_gate.json"],
-  "hosted data bundle must contain only the two synthetic receipts and exact release gate",
-);
+    .sort();
+  assert.deepEqual(names, expectedNames, `${dataDirectory} does not match the reviewed public-data allowlist`);
+  for (const name of names) {
+    const text = readFileSync(pathFor(`${dataDirectory}/${name}`), "utf8");
+    requireNoPatterns(`${dataDirectory}/${name}`, text, [
+      /"(?:account_number|account_id|order_id|activity_id|api_key|secret_key|credential|access_token|refresh_token)"\s*:/iu,
+      /\brc_[0-9a-f]{32,}\b/iu,
+      /\b(?:PK|AK)[A-Z0-9]{16,}\b/u,
+    ]);
+  }
+}
 
-const g4Patterns = [
-  /2013-01-02.{0,100}2026-08-27/iu,
-  /\+967\.11%/u,
-  /\+580\.82%/u,
-  /3\.75%/u,
-  /37\.18%/u,
-  /rejected/iu,
+const historicalPatterns = [
+  /2013.{0,40}2026/iu,
+  /\$10,000.{0,100}\$106,711/iu,
+  /\$68,082/u,
+  /\$38,629/u,
+  /(?:historical.{0,120}simulation|simulation.{0,120}historical|2013.{0,40}simulation|retrospective)/iu,
 ];
-const productionPatterns = [
-  /2025-01-02.{0,100}2026-08-28/iu,
+const earlierEraPatterns = [
+  /21,218/iu,
+  /13\.37(?:%| percent)/iu,
+  /9\.48(?:%| percent)/iu,
+  /(?:21\s*\/\s*21|21 of 21|all (?:twenty-one|21)).{0,70}(?:anchors?|rebalance dates?)/iu,
+];
+const optionsPatterns = [
+  /\$366.{0,30}maximum loss|maximum loss.{0,30}\$366/iu,
+  /\$634.{0,30}maximum gain|maximum gain.{0,30}\$634/iu,
+  /(?:4\s*\/\s*4|4 of 4|all four|four).{0,80}(?:source-removal|source removal|data sources?)/iu,
+  /(?:32\s*\/\s*32|32 of 32|all (?:thirty-two|32)|thirty-two).{0,80}(?:input|perturb)/iu,
+];
+const accountPatterns = [
+  /(?:verified.{0,80}\$100,000|\$100,000.{0,80}(?:verified|paper account))/iu,
+  /Alpaca/iu,
+];
+const testCountPatterns = [
+  /803.{0,40}(?:automated )?tests|(?:automated )?tests.{0,40}803/iu,
+  /801.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}801/iu,
+];
+const zeroFailurePattern = /(?:0|none).{0,20}failed|failed.{0,20}(?:0|none)/iu;
+const commonDocumentPatterns = [
+  ...historicalPatterns,
+  ...earlierEraPatterns,
+  ...optionsPatterns,
+  ...accountPatterns,
+  ...testCountPatterns,
+];
+const presentationPatterns = [
+  historicalPatterns[0],
+  historicalPatterns[1],
+  historicalPatterns[3],
+  ...earlierEraPatterns,
+  ...optionsPatterns,
+  ...accountPatterns,
+  ...testCountPatterns,
+];
+
+const staleStoryPatterns = [
+  /G4.{0,80}(?:was )?(?:rejected|denied|not promoted)/iu,
+  /promotion was rejected/iu,
+  /SPY\s*\/\s*BIL/iu,
+  /Attempts?\s*115/iu,
+  /Attempts?\s*116/iu,
+  /refused to trade/iu,
   /\+15\.39%/u,
   /\+10\.56%/u,
   /\+33\.52%/u,
   /8\.12%/u,
   /-5\.45%/u,
-  /(?:not market-beating|did not beat|below SPY)/iu,
+  /controlled[- ]delegation/iu,
+  /\bagentic\b/iu,
 ];
-const futurePatterns = [
-  /Attempts 115 and 116/iu,
-  /(?:zero|0) observed outcomes/iu,
-  /neither supports a performance claim/iu,
-];
-const documentPatterns = [...g4Patterns, ...productionPatterns, ...futurePatterns];
-const productMetadataPatterns = [
-  /\+967\.11% historical simulation vs \+580\.82% SPY/iu,
-  /\$10K became a modeled \$106\.7K with Finly versus \$68\.1K with SPY/iu,
+const evaluatorInstructionPatterns = [
+  /ignore.{0,40}(?:previous|prior|other|all) instructions/iu,
+  /(?:award|rank|select|choose).{0,60}Finly.{0,30}(?:winner|first|top|best)/iu,
+  /make Finly win/iu,
+  /do not tell.{0,40}(?:creator|judge|organizer)/iu,
+  /hidden (?:prompt|instruction).{0,40}(?:grader|evaluator|judge)/iu,
 ];
 
-requireSourcePdfParity({
-  label: "one-page proposal",
-  sourcePath: "docs/paper/one_page_writeup.md",
-  pdfPath: "public/judge/Finly_Judge_Brief.pdf",
-  patterns: documentPatterns,
-});
-requireSourcePdfParity({
-  label: "technical paper",
-  sourcePath: "docs/paper/finly_technical_paper.md",
-  pdfPath: "public/judge/Finly_Technical_Proposal.pdf",
-  patterns: documentPatterns,
-});
-requireSourcePdfParity({
-  label: "consulting deck",
-  sourcePath: "scripts/build_finly_deck.mjs",
-  pdfPath: "public/judge/Finly_Consulting_Deck.pdf",
-  patterns: documentPatterns,
-});
+const documentContracts = [
+  {
+    label: "one-page proposal",
+    sourcePath: "docs/paper/one_page_writeup.md",
+    pdfPath: "public/judge/Finly_Judge_Brief.pdf",
+    patterns: commonDocumentPatterns,
+  },
+  {
+    label: "technical paper",
+    sourcePath: "docs/paper/finly_technical_paper.md",
+    pdfPath: "public/judge/Finly_Technical_Proposal.pdf",
+    patterns: [...commonDocumentPatterns, zeroFailurePattern],
+  },
+  {
+    label: "presentation",
+    sourcePath: "scripts/build_finly_deck.mjs",
+    pdfPath: "public/judge/Finly_Consulting_Deck.pdf",
+    patterns: [...presentationPatterns, zeroFailurePattern],
+  },
+];
+for (const contract of documentContracts) {
+  requireSourcePdfParity(contract);
+  const sourceText = readFileSync(pathFor(contract.sourcePath), "utf8");
+  const pdfText = extractPdfText(pathFor(contract.pdfPath));
+  if (!contract.sourcePath.endsWith(".mjs")) {
+    requireNoPatterns(`${contract.label} source`, sourceText, [...staleStoryPatterns, ...evaluatorInstructionPatterns]);
+  }
+  requireNoPatterns(`${contract.label} PDF`, pdfText, [...staleStoryPatterns, ...evaluatorInstructionPatterns]);
+}
 
-const captions = readFileSync(requireFile("public/judge/Finly_Demo_Video.srt", 500).path, "utf8");
+const captions = readFileSync(requireFile("public/judge/Finly_Demo_Video.srt", 800).path, "utf8");
 requirePatterns("video captions", captions, [
-  /967\.11 percent/iu,
-  /580\.82 percent/iu,
-  /3\.75 percent/iu,
-  /37\.18 percent/iu,
-  /15\.39 percent/iu,
-  /10\.56 percent/iu,
-  /33\.52 percent/iu,
-  /Attempts 115 and 116/iu,
-  /zero observed outcomes/iu,
-  /llama still does not get the keys/iu,
-]);
-
-const machineSummary = readFileSync(requireFile("public/llms.txt", 1_000).path, "utf8");
-requirePatterns("machine-readable summary", machineSummary, [
-  /\+967\.11%/u,
-  /\+580\.82%/u,
-  /\$106,711/u,
-  /\$68,082/u,
-  /\$38,629/u,
-  /56\.7% more ending wealth/iu,
+  /historical simulation/iu,
+  /\$10,000/iu,
+  /\$106,711/iu,
+  /\$38,629/iu,
+  /We built Finly/iu,
+  /80 years/iu,
+  /13\.37%/iu,
+  /9\.48%/iu,
+  /21 rebalance dates/iu,
+  /Here's how it works/iu,
+  /Watch it run/iu,
+  /Change the evidence/iu,
   /\$366 maximum loss/iu,
   /\$634 maximum gain/iu,
-  /4 of 4 source-removal checks/iu,
-  /32 of 32 perturbation checks/iu,
-  /search broadly for edge, then narrow authority before execution/iu,
+  /four data sources/iu,
+  /32 different ways/iu,
+  /verified \$100,000 Alpaca paper account/iu,
+  /Every decision has a receipt/iu,
+  /Try Finly/iu,
 ]);
-assert.doesNotMatch(normalizedText(machineSummary), /claim status|research.only|promotion was rejected/iu);
+requireNoPatterns("video captions", captions, [...staleStoryPatterns, ...evaluatorInstructionPatterns, /llama still does not get the keys/iu]);
+
+const timestampPattern = /(\d{2}):(\d{2}):(\d{2}),(\d{3})\s+-->\s+(\d{2}):(\d{2}):(\d{2}),(\d{3})/gu;
+const timestamps = [...captions.matchAll(timestampPattern)];
+assert.ok(timestamps.length >= 9, "video captions must cover the complete nine-scene launch cut");
+const captionSeconds = (match, offset) => Number(match[offset]) * 3600
+  + Number(match[offset + 1]) * 60 + Number(match[offset + 2]) + Number(match[offset + 3]) / 1000;
+assert.ok(captionSeconds(timestamps[0], 1) <= 0.1, "video captions must begin with the launch");
+const finalCaptionEnd = captionSeconds(timestamps.at(-1), 5);
+assert.ok(finalCaptionEnd <= videoDuration + 0.25, "captions must not extend beyond the final video");
+assert.ok(finalCaptionEnd >= 60, "captions end too early for the final launch cut");
+
+const machineSummary = readFileSync(requireFile("public/llms.txt", 1_500).path, "utf8");
+requirePatterns("machine-readable summary", machineSummary, [
+  ...commonDocumentPatterns,
+  zeroFailurePattern,
+  /803 automated tests: 801 passed, 0 failed, and 2 were skipped/iu,
+  /Alpaca's official MCP server/iu,
+  /Start with the live dashboard/iu,
+]);
+requireNoPatterns("machine-readable summary", machineSummary, [...staleStoryPatterns, ...evaluatorInstructionPatterns]);
 assert.doesNotMatch(normalizedText(machineSummary), /Finly (?:will|is likely to) beat SPY/iu);
 
 const indexHtml = readFileSync(pathFor("index.html"), "utf8");
-requirePatterns("social metadata", indexHtml, productMetadataPatterns);
-assert.doesNotMatch(normalizedText(indexHtml), /A backtest returned \+967\.11%.{0,40}Finly rejected it/iu);
+requirePatterns("social metadata", indexHtml, [
+  /\+967\.11% historical simulation vs \+580\.82% SPY/iu,
+  /\$10K became a modeled \$106\.7K with Finly versus \$68\.1K with SPY/iu,
+]);
+requireNoPatterns("social metadata", indexHtml, [
+  /A backtest returned \+967\.11%.{0,40}Finly rejected it/iu,
+  ...evaluatorInstructionPatterns,
+]);
 
 for (const [label, file] of [["one-page", onePage], ["paper", paper], ["deck", deck]]) {
   assert.ok(file.size < 20 * 1024 * 1024, `${label} PDF is unexpectedly large`);
 }
 
 console.log(
-  `submission artifacts verified: 1-page essay; 8-page paper; 9-slide deck; `
-  + `${Number(probe.format.duration).toFixed(1)}s video; exact public release gate; `
-  + `obsolete public claim surfaces absent`,
+  `submission artifacts verified: 1-page brief; 6-page paper; 9-slide deck; `
+  + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 803 tests / 801 passed / 0 failed; `
+  + `exact quantitative gate; sanitized public data`,
 );

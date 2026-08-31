@@ -575,7 +575,7 @@ export function DemoClient() {
               <p className="kicker">How future evidence will be earned</p>
               <h2>Two forward tests lock the rules before the market supplies the answer.</h2>
             <p>
-              The candidate, dates, and decision rules were published before the first eligible market session.
+              We published the strategy, dates, and decision rules before the first eligible market session.
             </p>
             <ol className="forward-trials">
               {futureTests.map((test) => (

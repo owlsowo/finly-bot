@@ -1,88 +1,73 @@
 # Finly
 
-Finly is an agentic options-research system built around a deliberately narrow grant of power: an AI may interpret evidence, explain a view, and veto a proposal, but deterministic code owns exposure, option structure, maximum loss, broker fields, and the final `PERMIT` or `NO_TRADE` decision.
+**Finly shows its work before it trades.**
 
-Finly turns that division of responsibility into a working pipeline. In its checked positive synthetic fixture, a one-contract defined-risk spread carried an exact $366 maximum loss and $634 maximum gain, passed 4/4 source-removal checks and 32/32 perturbation checks, and compiled into a local Alpaca-compatible paper payload. No order was transmitted.
+We built Finly to answer a simple question: can an AI research a market idea without getting unchecked control of the account?
 
-[Open the live case](https://owlsowo.github.io/finly-bot/) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Read the technical paper](public/judge/Finly_Technical_Proposal.pdf) · [Review the consulting deck](public/judge/Finly_Consulting_Deck.pdf) · [Watch the demo film](public/judge/Finly_Demo_Video.mp4)
+Finly reads current market evidence, explains what it sees, builds a defined-risk trade, checks the numbers, and then sends the order to Alpaca paper trading—or stops it. The model can help interpret the evidence. Code sets the position, maximum loss, and every broker field.
 
-## A statistical safety audit travels with every claim
+[Open Finly](https://owlsowo.github.io/finly-bot/) · [Watch the live account](https://owlsowo.github.io/finly-bot/#live) · [Try the decision demo](https://owlsowo.github.io/finly-bot/#controls) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Open the technical paper](public/judge/Finly_Technical_Proposal.pdf) · [View the deck](public/judge/Finly_Consulting_Deck.pdf)
 
-Finly keeps historical performance and evidentiary status in the same record. In the consumed, post-selected 2013-01-02–2026-08-27 retrospective replay with modeled 5 bp one-way costs, G4 returned +967.11% versus SPY +580.82%. The audit retained it as research-only because the Deflated Sharpe probability was 3.75% and the worst familywise-adjusted p-value was 37.18%.
+## The result that made us build it
 
-Because G4 was selected after the historical outcomes were already visible, the audit treats it as hypothesis-generating evidence rather than a forward opportunity. The potentially useful research is preserved without turning a hindsight-selected chart into a live forecast.
+In a cost-adjusted historical simulation from January 2013 through August 2026, Finly's G4 strategy turned a modeled **$10,000 into $106,711**. SPY reached **$68,082** over the same dates—a **$38,629 difference in ending wealth**.
 
-## The production policy targets a controlled risk path
+We then fixed an industry version of the rule and ran it across 21,218 earlier market days from Kenneth French's public archive. It annualized at **13.37% versus 9.48% for the market**, stayed ahead across all 21 monthly rebalance dates we tested, and kept a positive edge when modeled trading costs were increased fivefold.
 
-Production v1 is the frozen unlevered SPY/BIL policy targeting 10% annualized volatility: in the consumed 2025-01-02–2026-08-28 modeled next-open study it returned +15.39% at 5 bp per traded leg and +10.56% at 25 bp, versus SPY +33.52%; at 5 bp its modeled annualized volatility was 8.12% and maximum drawdown was -5.45%, so it was risk-controlled but not market-beating on total return.
+Those results gave us a strategy worth testing in public. The live competition account follows a frozen four-ETF allocation: QQQ as the core, the three strongest sector funds by twelve-to-six-month momentum, and a small cash reserve.
 
-Three lagged SPY-minus-BIL trend horizons determine exposure, a volatility target scales it, and BIL receives the balance. AI can examine bounded evidence and stop the process. It cannot rewrite the allocation, enlarge the trade, or turn a rationale into a broker order.
+## Here's how it works
 
-## Authority is divided before an order is constructed
+1. **Read the market.** Finly gathers time-stamped market, options, event, news, and prediction-market evidence.
+2. **Form a view.** Qwen3-32B reviews the public news and explains what supports or weakens the idea.
+3. **Build the trade.** Code—not the model—sets direction, size, expiration, strikes, and maximum loss.
+4. **Try to break it.** Finly removes sources, changes important inputs, and checks the payoff and broker fields.
+5. **Trade or stop.** The system either prepares one exact Alpaca paper order or leaves the account untouched.
 
-| Stage | What it may do | What it may not do |
-| --- | --- | --- |
-| Evidence layer | Normalize timestamps, label provenance, and bind the review bundle. | Treat the presence of more data as confidence or permission. |
-| AI assessment | Score bounded evidence, explain uncertainty, respond to source-removal challenges, and veto. | Choose exposure, contracts, quantity, maximum loss, or broker fields. |
-| Quantitative core | Derive the code-owned direction, horizon, and typed economic intent. | Bypass the later equality, freshness, or loss gates. |
-| Options compiler | Construct a defined-risk SPY vertical, calculate payoff bounds, and project an Alpaca multi-leg payload. | Submit a payload that differs from the authorized intent. |
-| Authorization gateway | Check provenance, schema, equality, liquidity, account constraints, and aggregate loss. | Infer permission from model confidence or a favorable chart. |
+In the public options demo, Finly built a one-contract SPY debit spread with an exact **$366 maximum loss** and **$634 maximum gain**. The case passed **4/4 source-removal checks** and **32/32 input perturbations** before the paper-order plan was prepared. Switch to conflicting evidence on the website and the same workflow stops before taking exposure.
 
-This separation is testable. Supportive synthetic evidence can compile a bounded proposal; conflicting evidence returns `NO_TRADE` and a null payload. Broker mutation remains disabled in the published evidence path.
+## Running live on Alpaca paper trading
 
-## The next performance claim begins at zero
+Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. The runner uses Alpaca's official MCP server, keeps the trading code pinned to an audited Git revision, saves enough state to recover safely after a restart, and reads every result back from Alpaca before moving on.
 
-Attempts 115 and 116 are publicly registered future-only tests. As of 2026-08-30T08:10:52.000Z, each had zero observed outcomes, and neither supports a performance claim.
+The [public dashboard](https://owlsowo.github.io/finly-bot/#live) shows the sanitized account state, current positions, recent decisions, and benchmark result without exposing credentials or the raw account identifier. The laptop does not need to stay awake.
 
-The empty record is intentional. Historical data cannot become prospective by being replayed again, and a GitHub registration receipt is a platform record rather than an independent cryptographic timestamp. The protocols therefore keep outcome inference and broker authority closed until their stated future conditions are satisfied.
+## Check the numbers
 
-## Alpaca is inside the boundary, not outside it
-
-Finly implements deterministic SPY debit-vertical construction, OCC-symbol validation, exact maximum-loss arithmetic, guarded multi-leg payload projection, idempotency, risk reservation, partial-fill freezes, and reconciliation checks. An authenticated read-only call to the dedicated Alpaca paper account succeeded through the official Alpaca MCP server. No order or fill is presented as performance evidence.
-
-The historical ETF studies are not options P&L. They evaluate economic policies under disclosed modeled assumptions; the options layer demonstrates how an authorized intent would be bounded and compiled.
-
-## Verify the evidence without trusting the presentation
-
-The credential-free release path is reproducible with the pinned Node.js 26.7.0 runtime:
+The public test suite covers the frozen G4 signal, option payoff arithmetic, position limits, quote freshness, account checks, lost acknowledgements, restart recovery, encrypted state, broker-field translation, and the rules used to score the live account.
 
 ```bash
 npm install
-npm run verify
-npm run dev
+npm test
+npm run build
 ```
 
-Useful focused checks include:
+Current public result: **803 tests run, 801 passed, 0 failed, 2 skipped.**
+
+Useful focused checks:
 
 ```bash
-npm test                                  # behavior, evidence, and release-gate suite
-npm run research:quant-extension-check   # historical research ledger
-npm run research:forward-trial            # two-phase forward protocol
-npm run research:forward-trial-live       # pre-session live activation
-npm run economic:options-replay-check     # non-mutating options receipt
-npm run llama:decision-check              # bounded local-model trace
-npm run build                             # judge-facing site
+npm run research:quant-extension-check
+npm run economic:options-replay-check
+npm run llama:decision-check
+npm run verify
 ```
-
-The final performance language is locked by [`research/output/quantitative_release_gate.json`](research/output/quantitative_release_gate.json). The release gate verifies seven source artifacts by hash and permits no competitor return matchup or rank.
-
-## Research basis
-
-The candidate design draws on [time-series momentum](https://doi.org/10.1016/j.jfineco.2011.11.003) and [volatility-managed portfolios](https://doi.org/10.1111/jofi.12513). The decision to reject a compelling post-selected result follows the concerns formalized in [White's Reality Check](https://doi.org/10.1111/1468-0262.00152) and the [Deflated Sharpe Ratio](https://doi.org/10.3905/jpm.2014.40.5.094). These sources motivate the method; they do not validate Finly's implementation or future performance.
-
-The broker boundary follows Alpaca's official documentation for [options trading](https://docs.alpaca.markets/us/docs/options-trading), [multi-leg orders](https://docs.alpaca.markets/reference/postorder), [paper trading](https://docs.alpaca.markets/us/docs/paper-trading), and [historical option data](https://docs.alpaca.markets/us/docs/historical-option-data).
 
 ## Repository map
 
 ```text
-lib/         deterministic economic logic, evidence boundaries, compiler, and broker guards
-research/    frozen protocols, statistical checks, and future-only trial machinery
-scripts/     reproducible runners, receipt checkers, model tooling, and paper-account tools
-evidence/    redacted, machine-checkable runtime records
-fixtures/    synthetic controls, perturbations, and negative controls
-src/         judge-facing website
-tests/       release-blocking unit, metamorphic, lifecycle, statistical, and reporting tests
-docs/        proposal sources, technical paper, setup notes, and requirements traceability
+lib/         strategy logic, options compiler, risk checks, and broker guards
+research/    historical studies, frozen protocols, and forward measurement
+scripts/     cloud runner, receipt checkers, model tools, and artifact builders
+evidence/    redacted runtime records
+fixtures/    aligned, conflicting, and boundary-test scenarios
+src/         public product website and live dashboard
+tests/       unit, integration, restart, statistical, and reporting tests
+docs/        proposal, technical paper, submission copy, and operating notes
 ```
 
-Finly is an educational paper-trading research prototype, not investment advice. Options can lose their full premium, and historical results do not guarantee future performance.
+## Research and broker sources
+
+The strategy draws on published work on [time-series momentum](https://doi.org/10.1016/j.jfineco.2011.11.003) and [volatility-managed portfolios](https://doi.org/10.1111/jofi.12513), plus [Kenneth French's public Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html). The broker path follows Alpaca's documentation for [options trading](https://docs.alpaca.markets/us/docs/options-trading), [multi-leg orders](https://docs.alpaca.markets/reference/postorder), and [paper trading](https://docs.alpaca.markets/us/docs/paper-trading).
+
+Finly is an educational paper-trading project. Historical simulations are not live results or promises of future returns, and options can lose their full premium.
