@@ -90,12 +90,12 @@ transport names so two different accounts cannot be validated and mutated.
 Before the official start time, open the workflow in GitHub Actions, select
 **Run workflow**, and set `initialize_state` to `true`. Initialization is
 manual-only and rejected after the competition begins. It authenticates the
-paper account read side, sends one synthetic no-broker-data document through
-the same hosted Hermes extractor used by the agent, creates the first encrypted
-state envelope, and publishes the first sanitized dashboard snapshot without
-enabling mutation. Readiness runs repeat that tiny schema check before the
-opening bell, so the first real hosted-model request is not also the first
-connectivity test.
+paper account read side, probes the hosted Hermes extractor with one synthetic
+no-broker-data document, creates the first encrypted state envelope, and
+publishes the first sanitized dashboard snapshot without enabling mutation. A
+failed hosted probe is visible in Actions but cannot block G4 initialization;
+the live options path independently fails closed whenever hosted evidence is
+unavailable. Readiness runs repeat that tiny probe before the opening bell.
 
 Every later scheduled or manually dispatched live run requires that state
 branch. A missing, modified, undecryptable, or incomplete state envelope fails

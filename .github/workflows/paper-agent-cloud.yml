@@ -145,8 +145,9 @@ jobs:
           FINLY_PAPER_MUTATION_ACK: ""
         run: .venv-alpaca-mcp/bin/python scripts/introspect_alpaca_mcp.py
 
-      - name: Prove the hosted evidence path before the opening bell
+      - name: Probe the hosted evidence path before the opening bell
         if: needs.gate.outputs.mode == 'initialize' || needs.gate.outputs.mode == 'readiness'
+        continue-on-error: true
         env:
           APCA_API_KEY_ID: ""
           APCA_API_SECRET_KEY: ""

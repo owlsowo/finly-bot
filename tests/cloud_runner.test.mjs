@@ -367,7 +367,7 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
   assert.match(workflow, /FEATHERLESS_API_KEY:\s*\$\{\{ secrets\.FEATHERLESS_API_KEY \}\}/);
   assert.match(workflow, /"FEATHERLESS_API_KEY",/);
   assert.match(workflow, /required\.push\("FINLY_PAPER_MUTATION_ACK"\)/);
-  assert.match(workflow, /featherless_readiness_check\.mjs/);
+  assert.match(workflow, /Probe the hosted evidence path before the opening bell[\s\S]*continue-on-error:\s*true[\s\S]*featherless_readiness_check\.mjs/);
   assert.match(workflow, /Install the pinned official Alpaca MCP server[\s\S]*if: needs\.gate\.outputs\.mode != 'final'/);
   assert.match(workflow, /Verify both pinned mutation schemas without a broker call/);
   assert.match(workflow, /\.venv-alpaca-mcp\/bin\/python scripts\/introspect_alpaca_mcp\.py/);
