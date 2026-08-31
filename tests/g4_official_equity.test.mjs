@@ -186,18 +186,47 @@ test("lost acknowledgement reconciles by deterministic client ID without a dupli
   assert.equal(events.filter((event) => event.startsWith("lookup:")).length, 2);
 });
 
-test("partial or rejected fill freezes after mutation and forbids fallback mixing", async () => {
-  for (const status of ["partially_filled", "rejected"]) {
-    const protocol = await loadG4OfficialProductionProtocol();
-    const store = new MemoryStore();
-    const broker = fakeBroker({ mutationStatus: status });
-    const result = await cycle(protocol, store, broker);
-    assert.equal(result.status, "G4_EQUITY_FROZEN");
-    assert.equal(result.options_authorized, false);
-    assert.equal(result.fallback, "MANUAL_RECONCILIATION_REQUIRED");
-    const repeated = await cycle(protocol, store, broker);
-    assert.equal(repeated.status, "G4_EQUITY_FROZEN");
-  }
+test("an intermediate partial fill is reconciled without a duplicate mutation", async () => {
+  const protocol = await loadG4OfficialProductionProtocol();
+  const events = [];
+  const store = new MemoryStore(events);
+  const broker = fakeBroker({ events, mutationStatus: "partially_filled", fillFraction: 0.1 });
+
+  const partial = await cycle(protocol, store, broker);
+  assert.equal(partial.status, "G4_ORDER_PENDING");
+  assert.equal(partial.options_authorized, false);
+  assert.equal(partial.fallback, "MANUAL_RECONCILIATION_REQUIRED");
+  assert.equal(events.filter((event) => event === "mutate:QQQ").length, 1);
+
+  const plan = buildG4OfficialOrderPlan(protocol);
+  const order = broker.orders.get(plan[0].client_order_id);
+  order.status = "filled";
+  order.filled_qty = (Number(plan[0].notional) / 100).toFixed(8);
+  order.filled_avg_price = "100.00000000";
+  broker.positions.push({
+    asset_class: "us_equity",
+    symbol: plan[0].symbol,
+    qty: order.filled_qty,
+    side: "long",
+    market_value: plan[0].notional,
+  });
+  broker.account.cash = (Number(broker.account.cash) - Number(plan[0].notional)).toFixed(2);
+
+  const filled = await cycle(protocol, store, broker);
+  assert.equal(filled.status, "G4_LEG_FILLED");
+  assert.equal(events.filter((event) => event === "mutate:QQQ").length, 1);
+});
+
+test("a rejected fill freezes after mutation and forbids fallback mixing", async () => {
+  const protocol = await loadG4OfficialProductionProtocol();
+  const store = new MemoryStore();
+  const broker = fakeBroker({ mutationStatus: "rejected" });
+  const result = await cycle(protocol, store, broker);
+  assert.equal(result.status, "G4_EQUITY_FROZEN");
+  assert.equal(result.options_authorized, false);
+  assert.equal(result.fallback, "MANUAL_RECONCILIATION_REQUIRED");
+  const repeated = await cycle(protocol, store, broker);
+  assert.equal(repeated.status, "G4_EQUITY_FROZEN");
 });
 
 test("unsupported initial holdings fail closed before mutation and hand off only to the external fallback", async () => {
