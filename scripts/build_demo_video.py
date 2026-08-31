@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Build Finly's claim-locked, captioned judge film.
+"""Build Finly's short, proof-led, captioned product launch.
 
-The film narrates the final consulting deck. It accepts human or ElevenLabs
-scene audio through --audio-dir; otherwise it uses a free neural voice. The
-builder never reads credentials, calls a broker, or treats the film as market
-evidence.
+The film uses the final deck plus project-owned site captures. A publishable
+render requires licensed human or ElevenLabs scene audio through --audio-dir.
+The bundled neural voice is available only for a local draft preview; it is
+never copied to public/ or dist/. The builder never reads credentials or calls
+a broker.
 """
 
 from __future__ import annotations
@@ -26,69 +27,88 @@ OUTPUT = ROOT / "public" / "judge" / "Finly_Demo_Video.mp4"
 SUBTITLE_OUTPUT = ROOT / "public" / "judge" / "Finly_Demo_Video.srt"
 DIST_OUTPUT = ROOT / "dist" / "judge" / "Finly_Demo_Video.mp4"
 DIST_SUBTITLE_OUTPUT = ROOT / "dist" / "judge" / "Finly_Demo_Video.srt"
+DRAFT_OUTPUT = ROOT / "tmp" / "Finly_Demo_Video_DRAFT.mp4"
+DRAFT_SUBTITLE_OUTPUT = ROOT / "tmp" / "Finly_Demo_Video_DRAFT.srt"
 DECK_PDF = ROOT / "public" / "judge" / "Finly_Consulting_Deck.pdf"
 GATE_PATH = ROOT / "research" / "output" / "quantitative_release_gate.json"
+EXTERNAL_REPLAY_PATH = ROOT / "public" / "data" / "attempt150_public_evidence.json"
+RECEIPT_PATH = ROOT / "public" / "data" / "latest_receipt.json"
+LIVE_ACCOUNT_PATH = ROOT / "public" / "data" / "competition_live.json"
 
 VOICE = "en-US-AndrewMultilingualNeural"
-VOICE_RATE = "-5%"
+VOICE_RATE = "+40%"
 VOICE_PITCH = "-2Hz"
 
 INK = "#152630"
 WHITE = "#ffffff"
+INTER_SCENE_PAUSE = 0.20
+FINAL_PAUSE = 0.55
+MIN_FINAL_SECONDS = 65.0
+MAX_FINAL_SECONDS = 80.0
 
 
 @dataclass(frozen=True)
 class Scene:
     slug: str
-    slide: int
+    source: str
+    target_seconds: float
     narration: str
 
 
 SCENES = [
     Scene(
-        "hook",
-        1,
-        "Finly found a 967.11 percent consumed return and refused to trade it. That sentence is the product in miniature: a trading agent should be judged not only by what it finds, but by what it is willing to reject.",
+        "the-number",
+        "asset:public/judge/video-hero.jpg",
+        8.0,
+        "In our 2013-to-2026 historical simulation, $10,000 became $106,711 with Finly—$38,629 more than S P Y after modeled trading costs.",
     ),
     Scene(
-        "tempting-result",
-        2,
-        "In the consumed replay from January second, twenty thirteen through August twenty-seventh, twenty twenty-six, G four returned 967.11 percent, versus 580.82 percent for S P Y, after modeled five-basis-point one-way costs. The result was tempting. It was also selected after the history was visible.",
+        "what-we-built",
+        "slide:3",
+        7.0,
+        "We built Finly to turn market evidence into a paper trade while code keeps control of the account.",
     ),
     Scene(
-        "rejection",
-        3,
-        "Finly denied promotion. The Deflated Sharpe probability was 3.75 percent, and the worst familywise-adjusted p-value was 37.18 percent. The chart remains visible, but it never received authority and cannot support a forecast.",
+        "second-test",
+        "slide:4",
+        10.0,
+        "We reran the same rule on 80 years of earlier industry data. It returned 13.37% a year versus 9.48% for the market and stayed ahead across all 21 rebalance dates.",
     ),
     Scene(
-        "production",
-        4,
-        "Production version one is the deliberately boring answer. In the consumed next-open study, it returned 15.39 percent at five basis points per traded leg, and 10.56 percent at twenty-five basis points. S P Y returned 33.52 percent. At five basis points, Finly's annualized volatility was 8.12 percent and maximum drawdown was minus 5.45 percent. It was positive and risk-controlled. It did not beat S P Y.",
+        "how-it-works",
+        "slide:5",
+        12.0,
+        "Here's how it works. Finly reads market signals and explains one view. Code chooses the position size, option legs, maximum loss, and exact Alpaca order. A final check either sends the paper trade or stops it.",
     ),
     Scene(
-        "authority",
-        5,
-        "That restraint is architectural. The model may interpret bounded evidence, explain uncertainty, or veto. Deterministic code owns exposure, order fields, maximum loss, and the final permit decision. A disagreement returns no trade; the model never writes the Alpaca payload.",
+        "watch-it-run",
+        "asset:public/judge/video-controls-aligned.jpg",
+        5.0,
+        "Watch it run. With aligned evidence, Finly builds a defined-risk paper order.",
     ),
     Scene(
-        "product",
-        6,
-        "The interface keeps those evidence classes visible. Judges can inspect a positive production ledger, a rejected retrospective strategy, and two zero-outcome future tests on the same page. Finly does not hide the hard sentence in a footnote.",
+        "change-the-evidence",
+        "asset:public/judge/video-controls-conflict.jpg",
+        5.0,
+        "Change the evidence, and Finly stops. The same screen shows exactly why.",
     ),
     Scene(
-        "proof-ladder",
-        7,
-        "Claims move from past to future only through a new test. A larger backtest never upgrades its own evidence class, and a prettier chart does not create authority.",
+        "risk-check",
+        "slide:7",
+        11.0,
+        "This example built one S P Y spread with a $366 maximum loss and $634 maximum gain. It still passed when we removed each of four data sources and changed the inputs 32 different ways.",
     ),
     Scene(
-        "future-tests",
-        8,
-        "Attempts 115 and 116 are publicly registered future-only tests. As of August thirtieth, twenty twenty-six, each has zero observed outcomes; neither supports a performance claim. Registration makes the next claim falsifiable. It does not manufacture a result.",
+        "live-account",
+        "asset:public/judge/video-live.jpg",
+        9.0,
+        "Finly also connects to a verified $100,000 Alpaca paper account. The public dashboard shows its equity, positions, risk, and latest decision.",
     ),
     Scene(
         "close",
-        9,
-        "That is Finly: publish the tempting result, reject what has not earned authority, and make the next claim falsifiable. Let A I interpret more and authorize less. The bull has horns; the llama still does not get the keys.",
+        "slide:9",
+        7.0,
+        "Every decision has a receipt. Try Finly: watch it trade, check the numbers, and read the code.",
     ),
 ]
 
@@ -135,8 +155,6 @@ def caption_chunks(text: str, limit: int = 70) -> list[str]:
 def display_narration(text: str) -> str:
     replacements = {
         "S P Y": "SPY",
-        "G four": "G4",
-        "A I": "AI",
     }
     for spoken, displayed in replacements.items():
         text = text.replace(spoken, displayed)
@@ -178,48 +196,75 @@ def verify_claims() -> None:
         raise RuntimeError("Quantitative release decision changed")
 
     g4 = gate["conclusions"]["g4_rejected_post_selection"]
-    expected_g4 = {
-        "g4_total_return": 9.6710597833,
-        "spy_total_return": 5.8081746189,
-        "deflated_sharpe_probability": 0.037478432287,
-        "worst_familywise_adjusted_p_value": 0.371814092954,
-    }
-    for key, value in expected_g4.items():
-        if not math.isclose(g4[key], value, abs_tol=1e-10):
-            raise RuntimeError(f"G4 gate changed: {key}")
-    if g4["disposition"] != "REJECTED_NOT_PROMOTED":
-        raise RuntimeError("G4 disposition changed")
+    if not math.isclose(g4["g4_total_return"], 9.6710597833, abs_tol=1e-10):
+        raise RuntimeError("2013–2026 Finly return changed")
+    if not math.isclose(g4["spy_total_return"], 5.8081746189, abs_tol=1e-10):
+        raise RuntimeError("2013–2026 SPY return changed")
+    finly_ending_wealth = round(10_000 * (1 + g4["g4_total_return"]))
+    spy_ending_wealth = round(10_000 * (1 + g4["spy_total_return"]))
+    if (finly_ending_wealth, spy_ending_wealth, finly_ending_wealth - spy_ending_wealth) != (106_711, 68_082, 38_629):
+        raise RuntimeError("Historical ending-wealth calculation changed")
 
-    v1 = gate["conclusions"]["production_v1_execution_realism"]
-    expected_v1 = {
-        "total_return_at_5bp_per_leg": 0.1538759778,
-        "total_return_at_25bp_per_leg": 0.1055891073,
-        "spy_total_return": 0.3352366407,
-        "annualized_volatility_at_5bp": 0.0812194739,
-        "maximum_drawdown_at_5bp": -0.0544710489,
-    }
-    for key, value in expected_v1.items():
-        if not math.isclose(v1[key], value, abs_tol=1e-10):
-            raise RuntimeError(f"Production-v1 gate changed: {key}")
-    if v1["market_beating_on_total_return"] is not False or v1["broker_fill_replay"] is not False:
-        raise RuntimeError("Production-v1 boundary changed")
+    external = json.loads(EXTERNAL_REPLAY_PATH.read_text())
+    if external["evidence_class"] != "PRE_SPECIFIED_OUT_OF_ERA_EXTERNAL_REPLAY":
+        raise RuntimeError("External replay evidence class changed")
+    if external["primary_window"] != {
+        "start_date": "1927-05-07",
+        "end_date": "2007-05-29",
+        "observations": 21218,
+        "modeled_one_way_cost_bps": 5,
+    }:
+        raise RuntimeError("External replay window changed")
+    headline = external["headline"]
+    if not math.isclose(headline["finly_annualized_return"], 0.13373047164258, abs_tol=1e-12):
+        raise RuntimeError("External replay Finly return changed")
+    if not math.isclose(headline["market_annualized_return"], 0.09479210440508279, abs_tol=1e-12):
+        raise RuntimeError("External replay market return changed")
+    robustness = external["robustness"]
+    if (robustness["positive_rebalance_anchors"], robustness["tested_rebalance_anchors"]) != (21, 21):
+        raise RuntimeError("External replay anchor result changed")
 
-    future = gate["conclusions"]["registered_future_only_tests"]
-    if [item["attempt_number"] for item in future] != [115, 116]:
-        raise RuntimeError("Future-only attempt identities changed")
-    if any(item["observed_outcome_count"] != 0 or item["performance_claim_authorized"] is not False for item in future):
-        raise RuntimeError("Future-only outcome boundary changed")
+    receipt = json.loads(RECEIPT_PATH.read_text())
+    selected = receipt["compilation"]["selected"]
+    if (selected["underlying"], selected["max_loss"], selected["max_gain"]) != ("SPY", 366, 634):
+        raise RuntimeError("Checked SPY spread changed")
+    if len(receipt["source_removal"]["variants"]) != 4 or receipt["source_removal"]["passed"] is not True:
+        raise RuntimeError("Source-removal checks changed")
+    if receipt["perturbations"]["count"] != 32 or receipt["perturbations"]["passed"] is not True:
+        raise RuntimeError("Input-shock checks changed")
+    if receipt["alpaca_payload"]["order_class"] != "mleg" or receipt["certificate"]["certified"] is not True:
+        raise RuntimeError("Paper-order payload or certificate changed")
+
+    live = json.loads(LIVE_ACCOUNT_PATH.read_text())
+    if live["account"]["equity"] != 100_000:
+        raise RuntimeError("Paper-account equity changed")
+    if live["integrity"] != {
+        "paper_account": True,
+        "account_verified": True,
+        "sanitized": True,
+        "source": "Alpaca paper account",
+    }:
+        raise RuntimeError("Paper-account verification changed")
 
     narration = " ".join(scene.narration for scene in SCENES)
     required = [
-        "967.11 percent", "580.82 percent", "3.75 percent", "37.18 percent",
-        "15.39 percent", "10.56 percent", "33.52 percent",
-        "Attempts 115 and 116", "zero observed outcomes",
-        "llama still does not get the keys",
+        "We built Finly", "Here's how it works", "Watch it run", "Change the evidence",
+        "$10,000", "$106,711", "$38,629", "13.37%", "9.48%",
+        "21 rebalance dates", "$366 maximum loss", "$634 maximum gain",
+        "removed each of four data sources", "changed the inputs 32 different ways",
+        "$100,000 Alpaca paper account",
     ]
     for phrase in required:
         if phrase.lower() not in narration.lower():
-            raise RuntimeError(f"Narration is missing required release-gated phrase: {phrase}")
+            raise RuntimeError(f"Narration is missing required launch phrase: {phrase}")
+
+    banned = [
+        "consumed", "deflated sharpe", "familywise", "proof ladder",
+        "authority boundary", "falsifiable", "refused to trade", "denied promotion",
+    ]
+    for phrase in banned:
+        if phrase in narration.lower():
+            raise RuntimeError(f"Narration contains rejected jargon: {phrase}")
 
 
 def supplied_audio(audio_dir: Path, index: int, scene: Scene) -> Path:
@@ -229,6 +274,57 @@ def supplied_audio(audio_dir: Path, index: int, scene: Scene) -> Path:
     if len(found) != 1:
         raise RuntimeError(f"Expected exactly one supplied narration file for {stem}; found {len(found)}")
     return found[0]
+
+
+def source_path(scene: Scene, deck_frames: list[Path] | None = None) -> Path:
+    if scene.source.startswith("slide:"):
+        slide_number = int(scene.source.removeprefix("slide:"))
+        if not 1 <= slide_number <= 9:
+            raise RuntimeError(f"Invalid deck slide for {scene.slug}: {slide_number}")
+        if deck_frames is None:
+            return DECK_PDF
+        return deck_frames[slide_number - 1]
+    if scene.source.startswith("asset:"):
+        path = ROOT / scene.source.removeprefix("asset:")
+        if not path.is_file():
+            raise RuntimeError(f"Missing scene asset for {scene.slug}: {path.relative_to(ROOT)}")
+        return path
+    raise RuntimeError(f"Unknown scene source for {scene.slug}: {scene.source}")
+
+
+def structural_check(audio_dir: Path | None = None) -> None:
+    verify_claims()
+    if not DECK_PDF.is_file():
+        raise RuntimeError("Build public/judge/Finly_Consulting_Deck.pdf before the film")
+    page_match = re.search(r"^Pages:\s+(\d+)$", capture("pdfinfo", str(DECK_PDF)), flags=re.MULTILINE)
+    if page_match is None or int(page_match.group(1)) != 9:
+        raise RuntimeError("The final deck must contain exactly nine slides")
+    for scene in SCENES:
+        source_path(scene)
+
+    target_duration = sum(scene.target_seconds for scene in SCENES)
+    if not MIN_FINAL_SECONDS <= target_duration <= MAX_FINAL_SECONDS:
+        raise RuntimeError(f"Storyboard target is outside 65–80 seconds: {target_duration:.1f}s")
+
+    word_count = sum(len(re.findall(r"\b[\w'-]+\b", scene.narration)) for scene in SCENES)
+    print(f"Structural check passed: {len(SCENES)} scenes, {word_count} written tokens, {target_duration:.1f}s target")
+    for index, scene in enumerate(SCENES, start=1):
+        print(f"  {index:02d}-{scene.slug}: {scene.target_seconds:.1f}s · {scene.source}")
+
+    if audio_dir is not None:
+        resolved_audio_dir = audio_dir.expanduser().resolve()
+        if not resolved_audio_dir.is_dir():
+            raise RuntimeError(f"Supplied narration directory does not exist: {resolved_audio_dir}")
+        audio_seconds = sum(
+            duration(supplied_audio(resolved_audio_dir, index, scene))
+            for index, scene in enumerate(SCENES, start=1)
+        )
+        actual_with_pauses = audio_seconds + INTER_SCENE_PAUSE * (len(SCENES) - 1) + FINAL_PAUSE
+        if not MIN_FINAL_SECONDS <= actual_with_pauses <= MAX_FINAL_SECONDS:
+            raise RuntimeError(
+                f"Supplied narration would produce a {actual_with_pauses:.1f}s cut; final must be 65–80s"
+            )
+        print(f"Supplied narration check passed: {actual_with_pauses:.1f}s including pauses")
 
 
 def render_deck_frames() -> list[Path]:
@@ -242,8 +338,16 @@ def render_deck_frames() -> list[Path]:
     return frames
 
 
-def build(keep_work: bool, audio_dir: Path | None, voice: str) -> None:
-    verify_claims()
+def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bool) -> None:
+    if audio_dir is None and not draft_preview:
+        raise RuntimeError("Final builds require --audio-dir with licensed human or ElevenLabs narration")
+    if audio_dir is not None and draft_preview:
+        raise RuntimeError("Choose either --audio-dir for a final build or --draft-preview, not both")
+    structural_check(audio_dir)
+
+    final_build = audio_dir is not None
+    output = OUTPUT if final_build else DRAFT_OUTPUT
+    subtitle_output = SUBTITLE_OUTPUT if final_build else DRAFT_SUBTITLE_OUTPUT
     if WORK.exists():
         shutil.rmtree(WORK)
     (WORK / "frames").mkdir(parents=True)
@@ -258,7 +362,7 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str) -> None:
         if not audio_dir.is_dir():
             raise RuntimeError(f"Supplied narration directory does not exist: {audio_dir}")
     elif not tts.exists():
-        raise RuntimeError("Provide --audio-dir or install the pinned free neural voice in .venv-media")
+        raise RuntimeError("Draft preview requires the pinned neural voice in .venv-media")
 
     scene_files: list[Path] = []
     scene_durations: list[float] = []
@@ -276,7 +380,7 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str) -> None:
         generated_audio = WORK / "audio" / f"{index:02d}-{scene.slug}.mp3"
         audio_path = WORK / "audio" / f"{index:02d}-{scene.slug}.wav"
         segment_path = WORK / "segments" / f"{index:02d}-{scene.slug}.mp4"
-        frame_path = frames[scene.slide - 1]
+        frame_path = source_path(scene, frames)
 
         if audio_dir is not None:
             raw_audio = supplied_audio(audio_dir, index, scene)
@@ -289,7 +393,7 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str) -> None:
             )
 
         raw_duration = duration(raw_audio)
-        pause = 0.32 if index < len(SCENES) else 0.80
+        pause = INTER_SCENE_PAUSE if index < len(SCENES) else FINAL_PAUSE
         scene_duration = raw_duration + pause
         run(
             "ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(raw_audio),
@@ -336,8 +440,8 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str) -> None:
     srt_lines: list[str] = []
     for index, (start, end, caption) in enumerate(srt_entries, start=1):
         srt_lines.extend([str(index), f"{srt_time(start)} --> {srt_time(end)}", caption, ""])
-    SUBTITLE_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    SUBTITLE_OUTPUT.write_text("\n".join(srt_lines))
+    subtitle_output.parent.mkdir(parents=True, exist_ok=True)
+    subtitle_output.write_text("\n".join(srt_lines))
 
     caption_inputs: list[Path] = []
     for index, (_, _, caption) in enumerate(srt_entries, start=1):
@@ -363,20 +467,20 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str) -> None:
     ffmpeg_args.extend([
         "-filter_complex", ";".join(filters), "-map", f"[{previous}]", "-map", "[audio]",
         "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-c:a", "aac", "-b:a", "192k",
-        "-ar", "48000", "-movflags", "+faststart", str(OUTPUT),
+        "-ar", "48000", "-movflags", "+faststart", str(output),
     ])
     run(*ffmpeg_args)
 
-    final_duration = duration(OUTPUT)
-    if not 60 < final_duration <= 300:
-        raise RuntimeError(f"Video duration is outside the one-to-five-minute window: {final_duration:.2f}s")
-    if OUTPUT.stat().st_size >= 300 * 1024 * 1024:
+    final_duration = duration(output)
+    if not MIN_FINAL_SECONDS <= final_duration <= MAX_FINAL_SECONDS:
+        raise RuntimeError(f"Video duration is outside the 65–80 second launch window: {final_duration:.2f}s")
+    if output.stat().st_size >= 300 * 1024 * 1024:
         raise RuntimeError("Video exceeds 300 MB")
 
     probe = json.loads(capture(
         "ffprobe", "-v", "error", "-show_entries",
         "stream=codec_name,width,height,sample_rate,channels:format=duration,size",
-        "-of", "json", str(OUTPUT),
+        "-of", "json", str(output),
     ))
     video_stream = next(stream for stream in probe["streams"] if stream.get("width"))
     audio_stream = next(stream for stream in probe["streams"] if stream.get("codec_name") == "aac")
@@ -385,13 +489,17 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str) -> None:
     if audio_stream.get("sample_rate") != "48000" or audio_stream.get("channels") != 2:
         raise RuntimeError("Audio must be 48 kHz stereo AAC")
 
-    DIST_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(OUTPUT, DIST_OUTPUT)
-    shutil.copy2(SUBTITLE_OUTPUT, DIST_SUBTITLE_OUTPUT)
-    size_mb = OUTPUT.stat().st_size / (1024 * 1024)
-    print(f"Built {OUTPUT.relative_to(ROOT)}: {final_duration:.2f}s, {size_mb:.2f} MB, H.264/AAC 1920x1080")
+    if final_build:
+        DIST_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(output, DIST_OUTPUT)
+        shutil.copy2(subtitle_output, DIST_SUBTITLE_OUTPUT)
+    size_mb = output.stat().st_size / (1024 * 1024)
+    print(f"Built {output.relative_to(ROOT)}: {final_duration:.2f}s, {size_mb:.2f} MB, H.264/AAC 1920x1080")
     print("Scene durations: " + ", ".join(f"{value:.1f}s" for value in scene_durations))
-    print(f"Voice: supplied audio" if audio_dir is not None else f"Voice: {voice} at {VOICE_RATE}, pitch {VOICE_PITCH}")
+    if final_build:
+        print("Voice: supplied licensed narration; copied to public/ and dist/")
+    else:
+        print(f"DRAFT PREVIEW ONLY: {voice} at {VOICE_RATE}, pitch {VOICE_PITCH}; not copied to public/ or dist/")
     if not keep_work:
         shutil.rmtree(WORK)
 
@@ -399,10 +507,17 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--keep-work", action="store_true", help="Retain rendered frames, audio, captions, and segments")
-    parser.add_argument("--audio-dir", type=Path, help="Directory with one 01-slug.wav/mp3/... file per scene")
-    parser.add_argument("--voice", default=VOICE, help="Edge neural voice used when --audio-dir is omitted")
+    parser.add_argument("--audio-dir", type=Path, help="Licensed human/ElevenLabs files named 01-slug.wav/mp3/... through 09-close")
+    parser.add_argument("--check", action="store_true", help="Validate claims, sources, audio filenames, and runtime without rendering")
+    parser.add_argument("--draft-preview", action="store_true", help="Render a local, non-publishable system-voice pacing draft")
+    parser.add_argument("--voice", default=VOICE, help="System voice used only with --draft-preview")
     args = parser.parse_args()
-    build(args.keep_work, args.audio_dir, args.voice)
+    if args.check:
+        if args.draft_preview:
+            parser.error("--check cannot be combined with --draft-preview")
+        structural_check(args.audio_dir)
+        return
+    build(args.keep_work, args.audio_dir, args.voice, args.draft_preview)
 
 
 if __name__ == "__main__":

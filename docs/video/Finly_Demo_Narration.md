@@ -1,25 +1,25 @@
-# Finly demo film: narration and scene logic
+# Finly demo film: 75-second launch cut
 
-The final film is a nine-scene argument for judges. Its rhythm is founder-led rather than synthetic: open with an uncomfortable result, show the evidence that disqualifies it, demonstrate the authority boundary, and close by making the next proof falsifiable. The film uses only project-owned slides and graphics. It contains no copyrighted footage, music, or borrowed advertising assets.
+The film opens on the result, shows the product before the midpoint, and closes with one invitation. It uses the final Finly deck and four project-owned film captures. The nine-scene storyboard targets 74 seconds; the final cut must land between 65 and 80 seconds.
 
-1. **Hook.** Finly found a 967.11 percent consumed return and refused to trade it. That sentence is the product in miniature: a trading agent should be judged not only by what it finds, but by what it is willing to reject.
+1. **The number — 8 seconds.** In our 2013–2026 historical simulation, $10,000 became $106,711 with Finly—$38,629 more than SPY after modeled trading costs.
 
-2. **The tempting result.** In the consumed replay from January 2, 2013 through August 27, 2026, G4 returned 967.11 percent versus 580.82 percent for SPY after modeled five-basis-point one-way costs. The result was tempting. It was also selected after the history was visible.
+2. **What we built — 7 seconds.** We built Finly to turn market evidence into a paper trade while code keeps control of the account.
 
-3. **The rejection.** Finly denied promotion. The Deflated Sharpe probability was 3.75 percent, and the worst familywise-adjusted p-value was 37.18 percent. The chart remains visible, but it never received authority and cannot support a forecast.
+3. **A second test — 10 seconds.** We reran the same rule on 80 years of earlier industry data. It returned 13.37% a year versus 9.48% for the market and stayed ahead across all 21 rebalance dates.
 
-4. **Production v1.** Production version one is the deliberately boring answer. In the consumed 2025-01-02–2026-08-28 modeled next-open study, it returned 15.39 percent at five basis points per traded leg and 10.56 percent at twenty-five basis points. SPY returned 33.52 percent. At five basis points, Finly's annualized volatility was 8.12 percent and maximum drawdown was minus 5.45 percent. It was positive and risk-controlled. It did not beat SPY.
+4. **How it works — 12 seconds.** Here’s how it works. Finly reads market signals and explains one view. Code chooses the position size, option legs, maximum loss, and exact Alpaca order. A final check either sends the paper trade or stops it.
 
-5. **Who controls capital.** The model may interpret bounded evidence, explain uncertainty, or veto. Deterministic code owns exposure, order fields, maximum loss, and the final permit decision. A disagreement returns `NO_TRADE`; the model never writes the Alpaca payload.
+5. **The product — 5 seconds.** Watch it run. With aligned evidence, Finly builds a defined-risk paper order.
 
-6. **The inspectable product.** Judges can inspect a positive production ledger, a rejected retrospective strategy, and two zero-outcome future tests on the same page. Finly does not hide the hard sentence in a footnote.
+6. **Change the evidence — 5 seconds.** Change the evidence, and Finly stops. The same screen shows exactly why.
 
-7. **The proof ladder.** Claims move from past to future only through a new test. A larger backtest never upgrades its own evidence class, and a prettier chart does not create authority.
+7. **The risk check — 11 seconds.** This example built one SPY spread with a $366 maximum loss and $634 maximum gain. It still passed when we removed each of four data sources and changed the inputs 32 different ways.
 
-8. **Future-only tests.** Attempts 115 and 116 are publicly registered future-only tests. As of 2026-08-30T08:10:52Z, each has zero observed outcomes; neither supports a performance claim. Registration makes the next claim falsifiable. It does not manufacture a result.
+8. **The live account — 9 seconds.** Finly also connects to a verified $100,000 Alpaca paper account. The public dashboard shows its equity, positions, risk, and latest decision.
 
-9. **Close.** That is Finly: publish the tempting result, reject what has not earned authority, and make the next claim falsifiable. Let AI interpret more and authorize less. The bull has horns; the llama still does not get the keys.
+9. **The close — 7 seconds.** Every decision has a receipt. Try Finly: watch it trade, check the numbers, and read the code.
 
-All numerical and boundary language is locked to `research/output/quantitative_release_gate.json` with artifact SHA-256 `1550d4fa7956138074dd08b98b8836811e6bd9adfd635e1378598efd81d0d5f1`. The film does not claim future profitability, next-month SPY beating, verified options P&L, a broker fill, G4 validation or promotion, performance from Attempts 115 or 116, or a cross-project performance comparison.
+The performance figures are labeled as historical simulations in the visuals. The 2013–2026 result is checked against `research/output/quantitative_release_gate.json`; the separate 1927–2007 industry replay is checked against `public/data/attempt150_public_evidence.json`; the options example is checked against `public/data/latest_receipt.json`; and the paper-account statement is checked against `public/data/competition_live.json`.
 
-The builder accepts one narration file per scene through `--audio-dir`, so a properly licensed human or ElevenLabs export can be substituted without changing the visuals or claims. With no supplied audio, it uses the free Microsoft Andrew neural voice declared in `scripts/build_demo_video.py`, then normalizes loudness and burns synchronized captions.
+Final narration is supplied as one licensed human or ElevenLabs file per scene through `--audio-dir`. The builder will not write a system-voice render to the public or distribution folders. `--draft-preview` may create a clearly named local pacing draft, and `--check` validates the claims, sources, filenames, and target runtime without rendering.
