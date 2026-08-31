@@ -459,6 +459,11 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
     "both jobs must independently attest their checked-out trading revision",
   );
   assert.equal(
+    [...workflow.matchAll(/^\s*set -eu$/gm)].length,
+    2,
+    "both attestations must abort when either Git command fails",
+  );
+  assert.equal(
     [...workflow.matchAll(/actual_head="\$\(git rev-parse --verify HEAD\)"/g)].length,
     2,
   );
