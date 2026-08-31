@@ -182,7 +182,7 @@ def add_running_header(section) -> None:
     paragraph.paragraph_format.space_before = Pt(0)
     paragraph.paragraph_format.space_after = Pt(2)
     paragraph.paragraph_format.keep_with_next = True
-    run = paragraph.add_run("FINLY  /  TAKING TRADING EVIDENCE SERIOUSLY")
+    run = paragraph.add_run("FINLY  /  AI TRADING WITH BUILT-IN CHECKS")
     set_run_font(run, SANS, 7.4, MUTED)
     set_paragraph_rule(paragraph, color=RULE, size=3, space=2)
 
