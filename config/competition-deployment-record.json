@@ -1,0 +1,57 @@
+{
+  "schema_version": "finly_competition_deployment_record.v1",
+  "record_id": "alpaca-hackathon-g4-deployment-2026-08-31",
+  "recorded_at": "2026-08-31T10:19:33.000Z",
+  "record_character": "PRE_WINDOW_SCOPE_DECLARATION",
+  "decision": {
+    "selected_by_role": "HUMAN_OPERATOR",
+    "decision_class": "TIME_BOUNDED_PAPER_COMPETITION_DEPLOYMENT",
+    "selected_protocol_id": "g4-official-production-2026-08-31",
+    "paper_only": true,
+    "window": {
+      "start_at": "2026-08-31T13:30:00.000Z",
+      "end_at": "2026-09-04T13:30:00.000Z"
+    }
+  },
+  "scope_boundary": {
+    "research_claim_authority": "QUANTITATIVE_RELEASE_GATE",
+    "g4_research_disposition": "REJECTED_NOT_PROMOTED",
+    "general_production_v1_policy_id": "tsmom_ensemble_vol",
+    "general_production_v1_superseded": false,
+    "operator_selection_is_research_promotion": false,
+    "outside_window_authority": "NONE",
+    "forward_performance_status": "UNOBSERVED_AT_RECORDING"
+  },
+  "evidence": {
+    "repository_commit": "611fda2c094e32fa0781c2cea37e91dc358ab503",
+    "repository_commit_at": "2026-08-31T09:49:06.000Z",
+    "research_gate": {
+      "path": "research/output/quantitative_release_gate.json",
+      "public_mirror_path": "public/data/quantitative_release_gate.json",
+      "schema_version": "finly_quantitative_release_gate.v1",
+      "artifact_sha256": "sha256:1550d4fa7956138074dd08b98b8836811e6bd9adfd635e1378598efd81d0d5f1",
+      "raw_bytes_sha256": "sha256:e3a84e64825991f70e7443bc9ecce29e6140ebe878222c62b71249d72eac4ed6",
+      "evidence_as_of": "2026-08-30T08:10:52.000Z"
+    },
+    "competition_protocol": {
+      "path": "config/g4-official-production.json",
+      "schema_version": "finly_g4_official_production_protocol.v1",
+      "protocol_id": "g4-official-production-2026-08-31",
+      "protocol_hash": "sha256:3b3914cd0c28afcc263117fd536072ef9a17a56a7ef040cd2e9ceff876d7437e",
+      "raw_bytes_sha256": "sha256:38402ec84898799a8e7a8a782c3218c9343ef184fb62084ae7e2a44f15a5fb4d"
+    },
+    "forward_score_contract": {
+      "path": "config/competition-forward-profit.json",
+      "schema_version": "finly_forward_profit_kpi_contract.v1",
+      "contract_id": "official-paper-forward-profit-2026-08-31",
+      "contract_hash": "sha256:46fa39ef0ce2887f42d6def1d282c287a3b1c3dd790cca46b3719381c89470b6",
+      "raw_bytes_sha256": "sha256:6a558e5229d202c9744b17a312ed567c215ae82e8cfa4e2a723a5580026bac16"
+    }
+  },
+  "authority": {
+    "claim_override": false,
+    "runtime_configuration": false,
+    "broker_mutation": false
+  },
+  "record_hash": "sha256:6e3760b1fa3607ed7003efaa466011a3249b32b71176689179dc225a42a51a19"
+}
