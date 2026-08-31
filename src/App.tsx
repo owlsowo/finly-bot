@@ -156,39 +156,39 @@ const alignedReceipt = alignedReceiptJson as unknown as DemoReceipt;
 const conflictReceipt = conflictReceiptJson as unknown as DemoReceipt;
 
 const navigation = [
-  ["case", "Thesis"],
+  ["case", "Overview"],
   ["live", "Live account"],
+  ["workflow", "Workflow"],
   ["evidence", "Evidence"],
   ["controls", "Controls"],
-  ["forward", "Forward proof"],
-  ["package", "Artifacts"],
+  ["package", "Judge kit"],
 ] as const;
 
 const architecture = [
   {
     number: "01",
-    title: "Collect the evidence",
-    body: "Finly gathers each market input with its source and timestamp, so every investment decision begins with facts a judge can trace.",
+    title: "Record four signals",
+    body: "Finly collects the market, options, economic and prediction-market inputs with their source context before it makes a recommendation.",
   },
   {
     number: "02",
-    title: "Understand the market",
-    body: "AI compares the evidence, explains what it means, and identifies the market view that the facts support.",
+    title: "Explain the thesis",
+    body: "AI compares those inputs and states the directional market view they support, in plain language a judge can inspect.",
   },
   {
     number: "03",
-    title: "Build the trade",
-    body: "Code turns that view into an exact position, including the time horizon, order details, position size, and maximum possible loss.",
+    title: "Compile the exact spread",
+    body: "Deterministic code—not the model—sets the strikes, position size, payoff and maximum possible loss for the proposed trade.",
   },
   {
     number: "04",
-    title: "Try to break it",
-    body: "Finly removes evidence, perturbs the inputs, and raises transaction costs to see whether the investment case still holds together.",
+    title: "Challenge the case",
+    body: "Finly removes supporting evidence and perturbs the inputs before it trusts the original conclusion.",
   },
   {
     number: "05",
-    title: "Approve the plan",
-    body: "Only a trade that passes every check becomes an Alpaca-compatible paper order. If a check fails, the account stays protected.",
+    title: "Prepare the paper order",
+    body: "Only a proposal that passes the checks becomes an Alpaca-compatible paper order with every field specified.",
   },
 ] as const;
 
@@ -267,37 +267,36 @@ export function DemoClient() {
         <nav aria-label="Primary navigation">
           {navigation.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}
         </nav>
-        <a className="header-cta" href="https://github.com/owlsowo/finly-bot">View repository <span aria-hidden="true">↗</span></a>
+        <a className="header-cta" href="./judge/Finly_Judge_Brief.pdf">Open judge brief <span aria-hidden="true">↗</span></a>
       </header>
 
       <main id="main-content">
         <section className="hero shell" id="case">
           <div className="hero-copy">
-            <p className="kicker">386-point historical lead / controlled agentic execution</p>
-            <h1>Finly grew a modeled $10,000 to $106,711—$38,629 more than SPY.</h1>
+            <p className="kicker">Agentic research / defined-risk paper trading</p>
+            <h1>Turn market evidence into a defined-risk paper trade.</h1>
             <p className="hero-deck">
-              Across the same cost-adjusted 2013–2026 simulation, Finly delivered +967.11% versus SPY's +580.82%.
-              Its advantage is architectural as well as financial: AI interprets the evidence, deterministic code defines
-              the trade, and a risk gateway protects every dollar before an order can reach the broker.
+              Finly brings the market evidence, the proposed trade and the risk decision into one inspectable workflow.
+              AI interprets the evidence; deterministic code sets exposure and the gateway authorizes each paper order.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#evidence">See the $38,629 advantage</a>
-              <a className="text-action" href="#controls">Test the execution gateway <span aria-hidden="true">↓</span></a>
+              <a className="primary-action" href="./judge/Finly_Judge_Brief.pdf">Open the judge brief <span aria-hidden="true">↗</span></a>
+              <a className="text-action" href="#live">See the live paper account <span aria-hidden="true">↓</span></a>
             </div>
             <p className="hero-thesis">
-              The investment case: a measurable market edge, scaled through disciplined agentic execution.
+              Inspect what Finly sees, what it proposes and what the control layer permits—before a paper order is sent.
             </p>
           </div>
 
           <figure className="hero-figure">
             <div className="figure-labels">
-              <span>13-year modeled ending wealth on $10,000</span>
-              <strong>{g4.start_date.slice(0, 4)}–{g4.end_date.slice(0, 4)}</strong>
+              <span>Post-selected retrospective case</span>
+              <strong>Not promoted</strong>
             </div>
             <div
               className="hero-result"
               role="img"
-              aria-label={`In the historical simulation, ten thousand dollars became approximately ${dollars(performanceLabEndingWealth)} with Finly and ${dollars(spyEndingWealth)} with SPY, an ending-wealth advantage of ${dollars(performanceLabAdvantage)} after modeled ${g4.modeled_one_way_cost_bps} basis point one-way costs.`}
+              aria-label={`In the post-selected retrospective replay, ten thousand dollars became approximately ${dollars(performanceLabEndingWealth)} with Finly and ${dollars(spyEndingWealth)} with SPY, an ending-wealth advantage of ${dollars(performanceLabAdvantage)} after modeled ${g4.modeled_one_way_cost_bps} basis point one-way costs. This case was not promoted.`}
             >
               <div>
                 <span>Finly ending wealth</span>
@@ -310,33 +309,33 @@ export function DemoClient() {
                 <small>{signedPct(g4.spy_total_return)} total return</small>
               </div>
               <p><strong>{dollars(performanceLabAdvantage)}</strong> advantage · 56.7% more modeled ending wealth than SPY.</p>
-              <em className="decision-stamp">+386.29 pp lead</em>
+              <em className="decision-stamp">Retrospective only</em>
             </div>
             <figcaption>
-              2013–2026 historical simulation · identical $10,000 starting capital · modeled {g4.modeled_one_way_cost_bps} bp one-way costs.
+              {g4.start_date.slice(0, 4)}–{g4.end_date.slice(0, 4)} · identical $10,000 starting capital · modeled {g4.modeled_one_way_cost_bps} bp one-way costs · post-selected result, not promoted as evidence of future market superiority.
             </figcaption>
           </figure>
 
-          <dl className="hero-metrics" aria-label="Demonstrated product capabilities">
+          <dl className="hero-metrics" aria-label="Immediate proof points">
             <div>
-              <dt>Finly total return</dt>
+              <dt>Outcome · historical case</dt>
               <dd>{signedPct(g4.g4_total_return)}</dd>
-              <p>Measured across the full 2013–2026 simulation after modeled costs.</p>
+              <p>Modeled 2013–2026 return after costs; a post-selected retrospective, not a forecast.</p>
             </div>
             <div>
-              <dt>SPY total return</dt>
-              <dd>{signedPct(g4.spy_total_return)}</dd>
-              <p>Identical starting capital and comparison window.</p>
+              <dt>Scale · out-of-era replay</dt>
+              <dd>{external.primary_window.observations.toLocaleString()}</dd>
+              <p>Market days in the pre-specified public industry-proxy replay.</p>
             </div>
             <div>
-              <dt>Source-removal checks</dt>
+              <dt>Robustness · timing</dt>
+              <dd>{external.robustness.positive_rebalance_anchors}/{external.robustness.tested_rebalance_anchors}</dd>
+              <p>Every tested monthly rebalance anchor retained a positive net-growth edge.</p>
+            </div>
+            <div>
+              <dt>Trust · trade checks</dt>
               <dd>{sourceRemovalCount}/{sourceRemovalCount}</dd>
-              <p>The proposal passed every source-removal test.</p>
-            </div>
-            <div>
-              <dt>Perturbation checks</dt>
-              <dd>{perturbationCount}/{perturbationCount}</dd>
-              <p>The proposal remained stable across all {perturbationCount} input shocks.</p>
+              <p>The aligned paper-trade proposal passed every source-removal check.</p>
             </div>
           </dl>
         </section>
@@ -347,17 +346,17 @@ export function DemoClient() {
           <div className="shell argument-grid">
             <p className="argument-number">01</p>
             <div>
-              <p className="kicker">Why Finly wins</p>
-              <h2>More intelligence at the top. More control at the point of execution.</h2>
+              <p className="kicker">What the product does</p>
+              <h2>Research the market, propose the trade, show the decision record.</h2>
             </div>
             <div className="argument-copy">
               <p>
-                Finly separates research, trade construction and execution: AI forms the thesis, deterministic code builds
-                the defined-risk position, and the gateway verifies maximum loss before authorizing a paper order.
+                Finly separates research, trade construction and execution so a judge can inspect each handoff: AI forms
+                the thesis, code builds the defined-risk position, and the gateway decides whether a paper order is allowed.
               </p>
               <p>
-                In the paper-trading demonstration, a one-contract spread carried a $366 maximum loss and $634 maximum
-                gain, passing {sourceRemovalCount}/{sourceRemovalCount} source-removal and {perturbationCount}/{perturbationCount} perturbation tests.
+                In the aligned demonstration, one contract carried a $366 maximum loss and $634 maximum gain, after
+                passing {sourceRemovalCount}/{sourceRemovalCount} source-removal and {perturbationCount}/{perturbationCount} perturbation checks.
               </p>
             </div>
           </div>
@@ -368,11 +367,11 @@ export function DemoClient() {
             <div className="section-intro evidence-intro">
               <div>
                 <p className="kicker">The quantified investment case</p>
-                <h2>Same capital. Same dates. $38,629 more modeled wealth.</h2>
+                <h2>A retrospective result, disclosed with its limits.</h2>
               </div>
               <p>
-                The result is direct and reproducible: +967.11% for Finly versus +580.82% for SPY across the identical
-                2013–2026 window, with modeled transaction costs included.
+                In the consumed, post-selected 2013–2026 replay with modeled transaction costs, Finly returned +967.11%
+                versus SPY's +580.82%. Promotion was rejected; this result does not support a future-performance claim.
               </p>
             </div>
 
@@ -444,16 +443,15 @@ export function DemoClient() {
           </div>
         </section>
 
-        <section className="system shell" id="system">
+        <section className="system shell" id="workflow">
           <div className="section-intro">
             <div>
-              <p className="kicker">Controlled agentic execution</p>
-              <h2>Finly lets AI read the market, while code keeps every trade inside a hard risk limit.</h2>
+              <p className="kicker">One paper-trade walkthrough</p>
+              <h2>Follow one market view from evidence to an exact paper order.</h2>
             </div>
             <p>
-              Finly uses AI for the work that requires interpretation and deterministic code for the work that must be exact.
-              The result is a market thesis that can be explained, tested, and converted into a trade without letting a
-              language model improvise with the account.
+              This is the product loop: facts in, a clear thesis, a defined-risk proposal and an explicit decision record.
+              The final authority sits with tested code, not the language model.
             </p>
           </div>
 
@@ -483,18 +481,18 @@ export function DemoClient() {
             <div className="section-intro receipt-intro">
               <div>
                 <p className="kicker">Interactive execution proof</p>
-                <h2>See Finly turn aligned evidence into a $366-risk, $634-upside proposal.</h2>
+                <h2>Inspect the control decision after Finly proposes a trade.</h2>
               </div>
               <p>
-                Switch the evidence case to see how the same architecture identifies an opportunity, stress-tests the
-                thesis and either advances a defined-risk structure or protects capital.
+                Compare aligned and conflicting evidence to see how the same workflow advances a defined-risk proposal
+                only when the supporting case holds up.
               </p>
             </div>
 
             <div className="receipt-controls" role="group" aria-label="Choose a demonstration scenario">
               <button type="button" aria-pressed={receiptMode === "aligned"} onClick={() => setReceiptMode("aligned")}>
                 <strong>Aligned evidence</strong>
-                <span>See a high-conviction case become a defined-risk proposal.</span>
+                <span>See a supported case become a defined-risk proposal.</span>
               </button>
               <button type="button" aria-pressed={receiptMode === "conflict"} onClick={() => setReceiptMode("conflict")}>
                 <strong>Conflicting evidence</strong>
@@ -576,7 +574,7 @@ export function DemoClient() {
             <small>Rules were locked before measurement began.</small>
           </div>
           <div className="forward-copy">
-              <p className="kicker">Proof designed before outcomes</p>
+              <p className="kicker">How future evidence will be earned</p>
               <h2>Two forward tests lock the rules before the market supplies the answer.</h2>
             <p>
               The tests lock the candidate, chronology and decision rules before eligible evidence arrives—moving Finly
@@ -601,8 +599,8 @@ export function DemoClient() {
         <section className="broker-band">
           <div className="shell broker-grid">
             <div>
-              <p className="kicker">Design advantage</p>
-              <h2>Agents can be ambitious in research and conservative in authority.</h2>
+              <p className="kicker">Control comes after the proposal</p>
+              <h2>The account stays in control, even when the research is ambitious.</h2>
             </div>
             <div className="broker-copy">
               <p>
@@ -626,11 +624,12 @@ export function DemoClient() {
         <section className="package shell" id="package">
           <div className="section-intro">
             <div>
-              <p className="kicker">Evidence you can trace</p>
-              <h2>Every headline number links to the code and evidence behind it.</h2>
+              <p className="kicker">Judge kit</p>
+              <h2>Open the brief, then trace every claim back to its evidence.</h2>
             </div>
             <p>
-              Move from the executive case to methodology, demonstration and source code without breaking the evidence chain.
+              Start with the one-page judge brief, then move to the methodology, demonstration and source code without
+              breaking the evidence chain.
             </p>
           </div>
           <ol className="deliverable-list">
