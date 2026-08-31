@@ -10,7 +10,8 @@ import { AlpacaPaperRestClient, alpacaCredentialsFromEnv } from "../lib/alpaca_r
 import { reconcileBrokerPositions } from "../lib/broker_positions.mjs";
 import { id, redactSecrets, sha256 } from "../lib/canonical.mjs";
 import { buildFreshCurrentEconomicBundle } from "../lib/current_economic_bundle.mjs";
-import { LocalLlamaEvidenceExtractor } from "../lib/evidence_extractor.mjs";
+import { FeatherlessEvidenceExtractor, LocalLlamaEvidenceExtractor } from "../lib/evidence_extractor.mjs";
+import { createG4OfficialEquityCoordinator } from "../lib/g4_official_coordinator.mjs";
 import {
   buildEconomicOptionsDirectionAuthority,
   buildEconomicOptionsExecutionGuard,
@@ -28,6 +29,7 @@ import { FilePaperSessionRegistry } from "../lib/paper_session_registry.mjs";
 import { FilePermitLedger } from "../lib/permit_ledger.mjs";
 import { runDecision } from "../lib/pipeline.mjs";
 import { verifyCertificate } from "../lib/risk.mjs";
+import { checkpointCloudState } from "./cloud_state.mjs";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_LOG_PATH = resolve(projectRoot, "outputs/autonomous_decisions.jsonl");
@@ -45,6 +47,49 @@ function isoNow(now) {
 
 function exactBoolean(value) {
   return value === true || value === "true";
+}
+
+function canonicalInstant(value, label) {
+  if (typeof value !== "string") throw new TypeError(`${label} must be a canonical ISO timestamp`);
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString() !== value) {
+    throw new TypeError(`${label} must be a canonical ISO timestamp`);
+  }
+  return value;
+}
+
+export function competitionWindowState(environment = process.env, at = new Date()) {
+  const startAt = canonicalInstant(environment.FINLY_COMPETITION_START_AT, "competition start");
+  const endAt = canonicalInstant(environment.FINLY_COMPETITION_END_AT, "competition end");
+  if (startAt >= endAt) throw new TypeError("competition window is empty or inverted");
+  const observedAt = new Date(at);
+  if (Number.isNaN(observedAt.getTime())) throw new TypeError("competition clock is invalid");
+  const observedIso = observedAt.toISOString();
+  const status = observedIso < startAt
+    ? "WAITING_FOR_COMPETITION_WINDOW"
+    : observedIso >= endAt
+      ? "COMPETITION_WINDOW_ENDED"
+      : "COMPETITION_WINDOW_OPEN";
+  return Object.freeze({ status, observed_at: observedIso, start_at: startAt, end_at: endAt });
+}
+
+export function optionsCompetitionControls(environment = process.env, at = new Date()) {
+  const window = competitionWindowState(environment, at);
+  const entryCutoffAt = canonicalInstant(environment.FINLY_OPTIONS_ENTRY_CUTOFF_AT, "options entry cutoff");
+  const forceFlatAt = canonicalInstant(environment.FINLY_OPTIONS_FORCE_FLAT_AT, "options force-flat time");
+  if (!(window.start_at < entryCutoffAt && entryCutoffAt < forceFlatAt && forceFlatAt < window.end_at)) {
+    throw new TypeError("options cutoff schedule must satisfy competition start < entry cutoff < force-flat < competition end");
+  }
+  const entryGatePassed = window.status === "COMPETITION_WINDOW_OPEN" && window.observed_at < entryCutoffAt;
+  const forceFlatRequired = window.status === "COMPETITION_WINDOW_OPEN" && window.observed_at >= forceFlatAt;
+  return Object.freeze({
+    schema_version: "finly_options_competition_controls.v1",
+    observed_at: window.observed_at,
+    entry_cutoff_at: entryCutoffAt,
+    force_flat_at: forceFlatAt,
+    entry_gate_passed: entryGatePassed,
+    force_flat_required: forceFlatRequired,
+  });
 }
 
 function finiteInteger(value, label, { minimum, maximum }) {
@@ -224,12 +269,36 @@ export async function buildAutonomousPaperDecision({
   return { receipt, omissions, fixture_sha256: sha256(fixture) };
 }
 
+export function eventEvidenceEntryGate(omissions, environment = process.env) {
+  if (!Array.isArray(omissions)) throw new TypeError("event evidence omissions must be an array");
+  const deterministicFallbackAllowed = environment.FINLY_ALLOW_DETERMINISTIC_FALLBACK === "true";
+  const modelEvidenceRequired = environment.FINLY_ALLOW_DETERMINISTIC_FALLBACK === "false";
+  const blockingReasons = new Set([
+    "LOCAL_EVENT_EXTRACTOR_UNAVAILABLE",
+    "EVENT_EXTRACTION_FAILED",
+    "NEWS_FEED_UNAVAILABLE",
+  ]);
+  const observedBlockingReasons = [...new Set(omissions
+    .filter((row) => row?.family === "events" && blockingReasons.has(row.reason))
+    .map((row) => row.reason))].sort();
+  const passed = !modelEvidenceRequired || deterministicFallbackAllowed || observedBlockingReasons.length === 0;
+  return Object.freeze({
+    schema_version: "finly_event_evidence_entry_gate.v1",
+    model_evidence_required: modelEvidenceRequired,
+    deterministic_fallback_allowed: deterministicFallbackAllowed,
+    blocking_reason_codes: Object.freeze(observedBlockingReasons),
+    entry_gate_passed: passed,
+  });
+}
+
 export function buildGuardedLocalPaperExecutor({
   client,
   environment = process.env,
   signingSecret,
   now = () => new Date(),
   mcpClient,
+  stateCheckpoint,
+  optionsBrokerViewFilter,
 } = {}) {
   if (!client || client.tradingBase !== "https://paper-api.alpaca.markets") {
     throw new Error("guarded execution requires the exact Alpaca paper client");
@@ -249,6 +318,8 @@ export function buildGuardedLocalPaperExecutor({
   if (!/^PA[A-Z0-9]{10}$/.test(environment.FINLY_COMPETITION_ACCOUNT_ID ?? "")) {
     throw new Error("guarded execution requires the dedicated competition account ID");
   }
+  competitionWindowState(environment, now());
+  optionsCompetitionControls(environment, now());
   const restKeyId = environment.APCA_API_KEY_ID ?? environment.ALPACA_API_KEY;
   const mcpKeyId = environment.ALPACA_API_KEY ?? environment.APCA_API_KEY_ID;
   const restSecret = environment.APCA_API_SECRET_KEY ?? environment.ALPACA_SECRET_KEY;
@@ -258,6 +329,12 @@ export function buildGuardedLocalPaperExecutor({
   }
   if (typeof signingSecret !== "string" || Buffer.byteLength(signingSecret) < 32) {
     throw new Error("guarded execution requires a persistent 32-byte signing secret");
+  }
+  if (stateCheckpoint !== undefined && typeof stateCheckpoint !== "function") {
+    throw new Error("guarded execution state checkpoint must be callable");
+  }
+  if (environment.FINLY_G4_PRODUCTION_ENABLED === "true" && typeof optionsBrokerViewFilter !== "function") {
+    throw new Error("G4 production requires a strict options-only broker-view filter");
   }
   const ledger = new FilePermitLedger(resolvedPath(environment.FINLY_PERMIT_LEDGER_PATH, DEFAULT_LEDGER_PATH));
   const lifecycleStore = new FileLifecycleCheckpointStore(
@@ -281,9 +358,11 @@ export function buildGuardedLocalPaperExecutor({
     permitLedger: ledger,
     preflight: createAlpacaPaperPreflight(client, {
       expectedAccountId: environment.FINLY_COMPETITION_ACCOUNT_ID,
+      brokerViewFilter: optionsBrokerViewFilter,
     }),
     placeOptionOrder: (arguments_) => mutationClient.placeOptionOrder(arguments_),
     getOrderByClientOrderId: (clientOrderId) => getNestedOrderByClientId(client, clientOrderId),
+    beforeMutation: stateCheckpoint,
     now,
     mcpMetadata: PINNED_ALPACA_MCP_METADATA,
   });
@@ -295,6 +374,7 @@ export function buildGuardedLocalPaperExecutor({
     checkpointStore: lifecycleStore,
     lookupNestedOrderByClientOrderId: lookupNestedOrder,
     mutationsEnabled: true,
+    beforeClosingMutation: stateCheckpoint,
     placeClosingOptionOrder: (projection) => mutationClient.placeExitOrder(projection),
     closingCapability: ALPACA_MCP_CLOSING_CREDIT_CAPABILITY,
     runId: session.certificate.run_id,
@@ -309,15 +389,20 @@ export function buildGuardedLocalPaperExecutor({
   }
 
   async function readBrokerState(state) {
-    const [account, positions] = await Promise.all([client.getAccount(), client.getPositions()]);
+    const [account, rawPositions, rawOpenOrders] = await Promise.all([
+      client.getAccount(), client.getPositions(), client.getOpenOrders(),
+    ]);
     if (account?.account_number !== environment.FINLY_COMPETITION_ACCOUNT_ID) {
       throw new Error("position manager credentials do not belong to the dedicated competition account");
     }
     if (account.status !== "ACTIVE" || account.trading_blocked !== false || account.account_blocked === true) {
       throw new Error("position manager found the paper account blocked or inactive");
     }
+    const brokerView = optionsBrokerViewFilter
+      ? optionsBrokerViewFilter({ positions: rawPositions, openOrders: rawOpenOrders })
+      : { positions: rawPositions, openOrders: rawOpenOrders };
     return reconcileBrokerPositions({
-      positions,
+      positions: brokerView.positions,
       entryProjection: state.active_entry_projection,
       lifecyclePhase: state.phase,
     });
@@ -438,6 +523,7 @@ export function buildGuardedLocalPaperExecutor({
           observedAt,
           strategyDirection,
           entryFilledAt: state.active_entry?.filled_at ?? null,
+          forceExitAt: optionsCompetitionControls(environment, now()).force_flat_at,
         });
         if (state.phase === "POSITION_OPEN" && assessment.decision === "HOLD") {
           return {
@@ -493,6 +579,8 @@ export function buildGuardedLocalPaperExecutor({
 
   const executor = {
     async submit(candidate, certificate) {
+      const controls = optionsCompetitionControls(environment, now());
+      if (!controls.entry_gate_passed) throw new Error("new options entries are closed by the official competition cutoff");
       const payload = buildMlegPayload(candidate, certificate, {
         signingSecret,
         requiredScope: "paper_submit",
@@ -542,12 +630,14 @@ export async function runAutonomousPaperCycle({
   now = () => new Date(),
   signingSecret,
   economicBundleProvider,
+  equityCoordinator,
   logPath = resolvedPath(environment.FINLY_DECISION_LOG, DEFAULT_LOG_PATH),
   lockPath = resolvedPath(environment.FINLY_AGENT_LOCK_PATH, DEFAULT_LOCK_PATH),
   codeVersion = environment.FINLY_CODE_VERSION ?? "working-tree",
   horizonSessions = finiteInteger(environment.FINLY_HORIZON_SESSIONS ?? 3, "FINLY_HORIZON_SESSIONS", { minimum: 1, maximum: 20 }),
 } = {}) {
   const executionEnabled = exactBoolean(environment.FINLY_EXECUTION_ENABLED);
+  const g4ProductionEnabled = executionEnabled && environment.FINLY_G4_PRODUCTION_ENABLED === "true";
   if (executionEnabled && (!executor || typeof executor.submit !== "function")) {
     throw new Error("execution requires an explicitly injected guarded paper executor");
   }
@@ -558,6 +648,11 @@ export async function runAutonomousPaperCycle({
   }
   if (executionEnabled && typeof economicBundleProvider !== "function") {
     throw new Error("execution requires a fresh economic bundle provider for every cycle");
+  }
+  if (g4ProductionEnabled && (!equityCoordinator
+    || typeof equityCoordinator.advance !== "function"
+    || typeof equityCoordinator.splitOptionsBrokerView !== "function")) {
+    throw new Error("G4 production requires an explicitly injected equity coordinator");
   }
   const suppliedSigningSecret = signingSecret ?? environment.FINLY_PAPER_SIGNING_SECRET;
   if (executionEnabled && (typeof suppliedSigningSecret !== "string" || Buffer.byteLength(suppliedSigningSecret) < 32)) {
@@ -580,6 +675,24 @@ export async function runAutonomousPaperCycle({
     return { ok: false, decision: "NO_TRADE", status: entry.status };
   }
   try {
+    let optionsControls = null;
+    if (executionEnabled) {
+      const window = competitionWindowState(environment, startedAt);
+      if (window.status !== "COMPETITION_WINDOW_OPEN") {
+        const entry = await appendDecisionLog(logPath, {
+          schema_version: "autonomous_decision_log.v1",
+          event: "CYCLE_SKIPPED",
+          cycle_id: cycleId,
+          created_at: startedAt,
+          data_mode: "alpaca_paper_live",
+          decision: "NO_TRADE",
+          status: window.status,
+          competition_window: window,
+        });
+        return { ok: true, decision: "NO_TRADE", status: entry.status, competition_window: entry.competition_window };
+      }
+      optionsControls = optionsCompetitionControls(environment, startedAt);
+    }
     await appendDecisionLog(logPath, {
       schema_version: "autonomous_decision_log.v1",
       event: "CYCLE_STARTED",
@@ -594,6 +707,31 @@ export async function runAutonomousPaperCycle({
       let result = null;
       let economicBundle = null;
       let economicRefreshError = null;
+      let g4EquityGate = null;
+      if (g4ProductionEnabled) {
+        g4EquityGate = await equityCoordinator.advance({ observedAt: startedAt });
+        if (g4EquityGate.status !== "G4_EQUITY_READY"
+          || g4EquityGate.equity_ready !== true
+          || g4EquityGate.options_authorized !== true
+          || g4EquityGate.readiness_receipt === null) {
+          const entry = await appendDecisionLog(logPath, {
+            schema_version: "autonomous_decision_log.v1",
+            event: "G4_EQUITY_GATE",
+            cycle_id: cycleId,
+            created_at: isoNow(now),
+            data_mode: "alpaca_paper_live",
+            decision: "NO_TRADE",
+            status: g4EquityGate.status,
+            equity_gate: g4EquityGate,
+          });
+          return {
+            ok: true,
+            decision: "NO_TRADE",
+            status: entry.status,
+            equity_gate: entry.equity_gate,
+          };
+        }
+      }
       if (executionEnabled) {
         try {
           economicBundle = await economicBundleProvider({ client, now });
@@ -605,9 +743,20 @@ export async function runAutonomousPaperCycle({
       const buildCurrentDecision = async () => {
         if (executionEnabled && economicRefreshError) throw economicRefreshError;
         if (executionEnabled && economicBundle === null) throw new Error("fresh economic bundle provider returned no bundle");
-        const inputs = inputProvider
+        const rawInputs = inputProvider
           ? await inputProvider({ client, now })
           : await readAlpacaInputs(client, { now });
+        const optionsView = g4ProductionEnabled
+          ? equityCoordinator.splitOptionsBrokerView({
+            positions: rawInputs.positions,
+            openOrders: rawInputs.openOrders,
+          })
+          : { positions: rawInputs.positions, openOrders: rawInputs.openOrders };
+        const inputs = {
+          ...rawInputs,
+          positions: optionsView.positions,
+          openOrders: optionsView.openOrders,
+        };
         return buildAutonomousPaperDecision({
           inputs,
           extractor,
@@ -665,8 +814,13 @@ export async function runAutonomousPaperCycle({
           intentDirection: result.receipt.intent.direction,
         });
       }
+      const eventEvidenceGate = executionEnabled
+        ? eventEvidenceEntryGate(result.omissions, environment)
+        : null;
       if (executionEnabled
         && economicGuard.entry_gate_passed
+        && eventEvidenceGate.entry_gate_passed
+        && optionsControls.entry_gate_passed
         && result.receipt.certificate.certified
         && result.receipt.compilation.selected) {
         const brokerResult = await executor.submit(result.receipt.compilation.selected, result.receipt.certificate);
@@ -674,6 +828,8 @@ export async function runAutonomousPaperCycle({
           status: "SUBMITTED_BY_INJECTED_EXECUTOR",
           submitted: true,
           economic_guard: economicGuard,
+          event_evidence_gate: eventEvidenceGate,
+          options_competition_controls: optionsControls,
           broker_result: brokerResult,
         };
       } else if (executionEnabled && !economicGuard.entry_gate_passed) {
@@ -681,12 +837,32 @@ export async function runAutonomousPaperCycle({
           status: "ECONOMIC_GUARD_NO_TRADE",
           submitted: false,
           economic_guard: economicGuard,
+          event_evidence_gate: eventEvidenceGate,
+          options_competition_controls: optionsControls,
+        };
+      } else if (executionEnabled && !eventEvidenceGate.entry_gate_passed) {
+        execution = {
+          status: "MODEL_EVIDENCE_NO_TRADE",
+          submitted: false,
+          economic_guard: economicGuard,
+          event_evidence_gate: eventEvidenceGate,
+          options_competition_controls: optionsControls,
+        };
+      } else if (executionEnabled && !optionsControls.entry_gate_passed) {
+        execution = {
+          status: "OPTIONS_ENTRY_CUTOFF_NO_TRADE",
+          submitted: false,
+          economic_guard: economicGuard,
+          event_evidence_gate: eventEvidenceGate,
+          options_competition_controls: optionsControls,
         };
       } else if (executionEnabled) {
         execution = {
           status: "NO_CERTIFIED_TRADE",
           submitted: false,
           economic_guard: economicGuard,
+          event_evidence_gate: eventEvidenceGate,
+          options_competition_controls: optionsControls,
         };
       }
       const entry = await appendDecisionLog(logPath, {
@@ -763,13 +939,46 @@ export async function runAutonomousPaperLoop({
 async function main() {
   const credentials = alpacaCredentialsFromEnv(process.env);
   const client = new AlpacaPaperRestClient(credentials);
-  const extractor = exactBoolean(process.env.FINLY_USE_LOCAL_LLAMA_EVENTS)
+  const useLocalEvents = exactBoolean(process.env.FINLY_USE_LOCAL_LLAMA_EVENTS);
+  const useHostedEvents = exactBoolean(process.env.FINLY_USE_FEATHERLESS_EVENTS);
+  if (useLocalEvents && useHostedEvents) throw new Error("only one Finly event extractor may be enabled");
+  const hostedKeyAvailable = typeof process.env.FEATHERLESS_API_KEY === "string"
+    && /^\S{12,}$/.test(process.env.FEATHERLESS_API_KEY);
+  const extractor = useLocalEvents
     ? new LocalLlamaEvidenceExtractor()
-    : undefined;
+    : useHostedEvents && hostedKeyAvailable
+      ? new FeatherlessEvidenceExtractor()
+      : undefined;
   const signingSecret = process.env.FINLY_PAPER_SIGNING_SECRET;
   const executionEnabled = exactBoolean(process.env.FINLY_EXECUTION_ENABLED);
+  const g4ProductionEnabled = executionEnabled && exactBoolean(process.env.FINLY_G4_PRODUCTION_ENABLED);
+  const cloudPublicationDirectory = process.env.FINLY_CLOUD_STATE_PUBLICATION_DIR;
+  const stateCheckpoint = cloudPublicationDirectory
+    ? async () => checkpointCloudState({
+      root: projectRoot,
+      publicationDirectory: cloudPublicationDirectory,
+      secret: process.env.FINLY_CLOUD_STATE_SECRET,
+    })
+    : undefined;
+  const equityCoordinator = g4ProductionEnabled
+    ? await createG4OfficialEquityCoordinator({
+      client,
+      environment: process.env,
+      signingSecret,
+      stateCheckpoint,
+    })
+    : undefined;
+  const optionsBrokerViewFilter = equityCoordinator
+    ? (brokerView) => equityCoordinator.splitOptionsBrokerView(brokerView)
+    : undefined;
   const executor = executionEnabled
-    ? buildGuardedLocalPaperExecutor({ client, environment: process.env, signingSecret })
+    ? buildGuardedLocalPaperExecutor({
+      client,
+      environment: process.env,
+      signingSecret,
+      stateCheckpoint,
+      optionsBrokerViewFilter,
+    })
     : undefined;
   const historicalClient = executionEnabled ? new HistoricalAlpacaClient(credentials) : null;
   const economicBundleProvider = executionEnabled
@@ -787,6 +996,7 @@ async function main() {
     client,
     extractor,
     executor,
+    equityCoordinator,
     economicBundleProvider,
     signingSecret,
     intervalSeconds,
@@ -796,8 +1006,9 @@ async function main() {
         ok: result.ok,
         decision: result.receipt?.certificate?.decision ?? result.decision,
         receipt_id: result.receipt?.receipt_id ?? null,
-        execution: result.execution?.status ?? result.management?.status ?? "DISABLED",
+        execution: result.execution?.status ?? result.management?.status ?? result.status ?? "DISABLED",
       })}\n`);
+      if (result.status === "COMPETITION_WINDOW_ENDED") controller.abort();
     },
   });
 }

@@ -110,6 +110,7 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
   const candidate = receipt.compilation.selected;
   const ordersByClientId = new Map();
   const ordersById = new Map();
+  let currentAt = asOf;
   let exitQuoteMode = "hold";
   let entryMutations = 0;
   let exitMutations = 0;
@@ -121,8 +122,8 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
       };
     }
     return {
-      [candidate.long_leg.symbol]: { bp: candidate.long_leg.bid, ap: candidate.long_leg.ask, t: asOf },
-      [candidate.short_leg.symbol]: { bp: candidate.short_leg.bid, ap: candidate.short_leg.ask, t: asOf },
+      [candidate.long_leg.symbol]: { bp: candidate.long_leg.bid, ap: candidate.long_leg.ask, t: currentAt },
+      [candidate.short_leg.symbol]: { bp: candidate.short_leg.bid, ap: candidate.short_leg.ask, t: currentAt },
     };
   };
   const paperPositions = () => {
@@ -151,7 +152,7 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
       options_approved_level: 3,
     }),
     getAccountConfiguration: async () => ({ suspend_trade: false }),
-    getClock: async () => ({ is_open: true, timestamp: asOf }),
+    getClock: async () => ({ is_open: true, timestamp: currentAt }),
     getPositions: async () => paperPositions(),
     getOpenOrders: async () => [],
     getOptionContracts: async () => ({
@@ -195,6 +196,10 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
     ALPACA_PAPER_TRADE: "true",
     FINLY_PAPER_MUTATION_ACK: "I_UNDERSTAND_THIS_MUTATES_ONLY_THE_HACKATHON_PAPER_ACCOUNT",
     FINLY_COMPETITION_ACCOUNT_ID: "PAFIXTURE001",
+    FINLY_COMPETITION_START_AT: "2026-08-28T18:00:00.000Z",
+    FINLY_COMPETITION_END_AT: "2026-08-28T19:00:00.000Z",
+    FINLY_OPTIONS_ENTRY_CUTOFF_AT: "2026-08-28T18:40:00.000Z",
+    FINLY_OPTIONS_FORCE_FLAT_AT: "2026-08-28T18:45:00.000Z",
     APCA_API_KEY_ID: "same-paper-key-id",
     APCA_API_SECRET_KEY: "same-paper-secret-key",
     FINLY_PERMIT_LEDGER_PATH: join(temporary, "ledger"),
@@ -205,7 +210,7 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
     client,
     environment,
     signingSecret,
-    now: () => new Date(asOf),
+    now: () => new Date(currentAt),
     mcpClient,
   });
 
@@ -227,6 +232,7 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
   assert.equal(held.assessment.holding_period_anchor_at, asOf);
   assert.equal(exitMutations, 0);
 
+  currentAt = environment.FINLY_OPTIONS_FORCE_FLAT_AT;
   let inputReads = 0;
   const managedCycle = await runAutonomousPaperCycle({
     client,
@@ -253,14 +259,14 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
         decisionTime: asOf,
       };
     },
-    now: () => new Date(asOf),
+    now: () => new Date(currentAt),
     signingSecret,
     logPath: join(temporary, "decisions.jsonl"),
     lockPath: join(temporary, "agent.lock"),
   });
   assert.equal(managedCycle.status, "EXIT_SUBMITTED_OR_RECONCILED");
-  assert.equal(managedCycle.management.assessment.trigger, "strategy_invalidation");
-  assert.equal(managedCycle.management.strategy_context_status, "CURRENT_DETERMINISTIC_INTENT_BOUND");
+  assert.equal(managedCycle.management.assessment.trigger, "competition_end_guard");
+  assert.equal(managedCycle.management.strategy_context_status, "CURRENT_INTENT_UNAVAILABLE");
   assert.equal(inputReads, 1);
   assert.equal(exitMutations, 1);
 
@@ -268,7 +274,7 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
   assert.equal(Number(exitOrder.limit_price) < 0, true);
   exitOrder.status = "filled";
   exitOrder.filled_qty = exitOrder.qty;
-  exitOrder.filled_at = asOf;
+  exitOrder.filled_at = currentAt;
   exitOrder.legs.forEach((leg) => { leg.filled_qty = exitOrder.qty; });
   ordersById.set(exitOrder.id, exitOrder);
   const closed = await executor.positionManager.manageOpenSession();
@@ -355,6 +361,10 @@ test("a broker-side manual closure freezes the active session and retains its ri
     ALPACA_PAPER_TRADE: "true",
     FINLY_PAPER_MUTATION_ACK: "I_UNDERSTAND_THIS_MUTATES_ONLY_THE_HACKATHON_PAPER_ACCOUNT",
     FINLY_COMPETITION_ACCOUNT_ID: "PAFIXTURE001",
+    FINLY_COMPETITION_START_AT: "2026-08-28T18:00:00.000Z",
+    FINLY_COMPETITION_END_AT: "2026-08-28T19:00:00.000Z",
+    FINLY_OPTIONS_ENTRY_CUTOFF_AT: "2026-08-28T18:40:00.000Z",
+    FINLY_OPTIONS_FORCE_FLAT_AT: "2026-08-28T18:45:00.000Z",
     APCA_API_KEY_ID: "same-paper-key-id",
     APCA_API_SECRET_KEY: "same-paper-secret-key",
     FINLY_PERMIT_LEDGER_PATH: join(temporary, "ledger"),

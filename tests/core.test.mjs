@@ -267,6 +267,7 @@ test("certificate tampering and replayed nonces are rejected", async () => {
   const ledger = new MemoryPermitLedger();
   await ledger.issue(receipt.certificate);
   let submitted;
+  const mutationSequence = [];
   const executor = new GuardedPaperExecutor({
     baseUrl: POLICY.paperHost,
     transport: "mcp",
@@ -276,12 +277,19 @@ test("certificate tampering and replayed nonces are rejected", async () => {
     now: () => new Date(fixture.decision_time),
     mcpMetadata: { server: "alpaca-mcp-server", version: POLICY.alpacaMcpVersion, tool: "place_option_order", schema_sha256: POLICY.placeOptionOrderSchemaSha256 },
     preflight: async () => freshPreflight(receipt.compilation.selected),
-    placeOptionOrder: async (payload) => { submitted = payload; calls.push(payload); return { id: "paper-order-1", status: "accepted" }; },
+    beforeMutation: async () => { mutationSequence.push("durable-checkpoint"); },
+    placeOptionOrder: async (payload) => {
+      mutationSequence.push("broker-mutation");
+      submitted = payload;
+      calls.push(payload);
+      return { id: "paper-order-1", status: "accepted" };
+    },
     getOrderByClientOrderId: async () => ({ ...submitted, id: "paper-order-1", status: "accepted" }),
   });
   await executor.submit(receipt.compilation.selected, receipt.certificate);
   await assert.rejects(() => executor.submit(receipt.compilation.selected, receipt.certificate), /already reserved|consumed/);
   assert.equal(calls.length, 1);
+  assert.deepEqual(mutationSequence, ["durable-checkpoint", "broker-mutation"]);
   assert.equal(Object.hasOwn(calls[0], "payload_sha256"), false);
 });
 

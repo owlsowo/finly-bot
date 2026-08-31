@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import fixture from "../fixtures/spy_bearish_replay.json" with { type: "json" };
-import { LocalLlamaEvidenceExtractor, validateEvidenceAssessment } from "../lib/evidence_extractor.mjs";
+import {
+  FeatherlessEvidenceExtractor,
+  FINLY_FEATHERLESS_MODEL,
+  LocalLlamaEvidenceExtractor,
+  validateEvidenceAssessment,
+} from "../lib/evidence_extractor.mjs";
 
 const source = fixture.signals.find((signal) => signal.family === "events");
 const documents = source.evidence.map((record) => ({
@@ -90,5 +95,95 @@ test("evidence extractor rejects remote endpoints and unavailable future evidenc
       asOf: fixture.decision_time,
     }),
     /differs from the canonical content hash/,
+  );
+});
+
+test("hosted Hermes extractor is endpoint-pinned, news-only, schema-bound, and thinking-disabled", async () => {
+  const apiKey = "featherless-test-key-never-log";
+  let requestUrl;
+  let request;
+  const extractor = new FeatherlessEvidenceExtractor({
+    apiKey,
+    timeoutMs: 500,
+    fetchImpl: async (url, options) => {
+      requestUrl = url;
+      request = options;
+      return {
+        ok: true,
+        json: async () => ({
+          model: FINLY_FEATHERLESS_MODEL,
+          choices: [{ message: { content: JSON.stringify({
+            schema_version: "evidence_assessment.v1",
+            assessments: documents.map(({ record }) => ({
+              evidence_id: record.evidence_id,
+              direction_score: -0.2,
+              volatility_score: 0.25,
+              rationale: "The supplied public event implies modest downside volatility.",
+            })),
+          }) } }],
+        }),
+      };
+    },
+  });
+  const result = await extractor.assessDocuments(documents, {
+    underlying: "SPY",
+    asOf: fixture.decision_time,
+  });
+  assert.equal(result.assessments.length, documents.length);
+  assert.equal(requestUrl, "https://api.featherless.ai/v1/chat/completions");
+  assert.equal(request.redirect, "error");
+  assert.equal(request.headers.authorization, `Bearer ${apiKey}`);
+  assert.ok(request.signal instanceof AbortSignal);
+  const body = JSON.parse(request.body);
+  assert.equal(body.model, "NousResearch/Hermes-4-14B");
+  assert.equal(body.temperature, 0);
+  assert.equal(body.max_tokens, 2_048);
+  assert.deepEqual(body.chat_template_kwargs, { enable_thinking: false });
+  assert.deepEqual(body.response_format, { type: "json_object" });
+  const prompt = JSON.parse(body.messages[1].content);
+  assert.deepEqual(Object.keys(prompt).sort(), [
+    "as_of", "documents", "instruction", "required_count", "required_evidence_ids", "underlying",
+  ]);
+  assert.equal(JSON.stringify(prompt).includes("account_number"), false);
+  assert.equal(JSON.stringify(prompt).includes("client_order_id"), false);
+  assert.equal(JSON.stringify(prompt).includes("quantity"), false);
+});
+
+test("hosted evidence extractor rejects endpoint/model drift and invalid structured output", async () => {
+  assert.throws(
+    () => new FeatherlessEvidenceExtractor({ apiKey: "featherless-test-key", baseUrl: "https://example.com/v1" }),
+    /only the Featherless v1 endpoint/,
+  );
+  assert.throws(
+    () => new FeatherlessEvidenceExtractor({ apiKey: "featherless-test-key", model: "another/model" }),
+    /model is not allowlisted/,
+  );
+  const responseDrift = new FeatherlessEvidenceExtractor({
+    apiKey: "featherless-test-key",
+    fetchImpl: async () => ({
+      ok: true,
+      json: async () => ({
+        model: "another/model",
+        choices: [{ message: { content: "{}" } }],
+      }),
+    }),
+  });
+  await assert.rejects(
+    () => responseDrift.assessDocuments(documents, { underlying: "SPY", asOf: fixture.decision_time }),
+    /response model differs/,
+  );
+  const extractor = new FeatherlessEvidenceExtractor({
+    apiKey: "featherless-test-key",
+    fetchImpl: async () => ({
+      ok: true,
+      json: async () => ({
+        model: FINLY_FEATHERLESS_MODEL,
+        choices: [{ message: { content: '{"schema_version":"evidence_assessment.v1","assessments":[],"order":{"qty":99}}' } }],
+      }),
+    }),
+  });
+  await assert.rejects(
+    () => extractor.assessDocuments(documents, { underlying: "SPY", asOf: fixture.decision_time }),
+    /missing or unknown fields|count differs/,
   );
 });

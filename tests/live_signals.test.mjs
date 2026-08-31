@@ -21,11 +21,18 @@ import { validateEvidenceRecord, validateSourceSignal } from "../lib/schema.mjs"
 import {
   buildAutonomousPaperDecision,
   buildGuardedLocalPaperExecutor,
+  eventEvidenceEntryGate,
   runAutonomousPaperCycle,
 } from "../scripts/autonomous_paper_agent.mjs";
 
 const AS_OF = "2026-08-28T18:30:05.000Z";
 const SIGNING_SECRET = "test-paper-decision-signing-secret-at-least-32-bytes";
+const EXECUTION_WINDOW = Object.freeze({
+  FINLY_COMPETITION_START_AT: "2026-08-28T18:00:00.000Z",
+  FINLY_COMPETITION_END_AT: "2026-08-28T19:00:00.000Z",
+  FINLY_OPTIONS_ENTRY_CUTOFF_AT: "2026-08-28T18:40:00.000Z",
+  FINLY_OPTIONS_FORCE_FLAT_AT: "2026-08-28T18:50:00.000Z",
+});
 
 function liveSnapshot() {
   const returns = Array.from({ length: 96 }, (_, index) => -0.0015 + Math.sin(index * 1.7) * 0.0007);
@@ -109,6 +116,47 @@ function inputs() {
     openOrders: [],
     clock: { is_open: true, timestamp: AS_OF },
     decisionTime: AS_OF,
+  };
+}
+
+function bullishInputs() {
+  const quote = (symbol, type, strike, bid, ask, iv) => ({
+    underlying: "SPY",
+    symbol,
+    type,
+    expiry: "2026-09-11",
+    strike,
+    bid,
+    ask,
+    iv,
+    dte: 14,
+    feed: "indicative",
+    quote_age_seconds: 2,
+    open_interest: 500,
+    tradable: true,
+  });
+  return {
+    ...inputs(),
+    snapshot: {
+      market: {
+        underlying: "SPY",
+        spot: 560,
+        observed_at: "2026-08-28T18:30:03.000Z",
+        quote_age_seconds: 2,
+        option_feed: "indicative",
+        feed_disclosure: "Alpaca indicative options feed and IEX stock data.",
+        history_mode: "alpaca_iex_adjusted_daily_bars",
+        historical_log_returns: Array.from({ length: 96 }, (_, index) => 0.0015 + 0.0005 * Math.sin(index)),
+      },
+      option_chain: [
+        quote("SPY260911C00555000", "call", 555, 5.8, 6.0, 0.255),
+        quote("SPY260911C00560000", "call", 560, 4.0, 4.2, 0.25),
+        quote("SPY260911C00565000", "call", 565, 2.4, 2.6, 0.245),
+        quote("SPY260911C00570000", "call", 570, 1.3, 1.5, 0.24),
+        quote("SPY260911P00560000", "put", 560, 2.8, 3.0, 0.18),
+        quote("SPY260911P00555000", "put", 555, 1.8, 2.0, 0.175),
+      ],
+    },
   };
 }
 
@@ -208,6 +256,133 @@ test("unavailable evidence families are omitted instead of fabricated", async ()
   assert.match(failedModel.omissions[0].detail_sha256, /^sha256:[a-f0-9]{64}$/);
 });
 
+test("judged entries fail closed when required model evidence is unavailable or fails", () => {
+  const judged = { FINLY_ALLOW_DETERMINISTIC_FALLBACK: "false" };
+  const unavailable = eventEvidenceEntryGate([
+    { family: "events", reason: "LOCAL_EVENT_EXTRACTOR_UNAVAILABLE" },
+  ], judged);
+  assert.equal(unavailable.entry_gate_passed, false);
+  assert.deepEqual(unavailable.blocking_reason_codes, ["LOCAL_EVENT_EXTRACTOR_UNAVAILABLE"]);
+
+  const failed = eventEvidenceEntryGate([
+    { family: "events", reason: "EVENT_EXTRACTION_FAILED" },
+  ], judged);
+  assert.equal(failed.entry_gate_passed, false);
+
+  const unavailableFeed = eventEvidenceEntryGate([
+    { family: "events", reason: "NEWS_FEED_UNAVAILABLE" },
+  ], judged);
+  assert.equal(unavailableFeed.entry_gate_passed, false);
+
+  const noUsableNews = eventEvidenceEntryGate([
+    { family: "events", reason: "NO_USABLE_TIMESTAMPED_NEWS" },
+  ], judged);
+  assert.equal(noUsableNews.entry_gate_passed, true, "an empty canonical news set is not a model outage");
+
+  const explicitFallback = eventEvidenceEntryGate([
+    { family: "events", reason: "LOCAL_EVENT_EXTRACTOR_UNAVAILABLE" },
+  ], { FINLY_ALLOW_DETERMINISTIC_FALLBACK: "true" });
+  assert.equal(explicitFallback.entry_gate_passed, true);
+});
+
+test("a malformed Alpaca news envelope is unavailable evidence, not an empty news set", async () => {
+  const current = inputs();
+  const malformed = await buildLiveSignals({
+    market: current.snapshot.market,
+    optionChain: current.snapshot.option_chain,
+    newsResponse: {},
+    extractor: { assessDocuments: async () => { throw new Error("must not run"); } },
+    asOf: current.decisionTime,
+  });
+  assert.equal(malformed.signals.some((signal) => signal.family === "events"), false);
+  assert.deepEqual(malformed.omissions.filter((row) => row.family === "events"), [
+    { family: "events", reason: "NEWS_FEED_UNAVAILABLE" },
+  ]);
+
+  const validEmpty = await buildLiveSignals({
+    market: current.snapshot.market,
+    optionChain: current.snapshot.option_chain,
+    newsResponse: { news: [], next_page_token: null },
+    extractor: { assessDocuments: async () => { throw new Error("must not run"); } },
+    asOf: current.decisionTime,
+  });
+  assert.deepEqual(validEmpty.omissions.filter((row) => row.family === "events"), [
+    { family: "events", reason: "NO_USABLE_TIMESTAMPED_NEWS" },
+  ]);
+});
+
+test("a certified bullish options entry is not submitted when judged model evidence is unavailable", async (t) => {
+  const temporary = await mkdtemp(join(tmpdir(), "finly-required-event-evidence-"));
+  t.after(() => rm(temporary, { recursive: true, force: true }));
+  let executorCalls = 0;
+  const executor = {
+    submit: async () => { executorCalls += 1; },
+    positionManager: {
+      inspectOpenSession: async () => ({ active: false, status: "NO_OPEN_PAPER_SESSION" }),
+      manageOpenSession: async () => ({ active: false, status: "NO_OPEN_PAPER_SESSION" }),
+    },
+  };
+  const result = await runAutonomousPaperCycle({
+    client: {},
+    executor,
+    economicBundleProvider: async () => bullishEconomicBundle(),
+    environment: {
+      ...EXECUTION_WINDOW,
+      FINLY_EXECUTION_ENABLED: "true",
+      FINLY_ALLOW_DETERMINISTIC_FALLBACK: "false",
+      FINLY_PAPER_SIGNING_SECRET: SIGNING_SECRET,
+    },
+    inputProvider: async () => bullishInputs(),
+    now: () => new Date(AS_OF),
+    signingSecret: SIGNING_SECRET,
+    logPath: join(temporary, "decisions.jsonl"),
+    lockPath: join(temporary, "agent.lock"),
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.receipt.certificate.certified, true, "the fixture isolates the event-model entry gate");
+  assert.equal(result.execution.status, "MODEL_EVIDENCE_NO_TRADE");
+  assert.equal(result.execution.event_evidence_gate.entry_gate_passed, false);
+  assert.deepEqual(result.execution.event_evidence_gate.blocking_reason_codes, ["LOCAL_EVENT_EXTRACTOR_UNAVAILABLE"]);
+  assert.equal(executorCalls, 0);
+});
+
+test("a certified bullish options entry is not submitted at the exact official entry cutoff", async (t) => {
+  const temporary = await mkdtemp(join(tmpdir(), "finly-options-entry-cutoff-"));
+  t.after(() => rm(temporary, { recursive: true, force: true }));
+  let executorCalls = 0;
+  const executor = {
+    submit: async () => { executorCalls += 1; },
+    positionManager: {
+      inspectOpenSession: async () => ({ active: false, status: "NO_OPEN_PAPER_SESSION" }),
+      manageOpenSession: async () => ({ active: false, status: "NO_OPEN_PAPER_SESSION" }),
+    },
+  };
+  const result = await runAutonomousPaperCycle({
+    client: {},
+    executor,
+    economicBundleProvider: async () => bullishEconomicBundle(),
+    environment: {
+      FINLY_EXECUTION_ENABLED: "true",
+      FINLY_ALLOW_DETERMINISTIC_FALLBACK: "true",
+      FINLY_PAPER_SIGNING_SECRET: SIGNING_SECRET,
+      FINLY_COMPETITION_START_AT: "2026-08-28T18:00:00.000Z",
+      FINLY_COMPETITION_END_AT: "2026-08-28T19:00:00.000Z",
+      FINLY_OPTIONS_ENTRY_CUTOFF_AT: AS_OF,
+      FINLY_OPTIONS_FORCE_FLAT_AT: "2026-08-28T18:50:00.000Z",
+    },
+    inputProvider: async () => bullishInputs(),
+    now: () => new Date(AS_OF),
+    signingSecret: SIGNING_SECRET,
+    logPath: join(temporary, "decisions.jsonl"),
+    lockPath: join(temporary, "agent.lock"),
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.receipt.certificate.certified, true, "the fixture isolates the official entry cutoff");
+  assert.equal(result.execution.status, "OPTIONS_ENTRY_CUTOFF_NO_TRADE");
+  assert.equal(result.execution.options_competition_controls.entry_gate_passed, false);
+  assert.equal(executorCalls, 0);
+});
+
 test("live fixture is explicitly alpaca_paper_live and fails safe for account state", async () => {
   const currentInputs = inputs();
   const { signals } = await buildLiveSignals({
@@ -300,6 +475,7 @@ test("economic core vetoes a direction-mismatched new entry before the executor"
     executor,
     economicBundleProvider: async () => bullishEconomicBundle(),
     environment: {
+      ...EXECUTION_WINDOW,
       FINLY_EXECUTION_ENABLED: "true",
       FINLY_PAPER_SIGNING_SECRET: SIGNING_SECRET,
     },
@@ -357,6 +533,10 @@ test("local paper executor requires every explicit mutation gate before construc
     ALPACA_PAPER_TRADE: "true",
     FINLY_PAPER_MUTATION_ACK: "I_UNDERSTAND_THIS_MUTATES_ONLY_THE_HACKATHON_PAPER_ACCOUNT",
     FINLY_COMPETITION_ACCOUNT_ID: "PAFIXTURE001",
+    FINLY_COMPETITION_START_AT: "2026-08-28T18:00:00.000Z",
+    FINLY_COMPETITION_END_AT: "2026-08-28T19:00:00.000Z",
+    FINLY_OPTIONS_ENTRY_CUTOFF_AT: "2026-08-28T18:30:00.000Z",
+    FINLY_OPTIONS_FORCE_FLAT_AT: "2026-08-28T18:45:00.000Z",
   };
   const options = {
     client,

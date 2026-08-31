@@ -3,6 +3,7 @@ import attempt150PublicEvidenceJson from "../research/output/attempt150_public_e
 import quantitativeGateJson from "../research/output/quantitative_release_gate.json";
 import alignedReceiptJson from "./data/latest_receipt.json";
 import conflictReceiptJson from "./data/no_trade_receipt.json";
+import { CompetitionDashboard } from "./CompetitionDashboard";
 import { HistoricalExplorer } from "./HistoricalExplorer";
 
 type G4Evidence = {
@@ -156,6 +157,7 @@ const conflictReceipt = conflictReceiptJson as unknown as DemoReceipt;
 
 const navigation = [
   ["case", "Thesis"],
+  ["live", "Live account"],
   ["evidence", "Evidence"],
   ["controls", "Controls"],
   ["forward", "Forward proof"],
@@ -165,28 +167,28 @@ const navigation = [
 const architecture = [
   {
     number: "01",
-    title: "Gather",
-    body: "Every input arrives with a declared source and timestamp, creating a traceable foundation for each investment decision.",
+    title: "Collect the evidence",
+    body: "Finly gathers each market input with its source and timestamp, so every investment decision begins with facts a judge can trace.",
   },
   {
     number: "02",
-    title: "Interpret",
-    body: "A model may weigh the supplied evidence and explain a market view. It does not choose an executable order.",
+    title: "Understand the market",
+    body: "AI compares the evidence, explains what it means, and identifies the market view that the facts support.",
   },
   {
     number: "03",
-    title: "Compile",
-    body: "Deterministic code derives exposure, horizon, size, order fields and the maximum amount at risk.",
+    title: "Build the trade",
+    body: "Code turns that view into an exact position, including the time horizon, order details, position size, and maximum possible loss.",
   },
   {
     number: "04",
-    title: "Challenge",
-    body: "The proposal must survive evidence removal, perturbed inputs, modeled costs and the research ledger's statistical gates.",
+    title: "Try to break it",
+    body: "Finly removes evidence, perturbs the inputs, and raises transaction costs to see whether the investment case still holds together.",
   },
   {
     number: "05",
-    title: "Authorize",
-    body: "Capital advances only after every control passes; otherwise Finly preserves capital automatically.",
+    title: "Approve the plan",
+    body: "Only a trade that passes every check becomes an Alpaca-compatible paper order. If a check fails, the account stays protected.",
   },
 ] as const;
 
@@ -196,6 +198,27 @@ const references = [
   ["Moskowitz, Ooi & Pedersen, 2012", "https://doi.org/10.1016/j.jfineco.2011.11.003"],
   ["Moreira & Muir, 2017", "https://doi.org/10.1111/jofi.12513"],
 ] as const;
+
+const sourceFamilyCopy = {
+  aligned: {
+    market: ["Market trend", "Recent price momentum has turned negative, while trading volume provides modest confirmation."],
+    options: ["Options market", "Options pricing shows more demand for downside protection, supporting a bearish view without signaling a volatility panic."],
+    events: ["Economic events", "The scheduled macro event increases the risk of weaker near-term growth."],
+    prediction_market: ["Prediction markets", "A liquid prediction market points in the same direction and adds a small amount of supporting evidence."],
+  },
+  conflict: {
+    market: ["Market trend", "Price momentum remains positive."],
+    options: ["Options market", "Options pricing is mildly positive."],
+    events: ["Economic events", "The event signal points against the current price trend."],
+    prediction_market: ["Prediction markets", "Prediction-market pricing conflicts with the market data."],
+  },
+} as const;
+
+function humanSignalCopy(mode: "aligned" | "conflict", family: string, fallback: string): readonly [string, string] {
+  const copy = sourceFamilyCopy[mode];
+  if (Object.hasOwn(copy, family)) return copy[family as keyof typeof copy];
+  return [family.replaceAll("_", " "), fallback];
+}
 
 const deliverables = [
   ["01", "One-page proposal", "An answer-first investment case built for the first judging pass.", "./judge/Finly_Judge_Brief.pdf"],
@@ -318,6 +341,8 @@ export function DemoClient() {
           </dl>
         </section>
 
+        <CompetitionDashboard />
+
         <section className="argument-band" aria-label="Core proposition">
           <div className="shell argument-grid">
             <p className="argument-number">01</p>
@@ -423,11 +448,12 @@ export function DemoClient() {
           <div className="section-intro">
             <div>
               <p className="kicker">Controlled agentic execution</p>
-              <h2>The model finds the signal; deterministic controls own the risk.</h2>
+              <h2>Finly lets AI read the market, while code keeps every trade inside a hard risk limit.</h2>
             </div>
             <p>
-              Finly gives each component one clear responsibility. AI synthesizes heterogeneous evidence, code converts the
-              thesis into a bounded position, and the gateway retains final authority.
+              Finly uses AI for the work that requires interpretation and deterministic code for the work that must be exact.
+              The result is a market thesis that can be explained, tested, and converted into a trade without letting a
+              language model improvise with the account.
             </p>
           </div>
 
@@ -442,13 +468,13 @@ export function DemoClient() {
           </ol>
 
           <aside className="authority-rule">
-            <p>Model interpretation</p>
+            <p>AI explains the opportunity</p>
             <span aria-hidden="true">→</span>
-            <p>Typed intent</p>
+            <p>Code builds the exact trade</p>
             <span aria-hidden="true">→</span>
-            <p>Deterministic challenge suite</p>
+            <p>Tests try to break it</p>
             <span aria-hidden="true">→</span>
-            <strong>Authorize capital</strong>
+            <strong>The gateway makes the final call</strong>
           </aside>
         </section>
 
@@ -482,8 +508,8 @@ export function DemoClient() {
                 <div className="source-list">
                   {receipt.source_signals.map((signal) => (
                     <article key={signal.family}>
-                      <h3>{signal.family.replaceAll("_", " ")}</h3>
-                      <p>{signal.explanation}</p>
+                      <h3>{humanSignalCopy(receiptMode, signal.family, signal.explanation)[0]}</h3>
+                      <p>{humanSignalCopy(receiptMode, signal.family, signal.explanation)[1]}</p>
                     </article>
                   ))}
                 </div>
@@ -492,28 +518,30 @@ export function DemoClient() {
               <div className="receipt-conclusion">
                 <p className="receipt-label">Decision path</p>
                 <p className="assessment-sentence">
-                  AI formed a <strong>{receipt.intent.direction.toLowerCase()}</strong> market view; deterministic controls shaped and validated the trade.
+                  {receipt.certificate.certified
+                    ? <>Finly reads the evidence as <strong>{receipt.intent.direction.toLowerCase()}</strong>. It then builds a defined-risk strategy and checks every term before preparing the paper order.</>
+                    : <>Finly initially reads the evidence as <strong>{receipt.intent.direction.toLowerCase()}</strong>, but the case falls apart under testing. Instead of forcing a trade, it keeps the account protected.</>}
                 </p>
                 <dl className="receipt-facts">
                   <div>
-                    <dt>Model scope</dt>
-                    <dd>Market intelligence</dd>
-                    <p>The model synthesizes the evidence and explains the investment thesis.</p>
+                    <dt>What Finly sees</dt>
+                    <dd>The market story</dd>
+                    <p>AI compares the supplied signals and explains why they support—or weaken—the investment thesis.</p>
                   </div>
                   <div>
-                    <dt>Trade construction</dt>
-                    <dd>{receipt.compilation.selected ? "A candidate was constructed" : "No candidate was constructed"}</dd>
-                    <p>Deterministic code sets strikes, size and maximum loss.</p>
+                    <dt>What Finly builds</dt>
+                    <dd>{receipt.compilation.selected ? "An exact options spread" : "No trade was built"}</dd>
+                    <p>Code—not the language model—sets the strikes, position size, payoff, and maximum loss.</p>
                   </div>
                   <div>
-                    <dt>Stress-test result</dt>
-                    <dd>{receipt.source_removal.passed && receipt.perturbations?.passed ? "The recorded checks passed" : "A required check failed"}</dd>
-                    <p>Capital advances only when the thesis withstands missing evidence and input shocks.</p>
+                    <dt>What the tests found</dt>
+                    <dd>{receipt.source_removal.passed && receipt.perturbations?.passed ? "The thesis held up" : "The thesis broke down"}</dd>
+                    <p>Finly tries removing evidence and changing the inputs before it trusts the original conclusion.</p>
                   </div>
                   <div>
-                    <dt>Capital decision</dt>
-                    <dd>{receipt.certificate.certified ? "Risk-bounded proposal ready" : "Capital preserved"}</dd>
-                    <p>{receipt.certificate.certified ? "The Alpaca-compatible paper order is fully specified." : "The gateway withheld exposure when the evidence lost alignment."}</p>
+                    <dt>What happens next</dt>
+                    <dd>{receipt.certificate.certified ? "Ready for paper trading" : "No trade; capital stays untouched"}</dd>
+                    <p>{receipt.certificate.certified ? "Every field in the Alpaca-compatible paper order is now fully specified." : "The control layer stops the process before the account takes on exposure."}</p>
                   </div>
                 </dl>
               </div>

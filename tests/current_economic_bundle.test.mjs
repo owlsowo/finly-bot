@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   buildFreshCurrentEconomicBundle,
+  currentPaperAllocation,
   resolveCompletedDailyBarBoundary,
 } from "../lib/current_economic_bundle.mjs";
 
@@ -102,5 +103,54 @@ test("an incomplete current-session daily bar is rejected even when returned by 
       now: () => new Date("2026-08-31T18:00:00.000Z"),
     }),
     /incomplete session after the completed-session boundary/,
+  );
+});
+
+test("the SPY/BIL allocation read excludes only structurally valid SPY option positions", () => {
+  const account = {
+    status: "ACTIVE",
+    equity: "100000",
+    trading_blocked: false,
+    account_blocked: false,
+  };
+  const allocation = currentPaperAllocation(account, [
+    { symbol: "SPY", asset_class: "us_equity", market_value: "25000" },
+    { symbol: "SPY260911C00560000", asset_class: "us_option", market_value: "640" },
+    { symbol: "SPY260911C00565000", asset_class: "us_option", market_value: "-280" },
+  ]);
+  assert.equal(allocation.economic_sleeve_equity, 99640);
+  assert.equal(allocation.spyWeight, 0.25090325);
+  assert.equal(allocation.bilWeight, 0.74909675);
+  assert.equal(allocation.option_positions_excluded_from_spy_bil_allocation_count, 2);
+  assert.equal(allocation.option_net_market_value_excluded, 360);
+
+  const coexistence = currentPaperAllocation(account, [
+    { symbol: "SPY", asset_class: "us_equity", market_value: "25000" },
+    { symbol: "QQQ", asset_class: "us_equity", market_value: "20000" },
+    { symbol: "XLB", asset_class: "us_equity", market_value: "10000" },
+    { symbol: "XLE", asset_class: "us_equity", market_value: "5000" },
+    { symbol: "XLV", asset_class: "us_equity", market_value: "5000" },
+  ]);
+  assert.equal(coexistence.official_g4_equity_position_count, 4);
+  assert.equal(coexistence.official_g4_equity_market_value, 40000);
+  assert.equal(coexistence.economic_sleeve_equity, 60000);
+  assert.equal(coexistence.spyWeight, 0.41666667);
+  assert.equal(coexistence.bilWeight, 0.58333333);
+
+  assert.throws(
+    () => currentPaperAllocation(account, [{ symbol: "QQQ260911C00560000", asset_class: "us_option", market_value: "100" }]),
+    /outside the SPY\/BIL economic policy/,
+  );
+  assert.throws(
+    () => currentPaperAllocation(account, [{ symbol: "SPY260911C00560000", asset_class: "us_equity", market_value: "100" }]),
+    /outside the SPY\/BIL economic policy/,
+  );
+  assert.throws(
+    () => currentPaperAllocation(account, [{ symbol: "XLF", asset_class: "us_equity", market_value: "100" }]),
+    /outside the SPY\/BIL economic policy/,
+  );
+  assert.throws(
+    () => currentPaperAllocation(account, [{ symbol: "QQQ", asset_class: "us_option", market_value: "100" }]),
+    /outside the SPY\/BIL economic policy/,
   );
 });

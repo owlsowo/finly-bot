@@ -1,0 +1,51 @@
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+import { FeatherlessEvidenceExtractor, validateEvidenceAssessment } from "../lib/evidence_extractor.mjs";
+import { createCanonicalEvidenceRecord } from "../lib/live_signals.mjs";
+
+const FIXTURE_TEXT = "A scheduled macroeconomic release is expected tomorrow; this is a synthetic connectivity fixture.";
+
+export function buildFeatherlessReadinessDocument(now = new Date()) {
+  const observedAt = new Date(now).toISOString();
+  const record = createCanonicalEvidenceRecord({
+    family: "events",
+    underlying: "SPY",
+    sourceKind: "synthetic_fixture",
+    sourceUri: "urn:finly:featherless-readiness",
+    originId: "finly.featherless.readiness.v1",
+    publishedAt: observedAt,
+    receivedAt: observedAt,
+    content: FIXTURE_TEXT,
+  });
+  return { record, text: FIXTURE_TEXT, asOf: observedAt };
+}
+
+export async function runFeatherlessReadinessCheck({
+  extractor = new FeatherlessEvidenceExtractor(),
+  now = new Date(),
+} = {}) {
+  const { record, text, asOf } = buildFeatherlessReadinessDocument(now);
+  const result = validateEvidenceAssessment(
+    await extractor.assessDocuments([{ record, text }], { underlying: "SPY", asOf }),
+    [record.evidence_id],
+  );
+  if (result.schema_version !== "evidence_assessment.v1"
+    || result.assessments.length !== 1
+    || result.assessments[0].evidence_id !== record.evidence_id) {
+    throw new Error("hosted evidence readiness response differs from the exact fixture contract");
+  }
+  return { status: "HOSTED_EVIDENCE_READY", model: "NousResearch/Hermes-4-14B" };
+}
+
+async function main() {
+  await runFeatherlessReadinessCheck();
+  process.stdout.write('{"status":"HOSTED_EVIDENCE_READY","model":"NousResearch/Hermes-4-14B"}\n');
+}
+
+const isDirectRun = process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href;
+if (isDirectRun) {
+  main().catch(() => {
+    process.stderr.write("Finly hosted evidence readiness check failed safely.\n");
+    process.exitCode = 1;
+  });
+}

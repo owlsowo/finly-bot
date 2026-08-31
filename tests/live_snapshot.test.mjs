@@ -191,14 +191,29 @@ test("live snapshot rejects missing required response fields rather than inventi
     });
     await assert.rejects(() => fetchAlpacaLiveSnapshot(client, { asOf: AS_OF }), /missing open_interest/);
   });
-  await t.test("missing snapshot implied volatility", async () => {
+  await t.test("missing snapshot implied volatility excludes only that contract", async () => {
     const page = chainPage("put");
     delete page.snapshots[SYMBOLS.put[0]].impliedVolatility;
     const { client } = mockClient({
       getOptionChain: async (_underlying, options) => options.type === "put" ? page : chainPage("call"),
     });
-    await assert.rejects(() => fetchAlpacaLiveSnapshot(client, { asOf: AS_OF }), /missing impliedVolatility/);
+    const snapshot = await fetchAlpacaLiveSnapshot(client, { asOf: AS_OF });
+    assert.equal(snapshot.option_chain.length, 3);
+    assert.equal(snapshot.option_chain.some((quote) => quote.symbol === SYMBOLS.put[0]), false);
   });
+});
+
+test("an explicit null Alpaca open-interest value becomes a zero-liquidity contract without poisoning the chain", async () => {
+  const page = contractPage("call");
+  page.option_contracts[0].open_interest = null;
+  const { client } = mockClient({
+    getOptionContracts: async (_underlying, options) => options.type === "call" ? page : contractPage("put"),
+  });
+  const snapshot = await fetchAlpacaLiveSnapshot(client, { asOf: AS_OF });
+  assert.equal(snapshot.option_chain.length, 4);
+  const unavailable = snapshot.option_chain.find((quote) => quote.symbol === SYMBOLS.call[0]);
+  assert.equal(unavailable.open_interest, 0);
+  assert.throws(() => validateOptionQuote(unavailable), /insufficient open interest/);
 });
 
 test("live snapshot binds feed and timestamps and rejects mismatches, future data, and stale data", async (t) => {
@@ -208,21 +223,25 @@ test("live snapshot binds feed and timestamps and rejects mismatches, future dat
     });
     await assert.rejects(() => fetchAlpacaLiveSnapshot(client, { asOf: AS_OF }), /feed differs/);
   });
-  await t.test("future quote", async () => {
+  await t.test("future quote excludes only that contract", async () => {
     const page = chainPage("call");
     page.snapshots[SYMBOLS.call[0]].latestQuote.t = "2026-08-28T18:30:06.000Z";
     const { client } = mockClient({
       getOptionChain: async (_underlying, options) => options.type === "call" ? page : chainPage("put"),
     });
-    await assert.rejects(() => fetchAlpacaLiveSnapshot(client, { asOf: AS_OF }), /is in the future/);
+    const snapshot = await fetchAlpacaLiveSnapshot(client, { asOf: AS_OF });
+    assert.equal(snapshot.option_chain.length, 3);
+    assert.equal(snapshot.option_chain.some((quote) => quote.symbol === SYMBOLS.call[0]), false);
   });
-  await t.test("stale quote", async () => {
+  await t.test("stale quote excludes only that contract", async () => {
     const page = chainPage("put");
     page.snapshots[SYMBOLS.put[1]].latestQuote.t = "2026-08-28T18:28:00.000Z";
     const { client } = mockClient({
       getOptionChain: async (_underlying, options) => options.type === "put" ? page : chainPage("call"),
     });
-    await assert.rejects(() => fetchAlpacaLiveSnapshot(client, { asOf: AS_OF }), /is stale/);
+    const snapshot = await fetchAlpacaLiveSnapshot(client, { asOf: AS_OF });
+    assert.equal(snapshot.option_chain.length, 3);
+    assert.equal(snapshot.option_chain.some((quote) => quote.symbol === SYMBOLS.put[1]), false);
   });
 });
 

@@ -1,0 +1,47 @@
+{
+  "schema_version": "finly_g4_official_production_protocol.v1",
+  "protocol_id": "g4-official-production-2026-08-31",
+  "protocol_hash": "sha256:3b3914cd0c28afcc263117fd536072ef9a17a56a7ef040cd2e9ceff876d7437e",
+  "frozen_at": "2026-08-31T04:08:43.000Z",
+  "authority": {
+    "purpose": "official_alpaca_hackathon_paper_account",
+    "paper_only": true,
+    "broker_mutation_default": false,
+    "account_binding_environment_variable": "FINLY_COMPETITION_ACCOUNT_ID",
+    "separate_from_shadow_protocol": true
+  },
+  "competition_window": {
+    "start_at": "2026-08-31T13:30:00.000Z",
+    "end_at": "2026-09-04T13:30:00.000Z"
+  },
+  "source_signal": {
+    "strategy_id": "qqq_core_sector_12_6",
+    "signal_session_date": "2026-08-28",
+    "signal_sha256": "sha256:6dd31d795c210e2e8363718c180cf201cf07a77a31d9a634b1421f304a69375f",
+    "source_panel_sha256": "sha256:668d13fbf850b69266f5ef474ec1810364f43745496e5e559dac5bdde456e455",
+    "artifact_path": "config/g4-official-source-signal.json",
+    "provider": "Alpaca Market Data API / IEX / adjustment=all",
+    "selected_sector_symbols": ["XLB", "XLE", "XLV"]
+  },
+  "allocation": {
+    "baseline_equity_dollars": "100000.00",
+    "invested_ceiling_fraction": "0.9700000000000",
+    "cash_floor_fraction": "0.0300000000000",
+    "rebalance_policy": "one_initial_rebalance_only",
+    "in_contest_reoptimization": false,
+    "targets": [
+      { "symbol": "QQQ", "weight": "0.4850000000000" },
+      { "symbol": "XLB", "weight": "0.1616666666667" },
+      { "symbol": "XLE", "weight": "0.1616666666667" },
+      { "symbol": "XLV", "weight": "0.1616666666667" }
+    ]
+  },
+  "transport": {
+    "paper_host": "https://paper-api.alpaca.markets",
+    "server": "alpaca-mcp-server",
+    "version": "2.2.1",
+    "tool": "place_stock_order",
+    "tool_schema_sha256": "sha256:3826d0d06bf6c48e77897fa2a833431a42287b34c4bb9a3a303db7b726759288",
+    "idempotency_namespace": "finly-g4-[a-f0-9]{20}"
+  }
+}

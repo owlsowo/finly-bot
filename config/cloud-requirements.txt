@@ -1,0 +1,1 @@
+alpaca-mcp-server==2.2.1

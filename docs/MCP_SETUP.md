@@ -8,10 +8,11 @@ only the seven toolsets used by the project.
 
 The package was installed locally, built with dummy credentials, and asked to
 list its tools without making a network call. The resulting
-`place_option_order` parameter schema has this exact canonical hash:
+mutation schemas have these exact canonical hashes:
 
 ```text
-sha256:652e116dd021d05fceb7f34b0dcf17d6c3a0dfe82dc47f67372dbf872a521a55
+place_option_order: sha256:652e116dd021d05fceb7f34b0dcf17d6c3a0dfe82dc47f67372dbf872a521a55
+place_stock_order: sha256:3826d0d06bf6c48e77897fa2a833431a42287b34c4bb9a3a303db7b726759288
 ```
 
 The checked-in artifact is
@@ -50,7 +51,7 @@ python3 -m venv .venv-alpaca-mcp
 .venv-alpaca-mcp/bin/python scripts/introspect_alpaca_mcp.py
 ```
 
-The expected terminal status is `RUNTIME_SCHEMA_MATCH` with the hash above and
+The expected terminal status is `RUNTIME_SCHEMAS_MATCH` with both hashes above and
 `network_call_made:false`.
 
 To reproduce the authenticated, read-only MCP protocol call after placing paper
@@ -102,6 +103,8 @@ local-state directory.
 ALPACA_PAPER_BASE_URL=https://paper-api.alpaca.markets
 ALPACA_PAPER_TRADE=true
 FINLY_COMPETITION_ACCOUNT_ID=YOUR_PAPER_ACCOUNT_ID
+FINLY_COMPETITION_START_AT=2026-08-31T13:30:00.000Z
+FINLY_COMPETITION_END_AT=2026-09-04T13:30:00.000Z
 FINLY_EXECUTION_TRANSPORT=mcp
 FINLY_EXECUTION_ENABLED=true
 FINLY_PAPER_SIGNING_SECRET=
@@ -124,7 +127,10 @@ Then complete this guarded sequence:
 2. `npm run paper:health` reports `READY` for the exact paper host. The guarded
    preflight separately requires the live account number to equal
    `FINLY_COMPETITION_ACCOUNT_ID` before mutation;
-3. run `npm run paper:agent` once while supervising the account. Before every
+3. run `npm run paper:agent` while supervising the official paper account. The
+   runner admits execution only from 9:30 a.m. ET on 31 August 2026 through
+   9:30 a.m. ET on 4 September 2026; before the start it records `NO_TRADE`, and
+   at the end it stops the loop. Before every
    cycle, the runner fetches a new read-only economic bundle in memory, derives
    the latest completed session from Alpaca's official calendar, waits a
    declared 15 minutes beyond that session's regular close, and records fetch
@@ -155,6 +161,17 @@ read-side authentication works; broker execution is prohibited.
 
 The public repository must never contain API keys. Code and static artifacts
 are published through GitHub/GitHub Pages, not GPT Sites.
+
+## Laptop-free GitHub Actions runner
+
+The guarded one-cycle agent can also run on GitHub Actions during the exact
+official window. Setup, required secrets, encrypted restart state, and the
+sanitized live dashboard feed are documented in
+[`docs/CLOUD_RUNNER.md`](CLOUD_RUNNER.md). The cloud transport remains the same
+pinned Alpaca MCP server and dedicated paper account. A hosted Featherless
+extractor may assess public news, but it receives no account/order data and has
+no broker authority; any missing or invalid model response is omitted rather
+than trusted.
 
 ## Official references
 

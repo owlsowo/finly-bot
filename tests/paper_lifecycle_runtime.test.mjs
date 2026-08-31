@@ -56,6 +56,7 @@ async function openRuntime({
   mutationsEnabled = false,
   placeClosingOptionOrder,
   closingCapability,
+  beforeClosingMutation,
 } = {}) {
   return AlpacaPaperLifecycleRuntime.open({
     certificate,
@@ -64,6 +65,7 @@ async function openRuntime({
     checkpointStore: store,
     lookupNestedOrderByClientOrderId: lookup,
     mutationsEnabled,
+    beforeClosingMutation,
     placeClosingOptionOrder,
     closingCapability,
     runId: fixture.run_id,
@@ -210,6 +212,35 @@ test("crash-safe retry reconciles an existing exit before any second mutation", 
   const accepted = await runtime.submitCreditExit({ requestId, creditLimit: 1.15 });
   assert.equal(accepted.phase, "EXIT_ACCEPTED");
   assert.equal(mutationCalls, 0);
+});
+
+test("a durable cloud checkpoint must finish before a new closing mutation", async (t) => {
+  const store = await temporaryStore(t);
+  const sequence = [];
+  const lookup = async (clientOrderId) => {
+    if (clientOrderId === entryProjection.client_order_id) {
+      return nestedOrder(entryProjection, { status: "filled", filled: Number(entryProjection.qty) });
+    }
+    return null;
+  };
+  const runtime = await openRuntime({
+    store,
+    lookup,
+    mutationsEnabled: true,
+    beforeClosingMutation: async () => sequence.push("checkpoint"),
+    placeClosingOptionOrder: async () => {
+      sequence.push("mutation");
+      throw new Error("simulated ambiguous close");
+    },
+    closingCapability: ALPACA_MCP_CLOSING_CREDIT_CAPABILITY,
+  });
+  await runtime.reconcileEntry();
+  await runtime.requireExit("expiry_guard");
+  await assert.rejects(
+    () => runtime.submitCreditExit({ requestId: "finly-exit-cloudcheck01", creditLimit: 1.15 }),
+    /post-mutation exit readback is unavailable/,
+  );
+  assert.deepEqual(sequence, ["checkpoint", "mutation"]);
 });
 
 test("closing transport is disabled by default and requires an exact signed-credit capability", async (t) => {

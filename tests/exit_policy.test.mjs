@@ -122,3 +122,42 @@ test("time stop uses broker-observed entry fill time when it is available", () =
   assert.equal(fillAnchored.holding_period_anchor_at, "2026-08-31T15:00:00.000Z");
   assert.equal(fillAnchored.holding_period_anchor_source, "broker_entry_filled_at");
 });
+
+test("the official forced-flat guard exits an otherwise held spread at its exact boundary", () => {
+  const forceExitAt = "2026-08-28T18:45:00.000Z";
+  const before = "2026-08-28T18:44:59.999Z";
+  const beforeAssessment = evaluateDebitSpreadExit({
+    certificate: receipt.certificate,
+    entryProjection,
+    quotes: quotes({ at: before }),
+    observedAt: before,
+    strategyDirection: "bearish",
+    forceExitAt,
+  });
+  assert.equal(beforeAssessment.decision, "HOLD");
+  assert.equal(beforeAssessment.trigger, null);
+  assert.equal(beforeAssessment.thresholds.force_flat_at, forceExitAt);
+
+  const atAssessment = evaluateDebitSpreadExit({
+    certificate: receipt.certificate,
+    entryProjection,
+    quotes: quotes({ at: forceExitAt }),
+    observedAt: forceExitAt,
+    strategyDirection: "bearish",
+    forceExitAt,
+  });
+  assert.equal(atAssessment.decision, "EXIT");
+  assert.equal(atAssessment.trigger, "competition_end_guard");
+  assert.equal(atAssessment.credit_limit, "3.39");
+
+  assert.throws(
+    () => evaluateDebitSpreadExit({
+      certificate: receipt.certificate,
+      entryProjection,
+      quotes: quotes(),
+      observedAt: fixture.decision_time,
+      forceExitAt: "2026-08-28 18:45Z",
+    }),
+    /canonical ISO timestamp/,
+  );
+});

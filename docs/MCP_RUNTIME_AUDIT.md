@@ -19,15 +19,15 @@ listed its trading tools. That operation did not call Alpaca's network.
 Observed result:
 
 ```json
-{"network_call_made":false,"package":"alpaca-mcp-server","paper":true,"schema_sha256":"sha256:652e116dd021d05fceb7f34b0dcf17d6c3a0dfe82dc47f67372dbf872a521a55","status":"RUNTIME_SCHEMA_MATCH","tool":"place_option_order","version":"2.2.1"}
+{"network_call_made":false,"package":"alpaca-mcp-server","paper":true,"status":"RUNTIME_SCHEMAS_MATCH","tools":[{"schema_sha256":"sha256:652e116dd021d05fceb7f34b0dcf17d6c3a0dfe82dc47f67372dbf872a521a55","tool":"place_option_order"},{"schema_sha256":"sha256:3826d0d06bf6c48e77897fa2a833431a42287b34c4bb9a3a303db7b726759288","tool":"place_stock_order"}],"version":"2.2.1"}
 ```
 
 The canonical `place_option_order` parameter schema is checked in at
-`config/alpaca-mcp-place-option-order-2.2.1.json`. The local verifier confirms:
+`config/alpaca-mcp-place-option-order-2.2.1.json`; the frozen G4 protocol binds
+the observed `place_stock_order` hash. The local verifier confirms:
 
 - package and schema artifact are pinned to version 2.2.1;
-- the tool is exactly `place_option_order`;
-- the canonical schema SHA-256 matches the value above;
+- both mutation tools are present with the exact canonical SHA-256 values above;
 - `legs` is an array in the exposed runtime schema;
 - unknown top-level parameters are disallowed by the exposed schema;
 - `extended_hours` is absent; and

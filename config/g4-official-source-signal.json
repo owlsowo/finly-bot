@@ -1,0 +1,26 @@
+{
+  "schema_version": "finly_g4_official_source_signal.v1",
+  "strategy_id": "qqq_core_sector_12_6",
+  "signal_session_date": "2026-08-28",
+  "source_panel": {
+    "provider": "Alpaca Market Data API",
+    "feed": "iex",
+    "adjustment": "all",
+    "lookback_sessions": 252,
+    "retained_sessions": 253,
+    "source_panel_sha256": "sha256:668d13fbf850b69266f5ef474ec1810364f43745496e5e559dac5bdde456e455"
+  },
+  "target_weights": {
+    "QQQ": 0.5,
+    "XLK": 0,
+    "XLF": 0,
+    "XLE": 0.16666666666666666,
+    "XLY": 0,
+    "XLP": 0,
+    "XLI": 0,
+    "XLB": 0.16666666666666666,
+    "XLV": 0.16666666666666666,
+    "XLU": 0
+  },
+  "selected_sectors": ["XLB", "XLE", "XLV"]
+}

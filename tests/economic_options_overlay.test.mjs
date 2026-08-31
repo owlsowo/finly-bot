@@ -17,6 +17,12 @@ import { runAutonomousPaperCycle } from "../scripts/autonomous_paper_agent.mjs";
 
 const AS_OF = replay.decision_time;
 const SIGNING_SECRET = "economic-overlay-test-signing-secret-at-least-32-bytes";
+const EXECUTION_WINDOW = Object.freeze({
+  FINLY_COMPETITION_START_AT: "2026-08-28T18:00:00.000Z",
+  FINLY_COMPETITION_END_AT: "2026-08-28T19:00:00.000Z",
+  FINLY_OPTIONS_ENTRY_CUTOFF_AT: "2026-08-28T18:40:00.000Z",
+  FINLY_OPTIONS_FORCE_FLAT_AT: "2026-08-28T18:50:00.000Z",
+});
 
 function marketBars(cash = false) {
   let close = cash ? 90 : 100;
@@ -189,6 +195,7 @@ test("autonomous cycle can reach an injected executor with one bounded bullish S
     executor,
     economicBundleProvider: async () => economicBundle(),
     environment: {
+      ...EXECUTION_WINDOW,
       FINLY_EXECUTION_ENABLED: "true",
       FINLY_PAPER_SIGNING_SECRET: SIGNING_SECRET,
     },
@@ -237,6 +244,7 @@ test("every execution cycle refreshes and validates its economic bundle before r
         return economicBundle();
       },
       environment: {
+        ...EXECUTION_WINDOW,
         FINLY_EXECUTION_ENABLED: "true",
         FINLY_PAPER_SIGNING_SECRET: SIGNING_SECRET,
       },
@@ -261,6 +269,7 @@ test("every execution cycle refreshes and validates its economic bundle before r
     executor,
     economicBundleProvider: async () => invalid,
     environment: {
+      ...EXECUTION_WINDOW,
       FINLY_EXECUTION_ENABLED: "true",
       FINLY_PAPER_SIGNING_SECRET: SIGNING_SECRET,
     },
