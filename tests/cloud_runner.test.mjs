@@ -479,6 +479,7 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
     "each pinned checkout must be immediately followed by its attestation",
   );
   assert.match(workflow, /cron:\s*"30 12 31 8 \*"/);
+  assert.match(workflow, /cron:\s*"32 13 31 8 \*"/);
   assert.match(workflow, /timeout-minutes:\s*12/);
   assert.match(workflow, /FINLY_COMPETITION_START_AT:\s*"2026-08-31T13:30:00\.000Z"/);
   assert.match(workflow, /FINLY_COMPETITION_END_AT:\s*"2026-09-04T13:30:00\.000Z"/);
