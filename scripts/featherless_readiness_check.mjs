@@ -42,10 +42,23 @@ async function main() {
   process.stdout.write('{"status":"HOSTED_EVIDENCE_READY","model":"NousResearch/Hermes-4-14B"}\n');
 }
 
+function readinessFailureCode(error) {
+  const message = String(error?.message ?? "");
+  const httpStatus = message.match(/HTTP ([1-5][0-9]{2})$/u)?.[1];
+  if (httpStatus) return `HTTP_${httpStatus}`;
+  if (message === "Featherless evidence response model differs from the requested model") {
+    return "MODEL_MISMATCH";
+  }
+  if (message.includes("response is missing or oversized")) return "RESPONSE_SHAPE";
+  if (error instanceof SyntaxError) return "RESPONSE_JSON";
+  if (message.includes("evidence assessment")) return "ASSESSMENT_SCHEMA";
+  return "INTEGRATION_FAILURE";
+}
+
 const isDirectRun = process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href;
 if (isDirectRun) {
-  main().catch(() => {
-    process.stderr.write("Finly hosted evidence readiness check failed safely.\n");
+  main().catch((error) => {
+    process.stderr.write(`Finly hosted evidence readiness check failed safely (${readinessFailureCode(error)}).\n`);
     process.exitCode = 1;
   });
 }
