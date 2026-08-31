@@ -358,7 +358,7 @@ test("request plan fixes the safe cutoff and every exact GET query", () => {
   assert.equal(plan.portfolio.query.intraday_reporting, "market_hours");
   assert.equal("after" in plan.activity_baseline_recheck.query, false);
   assert.equal(plan.activity_baseline_recheck.query.until, ACTIVITY_COVERAGE);
-  assert.equal(plan.activities.query.after, "2026-08-31T13:29:59.999Z");
+  assert.equal(plan.activities.query.after, AT_1330);
   assert.equal(plan.activities.query.until, ACTIVITY_COVERAGE);
   assert.equal(plan.activities.query.page_size, "100");
   assert.equal(plan.spy.query.end, AT_1330);
