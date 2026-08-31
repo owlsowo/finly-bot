@@ -132,7 +132,7 @@ The historical evidence gives a concrete reason to test the system: G4's ETF-era
 
 [11] Finly. “Sanitized Competition Account Snapshot.” [public/data/competition_live.json](https://github.com/owlsowo/finly-bot/blob/e54f7f4bd20ca30aabfe610fabbb743e5006b797/public/data/competition_live.json).
 
-[12] Alpaca. “MCP Server.” Official documentation. [docs.alpaca.markets/docs/mcp-server](https://docs.alpaca.markets/docs/mcp-server).
+[12] Alpaca. “MCP Server.” Official documentation. [docs.alpaca.markets/us/docs/alpaca-mcp-server](https://docs.alpaca.markets/us/docs/alpaca-mcp-server).
 
 [13] Finly. “Competition Forward-Profit Contract.” [config/competition-forward-profit.json](https://github.com/owlsowo/finly-bot/blob/e54f7f4bd20ca30aabfe610fabbb743e5006b797/config/competition-forward-profit.json).
 

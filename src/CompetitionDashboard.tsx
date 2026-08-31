@@ -177,10 +177,19 @@ function relativeFreshness(snapshotAt: string, now: number): { label: string; st
 }
 
 function marketStatusCopy(snapshot: CompetitionSnapshot): string {
+  const nextTransition = snapshot.market.next_transition_at
+    ? `${easternFormatter.format(new Date(snapshot.market.next_transition_at))} ET`
+    : null;
   if (snapshot.market.status === "OPEN") return "The market is open and Finly is monitoring the official paper account.";
-  if (snapshot.market.status === "PRE_OPEN") return `The market is not open yet. ${snapshot.market.next_transition_label}`;
+  if (snapshot.market.status === "PRE_OPEN") {
+    return nextTransition
+      ? `The market is not open yet. Finly's next paper-trading window begins ${nextTransition}.`
+      : "The market is not open yet, so Finly is waiting in cash.";
+  }
   if (snapshot.market.status === "HALTED") return "Trading is halted, so Finly will not authorize a new position.";
-  return `The market is closed. ${snapshot.market.next_transition_label}`;
+  return nextTransition
+    ? `The market is closed. Finly will check again when the next regular session begins ${nextTransition}.`
+    : "The market is closed, so Finly is waiting in cash.";
 }
 
 export function CompetitionDashboard() {

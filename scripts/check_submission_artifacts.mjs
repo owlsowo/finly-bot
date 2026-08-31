@@ -219,6 +219,7 @@ const reviewedPublicData = [
   "quantitative_release_gate.json",
 ];
 const hostedData = [
+  "attempt150_public_evidence.json",
   "competition-deployment-record.json",
   "competition_live.json",
   "latest_receipt.json",

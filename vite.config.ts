@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { defineConfig } from "vite";
 
 const hostedDataAllowlist = new Set([
+  "attempt150_public_evidence.json",
   "competition-deployment-record.json",
   "competition_live.json",
   "latest_receipt.json",
