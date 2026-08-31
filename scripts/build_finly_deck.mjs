@@ -117,9 +117,12 @@ function addChevron(slide, x, y, color = C.green) {
   slide.images.add({ svg: assets.mark.svg, alt: "Finly bull-horn mark", fit: "contain", position: { left: 64, top: 40, width: 54, height: 54 } });
   addText(slide, "FINLY", 130, 50, 180, 36, { fontSize: 24, bold: true, color: C.white });
   addKicker(slide, "AI research with checked execution", C.mint, 64, 126);
-  addText(slide, "Finly turns AI research into a checked Alpaca paper order.", 64, 170, 500, 222, { fontSize: 44, bold: true, color: C.white });
-  addText(slide, "The model explains the market. Code fixes the risk, builds the order, and can still stop it.", 64, 418, 470, 92, { fontSize: 24, color: "#D7E3E5" });
-  addImage(slide, assets.home, 604, 102, 612, 344, { alt: "Finly homepage showing the historical comparison and live-account call to action", fit: "contain", frameFill: C.cream, frameLine: C.mint, shadow: "shadow-lg" });
+  addText(slide, "Finly turns AI research into a checked Alpaca paper order.", 64, 170, 540, 222, { fontSize: 50, bold: true, color: C.white });
+  addText(slide, "The model explains the market. Code fixes the risk, builds the order, and can still stop it.", 64, 416, 520, 92, { fontSize: 24, color: "#D7E3E5" });
+  addShape(slide, 654, 132, 1, 344, "#406278");
+  slide.images.add({ svg: assets.mark.svg, alt: "Finly bull-horn mark", fit: "contain", position: { left: 824, top: 132, width: 240, height: 240 } });
+  addText(slide, "AI  →  CODE  →  ALPACA", 710, 386, 414, 42, { fontSize: 26, bold: true, color: C.white, alignment: "center" });
+  addText(slide, "Interpret  ·  control  ·  execute", 720, 436, 394, 30, { fontSize: 18, color: C.mint, alignment: "center" });
   addShape(slide, 64, 530, 1152, 1, C.mint);
   addMetric(slide, "$106,711", "historical ending wealth", 64, 552, 250, { valueSize: 38, valueColor: C.gold, labelColor: "#C5D4D8" });
   addMetric(slide, "+$38,629", "versus SPY", 360, 552, 220, { valueSize: 38, valueColor: C.white, labelColor: "#C5D4D8" });
@@ -131,7 +134,7 @@ function addChevron(slide, x, y, color = C.green) {
     "Live product: https://owlsowo.github.io/finly-bot/",
     "Historical series: https://owlsowo.github.io/finly-bot/data/g4_wealth_drawdown.json",
     "Sanitized paper account: https://owlsowo.github.io/finly-bot/data/competition_live.json",
-    "Product screenshot and bull-horn mark are project-owned.",
+    "The bull-horn mark is project-owned.",
   ]);
 }
 
