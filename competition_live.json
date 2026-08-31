@@ -1,6 +1,6 @@
 {
   "schema_version": "finly_competition_dashboard.v2",
-  "snapshot_at": "2026-08-31T13:34:33.642Z",
+  "snapshot_at": "2026-08-31T13:58:17.731Z",
   "competition": {
     "phase": "LIVE",
     "baseline_equity": 100000,
@@ -8,9 +8,9 @@
     "official_window_end": "2026-09-04T13:30:00.000Z"
   },
   "account": {
-    "equity": 100000,
-    "cash": 100000,
-    "buying_power": 75750
+    "equity": 100049.31,
+    "cash": 19166.71,
+    "buying_power": 59608.01
   },
   "market": {
     "status": "OPEN",
@@ -18,23 +18,23 @@
     "next_transition_label": "The regular market is scheduled to close at 2026-08-31T20:00:00.000Z."
   },
   "decision": {
-    "status": "PROPOSING",
+    "status": "MONITORING",
     "code": "G4_ORDER_PENDING",
-    "headline": "Finly is establishing its diversified equity sleeve.",
-    "explanation": "The paper broker is processing a deterministic allocation order; the options overlay remains independently risk-gated."
+    "headline": "Finly's diversified equity sleeve is invested and under continuous supervision.",
+    "explanation": "The strategic sleeve remains in the market while Finly monitors risk and waits for a separately certified options setup."
   },
   "exposure": {
-    "position_status": "PENDING",
-    "position_summary": "A diversified equity-sleeve order is waiting for broker confirmation.",
-    "open_positions": 0,
-    "open_orders": 1,
-    "g4_equity_positions": 0,
-    "g4_equity_market_value_dollars": 0,
+    "position_status": "OPEN",
+    "position_summary": "The diversified equity sleeve is invested; no options overlay is open.",
+    "open_positions": 3,
+    "open_orders": 0,
+    "g4_equity_positions": 3,
+    "g4_equity_market_value_dollars": 80882.6,
     "option_positions": 0,
     "option_open_orders": 0,
     "options_defined_risk_dollars": 0,
     "per_trade_risk_limit_dollars": 500,
-    "aggregate_risk_limit_dollars": 3000
+    "aggregate_risk_limit_dollars": 3001.48
   },
   "integrity": {
     "paper_account": true,
