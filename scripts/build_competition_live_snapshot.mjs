@@ -2,7 +2,11 @@ import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { AlpacaPaperRestClient, alpacaCredentialsFromEnv } from "../lib/alpaca_rest.mjs";
-import { G4_EQUITY_SYMBOLS } from "../lib/g4_official_equity.mjs";
+import {
+  G4_EQUITY_SYMBOLS,
+  G4_MUTATION_ACK,
+  parseG4BrokerInstant,
+} from "../lib/g4_official_equity.mjs";
 import { FilePaperSessionRegistry } from "../lib/paper_session_registry.mjs";
 import { POLICY } from "../lib/policy.mjs";
 import { parseOccOptionSymbol } from "../lib/schema.mjs";
@@ -208,6 +212,68 @@ export function isDedicatedActivePaperAccount(account, expectedAccountId) {
     && account.trade_suspended_by_user === false;
 }
 
+export function assertOpeningControlPlaneReadiness({
+  account,
+  configuration,
+  clock,
+  positions,
+  openOrders,
+  assets,
+  expectedAccountId,
+  environment,
+  observedAt = new Date().toISOString(),
+} = {}) {
+  const observed = new Date(observedAt);
+  if (Number.isNaN(observed.getTime())) throw new Error("control-plane observation time is invalid");
+  if (!isDedicatedActivePaperAccount(account, expectedAccountId)
+    || configuration?.suspend_trade !== false) {
+    throw new Error("control-plane account binding or trading status is invalid");
+  }
+  if (environment?.ALPACA_PAPER_TRADE !== "true"
+    || environment?.FINLY_G4_PRODUCTION_ENABLED !== "true"
+    || environment?.FINLY_EXECUTION_TRANSPORT !== "mcp"
+    || environment?.FINLY_PAPER_MUTATION_ACK !== G4_MUTATION_ACK) {
+    throw new Error("control-plane execution configuration is invalid");
+  }
+  const tradingLevel = Number(account.options_trading_level);
+  const approvedLevel = Number(account.options_approved_level);
+  const optionsLevel = Math.min(tradingLevel, approvedLevel);
+  if (!Number.isInteger(tradingLevel)
+    || !Number.isInteger(approvedLevel)
+    || optionsLevel < POLICY.minimumOptionsLevel) {
+    throw new Error("control-plane options level is insufficient");
+  }
+  const clockAt = parseG4BrokerInstant(clock?.timestamp, "control-plane broker clock");
+  if (Math.abs(clockAt - observed.getTime()) > 180_000) throw new Error("control-plane broker clock is stale");
+  if (!Array.isArray(assets) || assets.length !== G4_EQUITY_SYMBOLS.length) {
+    throw new Error("control-plane asset snapshot is incomplete");
+  }
+  assets.forEach((asset, index) => {
+    if (!asset
+      || asset.symbol !== G4_EQUITY_SYMBOLS[index]
+      || asset.class !== "us_equity"
+      || asset.status !== "active"
+      || asset.tradable !== true
+      || asset.fractionable !== true) {
+      throw new Error(`control-plane asset readiness failed for ${G4_EQUITY_SYMBOLS[index]}`);
+    }
+  });
+  if (observed.getTime() < Date.parse(OFFICIAL_START)) {
+    const equity = Number(account.equity);
+    const cash = Number(account.cash);
+    if (environment.FINLY_EXECUTION_ENABLED !== "false"
+      || !Number.isFinite(equity) || equity !== BASELINE_EQUITY
+      || !Number.isFinite(cash) || cash !== BASELINE_EQUITY
+      || !Array.isArray(positions) || positions.length !== 0
+      || !Array.isArray(openOrders) || openOrders.length !== 0
+      || clock.is_open !== false
+      || parseG4BrokerInstant(clock.next_open, "control-plane next open") !== Date.parse(OFFICIAL_START)) {
+      throw new Error("control-plane pre-open account is not at the frozen baseline");
+    }
+  }
+  return true;
+}
+
 export function buildCompetitionLiveSnapshot({
   account,
   positions,
@@ -345,16 +411,40 @@ async function main() {
     resolve(projectRoot, process.env.FINLY_PAPER_SESSION_PATH ?? "data/private/paper-sessions"),
     process.env.FINLY_PAPER_SIGNING_SECRET,
   );
-  const [account, positions, openOrders, clock, latestDecision, openSession] = await Promise.all([
-    client.getAccount(),
-    client.getPositions(),
-    client.getOpenOrders(),
-    client.getClock(),
-    readLatestDecisionEntry(resolve(projectRoot, process.env.FINLY_DECISION_LOG ?? "outputs/autonomous_decisions.jsonl")),
-    sessionRegistry.loadOpen(),
+  const observedAt = new Date().toISOString();
+  const preopen = Date.parse(observedAt) < Date.parse(OFFICIAL_START);
+  const [[account, positions, openOrders, clock, latestDecision, openSession], controlPlane] = await Promise.all([
+    Promise.all([
+      client.getAccount(),
+      client.getPositions(),
+      client.getOpenOrders(),
+      client.getClock(),
+      readLatestDecisionEntry(resolve(projectRoot, process.env.FINLY_DECISION_LOG ?? "outputs/autonomous_decisions.jsonl")),
+      sessionRegistry.loadOpen(),
+    ]),
+    preopen
+      ? Promise.all([
+        client.getAccountConfiguration(),
+        ...G4_EQUITY_SYMBOLS.map((symbol) => client.getAsset(symbol)),
+      ])
+      : Promise.resolve([]),
   ]);
   const accountVerified = isDedicatedActivePaperAccount(account, process.env.FINLY_COMPETITION_ACCOUNT_ID);
   if (!accountVerified) throw new Error("paper snapshot account differs from the dedicated active competition account");
+  if (preopen) {
+    const [configuration, ...assets] = controlPlane;
+    assertOpeningControlPlaneReadiness({
+      account,
+      configuration,
+      clock,
+      positions,
+      openOrders,
+      assets,
+      expectedAccountId: process.env.FINLY_COMPETITION_ACCOUNT_ID,
+      environment: process.env,
+      observedAt,
+    });
+  }
   const snapshot = buildCompetitionLiveSnapshot({
     account,
     positions,
@@ -363,6 +453,7 @@ async function main() {
     latestDecision,
     certifiedOptionsRisk: openSession?.certificate?.reserved_max_loss ?? null,
     accountVerified,
+    observedAt,
   });
   await writeSnapshot(output, snapshot);
   process.stdout.write('{"status":"SANITIZED_COMPETITION_SNAPSHOT_WRITTEN"}\n');

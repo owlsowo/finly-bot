@@ -9,6 +9,7 @@ import {
   assertG4StockOrderArguments,
   buildG4OfficialOrderPlan,
   loadG4OfficialProductionProtocol,
+  parseG4BrokerInstant,
   runG4OfficialEquityCycle,
   splitG4OfficialBrokerView,
 } from "../lib/g4_official_equity.mjs";
@@ -278,6 +279,57 @@ test("all four ETFs must be active, tradable, and fractionable before mutation",
   assert.equal(result.status, "G4_READINESS_FAILED");
   assert.match(result.reason, /XLE/u);
   assert.equal(events.some((event) => event.startsWith("mutate:")), false);
+});
+
+test("official Alpaca offset and nanosecond clock timestamps are accepted without weakening freshness", async () => {
+  const protocol = await loadG4OfficialProductionProtocol();
+  const broker = fakeBroker();
+  broker.client.getClock = async () => ({
+    is_open: true,
+    timestamp: "2026-08-31T09:31:00.123456789-04:00",
+  });
+  const accepted = await cycle(protocol, new MemoryStore(), broker);
+  assert.equal(accepted.status, "G4_LEG_FILLED");
+
+  broker.client.getClock = async () => ({
+    is_open: true,
+    timestamp: "2026-08-31T09:20:00.123456789-04:00",
+  });
+  const stale = await cycle(protocol, new MemoryStore(), broker);
+  assert.equal(stale.status, "G4_READINESS_FAILED");
+  assert.match(stale.reason, /stale or inconsistent/u);
+});
+
+test("broker clock parser accepts strict Alpaca RFC3339 and rejects ambiguous timestamps", () => {
+  assert.equal(
+    parseG4BrokerInstant("2022-04-28T14:07:45.485843765-04:00"),
+    Date.UTC(2022, 3, 28, 18, 7, 45, 485),
+  );
+  assert.equal(parseG4BrokerInstant("2026-08-31T13:30:00Z"), Date.UTC(2026, 7, 31, 13, 30));
+  assert.equal(
+    parseG4BrokerInstant("2024-02-29T23:59:59.999999999+14:00"),
+    Date.UTC(2024, 1, 29, 9, 59, 59, 999),
+  );
+  assert.equal(
+    parseG4BrokerInstant("2026-08-31T13:30:00.1+00:00"),
+    Date.UTC(2026, 7, 31, 13, 30, 0, 100),
+  );
+  for (const invalid of [
+    "2026-02-29T13:30:00Z",
+    "2024-02-30T13:30:00Z",
+    "2026-13-01T13:30:00Z",
+    "2026-08-00T13:30:00Z",
+    "2026-08-31T24:00:00Z",
+    "2026-08-31T13:60:00Z",
+    "2026-08-31T13:30:60Z",
+    "2026-08-31T13:30:00",
+    "2026-08-31t13:30:00z",
+    " 2026-08-31T13:30:00Z",
+    "2026-08-31T13:30:00.1234567890Z",
+    "2026-08-31T13:30:00+14:01",
+    "2026-08-31T13:30:00+15:00",
+    "2026-08-31T13:30:00-00:00",
+  ]) assert.throws(() => parseG4BrokerInstant(invalid), /invalid/u);
 });
 
 test("cash-floor failure freezes final reconciliation", async () => {

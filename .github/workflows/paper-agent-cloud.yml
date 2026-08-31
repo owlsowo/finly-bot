@@ -115,7 +115,7 @@ jobs:
             "FINLY_CLOUD_STATE_SECRET",
             "FEATHERLESS_API_KEY",
           ];
-          if (process.env.RUN_MODE === "live") required.push("FINLY_PAPER_MUTATION_ACK");
+          required.push("FINLY_PAPER_MUTATION_ACK");
           if (required.some((name) => !process.env[name] || Buffer.byteLength(process.env[name]) < 12)) {
             throw new Error("one or more required Finly cloud secrets are unavailable");
           }
@@ -125,6 +125,9 @@ jobs:
           }
           if (!/^\S{12,}$/.test(process.env.FEATHERLESS_API_KEY)) {
             throw new Error("the Featherless key is unavailable or malformed");
+          }
+          if (process.env.FINLY_PAPER_MUTATION_ACK !== "I_UNDERSTAND_THIS_MUTATES_ONLY_THE_HACKATHON_PAPER_ACCOUNT") {
+            throw new Error("the paper mutation acknowledgement is invalid");
           }
           NODE
 

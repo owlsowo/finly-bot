@@ -12,9 +12,11 @@ import {
   restoreCloudState,
 } from "../scripts/cloud_state.mjs";
 import {
+  assertOpeningControlPlaneReadiness,
   buildCompetitionLiveSnapshot,
   isDedicatedActivePaperAccount,
 } from "../scripts/build_competition_live_snapshot.mjs";
+import { G4_MUTATION_ACK } from "../lib/g4_official_equity.mjs";
 import { evaluateCloudRunGate } from "../scripts/cloud_run_gate.mjs";
 import {
   buildFeatherlessReadinessDocument,
@@ -229,6 +231,90 @@ test("dashboard account verification requires every pinned active-paper flag exa
   }
 });
 
+function openingControlFixture() {
+  const expectedAccountId = "PA0123456789";
+  return {
+    account: {
+      account_number: expectedAccountId,
+      status: "ACTIVE",
+      trading_blocked: false,
+      account_blocked: false,
+      trade_suspended_by_user: false,
+      equity: "100000.00",
+      cash: "100000.00",
+      options_trading_level: 3,
+      options_approved_level: 3,
+    },
+    configuration: { suspend_trade: false },
+    clock: {
+      timestamp: "2026-08-31T08:30:00.123456789-04:00",
+      is_open: false,
+      next_open: "2026-08-31T09:30:00-04:00",
+      next_close: "2026-08-31T16:00:00-04:00",
+    },
+    positions: [],
+    openOrders: [],
+    assets: ["QQQ", "XLB", "XLE", "XLV"].map((symbol) => ({
+      symbol,
+      class: "us_equity",
+      status: "active",
+      tradable: true,
+      fractionable: true,
+    })),
+    expectedAccountId,
+    environment: {
+      ALPACA_PAPER_TRADE: "true",
+      FINLY_G4_PRODUCTION_ENABLED: "true",
+      FINLY_EXECUTION_TRANSPORT: "mcp",
+      FINLY_EXECUTION_ENABLED: "false",
+      FINLY_PAPER_MUTATION_ACK: G4_MUTATION_ACK,
+    },
+    observedAt: "2026-08-31T12:30:00.000Z",
+  };
+}
+
+test("opening control plane authenticates the exact pre-open broker and asset state", () => {
+  assert.equal(assertOpeningControlPlaneReadiness(openingControlFixture()), true);
+  const attacks = [
+    (value) => { value.environment = { ...value.environment, FINLY_PAPER_MUTATION_ACK: "wrong" }; },
+    (value) => { value.environment = { ...value.environment, FINLY_EXECUTION_ENABLED: "true" }; },
+    (value) => { value.configuration = { suspend_trade: true }; },
+    (value) => { value.account = { ...value.account, options_approved_level: 2 }; },
+    (value) => { value.account = { ...value.account, options_trading_level: 3.5 }; },
+    (value) => { value.account = { ...value.account, cash: "99999.99" }; },
+    (value) => { value.account = { ...value.account, equity: "99999.999" }; },
+    (value) => { value.clock = { ...value.clock, timestamp: "2026-08-31T08:20:00-04:00" }; },
+    (value) => { value.clock = { ...value.clock, next_open: "2026-08-31T09:31:00-04:00" }; },
+    (value) => { value.positions = [{ asset_class: "us_equity", symbol: "QQQ" }]; },
+    (value) => { value.openOrders = [{ asset_class: "us_equity", symbol: "QQQ" }]; },
+    (value) => { value.assets[0] = { ...value.assets[0], symbol: "SPY" }; },
+    (value) => { value.assets[1] = { ...value.assets[1], class: "crypto" }; },
+    (value) => { value.assets[2] = { ...value.assets[2], status: "inactive" }; },
+    (value) => { value.assets[3] = { ...value.assets[3], tradable: false }; },
+    (value) => { value.assets[1] = { ...value.assets[1], fractionable: false }; },
+  ];
+  for (const attack of attacks) {
+    const value = openingControlFixture();
+    attack(value);
+    assert.throws(() => assertOpeningControlPlaneReadiness(value));
+  }
+});
+
+test("opening control plane permits legitimate holdings after the window begins", () => {
+  const value = openingControlFixture();
+  value.observedAt = "2026-08-31T14:00:00.000Z";
+  value.environment = { ...value.environment, FINLY_EXECUTION_ENABLED: "true" };
+  value.clock = {
+    timestamp: "2026-08-31T10:00:00.123456789-04:00",
+    is_open: true,
+    next_open: "2026-09-01T09:30:00-04:00",
+    next_close: "2026-08-31T16:00:00-04:00",
+  };
+  value.account = { ...value.account, equity: "100125.00", cash: "3000.02" };
+  value.positions = [{ asset_class: "us_equity", symbol: "QQQ" }];
+  assert.equal(assertOpeningControlPlaneReadiness(value), true);
+});
+
 test("public competition feed accepts only the pinned Alpaca mleg parent shape for open options orders", () => {
   const common = {
     account: { equity: 100000, cash: 99500, options_buying_power: 99500 },
@@ -371,6 +457,7 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
   assert.match(workflow, /FEATHERLESS_API_KEY:\s*\$\{\{ secrets\.FEATHERLESS_API_KEY \}\}/);
   assert.match(workflow, /"FEATHERLESS_API_KEY",/);
   assert.match(workflow, /required\.push\("FINLY_PAPER_MUTATION_ACK"\)/);
+  assert.match(workflow, /FINLY_PAPER_MUTATION_ACK !== "I_UNDERSTAND_THIS_MUTATES_ONLY_THE_HACKATHON_PAPER_ACCOUNT"/);
   assert.match(workflow, /Probe the hosted evidence path before the opening bell[\s\S]*continue-on-error:\s*true[\s\S]*featherless_readiness_check\.mjs/);
   assert.match(workflow, /Install the pinned official Alpaca MCP server[\s\S]*if: needs\.gate\.outputs\.mode != 'final'/);
   assert.match(workflow, /Verify both pinned mutation schemas without a broker call/);
