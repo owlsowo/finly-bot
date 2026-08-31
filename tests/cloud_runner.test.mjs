@@ -436,6 +436,18 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
   const dashboard = await readFile(new URL("../src/CompetitionDashboard.tsx", import.meta.url), "utf8");
   const introspection = await readFile(new URL("../scripts/introspect_alpaca_mcp.py", import.meta.url), "utf8");
   assert.match(workflow, /cancel-in-progress:\s*false/);
+  assert.match(workflow, /FINLY_CODE_VERSION:\s*ed35238f1cd701d20b821494ca13ff2a7e46eb89/);
+  assert.equal(
+    [...workflow.matchAll(/ref:\s*\$\{\{ env\.FINLY_CODE_VERSION \}\}/g)].length,
+    2,
+    "both cloud jobs must check out the independently audited trading revision",
+  );
+  assert.equal(
+    [...workflow.matchAll(/uses:\s*actions\/checkout@v7\.0\.1/g)].length,
+    2,
+    "every checkout in the trading workflow must be accounted for",
+  );
+  assert.doesNotMatch(workflow, /FINLY_CODE_VERSION:\s*\$\{\{/);
   assert.match(workflow, /cron:\s*"30 12 31 8 \*"/);
   assert.match(workflow, /timeout-minutes:\s*12/);
   assert.match(workflow, /FINLY_COMPETITION_START_AT:\s*"2026-08-31T13:30:00\.000Z"/);

@@ -26,6 +26,10 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  # Keep the live paper trader on the exact code revision that passed the
+  # production audit. Website and submission-only commits on main must not
+  # silently alter the competition engine after launch.
+  FINLY_CODE_VERSION: ed35238f1cd701d20b821494ca13ff2a7e46eb89
   FINLY_COMPETITION_START_AT: "2026-08-31T13:30:00.000Z"
   FINLY_COMPETITION_END_AT: "2026-09-04T13:30:00.000Z"
   FINLY_OPTIONS_ENTRY_CUTOFF_AT: "2026-09-02T19:00:00.000Z"
@@ -42,6 +46,9 @@ jobs:
       window_status: ${{ steps.window.outputs.window_status }}
     steps:
       - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ env.FINLY_CODE_VERSION }}
+          fetch-depth: 1
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: 26.7.0
@@ -82,7 +89,6 @@ jobs:
       FINLY_FEATHERLESS_MODEL: Qwen/Qwen3-32B
       FEATHERLESS_API_KEY: ${{ secrets.FEATHERLESS_API_KEY }}
       FINLY_ALLOW_DETERMINISTIC_FALLBACK: "false"
-      FINLY_CODE_VERSION: ${{ github.sha }}
       FINLY_DECISION_LOG: outputs/autonomous_decisions.jsonl
       FINLY_AGENT_LOCK_PATH: data/private/autonomous-paper-agent.lock
       FINLY_PERMIT_LEDGER_PATH: data/ledger
@@ -91,6 +97,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
         with:
+          ref: ${{ env.FINLY_CODE_VERSION }}
           fetch-depth: 1
       - uses: actions/setup-node@v7.0.0
         with:
