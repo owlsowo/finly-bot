@@ -22,7 +22,7 @@ concurrency:
 env:
   # This job is intentionally independent from the separately pinned trader.
   # It can observe the paper account but contains no broker mutation path.
-  FINLY_MEASUREMENT_CODE_VERSION: 56cec29d9039259f6d903fa67da87e2e855decde
+  FINLY_MEASUREMENT_CODE_VERSION: 8815b8d37bdf0e0629c88ce5bd963103a6452501
 
 jobs:
   measure:
