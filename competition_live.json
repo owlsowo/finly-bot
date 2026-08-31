@@ -1,6 +1,6 @@
 {
   "schema_version": "finly_competition_dashboard.v2",
-  "snapshot_at": "2026-08-31T06:21:12.034Z",
+  "snapshot_at": "2026-08-31T12:34:49.240Z",
   "competition": {
     "phase": "READY",
     "baseline_equity": 100000,
