@@ -1,0 +1,103 @@
+{
+  "schema_version": "finly_forward_profit_kpi_contract.v1",
+  "contract_id": "official-paper-forward-profit-2026-08-31",
+  "frozen_at": "2026-08-31T06:32:05.000Z",
+  "contract_hash": "sha256:79144c447ce831adf64fdaa7f34ad3ba7a85569f83a4c31ac74435690e30c950",
+  "competition_window": {
+    "start_at": "2026-08-31T13:30:00.000Z",
+    "end_at": "2026-09-04T13:30:00.000Z",
+    "end_exclusive": true,
+    "baseline_equity_dollars": "100000.00"
+  },
+  "production_protocol": {
+    "path": "config/g4-official-production.json",
+    "protocol_id": "g4-official-production-2026-08-31",
+    "protocol_hash": "sha256:3b3914cd0c28afcc263117fd536072ef9a17a56a7ef040cd2e9ceff876d7437e"
+  },
+  "primary_kpi": {
+    "id": "broker_mark_to_market_net_pnl",
+    "label": "Paper-account net profit",
+    "formula": "aligned_broker_equity_dollars - baseline_equity_dollars",
+    "measurement_basis": "broker_mark_to_market_net_of_reflected_charges",
+    "unit": "USD",
+    "success_operator": "greater_than",
+    "success_threshold": "0.00"
+  },
+  "secondary_kpi": {
+    "id": "excess_vs_spy_iex_price_return",
+    "label": "Excess versus SPY raw IEX price return",
+    "formula": "strategy_return_fraction - spy_raw_iex_price_return_fraction_at_exact_common_valued_at",
+    "unit": "fraction",
+    "success_operator": "greater_than",
+    "success_threshold": "0.000000000000"
+  },
+  "benchmark": {
+    "provider": "Alpaca Market Data API",
+    "symbol": "SPY",
+    "feed": "iex",
+    "adjustment": "raw",
+    "timeframe": "1Min",
+    "anchor_rule": "first_official_09_30_et_bar_open",
+    "valuation_rule": "latest_exact_common_completed_minute",
+    "return_basis": "raw_price_return_not_total_return_or_alpha"
+  },
+  "timestamp_semantics": {
+    "source_label": "window_start_at",
+    "normalized_label": "valued_at",
+    "window_duration_seconds": 60,
+    "normalization_rule": "valued_at_equals_window_start_plus_60_seconds",
+    "alignment_rule": "exact_valued_at_intersection_no_forward_fill"
+  },
+  "drivers": [
+    "fill_event_count",
+    "broker_reported_fee_paid_dollars",
+    "broker_reported_fee_rebate_dollars",
+    "broker_reported_fee_net_effect_dollars",
+    "external_cashflow_event_count",
+    "external_cashflow_gross_absolute_dollars",
+    "external_cashflow_net_dollars"
+  ],
+  "guardrails": {
+    "activities_must_be_complete": true,
+    "external_cashflow_must_equal_dollars": "0.00",
+    "external_cashflow_activity_types": [
+      "ACATC",
+      "ACATS",
+      "CSD",
+      "CSW",
+      "FOPT",
+      "JNL",
+      "JNLC",
+      "JNLS",
+      "OCT"
+    ],
+    "endogenous_activity_types": [
+      "CFEE",
+      "DIV",
+      "FEE",
+      "FILL",
+      "INT",
+      "OPASN",
+      "OPEXC",
+      "OPEXP",
+      "OPXRC",
+      "PTC"
+    ],
+    "unknown_activity_rule": "withhold",
+    "require_exact_common_timestamp": true,
+    "reject_future_points": true,
+    "fee_treatment": "broker_equity_includes_reflected_fees_do_not_subtract_again"
+  },
+  "authority": {
+    "purpose": "official_paper_competition_forward_measurement",
+    "account_binding_environment_variable": "FINLY_COMPETITION_ACCOUNT_ID",
+    "paper_only": true,
+    "broker_access": "get_only",
+    "trading_authority": false,
+    "mutation_authority": false,
+    "mcp_authority": false,
+    "network_access": "none_in_pure_calculator",
+    "persistence": "none_in_pure_calculator",
+    "publishable_output": "sanitized_aggregate_only"
+  }
+}
