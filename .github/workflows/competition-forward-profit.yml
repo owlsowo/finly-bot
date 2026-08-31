@@ -1,0 +1,76 @@
+name: Measure Finly paper profit (read only)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Date-specific observations during the official 2026 competition window.
+    # GitHub schedules can be delayed, so the first session has two early
+    # observations and all other observations are independently time-bounded
+    # by the frozen calculator.
+    - cron: "32,37,52 13 31 8 *"
+    - cron: "7,22,37,52 14-19 31 8 *"
+    - cron: "7,22,37,52 13-19 1-3 9 *"
+    - cron: "32,37 13 4 9 *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: finly-forward-profit-read-only
+  cancel-in-progress: true
+
+env:
+  # This job is intentionally independent from the separately pinned trader.
+  # It can observe the paper account but contains no broker mutation path.
+  FINLY_MEASUREMENT_CODE_VERSION: 56cec29d9039259f6d903fa67da87e2e855decde
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      APCA_API_KEY_ID: ${{ secrets.FINLY_ALPACA_API_KEY_ID }}
+      APCA_API_SECRET_KEY: ${{ secrets.FINLY_ALPACA_SECRET_KEY }}
+      FINLY_COMPETITION_ACCOUNT_ID: ${{ secrets.FINLY_COMPETITION_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ env.FINLY_MEASUREMENT_CODE_VERSION }}
+          fetch-depth: 1
+
+      - name: Attest the audited measurement revision
+        run: |
+          set -eu
+          actual_head="$(git rev-parse --verify HEAD)"
+          worktree_status="$(git status --porcelain=v1 --untracked-files=all)"
+          test "$actual_head" = "$FINLY_MEASUREMENT_CODE_VERSION"
+          test -z "$worktree_status"
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 26.7.0
+
+      - name: Verify required read-only credentials without exposing them
+        run: |
+          node - <<'NODE'
+          const required = [
+            "APCA_API_KEY_ID",
+            "APCA_API_SECRET_KEY",
+            "FINLY_COMPETITION_ACCOUNT_ID",
+          ];
+          if (required.some((name) => typeof process.env[name] !== "string"
+            || Buffer.byteLength(process.env[name]) < 8 || /\s/.test(process.env[name]))) {
+            throw new Error("one or more required Finly measurement secrets are unavailable");
+          }
+          NODE
+
+      - name: Read and score the official paper account
+        run: node scripts/run_competition_forward_profit.mjs
+
+      - name: Retain the sanitized measurement
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: finly-forward-profit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/finly-forward-profit/measurement.json
+          if-no-files-found: error
+          retention-days: 7

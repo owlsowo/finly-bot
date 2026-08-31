@@ -694,3 +694,22 @@ test("measurement adapter is GET-only and isolated from the pinned trader", asyn
   assert.doesNotMatch(runner,
     /method:\s*["'](?:POST|PUT|PATCH|DELETE)["']|placeStockOrder|placeOptionOrder|cancelOrder|mutation_ack/iu);
 });
+
+test("measurement workflow is separately pinned, read-only, scheduled, and artifact-only", async () => {
+  const workflow = await readFile(
+    new URL("../.github/workflows/competition-forward-profit.yml", import.meta.url), "utf8",
+  );
+  assert.match(workflow, /FINLY_MEASUREMENT_CODE_VERSION: 56cec29d9039259f6d903fa67da87e2e855decde/u);
+  assert.match(workflow, /permissions:\n {2}contents: read/u);
+  assert.match(workflow, /node scripts\/run_competition_forward_profit\.mjs/u);
+  assert.match(workflow, /actions\/upload-artifact@v6\.0\.0/u);
+  assert.match(workflow, /cron: "32,37,52 13 31 8 \*"/u);
+  assert.doesNotMatch(workflow,
+    /contents:\s*write|FINLY_PAPER_MUTATION_ACK|FINLY_EXECUTION_ENABLED|FEATHERLESS|\b(?:POST|PUT|PATCH|DELETE)\b/iu);
+
+  const traderWorkflow = await readFile(
+    new URL("../.github/workflows/paper-agent-cloud.yml", import.meta.url), "utf8",
+  );
+  assert.match(traderWorkflow, /FINLY_CODE_VERSION: ed35238f1cd701d20b821494ca13ff2a7e46eb89/u);
+  assert.doesNotMatch(traderWorkflow, /FINLY_MEASUREMENT_CODE_VERSION|competition_forward_profit/u);
+});
