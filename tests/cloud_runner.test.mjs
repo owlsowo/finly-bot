@@ -438,6 +438,11 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
   assert.match(workflow, /cancel-in-progress:\s*false/);
   assert.match(workflow, /FINLY_CODE_VERSION:\s*ed35238f1cd701d20b821494ca13ff2a7e46eb89/);
   assert.equal(
+    [...workflow.matchAll(/^\s*FINLY_CODE_VERSION:/gm)].length,
+    1,
+    "the audited trading revision must have exactly one source of truth",
+  );
+  assert.equal(
     [...workflow.matchAll(/ref:\s*\$\{\{ env\.FINLY_CODE_VERSION \}\}/g)].length,
     2,
     "both cloud jobs must check out the independently audited trading revision",
@@ -448,6 +453,26 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
     "every checkout in the trading workflow must be accounted for",
   );
   assert.doesNotMatch(workflow, /FINLY_CODE_VERSION:\s*\$\{\{/);
+  assert.equal(
+    [...workflow.matchAll(/name:\s*Attest the audited trading revision/g)].length,
+    2,
+    "both jobs must independently attest their checked-out trading revision",
+  );
+  assert.equal(
+    [...workflow.matchAll(/actual_head="\$\(git rev-parse --verify HEAD\)"/g)].length,
+    2,
+  );
+  assert.equal(
+    [...workflow.matchAll(/worktree_status="\$\(git status --porcelain=v1 --untracked-files=all\)"/g)].length,
+    2,
+  );
+  assert.equal([...workflow.matchAll(/test "\$actual_head" = "\$FINLY_CODE_VERSION"/g)].length, 2);
+  assert.equal([...workflow.matchAll(/test -z "\$worktree_status"/g)].length, 2);
+  assert.equal(
+    [...workflow.matchAll(/uses:\s*actions\/checkout@v7\.0\.1[\s\S]*?ref:\s*\$\{\{ env\.FINLY_CODE_VERSION \}\}[\s\S]*?fetch-depth:\s*1\s*\n\s*- name:\s*Attest the audited trading revision/g)].length,
+    2,
+    "each pinned checkout must be immediately followed by its attestation",
+  );
   assert.match(workflow, /cron:\s*"30 12 31 8 \*"/);
   assert.match(workflow, /timeout-minutes:\s*12/);
   assert.match(workflow, /FINLY_COMPETITION_START_AT:\s*"2026-08-31T13:30:00\.000Z"/);

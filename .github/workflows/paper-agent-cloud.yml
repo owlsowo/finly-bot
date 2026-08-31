@@ -49,6 +49,13 @@ jobs:
         with:
           ref: ${{ env.FINLY_CODE_VERSION }}
           fetch-depth: 1
+      - name: Attest the audited trading revision
+        run: |
+          set -eu
+          actual_head="$(git rev-parse --verify HEAD)"
+          worktree_status="$(git status --porcelain=v1 --untracked-files=all)"
+          test "$actual_head" = "$FINLY_CODE_VERSION"
+          test -z "$worktree_status"
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: 26.7.0
@@ -99,6 +106,13 @@ jobs:
         with:
           ref: ${{ env.FINLY_CODE_VERSION }}
           fetch-depth: 1
+      - name: Attest the audited trading revision
+        run: |
+          set -eu
+          actual_head="$(git rev-parse --verify HEAD)"
+          worktree_status="$(git status --porcelain=v1 --untracked-files=all)"
+          test "$actual_head" = "$FINLY_CODE_VERSION"
+          test -z "$worktree_status"
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: 26.7.0
