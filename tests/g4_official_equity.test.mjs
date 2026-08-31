@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
+import { createHmac } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { sha256 } from "../lib/canonical.mjs";
+import { sha256, stableStringify } from "../lib/canonical.mjs";
 import {
   G4_CLIENT_ORDER_ID,
   assertG4OfficialProductionProtocol,
@@ -34,6 +35,14 @@ class MemoryStore {
     this.serialized = serialized;
     this.events.push(`save:${incoming}`);
   }
+}
+
+function mutateAndResign(store, mutation) {
+  const envelope = JSON.parse(store.serialized);
+  mutation(envelope.state);
+  envelope.hmac_sha256 = `sha256:${createHmac("sha256", SECRET)
+    .update(stableStringify(envelope.state)).digest("hex")}`;
+  store.serialized = stableStringify(envelope);
 }
 
 function fakeBroker({ events = [], mutationStatus = "filled", mutationThrowsAfterAccept = false, fillFraction = 1 } = {}) {
@@ -323,6 +332,49 @@ test("a transient final quantity mismatch remains closed until the broker snapsh
   const recovered = await cycle(protocol, store, broker);
   assert.equal(recovered.status, "G4_EQUITY_READY");
   assert.equal(recovered.options_authorized, true);
+});
+
+test("authenticated malformed fill fields are rejected before READY", async () => {
+  const protocol = await loadG4OfficialProductionProtocol();
+  const store = new MemoryStore();
+  const broker = fakeBroker();
+  for (let index = 0; index < 4; index += 1) await cycle(protocol, store, broker);
+  assert.equal(JSON.parse(store.serialized).state.phase, "RECONCILING");
+
+  mutateAndResign(store, (state) => { state.legs[0].filled_notional = { malformed: true }; });
+  await assert.rejects(() => cycle(protocol, store, broker), /lifecycle leg is invalid/u);
+});
+
+test("authenticated fill arithmetic and baseline drift are rejected", async () => {
+  const protocol = await loadG4OfficialProductionProtocol();
+  const broker = fakeBroker();
+
+  const inconsistentFill = new MemoryStore();
+  for (let index = 0; index < 4; index += 1) await cycle(protocol, inconsistentFill, broker);
+  mutateAndResign(inconsistentFill, (state) => { state.legs[0].filled_notional = "48000.00"; });
+  await assert.rejects(() => cycle(protocol, inconsistentFill, broker), /lifecycle leg is invalid/u);
+
+  const malformedBaseline = new MemoryStore();
+  const cleanBroker = fakeBroker();
+  await cycle(protocol, malformedBaseline, cleanBroker);
+  mutateAndResign(malformedBaseline, (state) => { state.baseline_equity = "NaN"; });
+  await assert.rejects(() => cycle(protocol, malformedBaseline, cleanBroker), /state metadata is invalid/u);
+});
+
+test("authenticated lifecycle status cannot contradict fill evidence", async () => {
+  const protocol = await loadG4OfficialProductionProtocol();
+
+  const missingFilledOrderHash = new MemoryStore();
+  const firstBroker = fakeBroker();
+  await cycle(protocol, missingFilledOrderHash, firstBroker);
+  mutateAndResign(missingFilledOrderHash, (state) => { state.legs[0].broker_order_id_sha256 = null; });
+  await assert.rejects(() => cycle(protocol, missingFilledOrderHash, firstBroker), /lifecycle leg is invalid/u);
+
+  const plannedLegWithFill = new MemoryStore();
+  const secondBroker = fakeBroker();
+  await cycle(protocol, plannedLegWithFill, secondBroker);
+  mutateAndResign(plannedLegWithFill, (state) => { state.legs[1].filled_qty = "1.00000000"; });
+  await assert.rejects(() => cycle(protocol, plannedLegWithFill, secondBroker), /lifecycle leg is invalid/u);
 });
 
 test("READY receipt strictly segregates G4 equities from SPY option overlay", async () => {
