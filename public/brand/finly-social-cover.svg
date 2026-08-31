@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Finly - +967.11% historical simulation versus +580.82% for SPY</title>
-  <desc id="desc">A ten-thousand-dollar historical simulation ended at $106,711 with Finly versus $68,082 with SPY.</desc>
+  <title id="title">Finly - G4 retrospective simulation: +967.11% versus +580.82% for SPY</title>
+  <desc id="desc">A ten-thousand-dollar retrospective G4 simulation ended at $106,711 versus $68,082 with SPY.</desc>
   <rect width="1200" height="630" fill="#f6f3ec"/>
   <rect x="0" y="0" width="28" height="630" fill="#0d2b43"/>
 
@@ -17,7 +17,7 @@
 
   <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">HISTORICAL SIMULATION · 2013–2026</text>
   <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-weight="700" letter-spacing="-1.5">
-    <text x="70" y="248" font-size="54">Finly beat SPY by</text>
+    <text x="70" y="248" font-size="54">Historical G4:</text>
     <text x="70" y="330" font-size="76">$38,629</text>
   </g>
   <text x="70" y="373" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="24">from the same simulated $10,000 starting portfolio.</text>
@@ -26,7 +26,7 @@
     <rect width="420" height="330" fill="#fbfaf6" stroke="#c8ccc7" stroke-width="1"/>
     <text x="28" y="38" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">ENDING WEALTH · MODELED 5 BP ONE-WAY COSTS</text>
     <line x1="28" y1="57" x2="392" y2="57" stroke="#c8ccc7" stroke-width="1"/>
-    <text x="28" y="91" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">FINLY STRATEGY</text>
+    <text x="28" y="91" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">G4 RETROSPECTIVE</text>
     <text x="28" y="149" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="50" font-weight="700">$106,711</text>
     <text x="287" y="145" fill="#2e6f5c" font-size="18" font-weight="700">+967.11%</text>
     <line x1="28" y1="174" x2="392" y2="174" stroke="#d7d9d5" stroke-width="1"/>
@@ -40,8 +40,8 @@
   </g>
 
   <line x1="70" y1="516" x2="1130" y2="516" stroke="#0d2b43" stroke-width="1.5"/>
-  <text x="70" y="556" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="20">Historical result · 4/4 source checks · 32/32 stress tests</text>
-  <text x="70" y="582" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Historical simulation after modeled costs. Paper trading only; past results are not a promise.</text>
+  <text x="70" y="556" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="20">G4 replay · Options demo: 4/4 removals · 32/32 perturbations</text>
+  <text x="70" y="582" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">The G4 replay is retrospective; the $100K paper account is scored separately from its own baseline.</text>
   <text x="70" y="603" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">AI reads the market · code checks the trade · Alpaca paper trading</text>
   <text x="1130" y="603" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" text-anchor="end">BRUCE WEN · SOLO BUILDER</text>
 </svg>

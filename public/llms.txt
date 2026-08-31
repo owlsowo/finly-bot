@@ -4,13 +4,13 @@ Finly is an AI trading agent built for one practical question: can a model help 
 
 ## What we built
 
-Finly has two parts. Its frozen equity strategy invests through QQQ and three sector ETFs selected by a fixed momentum rule. Its separate SPY options workflow can prepare a bull-call spread, a bear-put spread, or no trade. For the competition signal, the equity rule selected XLB, XLE, and XLV alongside QQQ, with three percent of the account kept in cash.
+Finly has two parts. Its frozen equity strategy invests through QQQ and three sector ETFs selected by a fixed momentum rule. Its separate SPY options workflow can prepare a bull-call spread, a bear-put spread, or no trade. A human operator selected and froze the competition allocation before the forward window: XLB, XLE, and XLV alongside QQQ, with three percent of the account kept in cash. This time-bounded paper deployment was not a promotion of G4 by the research gate. The public record is available at https://owlsowo.github.io/finly-bot/data/competition-deployment-record.json.
 
 The options workflow uses Qwen3-32B through Featherless to read public Alpaca news and explain what matters. The model cannot choose the position size, option contracts, expiration, maximum loss, or broker fields. Code handles those decisions, checks that the prices and market data are fresh enough, and stops the trade if the facts, payoff, account limits, or order details do not agree.
 
 ## Historical results
 
-In Finly's cost-adjusted historical simulation from 2013 through 2026, a modeled **$10,000 became $106,711**. SPY became **$68,082** over the same dates. That is **$38,629 more ending wealth**, with a total return of **+967.11%** for Finly versus **+580.82%** for SPY after modeled five-basis-point one-way trading costs.
+In Finly's retrospective, cost-adjusted G4 simulation from 2013 through 2026, a modeled **$10,000 became $106,711**. SPY became **$68,082** over the same dates. That is a **$38,629 historical ending-wealth difference**, with a total return of **+967.11%** for G4 versus **+580.82%** for SPY after modeled five-basis-point one-way trading costs.
 
 The strategy was developed during research, so this result describes the historical test rather than promising what will happen next. We also ran a fixed industry version on **21,218 earlier market days** from 1927 through 2007. It returned 13.37% a year versus 9.48% for the market, stayed ahead at **21 of 21 rebalance dates**, and kept a positive advantage when modeled costs rose to 25 basis points.
 
@@ -20,9 +20,9 @@ In the public options demonstration, Finly built one SPY debit spread with an ex
 
 ## Live Alpaca product
 
-Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. The runner uses Alpaca's official MCP server, keeps the competition strategy fixed, records an intended action before submission, and reads the account back afterward. Its restart state is encrypted. The public dashboard shows current equity, positions, risk, and the latest decision without exposing credentials, account identifiers, or broker order identifiers.
+Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. Its forward result starts from that baseline and is separate from the historical G4-versus-SPY simulation. The runner uses Alpaca's official MCP server, keeps the competition strategy fixed, records an intended action before submission, and reads the account back afterward. Its restart state is encrypted. The public dashboard shows current equity, positions, risk, and the latest decision without exposing credentials, account identifiers, or broker order identifiers. Any forward SPY comparison is measured separately at a shared timestamp.
 
-The public test run contains **803 automated tests: 801 passed, 0 failed, and 2 were skipped**. Those tests cover the strategy calculation, risk limits, order construction, broker translation, account checks, restart recovery, public-data filtering, and the scorer used for the competition account.
+The public test run contains **806 automated tests: 804 passed, 0 failed, and 2 were skipped**. Those tests cover the strategy calculation, risk limits, order construction, broker translation, account checks, restart recovery, public-data filtering, and the scorer used for the competition account.
 
 ## Why it matters
 

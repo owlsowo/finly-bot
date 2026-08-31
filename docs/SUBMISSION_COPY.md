@@ -20,13 +20,13 @@ This file contains paste-ready language for the Lablab submission form and publi
 
 > We built Finly because giving a language model direct control of a brokerage account is the wrong kind of automation. Finly is an AI trading agent that researches the market, turns a view into an exact trade, and checks every important risk before anything can reach Alpaca paper trading. It can move a supported idea forward, stop a weak one, and show the judge exactly how it reached that decision.
 >
-> During the competition, Finly combines a frozen four-ETF equity strategy with a separate SPY options agent. The equity sleeve follows one audited allocation rule. The options agent uses Qwen3-32B through Featherless to review current information and explain its view. Deterministic code—not the language model—sets the direction, position size, strikes, expiration, and maximum loss. Finly then removes sources, changes inputs, checks the payoff arithmetic and validates the broker fields. The final result is either a fully specified paper order or no trade at all.
+> During the competition, Finly combines a frozen four-ETF equity strategy with a separate SPY options agent. A human operator selected and froze the equity allocation before the competition window. The options agent uses Qwen3-32B through Featherless to review current information and explain its view. Deterministic code—not the language model—sets the direction, position size, strikes, expiration, and maximum loss. Finly then removes sources, changes inputs, checks the payoff arithmetic and validates the broker fields. The final result is either a fully specified paper order or no trade at all.
 >
-> The quantitative case is concrete. In a cost-adjusted historical simulation from January 2013 through August 2026, the G4 strategy turned a modeled $10,000 into $106,711. SPY reached $68,082 over the same dates, a difference of $38,629 in ending wealth. Because that strategy was selected during research, we present the result as historical evidence rather than a promise about the next market session. We also tested a fixed industry version across 21,218 earlier market days. It produced a 3.89 percentage-point annualized advantage over the market, remained ahead under a 25-basis-point cost stress, and kept its advantage across all 21 monthly rebalance dates we tested.
+> The quantitative case is concrete. In a cost-adjusted historical simulation from January 2013 through August 2026, the G4 strategy turned a modeled $10,000 into $106,711. SPY reached $68,082 over the same dates, a difference of $38,629 in ending wealth. We chose G4 for the time-bounded paper competition after reviewing that replay; the research gate did not promote it as Finly's general production policy. We also tested a fixed industry version across 21,218 earlier market days. It produced a 3.89 percentage-point annualized difference over the market, remained ahead under a 25-basis-point cost stress, and kept that difference across all 21 monthly rebalance dates we tested. These are retrospective results, while the $100,000 account is scored forward from its own baseline.
 >
 > The options workflow is equally inspectable. In the public demonstration, Finly built a one-contract SPY debit spread with an exact $366 maximum loss and $634 maximum gain. The investment case survived all 4 source-removal checks and all 32 input perturbations before Finly produced an Alpaca-compatible paper-order plan. When the evidence conflicts, the same workflow stops before capital is exposed and publishes the reason.
 >
-> Finly now runs in the cloud against a dedicated, verified $100,000 Alpaca paper account. The runner uses Alpaca's official MCP server, keeps the trading code pinned to an audited Git revision, preserves restart state, and publishes a sanitized account and decision feed to the website. The public dashboard lets judges follow the account without exposing credentials or private broker identifiers.
+> Finly now runs in the cloud against a dedicated, verified $100,000 Alpaca paper account. The runner uses Alpaca's official MCP server, keeps the trading code pinned to an audited Git revision, preserves restart state, and publishes a sanitized account and decision feed to the website. The public dashboard lets judges follow account P&L from the $100,000 baseline, while the forward SPY comparison is measured separately at a shared timestamp. The public deployment record shows when and how the operator froze the competition allocation without exposing credentials or private broker identifiers.
 >
 > Open the live product, watch the competition account, and try both decision paths. Choose aligned evidence to see Finly prepare a defined-risk trade. Choose conflicting evidence to see it protect the account. Then open the decision record or repository and trace the result back to the code and source data.
 
@@ -46,6 +46,7 @@ This file contains paste-ready language for the Lablab submission form and publi
 
 - Live application: <https://owlsowo.github.io/finly-bot/>
 - Repository: <https://github.com/owlsowo/finly-bot>
+- Competition deployment record: <https://owlsowo.github.io/finly-bot/data/competition-deployment-record.json>
 - One-page proposal: <https://owlsowo.github.io/finly-bot/judge/Finly_Judge_Brief.pdf>
 - Technical paper: <https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf>
 - Slide deck: <https://owlsowo.github.io/finly-bot/judge/Finly_Consulting_Deck.pdf>
@@ -59,7 +60,7 @@ Each post stands on its own. Attach the 1200×630 cover to the launch post and u
 
 ### Post 1 — launch
 
-> We built Finly, an AI trading agent that can research a market idea without getting unchecked control of the account. In our cost-adjusted historical simulation, $10,000 became $106,711 versus $68,082 for SPY. Now Finly is running against a verified $100,000 Alpaca paper account, with every decision visible on the live dashboard. https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
+> We built Finly, an AI trading agent that can research a market idea without getting unchecked control of the account. In a retrospective, cost-adjusted simulation, G4 turned $10,000 into $106,711 versus $68,082 for SPY. Separately, we selected and froze G4 for a verified $100,000 Alpaca paper-account test, whose forward result starts from that baseline. Follow it live: https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
 
 ### Post 2 — how it works
 

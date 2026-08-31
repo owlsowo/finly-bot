@@ -234,7 +234,7 @@ export function CompetitionDashboard() {
           <div className="live-section-heading">
             <div>
               <p className="kicker">Official paper account / live competition</p>
-              <h2 id="live-title">Watch Finly manage the same $100,000 account the judges will score.</h2>
+              <h2 id="live-title">Follow Finly's separately scored $100,000 paper account.</h2>
             </div>
             <p>Finly publishes only a sanitized account summary. Broker credentials, account numbers and order identifiers never reach this page.</p>
           </div>
@@ -261,11 +261,11 @@ export function CompetitionDashboard() {
         <div className="live-section-heading">
           <div>
             <p className="kicker">Official paper account / live competition</p>
-            <h2 id="live-title">Watch Finly manage the same $100,000 account the judges will score.</h2>
+            <h2 id="live-title">Follow Finly's separately scored $100,000 paper account.</h2>
           </div>
           <p>
-            This dashboard translates the latest sanitized Alpaca paper-account snapshot into plain English, then keeps the
-            underlying decision and risk record one click away for technical review.
+            This dashboard translates the latest sanitized Alpaca paper-account snapshot into plain English. Its forward
+            result starts at $100,000 and remains separate from the retrospective G4-versus-SPY simulation above.
           </p>
         </div>
 
@@ -299,12 +299,12 @@ export function CompetitionDashboard() {
               <span>Measured against a {money.format(snapshot.competition.baseline_equity)} starting balance.</span>
             </div>
             <div className={`live-pnl-block live-pnl-${resultTone}`}>
-              <p>Score versus the starting line</p>
+              <p>Paper-account P&amp;L versus $100,000 baseline</p>
               <div>
                 <strong>{signedMoney.format(result.pnl)}</strong>
                 <span>{signedPercent.format(result.pnlPercent)}</span>
               </div>
-              <small>Total paper-account P&amp;L since the official baseline.</small>
+              <small>The separate forward SPY comparison is measured at a shared timestamp.</small>
             </div>
           </div>
 
@@ -384,7 +384,8 @@ export function CompetitionDashboard() {
 
         <p className="live-privacy-note">
           This public view contains performance and risk totals only. It never publishes broker credentials, account numbers,
-          order identifiers or the private execution ledger.
+          order identifiers or the private execution ledger. <a href="./data/competition-deployment-record.json">Read how the
+          operator selected and froze this competition deployment.</a>
         </p>
       </div>
     </section>

@@ -39,7 +39,7 @@ export function HistoricalExplorer({
     <section className="range-explorer" aria-labelledby="historical-explorer-title">
       <div className="range-explorer-heading">
         <div>
-          <p className="kicker">The performance headline</p>
+          <p className="kicker">Retrospective G4 replay</p>
           <h3 id="historical-explorer-title">$10,000 → $106,711: 56.7% more modeled ending wealth than SPY.</h3>
         </div>
         <p>
@@ -63,7 +63,7 @@ export function HistoricalExplorer({
           aria-controls="historical-decision-panel"
           onClick={() => setView("decision")}
         >
-          Value case
+          Historical difference
         </button>
       </div>
 
@@ -80,7 +80,7 @@ export function HistoricalExplorer({
           >
             <div className="audit-bar-row">
               <div className="audit-bar-label">
-                <span>Finly strategy</span>
+                <span>G4 simulation</span>
                 <strong>{signedPct(candidateReturn)}</strong>
               </div>
               <div className="audit-bar-track" aria-hidden="true">
@@ -99,7 +99,7 @@ export function HistoricalExplorer({
           </div>
           <p className="audit-panel-conclusion">
             A simulated {dollars(startingWealth)} became approximately <strong>{dollars(candidateEndingWealth)}</strong>
-            {" "}with Finly versus <strong>{dollars(spyEndingWealth)}</strong> with SPY—an ending-wealth advantage of
+            {" "}with G4 versus <strong>{dollars(spyEndingWealth)}</strong> with SPY—a historical ending-wealth difference of
             {" "}<strong>{dollars(endingWealthAdvantage)}</strong>. The replay covers {startDate} through {endDate} and
             includes modeled {oneWayCostBps}-basis-point one-way costs.
           </p>
@@ -112,14 +112,14 @@ export function HistoricalExplorer({
         >
           <dl className="audit-decision-ledger">
             <div>
-              <dt>Incremental ending wealth</dt>
+              <dt>Historical ending-wealth difference</dt>
               <dd>{dollars(endingWealthAdvantage)}</dd>
               <p>{pct(relativeEndingWealthAdvantage)} more wealth than SPY from the same simulated $10,000.</p>
             </div>
             <div>
-              <dt>Total-return advantage</dt>
+              <dt>Historical return difference</dt>
               <dd>{signedPct(returnAdvantage)}</dd>
-              <p>A 386.29-percentage-point lead across the identical comparison window.</p>
+              <p>A 386.29-percentage-point difference across the identical retrospective window.</p>
             </div>
             <div className="audit-disposition">
               <dt>Cost discipline</dt>
@@ -128,15 +128,16 @@ export function HistoricalExplorer({
             </div>
           </dl>
           <p className="audit-panel-conclusion">
-            Finly pairs a cost-adjusted strategy replay with deterministic risk controls—turning a quantified market
-            thesis into an inspectable, capital-bounded decision workflow.
+            A human operator selected this G4 allocation for a separately scored paper competition and froze it before
+            the forward window. The retrospective replay is evidence for that choice, not the live result.
           </p>
         </div>
       )}
 
       <p className="range-boundary">
         <strong>Evidence basis:</strong> historical simulation from {startDate} to {endDate}; identical $10,000 starting
-        capital and comparison window; modeled {oneWayCostBps} bp one-way costs.
+        capital and comparison window; modeled {oneWayCostBps} bp one-way costs. This is not the $100,000 paper account's
+        forward score or its separate SPY comparison.
       </p>
     </section>
   );

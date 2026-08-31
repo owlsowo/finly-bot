@@ -1,175 +1,79 @@
 1
-00:00:00,000 --> 00:00:05,177
-Finly found a 967.11 percent consumed return and refused to trade it.
+00:00:00,000 --> 00:00:03,614
+In our 2013-to-2026 historical simulation,
 
 2
-00:00:05,177 --> 00:00:08,196
-That sentence is the product in miniature:
+00:00:03,614 --> 00:00:12,288
+$10,000 became $106,711 with Finly—$38,629 more than SPY after modeled trading costs.
 
 3
-00:00:08,196 --> 00:00:13,373
-a trading agent should be judged not only by what it finds,
+00:00:12,488 --> 00:00:17,190
+We built Finly to turn market evidence into a paper trade while code keeps control of the account.
 
 4
-00:00:13,373 --> 00:00:16,824
-but by what it is willing to reject.
+00:00:17,390 --> 00:00:18,207
+This separate,
 
 5
-00:00:17,144 --> 00:00:21,336
-In the consumed replay from January second,
+00:00:18,207 --> 00:00:26,376
+80-year industry replay returned 13.37% a year versus 9.48% for the market and stayed ahead at all 21 rebalance dates.
 
 6
-00:00:21,336 --> 00:00:25,528
-twenty thirteen through August twenty-seventh, twenty twenty-six,
+00:00:26,576 --> 00:00:30,561
+Here's how it works. Finly reads market signals and explains one view.
 
 7
-00:00:25,528 --> 00:00:30,917
-G4 returned 967.11 percent, versus 580.82 percent for SPY,
+00:00:30,561 --> 00:00:33,549
+Code chooses the position size, option legs, maximum loss,
 
 8
-00:00:30,917 --> 00:00:36,307
-after modeled five-basis-point one-way costs. The result was tempting.
+00:00:33,549 --> 00:00:34,877
+and exact Alpaca order.
 
 9
-00:00:36,307 --> 00:00:41,696
-It was also selected after the history was visible.
+00:00:34,877 --> 00:00:38,530
+A final check either sends the paper trade or stops it.
 
 10
-00:00:42,016 --> 00:00:43,679
-Finly denied promotion.
+00:00:38,730 --> 00:00:40,840
+Watch it run. With aligned evidence,
 
 11
-00:00:43,679 --> 00:00:47,559
-The Deflated Sharpe probability was 3.75 percent,
+00:00:40,840 --> 00:00:42,951
+Finly builds a defined-risk paper order.
 
 12
-00:00:47,559 --> 00:00:51,993
-and the worst familywise-adjusted p-value was 37.18 percent.
+00:00:43,151 --> 00:00:45,168
+Change the evidence, and Finly stops.
 
 13
-00:00:51,993 --> 00:00:54,210
-The chart remains visible,
+00:00:45,168 --> 00:00:47,184
+The same screen shows exactly why.
 
 14
-00:00:54,210 --> 00:00:59,752
-but it never received authority and cannot support a forecast.
+00:00:47,384 --> 00:00:52,951
+This example built one SPY spread with a $366 maximum loss and $634 maximum gain.
 
 15
-00:01:00,072 --> 00:01:04,634
-Production version one is the deliberately boring answer.
+00:00:52,951 --> 00:00:59,631
+It still passed when we removed each of four data sources and changed the inputs 32 different ways.
 
 16
-00:01:04,634 --> 00:01:07,485
-In the consumed next-open study,
+00:00:59,831 --> 00:01:03,913
+For the competition, we froze one allocation before the opening bell.
 
 17
-00:01:07,485 --> 00:01:13,757
-it returned 15.39 percent at five basis points per traded leg,
+00:01:03,913 --> 00:01:07,253
+Historical performance does not carry into its live score.
 
 18
-00:01:13,757 --> 00:01:17,748
-and 10.56 percent at twenty-five basis points.
+00:01:07,253 --> 00:01:10,593
+The verified $100,000 Alpaca paper account reports every result.
 
 19
-00:01:17,748 --> 00:01:22,310
-SPY returned 33.52 percent. At five basis points,
+00:01:10,793 --> 00:01:13,062
+Every decision has a receipt. Follow the paper test,
 
 20
-00:01:22,310 --> 00:01:29,722
-Finly's annualized volatility was 8.12 percent and maximum drawdown was minus 5.45 percent.
-
-21
-00:01:29,722 --> 00:01:35,424
-It was positive and risk-controlled. It did not beat SPY.
-
-22
-00:01:35,744 --> 00:01:37,957
-That restraint is architectural.
-
-23
-00:01:37,957 --> 00:01:42,383
-The model may interpret bounded evidence, explain uncertainty,
-
-24
-00:01:42,383 --> 00:01:47,915
-or veto. Deterministic code owns exposure, order fields, maximum loss,
-
-25
-00:01:47,915 --> 00:01:53,447
-and the final permit decision. A disagreement returns no trade;
-
-26
-00:01:53,447 --> 00:01:57,320
-the model never writes the Alpaca payload.
-
-27
-00:01:57,640 --> 00:02:00,977
-The interface keeps those evidence classes visible.
-
-28
-00:02:00,977 --> 00:02:04,315
-Judges can inspect a positive production ledger,
-
-29
-00:02:04,315 --> 00:02:06,222
-a rejected retrospective strategy,
-
-30
-00:02:06,222 --> 00:02:10,512
-and two zero-outcome future tests on the same page.
-
-31
-00:02:10,512 --> 00:02:15,280
-Finly does not hide the hard sentence in a footnote.
-
-32
-00:02:15,600 --> 00:02:19,909
-Claims move from past to future only through a new test.
-
-33
-00:02:19,909 --> 00:02:23,434
-A larger backtest never upgrades its own evidence class,
-
-34
-00:02:23,434 --> 00:02:26,568
-and a prettier chart does not create authority.
-
-35
-00:02:26,888 --> 00:02:31,844
-Attempts 115 and 116 are publicly registered future-only tests.
-
-36
-00:02:31,844 --> 00:02:35,149
-As of August thirtieth, twenty twenty-six,
-
-37
-00:02:35,149 --> 00:02:40,656
-each has zero observed outcomes; neither supports a performance claim.
-
-38
-00:02:40,656 --> 00:02:43,960
-Registration makes the next claim falsifiable.
-
-39
-00:02:43,960 --> 00:02:47,264
-It does not manufacture a result.
-
-40
-00:02:47,584 --> 00:02:50,586
-That is Finly: publish the tempting result,
-
-41
-00:02:50,586 --> 00:02:53,159
-reject what has not earned authority,
-
-42
-00:02:53,159 --> 00:02:55,732
-and make the next claim falsifiable.
-
-43
-00:02:55,732 --> 00:03:00,449
-Let AI interpret more and authorize less. The bull has horns;
-
-44
-00:03:00,449 --> 00:03:03,880
-the llama still does not get the keys.
+00:01:13,062 --> 00:01:14,826
+check the numbers, and read the code.

@@ -206,6 +206,7 @@ for (const obsolete of [
 
 const reviewedPublicData = [
   "attempt150_public_evidence.json",
+  "competition-deployment-record.json",
   "competition_live.json",
   "current_economic_decision.json",
   "economic_options_overlay_replay.json",
@@ -218,6 +219,7 @@ const reviewedPublicData = [
   "quantitative_release_gate.json",
 ];
 const hostedData = [
+  "competition-deployment-record.json",
   "competition_live.json",
   "latest_receipt.json",
   "no_trade_receipt.json",
@@ -266,8 +268,8 @@ const accountPatterns = [
   /Alpaca/iu,
 ];
 const testCountPatterns = [
-  /803.{0,40}(?:automated )?tests|(?:automated )?tests.{0,40}803/iu,
-  /801.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}801/iu,
+  /806.{0,40}(?:automated )?tests|(?:automated )?tests.{0,40}806/iu,
+  /804.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}804/iu,
 ];
 const zeroFailurePattern = /(?:0|none).{0,20}failed|failed.{0,20}(?:0|none)/iu;
 const commonDocumentPatterns = [
@@ -347,7 +349,7 @@ requirePatterns("video captions", captions, [
   /\$106,711/iu,
   /\$38,629/iu,
   /We built Finly/iu,
-  /80 years/iu,
+  /80(?:-year| years)/iu,
   /13\.37%/iu,
   /9\.48%/iu,
   /21 rebalance dates/iu,
@@ -360,7 +362,7 @@ requirePatterns("video captions", captions, [
   /32 different ways/iu,
   /verified \$100,000 Alpaca paper account/iu,
   /Every decision has a receipt/iu,
-  /Try Finly/iu,
+  /Follow the paper test/iu,
 ]);
 requireNoPatterns("video captions", captions, [...staleStoryPatterns, ...evaluatorInstructionPatterns, /llama still does not get the keys/iu]);
 
@@ -378,7 +380,7 @@ const machineSummary = readFileSync(requireFile("public/llms.txt", 1_500).path, 
 requirePatterns("machine-readable summary", machineSummary, [
   ...commonDocumentPatterns,
   zeroFailurePattern,
-  /803 automated tests: 801 passed, 0 failed, and 2 were skipped/iu,
+  /806 automated tests: 804 passed, 0 failed, and 2 were skipped/iu,
   /Alpaca's official MCP server/iu,
   /Start with the live dashboard/iu,
 ]);
@@ -401,6 +403,6 @@ for (const [label, file] of [["one-page", onePage], ["paper", paper], ["deck", d
 
 console.log(
   `submission artifacts verified: 1-page brief; 6-page paper; 9-slide deck; `
-  + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 803 tests / 801 passed / 0 failed; `
+  + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 806 tests / 804 passed / 0 failed; `
   + `exact quantitative gate; sanitized public data`,
 );

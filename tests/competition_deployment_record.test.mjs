@@ -157,11 +157,19 @@ test("deployment record binds the unchanged research gate, competition protocol,
 });
 
 test("runtime code and workflows do not consume the deployment record", async () => {
+  const runtimeEntrypoints = [
+    "scripts/autonomous_paper_agent.mjs",
+    "scripts/build_competition_live_snapshot.mjs",
+    "scripts/cloud_run_gate.mjs",
+    "scripts/cloud_state.mjs",
+    "scripts/featherless_readiness_check.mjs",
+    "scripts/paper_healthcheck.mjs",
+    "scripts/run_competition_forward_profit.mjs",
+  ].map((path) => resolve(projectRoot, path));
   const paths = (await Promise.all([
     sourceFiles("lib"),
-    sourceFiles("scripts"),
     sourceFiles(".github/workflows"),
-  ])).flat();
+  ])).flat().concat(runtimeEntrypoints);
   for (const path of paths) {
     const source = await readFile(path, "utf8");
     assert.doesNotMatch(source, /competition-deployment-record/u, path);

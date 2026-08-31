@@ -14,7 +14,7 @@ In a cost-adjusted historical simulation from January 2013 through August 2026, 
 
 We then fixed an industry version of the rule and ran it across 21,218 earlier market days from Kenneth French's public archive. It annualized at **13.37% versus 9.48% for the market**, stayed ahead across all 21 monthly rebalance dates we tested, and kept a positive edge when modeled trading costs were increased fivefold.
 
-Those results gave us a strategy worth testing in public. The live competition account follows a frozen four-ETF allocation: QQQ as the core, the three strongest sector funds by twelve-to-six-month momentum, and a small cash reserve.
+We chose G4 for a public paper test after reviewing those historical results. That was a human operator's competition decision, not a research-gate promotion or a promise of outperformance. The [deployment record](public/data/competition-deployment-record.json) fixes the scope and timing: QQQ as the core, the three strongest sector funds by twelve-to-six-month momentum, and a small cash reserve.
 
 ## Here's how it works
 
@@ -30,11 +30,11 @@ In the public options demo, Finly built a one-contract SPY debit spread with an 
 
 Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. The runner uses Alpaca's official MCP server, keeps the trading code pinned to an audited Git revision, saves enough state to recover safely after a restart, and reads every result back from Alpaca before moving on.
 
-The [public dashboard](https://owlsowo.github.io/finly-bot/#live) shows the sanitized account state, current positions, recent decisions, and benchmark result without exposing credentials or the raw account identifier. The laptop does not need to stay awake.
+The [public dashboard](https://owlsowo.github.io/finly-bot/#live) shows sanitized account state, current positions, recent decisions, and paper-account P&L from the $100,000 baseline without exposing credentials or the raw account identifier. The forward SPY comparison is scored separately at a shared timestamp. The laptop does not need to stay awake.
 
 ## Check the numbers
 
-The public test suite covers the frozen G4 signal, option payoff arithmetic, position limits, quote freshness, account checks, lost acknowledgements, restart recovery, encrypted state, broker-field translation, and the rules used to score the live account.
+The public test suite covers reproduction of the operator-selected, frozen G4 signal, option payoff arithmetic, position limits, quote freshness, account checks, lost acknowledgements, restart recovery, encrypted state, broker-field translation, and the rules used to score the live account. These implementation checks do not turn the historical simulation into a forward performance claim.
 
 ```bash
 npm install
@@ -42,7 +42,7 @@ npm test
 npm run build
 ```
 
-Current public result: **803 tests run, 801 passed, 0 failed, 2 skipped.**
+Current public result: **806 tests run, 804 passed, 0 failed, 2 skipped.**
 
 Useful focused checks:
 

@@ -110,8 +110,8 @@ setNotes("nt/ofy9wn61", [
 ]);
 
 // Slide 4 — out-of-era stress test.
-setText("sh/x8vaxsfe", "WE TESTED IT AGAIN", { color: "#2F7D68", bold: true });
-setText("sh/1cj2d8b6", "We reran the same rule on 80 years of earlier industry data.");
+setText("sh/x8vaxsfe", "A SECOND HISTORICAL PROXY", { color: "#2F7D68", bold: true });
+setText("sh/1cj2d8b6", "A fixed industry proxy carried the idea across 80 earlier years.");
 setText("sh/sna103ap", "1927–2007 HISTORICAL TEST", { color: "#2F7D68", bold: true });
 setText("sh/3ihk3et8", "13.37%", { color: "#2F7D68", bold: true });
 setText("sh/ih8ju9sn", "FINLY ANNUALIZED RETURN");
@@ -164,7 +164,7 @@ setNotes("nt/i107q5of", [
 
 // Slide 6 — authenticated paper-account proof.
 setText("sh/j6dcr65c", "WATCH IT RUN", { color: "#2F7D68", bold: true });
-setText("sh/yhg7epsj", "You can watch the $100,000 Alpaca paper account live.");
+setText("sh/yhg7epsj", "The $100,000 paper account turns historical upside into a forward test.");
 setText("sh/oryp8fah", "WHAT JUDGES CAN SEE", { color: "#2F7D68", bold: true });
 setText("sh/pc76hkr2", "VERIFIED", { color: "#2F7D68", bold: true });
 setText("sh/h4bupgn6", "ALPACA PAPER ACCOUNT");
@@ -172,7 +172,7 @@ setText("sh/w32twb6l", "$100,000", { color: "#2F7D68", bold: true });
 setText("sh/v2tcn650", "STARTING EQUITY");
 setText("sh/u1kbu1ov", "$500", { color: "#2F7D68", bold: true });
 setText("sh/5svutgni", "PER-TRADE RISK CEILING");
-setText("sh/47mt0b6x", "The dashboard shows equity, positions, risk, and the latest decision. It never publishes credentials or private account identifiers.");
+setText("sh/47mt0b6x", "The research gate treated the upside as a reason to test G4—not a statistical promotion. A human froze the contest allocation; this account supplies the separate score.");
 const screenshot = presentation.resolve("im/lw3uh4be");
 const screenshotBytes = await fs.readFile(liveScreenshotPath);
 const screenshotFrame = screenshot.frame;
@@ -201,6 +201,9 @@ screenshot.lockAspectRatio = screenshotAspect;
 setNotes("nt/x8f69ofe", [
   "Sanitized live account: https://owlsowo.github.io/finly-bot/data/competition_live.json",
   "Public dashboard: https://owlsowo.github.io/finly-bot/#live",
+  "Historical claim boundary: https://owlsowo.github.io/finly-bot/data/quantitative_release_gate.json",
+  "Human-frozen competition protocol: https://github.com/owlsowo/finly-bot/blob/main/config/g4-official-production.json",
+  "Separate forward-score contract: https://github.com/owlsowo/finly-bot/blob/main/config/competition-forward-profit.json",
   "Screenshot is project-owned and records paper-account state, not a live-return claim.",
 ]);
 
@@ -240,7 +243,7 @@ setText("sh/0jydkreh", "TESTS", { color: "#2F7D68", bold: true });
 setText("sh/1k7edwv2", "WHAT CHANGED UNDER STRESS");
 setText("sh/ehgvihwr", "LOG", { color: "#2F7D68", bold: true });
 setText("sh/zipwbmdc", "WHAT HAPPENED NEXT");
-setText("sh/lgbepgvm", "803 TESTS DISCOVERED · 801 PASSED · 0 FAILED\nCloud run · exact revision · Alpaca paper account");
+setText("sh/lgbepgvm", "806 TESTS DISCOVERED · 804 PASSED · 0 FAILED\nCloud run · exact revision · Alpaca paper account");
 setText("sh/tw7e9gnq", "Open the receipt or run the tests yourself.");
 setNotes("nt/fu1gfa1s", [
   "Cloud runner documentation: https://github.com/owlsowo/finly-bot/blob/main/docs/CLOUD_RUNNER.md",
@@ -251,7 +254,7 @@ setNotes("nt/fu1gfa1s", [
 
 // Slide 9 — judge takeaway and CTA.
 setText("sh/lsn2h4fa", "TRY FINLY", { color: "#2F7D68", bold: true });
-setText("sh/1cfmhgne", "Watch it trade. Check the numbers. Read the code.");
+setText("sh/1cfmhgne", "Follow the paper test. Check the numbers. Read the code.");
 setText("sh/9gzml0nq", "BACKTEST", { color: "#2F7D68", bold: true });
 setText("sh/bih4na5w", "Historical simulation: $10,000 became $106,711—$38,629 more than SPY after modeled costs.");
 setText("sh/ah8nu54b", "STRESS TEST", { color: "#2F7D68", bold: true });

@@ -45,6 +45,7 @@ INTER_SCENE_PAUSE = 0.20
 FINAL_PAUSE = 0.55
 MIN_FINAL_SECONDS = 65.0
 MAX_FINAL_SECONDS = 80.0
+SUPPLIED_AUDIO_TEMPO = 1.25
 
 
 @dataclass(frozen=True)
@@ -72,7 +73,7 @@ SCENES = [
         "second-test",
         "slide:4",
         10.0,
-        "We reran the same rule on 80 years of earlier industry data. It returned 13.37% a year versus 9.48% for the market and stayed ahead across all 21 rebalance dates.",
+        "This separate, 80-year industry replay returned 13.37% a year versus 9.48% for the market and stayed ahead at all 21 rebalance dates.",
     ),
     Scene(
         "how-it-works",
@@ -102,13 +103,13 @@ SCENES = [
         "live-account",
         "asset:public/judge/video-live.jpg",
         9.0,
-        "Finly also connects to a verified $100,000 Alpaca paper account. The public dashboard shows its equity, positions, risk, and latest decision.",
+        "For the competition, we froze one allocation before the opening bell. Historical performance does not carry into its live score. The verified $100,000 Alpaca paper account reports every result.",
     ),
     Scene(
         "close",
         "slide:9",
         7.0,
-        "Every decision has a receipt. Try Finly: watch it trade, check the numbers, and read the code.",
+        "Every decision has a receipt. Follow the paper test, check the numbers, and read the code.",
     ),
 ]
 
@@ -252,7 +253,7 @@ def verify_claims() -> None:
         "$10,000", "$106,711", "$38,629", "13.37%", "9.48%",
         "21 rebalance dates", "$366 maximum loss", "$634 maximum gain",
         "removed each of four data sources", "changed the inputs 32 different ways",
-        "$100,000 Alpaca paper account",
+        "$100,000 Alpaca paper account", "Historical performance does not carry into its live score",
     ]
     for phrase in required:
         if phrase.lower() not in narration.lower():
@@ -316,7 +317,7 @@ def structural_check(audio_dir: Path | None = None) -> None:
         if not resolved_audio_dir.is_dir():
             raise RuntimeError(f"Supplied narration directory does not exist: {resolved_audio_dir}")
         audio_seconds = sum(
-            duration(supplied_audio(resolved_audio_dir, index, scene))
+            duration(supplied_audio(resolved_audio_dir, index, scene)) / SUPPLIED_AUDIO_TEMPO
             for index, scene in enumerate(SCENES, start=1)
         )
         actual_with_pauses = audio_seconds + INTER_SCENE_PAUSE * (len(SCENES) - 1) + FINAL_PAUSE
@@ -392,12 +393,15 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bo
                 "--write-media", str(raw_audio),
             )
 
-        raw_duration = duration(raw_audio)
+        source_audio_duration = duration(raw_audio)
+        audio_tempo = SUPPLIED_AUDIO_TEMPO if audio_dir is not None else 1.0
+        raw_duration = source_audio_duration / audio_tempo
         pause = INTER_SCENE_PAUSE if index < len(SCENES) else FINAL_PAUSE
         scene_duration = raw_duration + pause
+        audio_filter = f"atempo={audio_tempo},apad=pad_dur={pause}"
         run(
             "ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(raw_audio),
-            "-af", f"apad=pad_dur={pause}", "-t", f"{scene_duration:.3f}",
+            "-af", audio_filter, "-t", f"{scene_duration:.3f}",
             "-ar", "48000", "-ac", "2", str(audio_path),
         )
 

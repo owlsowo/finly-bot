@@ -276,11 +276,11 @@ export function DemoClient() {
             <p className="kicker">AI trading with built-in risk checks</p>
             <h1>Finly shows its work before it trades.</h1>
             <p className="hero-deck">
-              In our historical test, $10,000 became $106,711—$38,629 more than SPY. Finly reads the market evidence,
-              builds a defined-risk paper trade, checks the risk, and then sends it to Alpaca—or stops it.
+              In a retrospective G4 simulation, $10,000 became $106,711—$38,629 more than SPY. Separately, Finly
+              reads market evidence, builds a defined-risk paper trade, checks the risk, and sends it to Alpaca—or stops it.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#live">Watch it trade</a>
+              <a className="primary-action" href="#live">Follow the $100K paper test</a>
               <a className="text-action" href="#controls">Try the demo <span aria-hidden="true">↓</span></a>
             </div>
             <p className="hero-thesis">
@@ -296,20 +296,20 @@ export function DemoClient() {
             <div
               className="hero-result"
               role="img"
-              aria-label={`In the historical simulation, ten thousand dollars became approximately ${dollars(performanceLabEndingWealth)} with Finly and ${dollars(spyEndingWealth)} with SPY, an ending-wealth advantage of ${dollars(performanceLabAdvantage)} after modeled ${g4.modeled_one_way_cost_bps} basis point one-way costs.`}
+              aria-label={`In the retrospective G4 simulation, ten thousand dollars became approximately ${dollars(performanceLabEndingWealth)} with G4 and ${dollars(spyEndingWealth)} with SPY, a historical ending-wealth difference of ${dollars(performanceLabAdvantage)} after modeled ${g4.modeled_one_way_cost_bps} basis point one-way costs.`}
             >
               <div>
-                <span>Finly ending wealth</span>
+                <span>G4 simulated ending wealth</span>
                 <strong>{dollars(performanceLabEndingWealth)}</strong>
                 <small>{signedPct(g4.g4_total_return)} total return</small>
               </div>
               <div>
-                <span>SPY ending wealth</span>
+                <span>SPY simulated ending wealth</span>
                 <strong>{dollars(spyEndingWealth)}</strong>
                 <small>{signedPct(g4.spy_total_return)} total return</small>
               </div>
-              <p><strong>{dollars(performanceLabAdvantage)}</strong> advantage · 56.7% more modeled ending wealth than SPY.</p>
-              <em className="decision-stamp">+386.29 pp lead</em>
+              <p><strong>{dollars(performanceLabAdvantage)}</strong> historical difference · 56.7% more modeled ending wealth in this replay.</p>
+              <em className="decision-stamp">+386.29 pp retrospective</em>
             </div>
             <figcaption>
               Historical simulation · identical $10,000 starting capital · modeled {g4.modeled_one_way_cost_bps} bp one-way costs.
@@ -386,7 +386,7 @@ export function DemoClient() {
             <article className="external-proof" aria-labelledby="external-proof-title">
               <div className="external-proof-lead">
                 <div>
-                  <p className="kicker">We tested it again</p>
+                  <p className="kicker">A second historical proxy</p>
                   <h3 id="external-proof-title">We ran a pre-set industry version across 21,218 earlier market days.</h3>
                 </div>
                 <p>
@@ -423,8 +423,8 @@ export function DemoClient() {
 
               <div className="external-proof-conclusion">
                 <p>
-                  <strong>Bottom line:</strong> Finly's advantage survived a different market era, every tested rebalance
-                  date and transaction costs five times the base assumption.
+                  <strong>What it showed:</strong> the modeled difference remained positive in an earlier market era,
+                  across every tested rebalance date and with transaction costs five times the base assumption.
                 </p>
                 <a href="./data/attempt150_public_evidence.json">Open the evidence file <span aria-hidden="true">↗</span></a>
               </div>
@@ -432,10 +432,12 @@ export function DemoClient() {
 
             <div className="research-note research-note-tight">
               <p>
-                Finly uses time-series momentum to set direction and scales exposure as volatility changes. The technical
-                paper shows the rule, modeled costs, risk checks, and sources behind the result.
+                We chose G4 for a public paper test after reviewing these replays; the research gate did not promote it as
+                Finly's general production policy. A human operator froze the four-ETF competition allocation before the
+                forward window, and the $100,000 paper account is scored separately from the historical SPY comparison.
               </p>
               <div>
+                <a href="./data/competition-deployment-record.json">Read the deployment record <span aria-hidden="true">↗</span></a>
                 {references.map(([label, href]) => <a key={href} href={href}>{label} <span aria-hidden="true">↗</span></a>)}
               </div>
             </div>
@@ -646,7 +648,7 @@ export function DemoClient() {
       <footer>
         <div className="shell footer-grid">
           <div className="footer-brand"><img src="./brand/finly-mark.svg" alt="" /><strong>Finly</strong></div>
-              <p>$38,629 historical ending-wealth advantage · code-controlled paper trading.</p>
+              <p>$38,629 retrospective ending-wealth difference · separately scored paper trading.</p>
           <p>Bruce Wen · <a href="mailto:bwen412@brandeis.edu">bwen412@brandeis.edu</a></p>
           <p>Evidence files and rerun commands · updated {gate.evidence_as_of}</p>
         </div>
