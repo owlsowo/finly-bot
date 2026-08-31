@@ -53,7 +53,7 @@ broker or authorizing a mutation.
 
 When a `FEATHERLESS_API_KEY` repository secret is present, the runner sends only
 canonical public Alpaca news documents to the pinned
-`NousResearch/Hermes-4-14B` model through Featherless's OpenAI-compatible HTTPS
+`Qwen/Qwen3-32B` model through Featherless's OpenAI-compatible HTTPS
 endpoint. Thinking is disabled, temperature is zero, and JSON-object mode is
 followed by Finly's exact local schema validation of every evidence ID, score,
 and short rationale. The hosted extractor
@@ -90,7 +90,7 @@ transport names so two different accounts cannot be validated and mutated.
 Before the official start time, open the workflow in GitHub Actions, select
 **Run workflow**, and set `initialize_state` to `true`. Initialization is
 manual-only and rejected after the competition begins. It authenticates the
-paper account read side, probes the hosted Hermes extractor with one synthetic
+paper account read side, probes the hosted Qwen extractor with one synthetic
 no-broker-data document, creates the first encrypted state envelope, and
 publishes the first sanitized dashboard snapshot without enabling mutation. A
 failed hosted probe is visible in Actions but cannot block G4 initialization;

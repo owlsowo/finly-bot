@@ -34,12 +34,12 @@ export async function runFeatherlessReadinessCheck({
     || result.assessments[0].evidence_id !== record.evidence_id) {
     throw new Error("hosted evidence readiness response differs from the exact fixture contract");
   }
-  return { status: "HOSTED_EVIDENCE_READY", model: "NousResearch/Hermes-4-14B" };
+  return { status: "HOSTED_EVIDENCE_READY", model: "Qwen/Qwen3-32B" };
 }
 
 async function main() {
   await runFeatherlessReadinessCheck();
-  process.stdout.write('{"status":"HOSTED_EVIDENCE_READY","model":"NousResearch/Hermes-4-14B"}\n');
+  process.stdout.write('{"status":"HOSTED_EVIDENCE_READY","model":"Qwen/Qwen3-32B"}\n');
 }
 
 function readinessFailureCode(error) {

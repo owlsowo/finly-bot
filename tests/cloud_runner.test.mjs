@@ -363,7 +363,7 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
   assert.match(workflow, /FINLY_AGENT_INTERVAL_SECONDS:\s*"0"/);
   assert.match(workflow, /FINLY_USE_LOCAL_LLAMA_EVENTS:\s*"false"/);
   assert.match(workflow, /FINLY_USE_FEATHERLESS_EVENTS:\s*"true"/);
-  assert.match(workflow, /FINLY_FEATHERLESS_MODEL:\s*NousResearch\/Hermes-4-14B/);
+  assert.match(workflow, /FINLY_FEATHERLESS_MODEL:\s*Qwen\/Qwen3-32B/);
   assert.match(workflow, /FEATHERLESS_API_KEY:\s*\$\{\{ secrets\.FEATHERLESS_API_KEY \}\}/);
   assert.match(workflow, /"FEATHERLESS_API_KEY",/);
   assert.match(workflow, /required\.push\("FINLY_PAPER_MUTATION_ACK"\)/);

@@ -98,7 +98,7 @@ test("evidence extractor rejects remote endpoints and unavailable future evidenc
   );
 });
 
-test("hosted Hermes extractor is endpoint-pinned, news-only, schema-bound, and thinking-disabled", async () => {
+test("hosted Qwen extractor is endpoint-pinned, news-only, schema-bound, and thinking-disabled", async () => {
   const apiKey = "featherless-test-key-never-log";
   let requestUrl;
   let request;
@@ -141,7 +141,7 @@ test("hosted Hermes extractor is endpoint-pinned, news-only, schema-bound, and t
   assert.equal(request.headers.authorization, `Bearer ${apiKey}`);
   assert.ok(request.signal instanceof AbortSignal);
   const body = JSON.parse(request.body);
-  assert.equal(body.model, "NousResearch/Hermes-4-14B");
+  assert.equal(body.model, "Qwen/Qwen3-32B");
   assert.equal(body.temperature, 0);
   assert.equal(body.max_tokens, 2_048);
   assert.deepEqual(body.chat_template_kwargs, { enable_thinking: false });
