@@ -49,7 +49,9 @@ function readinessFailureCode(error) {
   if (message === "Featherless evidence response model differs from the requested model") {
     return "MODEL_MISMATCH";
   }
-  if (message.includes("response is missing or oversized")) return "RESPONSE_SHAPE";
+  if (message.includes("response must contain exactly one tool call")) return "TOOL_CALL_COUNT";
+  if (message.includes("tool call is malformed")) return "TOOL_CALL_SHAPE";
+  if (message.startsWith("hosted evidence tool arguments contains")) return "TOOL_ARGUMENT_KEYS";
   if (error instanceof SyntaxError) return "RESPONSE_JSON";
   if (message.startsWith("evidence assessment contains")) return "ASSESSMENT_TOP_LEVEL_KEYS";
   if (message === "unsupported evidence assessment schema") return "ASSESSMENT_VERSION";

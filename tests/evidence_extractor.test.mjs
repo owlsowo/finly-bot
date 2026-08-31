@@ -112,15 +112,20 @@ test("hosted Hermes extractor is endpoint-pinned, news-only, schema-bound, and t
         ok: true,
         json: async () => ({
           model: FINLY_FEATHERLESS_MODEL,
-          choices: [{ message: { content: JSON.stringify({
-            schema_version: "model-output-is-not-schema-authority",
-            assessments: documents.map(({ record }) => ({
-              evidence_id: record.evidence_id,
-              direction_score: -0.2,
-              volatility_score: 0.25,
-              rationale: "The supplied public event implies modest downside volatility.",
-            })),
-          }) } }],
+          choices: [{ message: { tool_calls: [{
+            type: "function",
+            function: {
+              name: "submit_evidence_assessment",
+              arguments: JSON.stringify({
+                assessments: documents.map(({ record }) => ({
+                  evidence_id: record.evidence_id,
+                  direction_score: -0.2,
+                  volatility_score: 0.25,
+                  rationale: "The supplied public event implies modest downside volatility.",
+                })),
+              }),
+            },
+          }] } }],
         }),
       };
     },
@@ -140,7 +145,22 @@ test("hosted Hermes extractor is endpoint-pinned, news-only, schema-bound, and t
   assert.equal(body.temperature, 0);
   assert.equal(body.max_tokens, 2_048);
   assert.deepEqual(body.chat_template_kwargs, { enable_thinking: false });
-  assert.deepEqual(body.response_format, { type: "json_object" });
+  assert.equal(Object.hasOwn(body, "response_format"), false);
+  assert.deepEqual(body.tool_choice, {
+    type: "function",
+    function: { name: "submit_evidence_assessment" },
+  });
+  assert.equal(body.tools.length, 1);
+  assert.equal(body.tools[0].function.name, "submit_evidence_assessment");
+  assert.deepEqual(body.tools[0].function.parameters.required, ["assessments"]);
+  assert.equal(body.tools[0].function.parameters.properties.assessments.minItems, documents.length);
+  assert.equal(body.tools[0].function.parameters.properties.assessments.maxItems, documents.length);
+  assert.deepEqual(
+    body.tools[0].function.parameters.properties.assessments.items.properties.evidence_id.enum,
+    documents.map(({ record }) => record.evidence_id),
+  );
+  assert.equal(request.headers["http-referer"], "https://owlsowo.github.io/finly-bot/");
+  assert.equal(request.headers["x-title"], "Finly");
   const prompt = JSON.parse(body.messages[1].content);
   assert.deepEqual(Object.keys(prompt).sort(), [
     "as_of", "documents", "instruction", "required_count", "required_evidence_ids", "underlying",
@@ -179,12 +199,18 @@ test("hosted evidence extractor rejects endpoint/model drift and invalid structu
       ok: true,
       json: async () => ({
         model: FINLY_FEATHERLESS_MODEL,
-        choices: [{ message: { content: '{"schema_version":"evidence_assessment.v1","assessments":[],"order":{"qty":99}}' } }],
+        choices: [{ message: { tool_calls: [{
+          type: "function",
+          function: {
+            name: "submit_evidence_assessment",
+            arguments: '{"assessments":[],"order":{"qty":99}}',
+          },
+        }] } }],
       }),
     }),
   });
   await assert.rejects(
     () => extractor.assessDocuments(documents, { underlying: "SPY", asOf: fixture.decision_time }),
-    /missing or unknown fields|count differs/,
+    /missing or unknown fields/,
   );
 });
