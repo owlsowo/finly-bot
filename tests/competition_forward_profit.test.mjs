@@ -13,12 +13,32 @@ const AT_1330 = "2026-08-31T13:30:00.000Z";
 const AT_1331 = "2026-08-31T13:31:00.000Z";
 const AT_1332 = "2026-08-31T13:32:00.000Z";
 const OBSERVED_AT = "2026-08-31T13:32:30.000Z";
+const COMPLETE_ACTIVITY_SNAPSHOT = Object.freeze({
+  pagination_exhausted: true,
+  bounded_snapshot_stable: true,
+  all_rows_classified: true,
+  economic_activity_final: false,
+});
 
 function point(windowStartAt, valueKey, value) {
   return {
     window_start_at: windowStartAt,
     valued_at: new Date(Date.parse(windowStartAt) + 60_000).toISOString(),
     [valueKey]: value,
+  };
+}
+
+function fill(eventAt) {
+  return { kind: "FILL", event_at: eventAt, time_basis: "EXECUTION", effective_date: null, net_amount: null };
+}
+
+function nontrade(kind, eventAt, netAmount) {
+  return {
+    kind,
+    event_at: eventAt,
+    time_basis: "PUBLICATION",
+    effective_date: "2026-08-31",
+    net_amount: netAmount,
   };
 }
 
@@ -41,10 +61,10 @@ function baseInput(overrides = {}) {
       point(AT_1331, "price", 100.1),
     ],
     activities: [
-      { kind: "FILL", at: AT_1331, net_amount: null },
-      { kind: "FEE", at: AT_1331, net_amount: -5 },
+      fill(AT_1331),
+      nontrade("FEE", AT_1331, -5),
     ],
-    activitiesComplete: true,
+    activityCompleteness: COMPLETE_ACTIVITY_SNAPSHOT,
     ...overrides,
   };
 }
@@ -211,7 +231,13 @@ test("rejects malformed, future, end-boundary, duplicate, unsorted, and misnorma
 });
 
 test("withholds claims for incomplete activity pages or coverage that precedes valuation", () => {
-  const incomplete = buildCompetitionForwardProfitMeasurement(baseInput({ activitiesComplete: false }));
+  const incomplete = buildCompetitionForwardProfitMeasurement(baseInput({
+    activityCompleteness: {
+      ...COMPLETE_ACTIVITY_SNAPSHOT,
+      pagination_exhausted: false,
+      bounded_snapshot_stable: false,
+    },
+  }));
   assert.equal(incomplete.status, "WITHHELD_ACTIVITIES_INCOMPLETE");
   assert.equal(incomplete.primary_kpi, null);
   assert.equal(incomplete.drivers.fill_event_count, null);
@@ -224,7 +250,7 @@ test("withholds claims for incomplete activity pages or coverage that precedes v
 
   assert.throws(() => buildCompetitionForwardProfitMeasurement(baseInput({
     activityCoverageThrough: AT_1331,
-    activities: [{ kind: "FILL", at: AT_1332, net_amount: null }],
+    activities: [fill(AT_1332)],
   })), /exceeds declared activity coverage/u);
 
   assert.throws(() => buildCompetitionForwardProfitMeasurement(baseInput({
@@ -232,19 +258,19 @@ test("withholds claims for incomplete activity pages or coverage that precedes v
   })), /coverage time is in the future/u);
 
   assert.throws(() => buildCompetitionForwardProfitMeasurement(baseInput({
-    activities: [{ kind: "FILL", at: "2026-08-31T13:33:00.000Z", net_amount: null }],
+    activities: [fill("2026-08-31T13:33:00.000Z")],
   })), /future/u);
 });
 
 test("deposit and withdrawal events cannot cancel their way around the cashflow guardrail", () => {
   const result = buildCompetitionForwardProfitMeasurement(baseInput({
     activities: [
-      { kind: "EXTERNAL_CASHFLOW", at: AT_1331, net_amount: 1_000 },
-      { kind: "EXTERNAL_CASHFLOW", at: AT_1332, net_amount: -1_000 },
+      nontrade("EXTERNAL_CASHFLOW", AT_1331, 1_000),
+      nontrade("EXTERNAL_CASHFLOW", AT_1332, -1_000),
     ],
   }));
   assert.equal(result.status, "WITHHELD_EXTERNAL_CASHFLOW");
-  assert.equal(result.withheld_reason, "NONZERO_EXTERNAL_CASHFLOW");
+  assert.equal(result.withheld_reason, "EXTERNAL_ACTIVITY_PRESENT");
   assert.equal(result.drivers.external_cashflow_event_count, 2);
   assert.equal(result.drivers.external_cashflow_gross_absolute_dollars, 2_000);
   assert.equal(result.drivers.external_cashflow_net_dollars, 0);
@@ -253,24 +279,49 @@ test("deposit and withdrawal events cannot cancel their way around the cashflow 
 
 test("unknown classifications and missing external amounts fail closed", () => {
   const unknown = buildCompetitionForwardProfitMeasurement(baseInput({
-    activities: [{ kind: "UNKNOWN", at: AT_1331, net_amount: 0 }],
+    activities: [nontrade("UNKNOWN", AT_1331, 0)],
+    activityCompleteness: { ...COMPLETE_ACTIVITY_SNAPSHOT, all_rows_classified: false },
   }));
-  assert.equal(unknown.status, "WITHHELD_EXTERNAL_CASHFLOW");
-  assert.equal(unknown.withheld_reason, "UNKNOWN_ACTIVITY_CLASSIFICATION");
+  assert.equal(unknown.status, "WITHHELD_ACTIVITIES_INCOMPLETE");
+  assert.equal(unknown.withheld_reason, "ACCOUNT_ACTIVITY_CLASSIFICATION_INCOMPLETE");
+  assert.equal(unknown.primary_kpi, null);
 
   const missing = buildCompetitionForwardProfitMeasurement(baseInput({
-    activities: [{ kind: "EXTERNAL_CASHFLOW", at: AT_1331, net_amount: null }],
+    activities: [nontrade("EXTERNAL_CASHFLOW", AT_1331, null)],
   }));
   assert.equal(missing.status, "WITHHELD_EXTERNAL_CASHFLOW");
-  assert.equal(missing.withheld_reason, "EXTERNAL_CASHFLOW_AMOUNT_UNAVAILABLE");
+  assert.equal(missing.withheld_reason, "EXTERNAL_ACTIVITY_PRESENT");
+});
+
+test("an unclassified bounded snapshot cannot publish even when no UNKNOWN row is passed", () => {
+  const result = buildCompetitionForwardProfitMeasurement(baseInput({
+    activities: [],
+    activityCompleteness: { ...COMPLETE_ACTIVITY_SNAPSHOT, all_rows_classified: false },
+  }));
+  assert.equal(result.status, "WITHHELD_ACTIVITIES_INCOMPLETE");
+  assert.equal(result.withheld_reason, "ACCOUNT_ACTIVITY_CLASSIFICATION_INCOMPLETE");
+  assert.equal(result.primary_kpi, null);
+  assert.equal(result.drivers.fill_event_count, null);
+  assert.equal(result.integrity.claim_publishable, false);
+});
+
+test("zero-dollar security transfers still withhold the fixed-baseline profit claim", () => {
+  for (const amount of [0, null, 100, -100]) {
+    const result = buildCompetitionForwardProfitMeasurement(baseInput({
+      activities: [nontrade("EXTERNAL_CASHFLOW", AT_1331, amount)],
+    }));
+    assert.equal(result.status, "WITHHELD_EXTERNAL_CASHFLOW");
+    assert.equal(result.withheld_reason, "EXTERNAL_ACTIVITY_PRESENT");
+    assert.equal(result.drivers.external_cashflow_event_count, 1);
+  }
 });
 
 test("endogenous income remains performance while fees are reported but not double-subtracted", () => {
   const result = buildCompetitionForwardProfitMeasurement(baseInput({
     activities: [
-      { kind: "ENDOGENOUS", at: AT_1331, net_amount: 4 },
-      { kind: "FEE", at: AT_1331, net_amount: -5 },
-      { kind: "FEE", at: AT_1332, net_amount: 1 },
+      nontrade("ENDOGENOUS", AT_1331, 4),
+      nontrade("FEE", AT_1331, -5),
+      nontrade("FEE", AT_1332, 1),
     ],
   }));
   assert.equal(result.status, "MEASURED");
@@ -284,8 +335,8 @@ test("endogenous income remains performance while fees are reported but not doub
 test("counts fill events without labeling them orders or trades", () => {
   const result = buildCompetitionForwardProfitMeasurement(baseInput({
     activities: [
-      { kind: "FILL", at: AT_1331, net_amount: null },
-      { kind: "FILL", at: AT_1332, net_amount: null },
+      fill(AT_1331),
+      fill(AT_1332),
     ],
   }));
   assert.equal(result.drivers.fill_event_count, 2);
@@ -294,9 +345,7 @@ test("counts fill events without labeling them orders or trades", () => {
 
 test("normalized inputs cannot leak account, activity, order, or credential identifiers", () => {
   const input = baseInput();
-  input.activities = [{
-    kind: "FILL", at: AT_1331, net_amount: null, order_id: "paper-order-sensitive",
-  }];
+  input.activities = [{ ...fill(AT_1331), order_id: "paper-order-sensitive" }];
   assert.throws(() => buildCompetitionForwardProfitMeasurement(input), /unknown fields/u);
   const resultText = JSON.stringify(buildCompetitionForwardProfitMeasurement(baseInput()));
   assert.doesNotMatch(resultText, /account_number|activity_id|order[_-]?id|credential|secret|token/iu);
@@ -306,8 +355,14 @@ test("measurement hashing is deterministic and insertion-order independent", () 
   const result = buildCompetitionForwardProfitMeasurement(baseInput());
   const reorderedInput = baseInput();
   reorderedInput.activities = [
-    { net_amount: null, at: AT_1331, kind: "FILL" },
-    { net_amount: -5, kind: "FEE", at: AT_1331 },
+    { net_amount: null, effective_date: null, time_basis: "EXECUTION", event_at: AT_1331, kind: "FILL" },
+    {
+      net_amount: -5,
+      effective_date: "2026-08-31",
+      kind: "FEE",
+      time_basis: "PUBLICATION",
+      event_at: AT_1331,
+    },
   ];
   const repeat = buildCompetitionForwardProfitMeasurement(reorderedInput);
   assert.equal(result.measurement_hash, repeat.measurement_hash);

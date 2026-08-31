@@ -1,0 +1,49 @@
+{
+  "schema_version": "finly_forward_profit_activity_baseline.v1",
+  "baseline_id": "official-paper-activity-baseline-2026-08-31",
+  "captured_at": "2026-08-31T07:20:01.424Z",
+  "competition_window_start_at": "2026-08-31T13:30:00.000Z",
+  "production_protocol_hash": "sha256:3b3914cd0c28afcc263117fd536072ef9a17a56a7ef040cd2e9ceff876d7437e",
+  "query": {
+    "endpoint": "/v2/account/activities",
+    "direction": "asc",
+    "page_size": 100,
+    "activity_type_filter": null,
+    "time_filter": null
+  },
+  "activity_count": 1,
+  "account_id_hash": "sha256:a6fb64ecfaebd8e99f13c7a0b61586825ed8d7cdcd61b199e11b211d8ac69b4d",
+  "account_snapshot": {
+    "equity_dollars": "100000.00",
+    "cash_dollars": "100000.00",
+    "position_count": 0,
+    "open_order_count": 0
+  },
+  "account_snapshot_query": {
+    "account_endpoint": "/v2/account",
+    "positions_endpoint": "/v2/positions",
+    "open_orders_endpoint": "/v2/orders?status=open&nested=true&limit=500"
+  },
+  "activity_records": [
+    {
+      "id_hash": "sha256:b5f90b028357ce3c101125fd9850ee6042e21c14dd2c53ac13652d1c83d33752",
+      "payload_hash": "sha256:f9e34f9a35634848bda129ff0a830c2b20c43974450bd7b1608c732d0fe6554e"
+    }
+  ],
+  "activity_type_counts": {
+    "JNLC": 1
+  },
+  "preexisting_fill_count": 0,
+  "account_binding_verified": true,
+  "pagination_exhausted": true,
+  "bounded_snapshot_stable": true,
+  "sweep_count": 2,
+  "page_counts": [
+    2,
+    2
+  ],
+  "sanitized": true,
+  "raw_identifiers_persisted": false,
+  "read_only": true,
+  "baseline_hash": "sha256:dce15186c496175504b3a68e019c03e829a44132236c0c289917138306be1876"
+}

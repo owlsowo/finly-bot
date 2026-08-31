@@ -1,8 +1,8 @@
 {
   "schema_version": "finly_forward_profit_kpi_contract.v1",
   "contract_id": "official-paper-forward-profit-2026-08-31",
-  "frozen_at": "2026-08-31T06:32:05.000Z",
-  "contract_hash": "sha256:79144c447ce831adf64fdaa7f34ad3ba7a85569f83a4c31ac74435690e30c950",
+  "frozen_at": "2026-08-31T07:37:22.000Z",
+  "contract_hash": "sha256:46fa39ef0ce2887f42d6def1d282c287a3b1c3dd790cca46b3719381c89470b6",
   "competition_window": {
     "start_at": "2026-08-31T13:30:00.000Z",
     "end_at": "2026-09-04T13:30:00.000Z",
@@ -13,6 +13,11 @@
     "path": "config/g4-official-production.json",
     "protocol_id": "g4-official-production-2026-08-31",
     "protocol_hash": "sha256:3b3914cd0c28afcc263117fd536072ef9a17a56a7ef040cd2e9ceff876d7437e"
+  },
+  "activity_baseline": {
+    "path": "config/competition-forward-profit-activity-baseline.json",
+    "baseline_id": "official-paper-activity-baseline-2026-08-31",
+    "baseline_hash": "sha256:dce15186c496175504b3a68e019c03e829a44132236c0c289917138306be1876"
   },
   "primary_kpi": {
     "id": "broker_mark_to_market_net_pnl",
@@ -37,6 +42,7 @@
     "feed": "iex",
     "adjustment": "raw",
     "timeframe": "1Min",
+    "session_scope": "official_regular_market_hours_only",
     "anchor_rule": "first_official_09_30_et_bar_open",
     "valuation_rule": "latest_exact_common_completed_minute",
     "return_basis": "raw_price_return_not_total_return_or_alpha"
@@ -59,7 +65,8 @@
   ],
   "guardrails": {
     "activities_must_be_complete": true,
-    "external_cashflow_must_equal_dollars": "0.00",
+    "activity_completeness_basis": "pagination_exhausted_and_stable_bounded_snapshot_not_final_economic_settlement",
+    "external_activity_must_be_absent": true,
     "external_cashflow_activity_types": [
       "ACATC",
       "ACATS",
@@ -69,21 +76,49 @@
       "JNL",
       "JNLC",
       "JNLS",
-      "OCT"
+      "OCT",
+      "TRANS"
     ],
     "endogenous_activity_types": [
       "CFEE",
+      "CGD",
       "DIV",
+      "DIVCGL",
+      "DIVCGS",
+      "DIVFEE",
+      "DIVFT",
+      "DIVNRA",
+      "DIVROC",
+      "DIVTW",
+      "DIVTXEX",
       "FEE",
       "FILL",
       "INT",
+      "INTNRA",
+      "INTTW",
+      "MA",
+      "NC",
       "OPASN",
+      "OPCA",
+      "OPCSH",
       "OPEXC",
       "OPEXP",
       "OPXRC",
-      "PTC"
+      "OPTRD",
+      "PTC",
+      "PTR",
+      "REO",
+      "REORG",
+      "SC",
+      "SPIN",
+      "SPLIT",
+      "SSO",
+      "SSP"
     ],
     "unknown_activity_rule": "withhold",
+    "pre_window_activity_rule": "reject_any_nonbaseline_activity",
+    "pre_window_order_guard": "latest_all_order_before_window_must_precede_baseline_capture",
+    "fill_order_provenance_rule": "deterministic_g4_or_finly_options_namespace_and_shape_get_by_id_no_replacements",
     "require_exact_common_timestamp": true,
     "reject_future_points": true,
     "fee_treatment": "broker_equity_includes_reflected_fees_do_not_subtract_again"
