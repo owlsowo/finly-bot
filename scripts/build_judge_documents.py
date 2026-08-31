@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from docx import Document
+from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -24,10 +25,14 @@ DIST_DIR = ROOT / "dist/judge"
 SERIF = "Times New Roman"
 SANS = "Arial"
 MONO = "Menlo"
+MATH = "Cambria Math"
 INK = "171717"
 MUTED = "5F6368"
 LINK = "1F5A4C"
 RULE = "B8BBB8"
+WASH = "F3F5F2"
+GREEN = "246B57"
+NAVY = "17324D"
 DOCUMENT_TIMESTAMP = datetime(2026, 8, 30, 12, 0, 0, tzinfo=timezone.utc)
 
 INLINE = re.compile(r"(\[[^\]]+\]\([^)]+\)|`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)")
@@ -62,6 +67,49 @@ def set_paragraph_rule(paragraph, *, color: str = RULE, size: int = 4, space: in
     bottom.set(qn("w:sz"), str(size))
     bottom.set(qn("w:space"), str(space))
     bottom.set(qn("w:color"), color)
+
+
+def set_paragraph_shading(paragraph, color: str = WASH) -> None:
+    p_pr = paragraph._p.get_or_add_pPr()
+    shading = p_pr.find(qn("w:shd"))
+    if shading is None:
+        shading = OxmlElement("w:shd")
+        p_pr.append(shading)
+    shading.set(qn("w:fill"), color)
+
+
+def set_cell_shading(cell, color: str) -> None:
+    tc_pr = cell._tc.get_or_add_tcPr()
+    shading = tc_pr.find(qn("w:shd"))
+    if shading is None:
+        shading = OxmlElement("w:shd")
+        tc_pr.append(shading)
+    shading.set(qn("w:fill"), color)
+
+
+def set_cell_margins(cell, *, top=72, start=80, bottom=72, end=80) -> None:
+    tc_pr = cell._tc.get_or_add_tcPr()
+    margins = tc_pr.first_child_found_in("w:tcMar")
+    if margins is None:
+        margins = OxmlElement("w:tcMar")
+        tc_pr.append(margins)
+    for tag, value in (("top", top), ("start", start), ("bottom", bottom), ("end", end)):
+        node = margins.find(qn(f"w:{tag}"))
+        if node is None:
+            node = OxmlElement(f"w:{tag}")
+            margins.append(node)
+        node.set(qn("w:w"), str(value))
+        node.set(qn("w:type"), "dxa")
+
+
+def keep_table_row_together(row, *, repeat_header=False) -> None:
+    tr_pr = row._tr.get_or_add_trPr()
+    cant_split = OxmlElement("w:cantSplit")
+    tr_pr.append(cant_split)
+    if repeat_header:
+        header = OxmlElement("w:tblHeader")
+        header.set(qn("w:val"), "true")
+        tr_pr.append(header)
 
 
 def add_hyperlink(paragraph, label: str, url: str, *, size: float, font: str, bold=False) -> None:
@@ -215,7 +263,7 @@ def set_metadata(doc: Document, *, title: str, subject: str) -> None:
     properties.last_modified_by = "Bruce Wen"
     properties.subject = subject
     properties.comments = "Prepared by Bruce Wen for the Alpaca AI Trading Agents Hackathon."
-    properties.keywords = "Finly, Alpaca, trading agent, controlled delegation"
+    properties.keywords = "Finly, Alpaca, AI trading, options, risk controls"
     properties.created = DOCUMENT_TIMESTAMP
     properties.modified = DOCUMENT_TIMESTAMP
 
@@ -267,7 +315,7 @@ def build_one_page() -> Path:
             continue
 
         paragraph = doc.add_paragraph()
-        paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
         paragraph.paragraph_format.widow_control = True
         paragraph.paragraph_format.keep_together = not in_references
         if in_references:
@@ -292,29 +340,126 @@ def build_one_page() -> Path:
     return output
 
 
-def markdown_blocks(lines: list[str], start: int) -> list[tuple[str, str]]:
+def markdown_blocks(lines: list[str], start: int) -> list[tuple[str, object]]:
     blocks: list[tuple[str, str]] = []
     buffer: list[str] = []
+    code_buffer: list[str] = []
+    equation_buffer: list[str] = []
+    table_buffer: list[str] = []
+    in_code = False
+    in_equation = False
 
     def flush() -> None:
         if buffer:
             blocks.append(("paragraph", " ".join(buffer)))
             buffer.clear()
 
+    def flush_table() -> None:
+        if not table_buffer:
+            return
+        parsed: list[list[str]] = []
+        for row in table_buffer:
+            cells = [cell.strip() for cell in row.strip().strip("|").split("|")]
+            if cells and all(re.fullmatch(r":?-{3,}:?", cell) for cell in cells):
+                continue
+            parsed.append(cells)
+        if parsed:
+            blocks.append(("table", parsed))
+        table_buffer.clear()
+
     for raw in lines[start:]:
         line = raw.strip()
+        if line.startswith("```") or line.startswith("~~~"):
+            flush()
+            flush_table()
+            if in_code:
+                blocks.append(("code", "\n".join(code_buffer)))
+                code_buffer.clear()
+                in_code = False
+            else:
+                in_code = True
+            continue
+        if in_code:
+            code_buffer.append(raw.rstrip())
+            continue
+        if line == "$$":
+            flush()
+            flush_table()
+            if in_equation:
+                blocks.append(("equation", " ".join(equation_buffer)))
+                equation_buffer.clear()
+                in_equation = False
+            else:
+                in_equation = True
+            continue
+        if in_equation:
+            equation_buffer.append(line)
+            continue
+        if line.startswith("|") and line.endswith("|"):
+            flush()
+            table_buffer.append(line)
+            continue
+        flush_table()
         if line.startswith("### "):
             flush()
             blocks.append(("h2", line[4:].strip()))
         elif line.startswith("## "):
             flush()
             blocks.append(("h1", line[3:].strip()))
+        elif line.startswith("- "):
+            flush()
+            blocks.append(("bullet", line[2:].strip()))
+        elif re.match(r"^\d+\.\s+", line):
+            flush()
+            match = re.match(r"^(\d+)\.\s+(.+)", line)
+            blocks.append(("number", (match.group(1), match.group(2))))
         elif not line:
             flush()
         else:
             buffer.append(line)
     flush()
+    flush_table()
+    if code_buffer:
+        blocks.append(("code", "\n".join(code_buffer)))
+    if equation_buffer:
+        blocks.append(("equation", " ".join(equation_buffer)))
     return blocks
+
+
+def add_technical_table(doc: Document, rows: list[list[str]]) -> None:
+    if not rows:
+        return
+    column_count = max(len(row) for row in rows)
+    table = doc.add_table(rows=len(rows), cols=column_count)
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    table.autofit = True
+    table.style = "Table Grid"
+    for row_index, values in enumerate(rows):
+        keep_table_row_together(table.rows[row_index], repeat_header=row_index == 0)
+        for column_index in range(column_count):
+            cell = table.cell(row_index, column_index)
+            cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+            set_cell_margins(cell)
+            if row_index == 0:
+                set_cell_shading(cell, NAVY)
+            elif row_index % 2 == 0:
+                set_cell_shading(cell, WASH)
+            paragraph = cell.paragraphs[0]
+            paragraph.paragraph_format.space_before = Pt(0)
+            paragraph.paragraph_format.space_after = Pt(0)
+            paragraph.paragraph_format.line_spacing = 1.0
+            value = values[column_index] if column_index < len(values) else ""
+            add_inline(
+                paragraph,
+                value,
+                size=7.9 if row_index else 8.0,
+                font=SANS,
+                color="FFFFFF" if row_index == 0 else INK,
+                bold=row_index == 0,
+            )
+    after = doc.add_paragraph()
+    after.paragraph_format.space_after = Pt(0)
+    after.paragraph_format.space_before = Pt(0)
 
 
 def add_section_heading(doc: Document, text: str, *, level: int) -> None:
@@ -390,11 +535,54 @@ def build_technical_paper() -> Path:
             first_after_heading = True
             continue
 
+        if kind == "table":
+            add_technical_table(doc, value)
+            first_after_heading = False
+            continue
+
         paragraph = doc.add_paragraph()
         paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         paragraph.paragraph_format.widow_control = True
         paragraph.paragraph_format.keep_together = not in_references
-        if in_references:
+        if kind == "equation":
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            paragraph.paragraph_format.left_indent = Inches(0.24)
+            paragraph.paragraph_format.right_indent = Inches(0.24)
+            paragraph.paragraph_format.first_line_indent = Inches(0)
+            paragraph.paragraph_format.space_before = Pt(4)
+            paragraph.paragraph_format.space_after = Pt(7)
+            paragraph.paragraph_format.keep_together = True
+            set_paragraph_shading(paragraph, "F7F8F6")
+            run = paragraph.add_run(str(value))
+            set_run_font(run, MATH, 10.2, INK)
+        elif kind == "code":
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+            paragraph.paragraph_format.left_indent = Inches(0.22)
+            paragraph.paragraph_format.right_indent = Inches(0.22)
+            paragraph.paragraph_format.first_line_indent = Inches(0)
+            paragraph.paragraph_format.line_spacing = 1.0
+            paragraph.paragraph_format.space_before = Pt(3)
+            paragraph.paragraph_format.space_after = Pt(7)
+            paragraph.paragraph_format.keep_together = True
+            set_paragraph_shading(paragraph, WASH)
+            set_paragraph_rule(paragraph, color=GREEN, size=6, space=4)
+            for index, line in enumerate(str(value).splitlines()):
+                run = paragraph.add_run(line)
+                set_run_font(run, MONO, 7.7, INK)
+                if index < len(str(value).splitlines()) - 1:
+                    run.add_break()
+        elif kind in {"bullet", "number"}:
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+            paragraph.paragraph_format.left_indent = Inches(0.38)
+            paragraph.paragraph_format.first_line_indent = Inches(-0.18)
+            paragraph.paragraph_format.line_spacing = 1.08
+            paragraph.paragraph_format.space_after = Pt(3.5)
+            if kind == "bullet":
+                add_inline(paragraph, "• " + str(value), size=10.35)
+            else:
+                number, body = value
+                add_inline(paragraph, f"{number}. " + str(body), size=10.35)
+        elif in_references:
             paragraph.paragraph_format.left_indent = Inches(0.24)
             paragraph.paragraph_format.first_line_indent = Inches(-0.24)
             paragraph.paragraph_format.line_spacing = 1.0

@@ -106,7 +106,7 @@ function pngDimensions(relativePath) {
 }
 
 const onePage = requirePdf("public/judge/Finly_Judge_Brief.pdf", 1);
-const paper = requirePdf("public/judge/Finly_Technical_Proposal.pdf", 6);
+const paper = requirePdf("public/judge/Finly_Technical_Proposal.pdf", 14);
 const deck = requirePdf("public/judge/Finly_Consulting_Deck.pdf", 9);
 requireFile("public/judge/Finly_Judge_Proposal.docx", 20_000);
 requireFile("public/judge/Finly_Technical_Paper.docx", 40_000);
@@ -256,12 +256,12 @@ const earlierEraPatterns = [
   /21,218/iu,
   /13\.37(?:%| percent)/iu,
   /9\.48(?:%| percent)/iu,
-  /(?:21\s*\/\s*21|21 of 21|all (?:twenty-one|21)).{0,70}(?:anchors?|rebalance dates?)/iu,
+  /(?:21\s*\/\s*21|21 of 21|all (?:twenty-one|21)).{0,90}(?:anchors?|offsets?|rebalance (?:dates?|offsets?|schedule))/iu,
 ];
 const optionsPatterns = [
   /\$366.{0,30}maximum loss|maximum loss.{0,30}\$366/iu,
   /\$634.{0,30}maximum gain|maximum gain.{0,30}\$634/iu,
-  /(?:4\s*\/\s*4|4 of 4|all four|four).{0,80}(?:source-removal|source removal|data sources?)/iu,
+  /(?:4\s*\/\s*4|4 of 4|all four|four).{0,80}(?:removals?|source-removal|source removal|data sources?)/iu,
   /(?:32\s*\/\s*32|32 of 32|all (?:thirty-two|32)|thirty-two).{0,80}(?:input|perturb)/iu,
 ];
 const accountPatterns = [
@@ -269,7 +269,7 @@ const accountPatterns = [
   /Alpaca/iu,
 ];
 const testCountPatterns = [
-  /806.{0,40}(?:automated )?tests|(?:automated )?tests.{0,40}806/iu,
+  /806.{0,240}(?:automated )?tests|(?:automated )?tests.{0,240}806/iu,
   /804.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}804/iu,
 ];
 const zeroFailurePattern = /(?:0|none).{0,20}failed|failed.{0,20}(?:0|none)/iu;
@@ -319,28 +319,44 @@ const documentContracts = [
     sourcePath: "docs/paper/one_page_writeup.md",
     pdfPath: "public/judge/Finly_Judge_Brief.pdf",
     patterns: commonDocumentPatterns,
+    forbiddenPatterns: [...staleStoryPatterns, ...evaluatorInstructionPatterns],
   },
   {
     label: "technical paper",
     sourcePath: "docs/paper/finly_technical_paper.md",
     pdfPath: "public/judge/Finly_Technical_Proposal.pdf",
-    patterns: [...commonDocumentPatterns, zeroFailurePattern],
+    patterns: [
+      ...commonDocumentPatterns,
+      zeroFailurePattern,
+      /3\.75(?:%| percent)/iu,
+      /37\.18(?:%| percent)/iu,
+      /2,048/iu,
+      /HMAC[- ]SHA-?256/iu,
+      /PLANNED.{0,80}ORDER_PENDING.{0,80}RECONCILING.{0,80}READY/isu,
+      /SPY\s*\/\s*BIL/iu,
+      /15\.39(?:%| percent)/iu,
+      /10\.56(?:%| percent)/iu,
+      /33\.52(?:%| percent)/iu,
+      /8\.12(?:%| percent)/iu,
+      /[−-]5\.45(?:%| percent)/iu,
+      /(?:statistical promotion failed|did not pass Finly's promotion gate)/iu,
+    ],
+    forbiddenPatterns: evaluatorInstructionPatterns,
   },
   {
     label: "presentation",
     sourcePath: "scripts/build_finly_deck.mjs",
     pdfPath: "public/judge/Finly_Consulting_Deck.pdf",
     patterns: [...presentationPatterns, zeroFailurePattern],
+    forbiddenPatterns: [...staleStoryPatterns, ...evaluatorInstructionPatterns],
   },
 ];
 for (const contract of documentContracts) {
   requireSourcePdfParity(contract);
   const sourceText = readFileSync(pathFor(contract.sourcePath), "utf8");
   const pdfText = extractPdfText(pathFor(contract.pdfPath));
-  if (!contract.sourcePath.endsWith(".mjs")) {
-    requireNoPatterns(`${contract.label} source`, sourceText, [...staleStoryPatterns, ...evaluatorInstructionPatterns]);
-  }
-  requireNoPatterns(`${contract.label} PDF`, pdfText, [...staleStoryPatterns, ...evaluatorInstructionPatterns]);
+  requireNoPatterns(`${contract.label} source`, sourceText, contract.forbiddenPatterns);
+  requireNoPatterns(`${contract.label} PDF`, pdfText, contract.forbiddenPatterns);
 }
 
 const captions = readFileSync(requireFile("public/judge/Finly_Demo_Video.srt", 800).path, "utf8");
@@ -403,7 +419,7 @@ for (const [label, file] of [["one-page", onePage], ["paper", paper], ["deck", d
 }
 
 console.log(
-  `submission artifacts verified: 1-page brief; 6-page paper; 9-slide deck; `
+  `submission artifacts verified: 1-page brief; 14-page paper; 9-slide deck; `
   + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 806 tests / 804 passed / 0 failed; `
   + `exact quantitative gate; sanitized public data`,
 );

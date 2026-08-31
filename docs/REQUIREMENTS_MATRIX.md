@@ -67,7 +67,7 @@ The separate social prize accepts up to five X or LinkedIn post links created du
 ## Final release sequence
 
 1. Run `npm run verify` and reproduce it from a clean clone using the pinned runtime.
-2. Confirm the one-page brief, eight-page paper, nine-page deck, and final video open correctly; inspect their renders rather than relying only on text extraction.
+2. Confirm the one-page brief, fourteen-page paper, nine-page deck, and final video open correctly; inspect their renders rather than relying only on text extraction.
 3. Sweep every public surface for stale claims, hidden internal audits, direct competitor matchup language, secrets, account identifiers, broken links, and incorrect organizer handles.
 4. Push the ordinary release commit, wait for CI and Pages, and open every final URL from a signed-out browser.
 5. Confirm the dedicated paper account and copy its ID only into the private form.
