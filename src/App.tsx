@@ -650,7 +650,7 @@ export function DemoClient() {
           <div className="footer-brand"><img src="./brand/finly-mark.svg" alt="" /><strong>Finly</strong></div>
               <p>$38,629 retrospective ending-wealth difference · separately scored paper trading.</p>
           <p>Bruce Wen · <a href="mailto:bwen412@brandeis.edu">bwen412@brandeis.edu</a></p>
-          <p>Evidence files and rerun commands · updated {gate.evidence_as_of}</p>
+          <p>Evidence files and rerun commands · first-close evidence added 31 August 2026</p>
         </div>
       </footer>
     </>
