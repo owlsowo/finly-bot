@@ -1,38 +1,42 @@
 # Finly
 
-Finly is an AI trading agent built for one practical question: can a model help find trades without being allowed to improvise with the account? Finly lets AI read current public information and explain a market view. Ordinary code sets the position, calculates the risk, builds the exact order, and makes the final decision about whether anything can reach Alpaca paper trading.
+Finly is an AI trading agent designed around one rule: AI may study and explain a trade, but it may not control the account. Fixed, tested code chooses the direction, contracts, size, maximum loss, broker fields, and whether an order may reach Alpaca paper trading.
 
-## What we built
+Paper trading follows real market prices with virtual money. SPY is a fund that tracks the S&P 500. QQQ is a fund that tracks the Nasdaq-100.
 
-Finly has two parts. Its frozen equity strategy invests through QQQ and three sector ETFs selected by a fixed momentum rule. Its separate SPY options workflow can prepare a bull-call spread, a bear-put spread, or no trade. A human operator selected and froze the competition allocation before the forward window: XLB, XLE, and XLV alongside QQQ, with three percent of the account kept in cash. This time-bounded paper deployment was not a promotion of G4 by the research gate. The public record is available at https://owlsowo.github.io/finly-bot/data/competition-deployment-record.json.
+## Two parts, one product
 
-The options workflow uses Qwen3-32B through Featherless to read public Alpaca news and explain what matters. The model cannot choose the position size, option contracts, expiration, maximum loss, or broker fields. Code handles those decisions, checks that the prices and market data are fresh enough, and stops the trade if the facts, payoff, account limits, or order details do not agree.
+Finly Core is the base four-fund portfolio. It keeps roughly half the competition account in QQQ, divides most of the remainder across three sector funds selected for stronger longer-term price trends, and keeps 3% in cash. The competition mix was chosen and locked before paper trading began. Frozen code and evidence files retain the internal identifier G4 for reproducibility.
+
+Finly Options is a separate AI-assisted workflow. Qwen3-32B through Featherless reviews public Alpaca news and explains what supports or weakens a trade. The AI may lower confidence or stop a trade; it cannot increase risk. The live path uses prices, options data, and Alpaca news. Economic and prediction-market examples appear only in the interactive demonstration.
 
 ## Historical results
 
-In Finly's retrospective, cost-adjusted G4 simulation from 2013 through 2026, a modeled **$10,000 became $106,711**. SPY became **$68,082** over the same dates. That is a **$38,629 historical ending-wealth difference**, with a total return of **+967.11%** for G4 versus **+580.82%** for SPY after modeled five-basis-point one-way trading costs.
+In a cost-adjusted historical simulation from 2013 through 2026, a modeled **$10,000 became $106,711 with Finly Core**. SPY became **$68,082** over the same dates. That is a **$38,629 historical ending-wealth difference**, with total return of **+967.11%** for Finly Core versus **+580.82%** for SPY after modeled 0.05% one-way trading costs.
 
-The strategy was developed during research, so this result describes the historical test rather than promising what will happen next. We also ran a fixed industry version on **21,218 earlier market days** from 1927 through 2007. It returned 13.37% a year versus 9.48% for the market, stayed ahead at **21 of 21 rebalance dates**, and kept a positive advantage when modeled costs rose to 25 basis points.
+A simpler industry version was checked on **21,218 earlier market days** from 1927 through 2007. It averaged **13.37% growth per year versus 9.48% for the market**, stayed ahead in all 21 tests that changed which trading day of the month the holdings were updated, and kept a positive advantage when the trading-cost assumption rose fivefold to 0.25%.
 
-## Options example
+## Interactive options demonstration
 
-In the public options demonstration, Finly built one SPY debit spread with an exact **$366 maximum loss** and **$634 maximum gain**. The investment case survived **4 of 4 source-removal checks** and **32 of 32 input changes** before Finly prepared an Alpaca-compatible paper-order plan. A second view on the website changes the evidence and shows Finly stopping before the account takes on risk.
+In the public demonstration, Finly prepared one illustrative SPY two-option plan with an exact **$366 maximum loss** and **$634 maximum gain**. The decision remained stable after all four sources were removed one at a time and through **32 of 32 input changes** before Finly prepared a fully specified simulated Alpaca order. No broker order or fill occurred. A second view changes the evidence and shows Finly stopping before the account takes on risk. The demo shows both rising- and falling-price cases; during the competition, the live account may open only a rise-focused options trade or do nothing.
 
-## Live Alpaca product
+## Live Alpaca paper account
 
-Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. Its forward result starts from that baseline and is separate from the historical G4-versus-SPY simulation. The runner uses Alpaca's official MCP server, keeps the competition strategy fixed, records an intended action before submission, and reads the account back afterward. Its restart state is encrypted. The public dashboard shows current equity, positions, risk, and the latest decision without exposing credentials, account identifiers, or broker order identifiers. Any forward SPY comparison is measured separately at a shared timestamp.
+Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. The runner uses **Alpaca's official connection**, locks the code version allowed to trade, saves its progress before each action, and checks the broker afterward. The public dashboard publishes account value, positions, risk totals, and the latest decision without exposing credentials, account numbers, or order identifiers.
 
-At the first market close, Finly's paper account was **up $95.32** while a same-$100,000 SPY raw-price benchmark was **down $57.99** at the exact same 4:00 p.m. ET timestamp. Finly therefore finished the session **$153.31 ahead of SPY**, after 15 broker fills and with zero external cashflows. The read-only measurement is published at https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_08_31.json.
+At exactly 4:00 p.m. ET on the first market day, Finly Core was **up $95.32** while a same-$100,000 SPY price benchmark was **down $57.99**. Finly therefore finished the first session **$153.31 ahead of SPY**, after **15 broker fills** and with no deposits or withdrawals. No options position was open at that close.
 
-The public test run contains **809 automated tests: 807 passed, 0 failed, and 2 were skipped**. Those tests cover the strategy calculation, risk limits, order construction, broker translation, account checks, restart recovery, public-data filtering, and the scorer used for the competition account.
+The public verification run discovered **809 automated tests: 807 passed, 0 failed, and 2 were skipped**. They cover the portfolio calculation, causal historical timing, trading costs, option payoff, data freshness, risk limits, order construction, account checks, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
 
 ## Why it matters
 
-Most trading demos show either an attractive chart or a model-generated recommendation. Finly connects the research, the exact trade, the account checks, and the broker-shaped order in one product that a judge can inspect. The model still contributes useful market analysis, but a fluent explanation cannot silently become a larger position or a different trade.
+Most trading demos show either an attractive chart or an AI recommendation. Finly joins the research, exact trade, account checks, and broker-shaped order in one inspectable product. A persuasive AI explanation cannot silently become a larger position or a different order.
 
-## Try Finly
+## Where to start
 
-- Live product and competition account: https://owlsowo.github.io/finly-bot/
+Start with the live dashboard, then replay the “evidence agrees” and “evidence conflicts” paths in the interactive demonstration.
+
+- Product and live account: https://owlsowo.github.io/finly-bot/
 - Source repository: https://github.com/owlsowo/finly-bot
 - One-page proposal: https://owlsowo.github.io/finly-bot/judge/Finly_Judge_Brief.pdf
 - Mathematical technical note: https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf
@@ -40,10 +44,8 @@ Most trading demos show either an attractive chart or a model-generated recommen
 - Presentation: https://owlsowo.github.io/finly-bot/judge/Finly_Consulting_Deck.pdf
 - Product video: https://owlsowo.github.io/finly-bot/judge/Finly_Demo_Video.mp4
 
-Start with the live dashboard, then switch between aligned and conflicting evidence in the product demonstration. Each result links to a decision record that can be checked against the public code and data.
-
-Finly is an educational paper-trading project. Historical simulations are not live account results or promises of future returns, and the public options example is a demonstration unless the live dashboard reports a fill.
+Finly is an educational paper-trading project. Historical simulations are not live account results or promises of future returns. The public options example is a synthetic demonstration unless the live dashboard reports an options fill.
 
 ## Reproduce the public checks
 
-From a clean clone with the release-pinned Node.js 26.7.0 runtime, run `npm install && npm run verify`.
+From a clean clone with Node.js 26.7.0, run `npm install && npm run verify`.

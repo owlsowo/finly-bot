@@ -48,10 +48,11 @@ test("dashboard labels the first-close comparison without replacing the moving l
   assert.doesNotMatch(exactUnsignedFormatter[1], /signDisplay/u);
   assert.match(dashboard, /competition_forward_profit_2026_08_31\.json/);
   assert.match(dashboard, /First session \/ closing-bell score/);
-  assert.match(dashboard, /same 4:00 p\.m\. mark/);
-  assert.match(dashboard, /Finly finished \{moneyExact\.format\(firstCloseMeasurement\.secondary_kpi\.excess_pnl_dollars\)\} ahead/);
-  assert.doesNotMatch(dashboard, /Finly finished \{money\.format\(/);
-  assert.match(dashboard, /15 broker fills and zero external cashflows/);
-  assert.match(dashboard, /not the final competition result or a promise of future performance/);
+  assert.match(dashboard, /exactly 4:00 p\.m\. ET/);
+  assert.match(dashboard, /Finly ended day one \{moneyExact\.format\(firstCloseMeasurement\.secondary_kpi\.excess_pnl_dollars\)\} ahead/);
+  assert.doesNotMatch(dashboard, /Finly ended day one \{money\.format\(/);
+  assert.match(dashboard, /15 broker fill events and no money added or removed/);
+  assert.match(dashboard, /No options position was open at that close/);
+  assert.match(dashboard, /not the final competition result/);
   assert.match(dashboard, /REMOTE_SNAPSHOT_URL/);
 });

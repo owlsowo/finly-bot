@@ -152,7 +152,7 @@ test("public competition feed exposes useful totals without account, order, cred
   for (const value of Object.values(forbidden)) assert.equal(serialized.includes(value), false);
 });
 
-test("public competition feed separates the G4 equity sleeve from certified options max loss", () => {
+test("public competition feed separates Finly Core from the options maximum loss", () => {
   const snapshot = buildCompetitionLiveSnapshot({
     account: { equity: 100500, cash: 2500, options_buying_power: 2000 },
     positions: [
@@ -178,7 +178,7 @@ test("public competition feed separates the G4 equity sleeve from certified opti
   assert.equal(snapshot.exposure.option_positions, 2);
   assert.equal(snapshot.exposure.options_defined_risk_dollars, 500);
   assert.equal(snapshot.decision.status, "HOLDING");
-  assert.match(snapshot.exposure.position_summary, /equity sleeve.*defined-risk options/i);
+  assert.match(snapshot.exposure.position_summary, /four-fund base portfolio.*capped-loss options/i);
 });
 
 test("public competition feed refuses to guess options risk or accept an unknown asset class", () => {

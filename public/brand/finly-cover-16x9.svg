@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
-  <title id="title">Finly finished its first Alpaca paper-trading session $153.31 ahead of SPY</title>
-  <desc id="desc">Finly combines AI market research with deterministic risk controls and verified Alpaca paper execution.</desc>
+  <title id="title">Finly finished its first Alpaca paper-trading session $153.31 ahead of the S&amp;P 500 tracker</title>
+  <desc id="desc">Finly combines a tested base portfolio with an AI options assistant whose risk is controlled by rules.</desc>
   <rect width="1920" height="1080" fill="#f6f3ec"/>
   <rect x="0" y="0" width="44" height="1080" fill="#0d2b43"/>
 
@@ -18,7 +18,7 @@
   <text x="112" y="292" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="3">VERIFIED FIRST PAPER CLOSE · 31 AUG 2026 · 4:00 PM ET</text>
   <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-weight="700" letter-spacing="-2">
     <text x="112" y="426" font-size="86">Finly finished</text>
-    <text x="112" y="558" font-size="112">$153.31 ahead of SPY.</text>
+    <text x="112" y="558" font-size="102">$153.31 ahead of the S&amp;P 500 tracker.</text>
   </g>
   <text x="112" y="626" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="35">Same $100,000 starting point. Same closing-bell mark. Every decision inspectable.</text>
 
@@ -27,18 +27,18 @@
     <text x="112" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">FINLY PAPER ACCOUNT</text>
     <text x="112" y="850" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">+$95.32</text>
 
-    <text x="612" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">SPY · SAME CLOCK</text>
+    <text x="612" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">SPY · S&amp;P 500 TRACKER</text>
     <text x="612" y="850" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">−$57.99</text>
 
     <text x="1112" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">BROKER FILLS</text>
     <text x="1112" y="850" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">15</text>
 
-    <text x="1486" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">EXTERNAL CASHFLOW</text>
+    <text x="1486" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">DEPOSITS / WITHDRAWALS</text>
     <text x="1486" y="850" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">$0</text>
   </g>
 
   <line x1="112" y1="910" x2="1808" y2="910" stroke="#0d2b43" stroke-width="2"/>
-  <text x="112" y="982" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="34">AI researches the market. Code caps the risk. Alpaca executes.</text>
-  <text x="112" y="1032" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="19">Verified paper-account mark · Defined-risk options · Public evidence trail</text>
+  <text x="112" y="982" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="34">AI studies the market. Rules cap the risk. Alpaca executes.</text>
+  <text x="112" y="1032" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="19">Virtual-money account · Capped-loss options · Public evidence trail</text>
   <text x="1808" y="1032" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="end">FINLY SHOWS ITS WORK →</text>
 </svg>

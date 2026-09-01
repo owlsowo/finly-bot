@@ -73,13 +73,13 @@ SCENES = [
     ),
     Scene(
         "second-test",
-        "slide:4",
+        "slide:5",
         10.0,
         "This separate, 80-year industry replay returned 13.37% a year versus 9.48% for the market and stayed ahead at all 21 rebalance dates.",
     ),
     Scene(
         "how-it-works",
-        "slide:5",
+        "slide:2",
         12.0,
         "Here's how it works. Finly reads market signals and explains one view. Code chooses the position size, option legs, maximum loss, and exact Alpaca order. A final check either sends the paper trade or stops it.",
     ),

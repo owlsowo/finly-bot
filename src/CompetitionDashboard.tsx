@@ -208,6 +208,33 @@ function marketStatusCopy(snapshot: CompetitionSnapshot): string {
     : "The market is closed, so Finly is waiting in cash.";
 }
 
+function publicDecisionStory(snapshot: CompetitionSnapshot): { headline: string; explanation: string } {
+  if (snapshot.exposure.option_positions > 0) return {
+    headline: "Finly is managing an options trade with a fixed maximum loss.",
+    explanation: "The trade remains inside its pre-calculated loss limit while Finly checks the exit rules.",
+  };
+  if (snapshot.exposure.option_open_orders > 0) return {
+    headline: "A capped-loss options order is waiting for Alpaca to confirm it.",
+    explanation: "Finly will not send another order until the broker reports what happened to this one.",
+  };
+  if (snapshot.exposure.g4_equity_positions > 0) return {
+    headline: "Finly Core's four-fund portfolio is invested and being monitored.",
+    explanation: "The base portfolio remains invested. The separate options assistant will trade only when every evidence and risk check passes.",
+  };
+  if (snapshot.exposure.open_orders > 0) return {
+    headline: "Finly is setting up its four-fund base portfolio.",
+    explanation: "The virtual-money broker is processing the allocation. The options assistant remains locked until its own checks pass.",
+  };
+  if (snapshot.decision.status === "NO_TRADE") return {
+    headline: "Finly checked the market and decided not to trade.",
+    explanation: "At least one evidence, pricing, broker, or risk check did not pass, so the account stayed unchanged.",
+  };
+  return {
+    headline: "Finly is watching for a trade worth taking.",
+    explanation: "The assistant is reviewing market and options evidence. Hard rules keep the account locked until every check passes.",
+  };
+}
+
 export function CompetitionDashboard() {
   const [snapshot, setSnapshot] = useState<CompetitionSnapshot | null>(null);
   const [origin, setOrigin] = useState<SnapshotOrigin>("unavailable");
@@ -258,10 +285,10 @@ export function CompetitionDashboard() {
         <div className="shell">
           <div className="live-section-heading">
             <div>
-              <p className="kicker">Official paper account / live competition</p>
-              <h2 id="live-title">Follow Finly's separately scored $100,000 paper account.</h2>
+              <p className="kicker">Practice account / live competition</p>
+              <h2 id="live-title">Watch Finly's $100,000 paper-trading account.</h2>
             </div>
-            <p>Finly publishes only a sanitized account summary. Broker credentials, account numbers and order identifiers never reach this page.</p>
+            <p>A paper account follows real market prices without using real money. Finly publishes only a safe account summary; private broker details never reach this page.</p>
           </div>
           <div className="live-unavailable" role="status">
             <strong>{isRefreshing ? "Connecting to the latest published snapshot…" : "The latest snapshot is temporarily unavailable."}</strong>
@@ -274,6 +301,7 @@ export function CompetitionDashboard() {
   }
 
   const freshness = relativeFreshness(snapshot.snapshot_at, now);
+  const decisionStory = publicDecisionStory(snapshot);
   const resultTone = result.pnl > 0 ? "positive" : result.pnl < 0 ? "negative" : "neutral";
   const marketIsLive = snapshot.market.status === "OPEN" && snapshot.competition.phase === "LIVE";
   const feedLabel = origin === "live"
@@ -285,12 +313,12 @@ export function CompetitionDashboard() {
       <div className="shell">
         <div className="live-section-heading">
           <div>
-            <p className="kicker">Official paper account / live competition</p>
-            <h2 id="live-title">Follow Finly's separately scored $100,000 paper account.</h2>
+              <p className="kicker">Practice account / live competition</p>
+              <h2 id="live-title">Watch Finly's $100,000 paper-trading account.</h2>
           </div>
           <p>
-            This dashboard translates the latest sanitized Alpaca paper-account snapshot into plain English. Its forward
-            result starts at $100,000 and remains separate from the retrospective G4-versus-SPY simulation above.
+            A paper account follows real market prices without using real money. This dashboard shows the latest safe
+            Alpaca account summary. It starts at $100,000 and is separate from the historical Finly Core replay above.
           </p>
         </div>
 
@@ -319,17 +347,17 @@ export function CompetitionDashboard() {
 
           <div className="live-scorecard">
             <div className="live-equity-block">
-              <p>Official account equity</p>
+              <p>Current paper-account value</p>
               <strong>{money.format(snapshot.account.equity)}</strong>
               <span>Measured against a {money.format(snapshot.competition.baseline_equity)} starting balance.</span>
             </div>
             <div className={`live-pnl-block live-pnl-${resultTone}`}>
-              <p>Paper-account P&amp;L versus $100,000 baseline</p>
+              <p>Gain or loss since the $100,000 start</p>
               <div>
                 <strong>{signedMoney.format(result.pnl)}</strong>
                 <span>{signedPercent.format(result.pnlPercent)}</span>
               </div>
-              <small>The separate forward SPY comparison is measured at a shared timestamp.</small>
+              <small>The SPY comparison uses the same starting amount and exact market time.</small>
             </div>
           </div>
 
@@ -337,11 +365,12 @@ export function CompetitionDashboard() {
             <div className="first-close-proof-copy">
               <p className="kicker">First session / closing-bell score</p>
               <h3 id="first-close-proof-title">
-                Finly finished {moneyExact.format(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead of SPY at the same 4:00 p.m. mark.
+                Finly ended day one {moneyExact.format(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead of SPY, an S&amp;P 500 tracker.
               </h3>
               <p>
-                Both results start from the same $100,000 baseline and use the exact same valuation time. Finly's
-                first-session account result includes 15 broker fills and zero external cashflows.
+                Both started at $100,000 and were valued at exactly 4:00 p.m. ET. Finly's first-day account result
+                came from Finly Core's four-fund portfolio, with 15 broker fill events and no money added or removed.
+                No options position was open at that close.
               </p>
               <a href="./data/competition_forward_profit_2026_08_31.json">
                 Inspect the read-only measurement
@@ -349,14 +378,14 @@ export function CompetitionDashboard() {
             </div>
             <dl className="first-close-proof-metrics">
               <div>
-                <dt>Finly</dt>
+                <dt>Finly Core</dt>
                 <dd>{signedMoneyExact.format(firstCloseMeasurement.primary_kpi.net_pnl_dollars)}</dd>
-                <p>Paper-account P&amp;L</p>
+                <p>Virtual-money gain or loss</p>
               </div>
               <div>
                 <dt>SPY</dt>
                 <dd>{signedMoneyExact.format(firstCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars - 100_000)}</dd>
-                <p>Same-clock price benchmark</p>
+                <p>S&amp;P 500 tracker at 4:00 p.m.</p>
               </div>
               <div className="first-close-proof-win">
                 <dt>Finly advantage</dt>
@@ -365,29 +394,29 @@ export function CompetitionDashboard() {
               </div>
             </dl>
             <p className="first-close-proof-note">
-              First-session paper result, measured at 4:00 p.m. ET on August 31, 2026. SPY is a raw-price benchmark;
-              this is not the final competition result or a promise of future performance.
+              First-day paper result, measured at 4:00 p.m. ET on August 31, 2026. SPY is a fund that tracks the
+              S&amp;P 500. No options position was open at that close. This one-day comparison is not the final competition result.
             </p>
           </section>
 
           <div className="live-decision-story">
             <div>
               <p className="kicker">What Finly is doing now</p>
-              <h3>{snapshot.decision.headline}</h3>
+              <h3>{decisionStory.headline}</h3>
             </div>
-            <p>{snapshot.decision.explanation}</p>
+            <p>{decisionStory.explanation}</p>
           </div>
 
           <dl className="live-operating-metrics">
             <div>
-              <dt>G4 equity sleeve exposure</dt>
+              <dt>Currently invested in Finly Core</dt>
               <dd>{money.format(snapshot.exposure.g4_equity_market_value_dollars)}</dd>
-              <p>{snapshot.exposure.g4_equity_positions === 0 ? "The strategic sleeve is waiting in cash." : `Across ${snapshot.exposure.g4_equity_positions} diversified equity position${snapshot.exposure.g4_equity_positions === 1 ? "" : "s"}.`}</p>
+              <p>{snapshot.exposure.g4_equity_positions === 0 ? "The core portfolio is waiting in cash." : `Across ${snapshot.exposure.g4_equity_positions} diversified fund position${snapshot.exposure.g4_equity_positions === 1 ? "" : "s"}.`}</p>
             </div>
             <div>
               <dt>Options maximum loss</dt>
               <dd>{money.format(snapshot.exposure.options_defined_risk_dollars)}</dd>
-              <p>{snapshot.exposure.option_positions === 0 && snapshot.exposure.option_open_orders === 0 ? "No options overlay is currently exposed." : "Bound by Finly's certified defined-risk structure."}</p>
+              <p>{snapshot.exposure.option_positions === 0 && snapshot.exposure.option_open_orders === 0 ? "No options trade is open right now." : "The open options trade has a fixed, pre-calculated maximum loss."}</p>
             </div>
             <div>
               <dt>Per-trade risk ceiling</dt>
@@ -402,7 +431,7 @@ export function CompetitionDashboard() {
           </dl>
 
           <details className="live-technical-record">
-            <summary>Open the technical record behind this snapshot</summary>
+            <summary>Technical details for judges</summary>
             <dl>
               <div>
                 <dt>Data source</dt>
@@ -446,8 +475,8 @@ export function CompetitionDashboard() {
 
         <p className="live-privacy-note">
           This public view contains performance and risk totals only. It never publishes broker credentials, account numbers,
-          order identifiers or the private execution ledger. <a href="./data/competition-deployment-record.json">Read how the
-          operator selected and froze this competition deployment.</a>
+          order identifiers or the private execution log. <a href="./data/competition-deployment-record.json">Read the
+          technical record showing when the competition portfolio was chosen and locked.</a>
         </p>
       </div>
     </section>

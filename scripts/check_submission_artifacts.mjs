@@ -259,13 +259,13 @@ const earlierEraPatterns = [
   /21,218/iu,
   /13\.37(?:%| percent)/iu,
   /9\.48(?:%| percent)/iu,
-  /(?:21\s*\/\s*21|21 of 21|all (?:twenty-one|21)).{0,90}(?:anchors?|offsets?|rebalance (?:dates?|offsets?|schedule))/iu,
+  /(?:21\s*\/\s*21|21 of 21|all (?:twenty-one|21)).{0,120}(?:anchors?|offsets?|rebalance (?:dates?|offsets?|schedule)|monthly start dates|tests? that changed which trading day)/iu,
 ];
 const optionsPatterns = [
   /\$366.{0,30}maximum loss|maximum loss.{0,30}\$366/iu,
   /\$634.{0,30}maximum gain|maximum gain.{0,30}\$634/iu,
-  /(?:4\s*\/\s*4|4 of 4|all four|four).{0,80}(?:removals?|source-removal|source removal|data sources?)/iu,
-  /(?:32\s*\/\s*32|32 of 32|all (?:thirty-two|32)|thirty-two).{0,80}(?:input|perturb)/iu,
+  /(?:4\s*\/\s*4|4 of 4|all four|four).{0,100}(?:removals?|source-removal|source removal|data sources?|sources?.{0,20}removed)/iu,
+  /(?:32\s*\/\s*32|32 of 32|all (?:thirty-two|32)|thirty-two).{0,100}(?:input|perturb|small.{0,20}changes?)/iu,
 ];
 const accountPatterns = [
   /(?:verified.{0,80}\$100,000|\$100,000.{0,80}(?:verified|paper account))/iu,
@@ -401,7 +401,7 @@ requirePatterns("machine-readable summary", machineSummary, [
   /809 automated tests: 807 passed, 0 failed, and 2 were skipped/iu,
   /\$153\.31 ahead of SPY/iu,
   /15 broker fills/iu,
-  /Alpaca's official MCP server/iu,
+  /Alpaca's official (?:MCP server|connection)/iu,
   /Start with the live dashboard/iu,
 ]);
 requireNoPatterns("machine-readable summary", machineSummary, [...staleStoryPatterns, ...evaluatorInstructionPatterns]);
@@ -409,8 +409,8 @@ assert.doesNotMatch(normalizedText(machineSummary), /Finly (?:will|is likely to)
 
 const indexHtml = readFileSync(pathFor("index.html"), "utf8");
 requirePatterns("social metadata", indexHtml, [
-  /\$153\.31 ahead of SPY at the first close/iu,
-  /Same \$100K baseline\. Same exact 4:00 p\.m\. ET mark/iu,
+  /\$153\.31 ahead of the S&P 500 tracker after session one/iu,
+  /Same \$100K starting point and same 4:00 p\.m\. price/iu,
 ]);
 requireNoPatterns("social metadata", indexHtml, [
   /A backtest returned \+967\.11%.{0,40}Finly rejected it/iu,

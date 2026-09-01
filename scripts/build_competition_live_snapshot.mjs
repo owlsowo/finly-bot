@@ -68,14 +68,14 @@ function decisionPresentation({
     status: "COMPLETE",
     code: "OFFICIAL_WINDOW_COMPLETE",
     headline: "The official trading window is complete.",
-    explanation: "This is the latest sanitized equity and exposure snapshot from the same paper account scored by the judges.",
+    explanation: "This is the latest public account summary from the same virtual-money account scored by the judges.",
   };
   if (optionPositions > 0) {
     const closing = /EXIT|CLOS/i.test(journal.code);
     return {
       status: "HOLDING",
       code: journal.code,
-      headline: closing ? "Finly is closing a position under its risk rules." : "Finly is actively managing a defined-risk position.",
+      headline: closing ? "Finly is closing a position under its risk rules." : "Finly is managing an options position with a fixed maximum loss.",
       explanation: closing
         ? "The exit gate fired, and Finly is reconciling the closing paper order before it can take another action."
         : "The position remains inside Finly's certified loss ceiling while the exit policy checks profit, loss, and time-to-expiry conditions.",
@@ -90,14 +90,14 @@ function decisionPresentation({
   if (equityPositions > 0) return {
     status: "MONITORING",
     code: journal.code,
-    headline: "Finly's diversified equity sleeve is invested and under continuous supervision.",
-    explanation: "The strategic sleeve remains in the market while Finly monitors risk and waits for a separately certified options setup.",
+    headline: "Finly Core's four-fund portfolio is invested and being monitored.",
+    explanation: "The base portfolio remains invested while the separate options assistant waits for a setup that passes every risk check.",
   };
   if (equityOpenOrders > 0) return {
     status: "PROPOSING",
     code: journal.code,
-    headline: "Finly is establishing its diversified equity sleeve.",
-    explanation: "The paper broker is processing a deterministic allocation order; the options overlay remains independently risk-gated.",
+    headline: "Finly is establishing its four-fund base portfolio.",
+    explanation: "The virtual-money broker is processing the base allocation. The options assistant remains separate and cannot trade without passing its own checks.",
   };
   if (journal.decision === "BULL_CALL_DEBIT_SPREAD") return {
     status: "PROPOSING",
@@ -121,7 +121,7 @@ function decisionPresentation({
     status: "MONITORING",
     code: journal.code,
     headline: "Finly is monitoring the market for a setup worth taking.",
-    explanation: "The agent is reading the latest market and options evidence while deterministic controls keep broker authority locked.",
+    explanation: "The assistant is reading the latest market and options evidence while hard rules keep the broker account locked.",
   };
 }
 
@@ -334,14 +334,14 @@ export function buildCompetitionLiveSnapshot({
     : positionStatus === "PENDING"
       ? optionExposureExists
         ? "A certified options order is waiting for broker confirmation."
-        : "A diversified equity-sleeve order is waiting for broker confirmation."
+        : "A four-fund base-portfolio order is waiting for broker confirmation."
       : positionStatus === "CLOSING"
-        ? "Finly is reconciling the defined-risk position's closing order."
+        ? "Finly is checking the capped-loss position's closing order against the broker."
         : positionClasses.equity.length > 0 && positionClasses.options.length > 0
-          ? "The diversified equity sleeve is invested alongside a certified defined-risk options position."
+          ? "The four-fund base portfolio is invested alongside a capped-loss options position."
           : positionClasses.equity.length > 0
-            ? "The diversified equity sleeve is invested; no options overlay is open."
-            : "Finly is managing an open, defined-risk options position.";
+            ? "The four-fund base portfolio is invested; no options trade is open."
+            : "Finly is managing an open options position with a fixed maximum loss.";
   return {
     schema_version: "finly_competition_dashboard.v2",
     snapshot_at: snapshotAt,

@@ -277,8 +277,8 @@ def build_one_page() -> Path:
 
     doc = Document()
     section = doc.sections[0]
-    set_letter_page(section, top=0.68, bottom=0.62, left=0.88, right=0.88)
-    configure_normal_style(doc, size=11.0, line_spacing=1.15, after=7.0)
+    set_letter_page(section, top=0.58, bottom=0.52, left=0.82, right=0.82)
+    configure_normal_style(doc, size=10.45, line_spacing=1.08, after=5.0)
     add_quiet_footer(section)
 
     paragraph = doc.add_paragraph()
@@ -286,7 +286,7 @@ def build_one_page() -> Path:
     paragraph.paragraph_format.space_before = Pt(0)
     paragraph.paragraph_format.space_after = Pt(3)
     run = paragraph.add_run(title)
-    set_run_font(run, SERIF, 18.5, INK, bold=True)
+    set_run_font(run, SERIF, 17.8, INK, bold=True)
 
     paragraph = doc.add_paragraph()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -326,9 +326,9 @@ def build_one_page() -> Path:
             add_inline(paragraph, block, size=7.5, color=MUTED)
         else:
             paragraph.paragraph_format.first_line_indent = Inches(0 if first_body else 0.21)
-            paragraph.paragraph_format.line_spacing = 1.15
-            paragraph.paragraph_format.space_after = Pt(7.0)
-            add_inline(paragraph, block, size=11.0)
+            paragraph.paragraph_format.line_spacing = 1.08
+            paragraph.paragraph_format.space_after = Pt(5.0)
+            add_inline(paragraph, block, size=10.45)
             first_body = False
 
     set_metadata(doc, title=title, subject="One-page narrative proposal")

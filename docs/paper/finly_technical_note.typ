@@ -75,7 +75,7 @@
 #noindent[
   *Abstract.* Finly is a paper-trading agent built around a narrow division of authority: a language model may interpret public information, but it may not create financial exposure. A deterministic policy first computes the maximum direction and size the system is willing to consider. Model evidence can reduce that envelope or veto the decision; it cannot enlarge it. Code then enumerates defined-risk option spreads, values each candidate under two scenario models, sizes maximum loss, and binds one exact order to a short-lived cryptographic permit. A restart-safe state machine submits through Alpaca and reconciles the broker before advancing.
 
-  The competition account also holds a separate, frozen four-ETF allocation called G4. In a causal 2013--2026 simulation with five-basis-point one-way costs, a modeled \$10,000 became \$106,711 versus \$68,082 in SPY. The historical allocation and the options agent are deliberately not presented as one strategy: the former motivates the forward experiment; the latter demonstrates controlled AI delegation. At the first measured close, the paper account finished \$95.32 above its \$100,000 baseline while a same-clock SPY baseline was \$57.99 below, a \$153.31 difference. The contribution is therefore architectural as well as empirical: every capital-bearing decision has a deterministic owner, and every broker mutation can be traced to the evidence, policy, and risk state that authorized it.
+  The competition account also holds a separate, frozen four-fund allocation called *Finly Core* (internal research identifier: G4). In a causal 2013--2026 simulation with five-basis-point one-way costs, a modeled \$10,000 became \$106,711 versus \$68,082 in SPY, the fund used here to represent the S&P 500. Finly Core and the options agent are deliberately not presented as one strategy: the former motivates the forward experiment; the latter demonstrates controlled AI delegation. At the first measured close, the paper account finished \$95.32 above its \$100,000 baseline while the same-clock SPY baseline was \$57.99 below, a \$153.31 difference. The contribution is therefore architectural as well as empirical: every capital-bearing decision has a rules-based owner, and every broker mutation can be traced to the evidence, policy, and risk state that authorized it.
 ]
 
 = The problem: useful judgment without unbounded authority
@@ -98,9 +98,9 @@ The remainder derives those three claims and states where the available evidence
 
 #pagebreak()
 
-= The frozen G4 allocation
+= Finly Core: the frozen allocation
 
-G4 supplies the competition account's equity allocation. It is not the direction model for the options branch. Its universe is QQQ and the original nine Select Sector SPDR funds. On an eligible signal close $t$, it computes twelve-to-six-month momentum
+Finly Core supplies the competition account's equity allocation. It is not the direction model for the options branch. Its universe is QQQ, a fund tracking the Nasdaq-100, and the original nine Select Sector SPDR funds. On an eligible signal close $t$, it computes twelve-to-six-month momentum
 
 $
   m_s(t) = ln frac(P_(s,t-126), P_(s,t-252)),
@@ -119,7 +119,7 @@ $ <eq:g4weights>
 The competition transform multiplies risky weights by $0.97$ and leaves three percent in cash. The frozen selection was QQQ, XLB, XLE, and XLV, producing exact target fractions $0.485$, $0.1616667$, $0.1616667$, $0.1616667$, and $0.03$ cash.
 
 #codeblock[
-*Algorithm 1 — Causal G4 allocation*
+*Algorithm 1 — Causal Finly Core allocation*
 
 1. At close $t$, compute @eq:g4momentum from observations available through $t$.
 2. Queue the target @eq:g4weights; do not earn the return into close $t$.
@@ -149,7 +149,7 @@ Each standalone window begins from cash and charges both entry and terminal liqu
 
 The design follows the empirical motivation for delayed momentum [1], but the exact universe, lookback, gap, and QQQ core were selected through research. The historical path is therefore a measured property of the frozen ledger, not an unbiased estimate of future alpha. Finly separately applies a Deflated Sharpe and maximum-statistic bootstrap audit [2,3]; the raw result did not pass statistical promotion.
 
-As a distinct stress test, a 1927--2007 industry-proxy reconstruction covered 21,218 public market days, annualized 13.37 percent versus 9.48 percent for its market proxy, and remained positive at 21 of 21 rebalance anchors. The proxy is cross-era evidence for the rule's shape, not a reconstruction of modern ETF trades.
+As a distinct stress test, a 1927--2007 industry-proxy reconstruction covered 21,218 public market days, annualized 13.37 percent versus 9.48 percent for its market proxy, and remained positive at all 21 tested trading-day schedule offsets. It passed eight of nine precommitted gates. The nominal one-sided bootstrap $p$-value was 0.0024, but the 201-trial Bonferroni adjustment produced 0.4824 and the deflated-Sharpe probability was 0.718, below the required 0.95. This proxy is cross-era evidence for the rule's shape, not independent validation or a reconstruction of modern ETF trades.
 
 #pagebreak()
 
@@ -186,7 +186,7 @@ $
   a_j = b_j q_j f_j c_j i_j,
 $ <eq:effectiveweight>
 
-where $b_j$ is a fixed base weight and the remaining factors encode declared quality, freshness, calibration, and independence. The language model receives canonical public Alpaca news and returns only bounded event scores plus short rationales. Age weighting is $exp(-"hours"/24)$; the aggregate is shrunk by $0.65$.
+where $b_j$ is a fixed base weight and the remaining factors encode declared quality, freshness, calibration, and independence. The live language-model path receives canonical public Alpaca news and returns only bounded event scores plus short rationales. Live market and option data come from Alpaca. Prediction-market evidence appears only in the synthetic interactive demonstration; it does not enter the live competition runner. Age weighting is $exp(-"hours"/24)$; the aggregate is shrunk by $0.65$.
 
 Let $d_D$ be the direction derived only from deterministic families. Adverse model evidence produces
 
@@ -207,7 +207,7 @@ For any fixed deterministic state $(u_t,d_D)$ and any admissible event assessmen
 ]
 
 #figure(
-  image("../../public/figures/technical-paper/authority-envelope.svg", width: 70%),
+  image("../../public/figures/technical-paper/authority-envelope.svg", width: 53%),
   caption: [Reduction-only authority. Negative event evidence can shrink a deterministic cap; supportive evidence cannot lift the cap.],
 ) <fig:authority>
 
@@ -217,7 +217,7 @@ This is the central safety property. Schema validation controls the shape of the
 
 = Defined-risk option compilation
 
-Once $d_t$ passes direction, coverage, and agreement gates, deterministic code enumerates same-expiry SPY vertical debit spreads. Quotes must pass age, feed, spread, open-interest, tradability, and days-to-expiry checks. Width $W$ is between \$1 and \$15. With a \$0.03 allowance on each leg, entry debit is
+Once $d_t$ passes direction, coverage, and agreement gates, rules-based code enumerates same-expiry SPY vertical debit spreads. A vertical debit spread buys one option and sells another with the same expiry, fixing maximum loss before submission. The competition path is bullish-or-`NO_TRADE`: it requires $d_t >= 0.18$, evidence coverage at least 0.35, agreement at least 0.55, a decision no older than 30 minutes, and a final SPY weight of at least 0.50. It evaluates entry only on the frozen five-session schedule after the relevant close. Quotes must also pass age, feed, spread, open-interest, tradability, and days-to-expiry checks. Width $W$ is between \$1 and \$15. With a \$0.03 allowance on each leg, entry debit is
 
 $
   D = "ask"_("long") - "bid"_("short") + 2(0.03).
@@ -240,8 +240,8 @@ $
 $ <eq:payoff>
 
 #figure(
-  image("../../public/figures/technical-paper/options-payoff.svg", width: 62%),
-  caption: [Payoff of the published synthetic SPY 560/550 bear-put fixture. Debit \$3.66 fixes the one-contract loss at \$366 before any order is considered.],
+  image("../../public/figures/technical-paper/options-payoff.svg", width: 48%),
+  caption: [Payoff of the published synthetic SPY 560/550 bear-put compiler fixture. Debit \$3.66 fixes the one-contract loss at \$366 before any order is considered. Because the competition guard is bullish-only, this fixture cannot authorize a live competition trade.],
 ) <fig:payoff>
 
 == Two-model valuation
@@ -306,9 +306,9 @@ Verification recomputes both values with timing-safe equality, requires paper mo
 Assuming collision resistance of SHA-256 and unforgeability of HMAC under secret key $k$, a certificate for order $O$ cannot authorize a materially different order $O' != O$ without either failing the body-hash comparison or producing a new valid signature.
 ]
 
-== Restart-safe execution
+== Two restart-safe broker lifecycles
 
-The cloud runner persists a signed state before every broker mutation. Its phases are
+The cloud runner persists a signed state before every broker mutation. Finly Core's equity coordinator uses
 
 $
   "PLANNED" arrow.r "ORDER_PENDING" arrow.r "RECONCILING"
@@ -316,6 +316,18 @@ $
 $ <eq:states>
 
 with any hard contradiction entering `FROZEN`. One cycle may issue at most one broker-changing call.
+
+The options lifecycle is separate:
+
+#block[
+  #set text(size: 8.1pt)
+$
+  "CREATED" arrow.r "ENTRY_ACCEPTED" arrow.r "POSITION_OPEN"
+  arrow.r "EXIT_REQUIRED" arrow.r "EXIT_ACCEPTED" arrow.r "CLOSED",
+$ <eq:optionstates>
+]
+
+with cancellation, error, and frozen branches. It additionally requires the fresh permit in @eq:hmac and a forced exit by the configured deadline. The two machines share Alpaca read-back and duplicate-prevention rules, but their states are not interchangeable.
 
 #codeblock[
 *Algorithm 2 — One conservative execution cycle*
@@ -335,11 +347,11 @@ This ordering addresses the ambiguous-acknowledgement failure: if the runner die
 
 = Quantitative evidence
 
-The principal historical comparison uses aligned adjusted closes from 2 January 2013 through 27 August 2026 and the causal timing in Algorithm 1. Both G4 and SPY begin with \$10,000 and pay five basis points for one-way turnover.
+The principal historical comparison uses aligned adjusted closes from 2 January 2013 through 27 August 2026 and the causal timing in Algorithm 1. Both Finly Core and SPY begin with \$10,000 and pay five basis points for one-way turnover.
 
 #figure(
   image("../../public/figures/technical-paper/g4-wealth-drawdown.svg", width: 98%),
-  caption: [Modeled wealth and drawdown under an identical date, lag, capital, and cost convention. G4 is the frozen historical allocation; it is not the options agent's realized P&L.],
+  caption: [Modeled wealth and drawdown under an identical date, lag, capital, and cost convention. Finly Core is the frozen historical allocation; it is not the options agent's realized P&L.],
 ) <fig:wealth>
 
 #table(
@@ -347,7 +359,7 @@ The principal historical comparison uses aligned adjusted closes from 2 January 
   inset: (x: 5pt, y: 3.5pt),
   stroke: 0.35pt + luma(190),
   align: (left, right, right),
-  table.header([*Metric*], [*G4*], [*SPY*]),
+  table.header([*Metric*], [*Finly Core*], [*SPY*]),
   [Total return], [967.11%], [580.82%],
   [Annualized return], [18.97%], [15.11%],
   [Annualized volatility], [18.01%], [16.79%],
@@ -358,7 +370,7 @@ The principal historical comparison uses aligned adjusted closes from 2 January 
 
 #source[Source: frozen public wealth ledger and quantitative release gate [6,7]. Values may differ by rounding.]
 
-The \$38,629 ending-wealth difference is the strongest simple description of the ledger. It should be read with two facts. First, G4 did not beat QQQ over the full interval; part of its return is an explicit growth allocation. Second, the candidate did not pass its selection-adjusted promotion gate: the Deflated Sharpe probability was 3.75 percent and the worst familywise bootstrap $p$-value was 37.18 percent. The result is therefore sufficiently strong to motivate a forward paper experiment, but not to establish expected future outperformance.
+The \$38,629 ending-wealth difference is the strongest simple description of the ledger. It should be read with two facts. First, Finly Core did not beat QQQ over the full interval; part of its return is an explicit growth allocation. Second, the candidate did not pass its selection-adjusted promotion gate: the Deflated Sharpe probability was 3.75 percent and the worst familywise bootstrap $p$-value was 37.18 percent. The result is therefore sufficiently strong to motivate a forward paper experiment, but not to establish expected future outperformance.
 
 The verified \$100,000 Alpaca paper account supplies a separate operational observation. At the first exact 4:00 p.m. ET close, account equity was \$100,095.32. A same-\$100,000 raw-price SPY baseline was \$99,942.01, giving a \$153.31 difference. The reconciliation record contains 15 broker *fill events* from four stock orders and zero external cashflows [8]. No live options position existed, so this is evidence for deployment and measurement, not realized options profitability.
 
@@ -372,7 +384,7 @@ Finly's novelty is not another request for a model to “pick a stock.” It is 
 
 This separation also makes failure legible. A forecast error belongs to the evidence layer; a payoff error belongs to the compiler; an oversized order belongs to risk; a repeated call belongs to the state machine. Each layer can be tested without pretending the others are correct.
 
-The principal limitations are selection bias in G4, vendor differences between historical Yahoo adjusted closes and the Alpaca signal panel, simplified close execution and fixed costs, approximation error in the two option scenario models, the possibility of language-model misinterpretation, and the short forward window. Defined loss bounds the consequence of a wrong trade; it does not make the trade right.
+The principal limitations are selection bias in Finly Core, vendor differences between historical Yahoo adjusted closes and the Alpaca signal panel, simplified close execution and fixed costs, approximation error in the two option scenario models, the possibility of language-model misinterpretation, and the short forward window. Defined loss bounds the consequence of a wrong trade; it does not make the trade right.
 
 The complete implementation, tests, evidence JSON, and build sources are public. A clean checkout uses:
 
@@ -382,7 +394,7 @@ The complete implementation, tests, evidence JSON, and build sources are public.
 `npm run verify`
 ]
 
-The technical boundary is inspectable in the source modules for the frozen G4 engine, economic authority, signal aggregation, option compiler, risk certificate, stability suite, and broker lifecycle [6,10]. The PDF figures are generated from the same public data used by the website and deck.
+The technical boundary is inspectable in the source modules for the frozen Finly Core (`G4`) engine, the separate SPY/BIL economic authority, signal aggregation, option compiler, risk certificate, stability suite, and both broker lifecycles [6,10]. The PDF figures are generated from the same public data used by the website and deck.
 
 == References
 

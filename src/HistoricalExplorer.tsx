@@ -28,6 +28,7 @@ export function HistoricalExplorer({
   const endingWealthAdvantage = candidateEndingWealth - spyEndingWealth;
   const returnAdvantage = candidateReturn - spyReturn;
   const relativeEndingWealthAdvantage = endingWealthAdvantage / spyEndingWealth;
+  const oneWayCostPercent = oneWayCostBps / 100;
   const dollars = (value: number) => value.toLocaleString("en-US", {
     maximumFractionDigits: 0,
     minimumFractionDigits: 0,
@@ -39,12 +40,12 @@ export function HistoricalExplorer({
     <section className="range-explorer" aria-labelledby="historical-explorer-title">
       <div className="range-explorer-heading">
         <div>
-          <p className="kicker">Retrospective G4 replay</p>
-          <h3 id="historical-explorer-title">$10,000 → $106,711: 56.7% more modeled ending wealth than SPY.</h3>
+          <p className="kicker">Finly Core historical replay</p>
+          <h3 id="historical-explorer-title">In this replay, Finly Core ended with 56.7% more money than SPY.</h3>
         </div>
         <p>
-          Same $10,000. Same 2013–2026 window. Costs included. The cost-adjusted replay returned +967.11% versus
-          +580.82% for SPY.
+          Both started with $10,000 and used the same 2013–2026 prices. Finly Core returned +967.11% versus
+          +580.82% for SPY, a fund that tracks the S&amp;P 500.
         </p>
       </div>
 
@@ -55,7 +56,7 @@ export function HistoricalExplorer({
           aria-controls="historical-result-panel"
           onClick={() => setView("result")}
         >
-          Performance
+          Ending wealth
         </button>
         <button
           type="button"
@@ -63,7 +64,7 @@ export function HistoricalExplorer({
           aria-controls="historical-decision-panel"
           onClick={() => setView("decision")}
         >
-          Historical difference
+          How to read this
         </button>
       </div>
 
@@ -80,7 +81,7 @@ export function HistoricalExplorer({
           >
             <div className="audit-bar-row">
               <div className="audit-bar-label">
-                <span>G4 simulation</span>
+                <span>Finly Core</span>
                 <strong>{signedPct(candidateReturn)}</strong>
               </div>
               <div className="audit-bar-track" aria-hidden="true">
@@ -89,7 +90,7 @@ export function HistoricalExplorer({
             </div>
             <div className="audit-bar-row">
               <div className="audit-bar-label">
-                <span>SPY</span>
+                <span>SPY · S&amp;P 500 tracker</span>
                 <strong>{signedPct(spyReturn)}</strong>
               </div>
               <div className="audit-bar-track" aria-hidden="true">
@@ -99,9 +100,9 @@ export function HistoricalExplorer({
           </div>
           <p className="audit-panel-conclusion">
             A simulated {dollars(startingWealth)} became approximately <strong>{dollars(candidateEndingWealth)}</strong>
-            {" "}with G4 versus <strong>{dollars(spyEndingWealth)}</strong> with SPY—a historical ending-wealth difference of
+            {" "}with Finly Core versus <strong>{dollars(spyEndingWealth)}</strong> with SPY—a historical ending-wealth difference of
             {" "}<strong>{dollars(endingWealthAdvantage)}</strong>. The replay covers {startDate} through {endDate} and
-            includes modeled {oneWayCostBps}-basis-point one-way costs.
+            includes a modeled {oneWayCostPercent.toFixed(2)}% cost whenever the portfolio trades.
           </p>
         </div>
       ) : (
@@ -117,27 +118,27 @@ export function HistoricalExplorer({
               <p>{pct(relativeEndingWealthAdvantage)} more wealth than SPY from the same simulated $10,000.</p>
             </div>
             <div>
-              <dt>Historical return difference</dt>
+              <dt>Historical growth gap</dt>
               <dd>{signedPct(returnAdvantage)}</dd>
-              <p>A 386.29-percentage-point difference across the identical retrospective window.</p>
+              <p>A 386.29-percentage-point difference across the same historical window.</p>
             </div>
             <div className="audit-disposition">
               <dt>Cost discipline</dt>
-              <dd>{oneWayCostBps} bp</dd>
-              <p>Modeled one-way transaction costs are included in the reported Finly result.</p>
+              <dd>{oneWayCostPercent.toFixed(2)}%</dd>
+              <p>The replay subtracts this modeled cost each time the portfolio trades.</p>
             </div>
           </dl>
           <p className="audit-panel-conclusion">
-            A human operator selected this G4 allocation for a separately scored paper competition and froze it before
-            the forward window. The retrospective replay is evidence for that choice, not the live result.
+            We chose this portfolio for the paper competition and locked it before the test began. The historical replay
+            explains that choice; the live paper account is measured separately.
           </p>
         </div>
       )}
 
       <p className="range-boundary">
-        <strong>Evidence basis:</strong> historical simulation from {startDate} to {endDate}; identical $10,000 starting
-        capital and comparison window; modeled {oneWayCostBps} bp one-way costs. This is not the $100,000 paper account's
-        forward score or its separate SPY comparison.
+        <strong>How this was measured:</strong> past prices from {startDate} to {endDate}; the same $10,000 starting amount
+        and dates for both portfolios; a modeled {oneWayCostPercent.toFixed(2)}% trading cost. The separate $100,000 paper
+        account appears in the live section above.
       </p>
     </section>
   );
