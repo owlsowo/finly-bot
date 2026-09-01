@@ -207,6 +207,7 @@ for (const obsolete of [
 const reviewedPublicData = [
   "attempt150_public_evidence.json",
   "competition-deployment-record.json",
+  "competition_forward_profit_2026_08_31.json",
   "competition_live.json",
   "current_economic_decision.json",
   "economic_options_overlay_replay.json",
@@ -221,6 +222,7 @@ const reviewedPublicData = [
 const hostedData = [
   "attempt150_public_evidence.json",
   "competition-deployment-record.json",
+  "competition_forward_profit_2026_08_31.json",
   "competition_live.json",
   "latest_receipt.json",
   "no_trade_receipt.json",
@@ -269,8 +271,8 @@ const accountPatterns = [
   /Alpaca/iu,
 ];
 const testCountPatterns = [
-  /806.{0,240}(?:automated )?tests|(?:automated )?tests.{0,240}806/iu,
-  /804.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}804/iu,
+  /809.{0,240}(?:automated )?tests|(?:automated )?tests.{0,240}809/iu,
+  /807.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}807/iu,
 ];
 const zeroFailurePattern = /(?:0|none).{0,20}failed|failed.{0,20}(?:0|none)/iu;
 const commonDocumentPatterns = [
@@ -377,7 +379,10 @@ requirePatterns("video captions", captions, [
   /\$634 maximum gain/iu,
   /four data sources/iu,
   /32 different ways/iu,
-  /verified \$100,000 Alpaca paper account/iu,
+  /dedicated \$100,000 Alpaca paper account/iu,
+  /Finly gained \$95\.32/iu,
+  /SPY lost \$57\.99/iu,
+  /\$153\.31 advantage/iu,
   /Every decision has a receipt/iu,
   /Follow the paper test/iu,
 ]);
@@ -397,7 +402,9 @@ const machineSummary = readFileSync(requireFile("public/llms.txt", 1_500).path, 
 requirePatterns("machine-readable summary", machineSummary, [
   ...commonDocumentPatterns,
   zeroFailurePattern,
-  /806 automated tests: 804 passed, 0 failed, and 2 were skipped/iu,
+  /809 automated tests: 807 passed, 0 failed, and 2 were skipped/iu,
+  /\$153\.31 ahead of SPY/iu,
+  /15 broker fills/iu,
   /Alpaca's official MCP server/iu,
   /Start with the live dashboard/iu,
 ]);
@@ -406,8 +413,8 @@ assert.doesNotMatch(normalizedText(machineSummary), /Finly (?:will|is likely to)
 
 const indexHtml = readFileSync(pathFor("index.html"), "utf8");
 requirePatterns("social metadata", indexHtml, [
-  /\+967\.11% historical simulation vs \+580\.82% SPY/iu,
-  /\$10K became a modeled \$106\.7K with Finly versus \$68\.1K with SPY/iu,
+  /\$153\.31 ahead of SPY at the first close/iu,
+  /Same \$100K baseline\. Same exact 4:00 p\.m\. ET mark/iu,
 ]);
 requireNoPatterns("social metadata", indexHtml, [
   /A backtest returned \+967\.11%.{0,40}Finly rejected it/iu,
@@ -420,6 +427,6 @@ for (const [label, file] of [["one-page", onePage], ["paper", paper], ["deck", d
 
 console.log(
   `submission artifacts verified: 1-page brief; 14-page paper; 9-slide deck; `
-  + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 806 tests / 804 passed / 0 failed; `
+  + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 809 tests / 807 passed / 0 failed; `
   + `exact quantitative gate; sanitized public data`,
 );

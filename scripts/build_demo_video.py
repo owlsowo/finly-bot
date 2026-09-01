@@ -34,6 +34,7 @@ GATE_PATH = ROOT / "research" / "output" / "quantitative_release_gate.json"
 EXTERNAL_REPLAY_PATH = ROOT / "public" / "data" / "attempt150_public_evidence.json"
 RECEIPT_PATH = ROOT / "public" / "data" / "latest_receipt.json"
 LIVE_ACCOUNT_PATH = ROOT / "public" / "data" / "competition_live.json"
+FIRST_CLOSE_PATH = ROOT / "public" / "data" / "competition_forward_profit_2026_08_31.json"
 
 VOICE = "en-US-AndrewMultilingualNeural"
 VOICE_RATE = "+40%"
@@ -46,6 +47,7 @@ FINAL_PAUSE = 0.55
 MIN_FINAL_SECONDS = 65.0
 MAX_FINAL_SECONDS = 80.0
 SUPPLIED_AUDIO_TEMPO = 1.25
+FIRST_CLOSE_AUDIO_TEMPO = 1.45
 
 
 @dataclass(frozen=True)
@@ -95,15 +97,15 @@ SCENES = [
     ),
     Scene(
         "risk-check",
-        "slide:7",
+        "slide:6",
         11.0,
         "This example built one S P Y spread with a $366 maximum loss and $634 maximum gain. It still passed when we removed each of four data sources and changed the inputs 32 different ways.",
     ),
     Scene(
         "live-account",
-        "asset:public/judge/video-live.jpg",
+        "slide:7",
         9.0,
-        "For the competition, we froze one allocation before the opening bell. Historical performance does not carry into its live score. The verified $100,000 Alpaca paper account reports every result.",
+        "For the competition, Finly ran in a dedicated $100,000 Alpaca paper account. At the first close, Finly gained $95.32 while S P Y lost $57.99—a $153.31 advantage.",
     ),
     Scene(
         "close",
@@ -127,6 +129,10 @@ def duration(path: Path) -> float:
         "ffprobe", "-v", "error", "-show_entries", "format=duration",
         "-of", "default=nw=1:nk=1", str(path),
     ))
+
+
+def supplied_audio_tempo(scene: Scene) -> float:
+    return FIRST_CLOSE_AUDIO_TEMPO if scene.slug == "live-account" else SUPPLIED_AUDIO_TEMPO
 
 
 def srt_time(seconds: float) -> str:
@@ -247,13 +253,29 @@ def verify_claims() -> None:
     }:
         raise RuntimeError("Paper-account verification changed")
 
+    first_close = json.loads(FIRST_CLOSE_PATH.read_text())
+    if first_close["common_valued_at"] != "2026-08-31T20:00:00.000Z":
+        raise RuntimeError("First-close common timestamp changed")
+    if first_close["primary_kpi"]["net_pnl_dollars"] != 95.32:
+        raise RuntimeError("First-close Finly P&L changed")
+    if first_close["benchmark"]["ending_value_on_same_baseline_dollars"] != 99_942.01:
+        raise RuntimeError("First-close SPY benchmark changed")
+    if first_close["secondary_kpi"]["excess_pnl_dollars"] != 153.31:
+        raise RuntimeError("First-close advantage changed")
+    if first_close["drivers"]["fill_event_count"] != 15:
+        raise RuntimeError("First-close fill count changed")
+    if first_close["drivers"]["external_cashflow_event_count"] != 0:
+        raise RuntimeError("First-close external cashflows changed")
+    if first_close["integrity"]["claim_publishable"] is not True:
+        raise RuntimeError("First-close measurement is not publishable")
+
     narration = " ".join(scene.narration for scene in SCENES)
     required = [
         "We built Finly", "Here's how it works", "Watch it run", "Change the evidence",
         "$10,000", "$106,711", "$38,629", "13.37%", "9.48%",
         "21 rebalance dates", "$366 maximum loss", "$634 maximum gain",
         "removed each of four data sources", "changed the inputs 32 different ways",
-        "$100,000 Alpaca paper account", "Historical performance does not carry into its live score",
+        "$100,000 Alpaca paper account", "$95.32", "$57.99", "$153.31 advantage",
     ]
     for phrase in required:
         if phrase.lower() not in narration.lower():
@@ -317,7 +339,7 @@ def structural_check(audio_dir: Path | None = None) -> None:
         if not resolved_audio_dir.is_dir():
             raise RuntimeError(f"Supplied narration directory does not exist: {resolved_audio_dir}")
         audio_seconds = sum(
-            duration(supplied_audio(resolved_audio_dir, index, scene)) / SUPPLIED_AUDIO_TEMPO
+            duration(supplied_audio(resolved_audio_dir, index, scene)) / supplied_audio_tempo(scene)
             for index, scene in enumerate(SCENES, start=1)
         )
         actual_with_pauses = audio_seconds + INTER_SCENE_PAUSE * (len(SCENES) - 1) + FINAL_PAUSE
@@ -394,7 +416,7 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bo
             )
 
         source_audio_duration = duration(raw_audio)
-        audio_tempo = SUPPLIED_AUDIO_TEMPO if audio_dir is not None else 1.0
+        audio_tempo = supplied_audio_tempo(scene) if audio_dir is not None else 1.0
         raw_duration = source_audio_duration / audio_tempo
         pause = INTER_SCENE_PAUSE if index < len(SCENES) else FINAL_PAUSE
         scene_duration = raw_duration + pause

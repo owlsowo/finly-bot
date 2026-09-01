@@ -8,6 +8,9 @@ if (!runtimeModules) throw new Error("RUNTIME_NODE_MODULES is required");
 const { Presentation, PresentationFile } = await import(pathToFileURL(
   path.join(runtimeModules, "@oai/artifact-tool/dist/artifact_tool.mjs"),
 ).href);
+const sharp = (await import(pathToFileURL(
+  path.join(runtimeModules, "sharp/dist/index.mjs"),
+).href)).default;
 
 const outputPath = path.resolve(process.argv[2] || path.join(ROOT, "public/judge/Finly_Consulting_Deck.pptx"));
 const evidenceDir = path.resolve(process.argv[3] || path.join(ROOT, "tmp/deck_build_v2"));
@@ -25,16 +28,22 @@ const H = 720;
 
 const wealthEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/g4_wealth_drawdown.json"), "utf8"));
 const liveEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/competition_live.json"), "utf8"));
+const firstCloseEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/competition_forward_profit_2026_08_31.json"), "utf8"));
 const optionReceipt = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/latest_receipt.json"), "utf8"));
 const externalEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/attempt150_public_evidence.json"), "utf8"));
 
 const asset = (name) => path.join(ROOT, "public", name);
+const liveScreenshot = await fs.readFile(asset("judge/finly-live-account.png"));
+const firstCloseScreenshot = await sharp(liveScreenshot)
+  .extract({ left: 0, top: 240, width: 1280, height: 480 })
+  .jpeg({ quality: 94 })
+  .toBuffer();
 const assets = {
   mark: { svg: await fs.readFile(asset("brand/finly-mark.svg"), "utf8") },
   home: { blob: await fs.readFile(asset("judge/finly-product-home.png")), contentType: "image/png" },
   aligned: { blob: await fs.readFile(asset("judge/video-controls-aligned.jpg")), contentType: "image/jpeg" },
   conflict: { blob: await fs.readFile(asset("judge/video-controls-conflict.jpg")), contentType: "image/jpeg" },
-  live: { blob: await fs.readFile(asset("judge/finly-live-account.png")), contentType: "image/png" },
+  live: { blob: firstCloseScreenshot, contentType: "image/jpeg" },
 };
 
 const presentation = Presentation.create({ slideSize: { width: W, height: H } });
@@ -206,7 +215,7 @@ function addChevron(slide, x, y, color = C.green) {
   const slide = presentation.slides.add();
   slide.background.fill = C.paper;
   addKicker(slide, "Historical replay");
-  addText(slide, "$10,000 became $106,711—$38,629 ahead of SPY.", 64, 78, 1140, 66, { fontSize: 44, bold: true });
+  addText(slide, "$10,000 became $106,711: $38,629 ahead of SPY.", 64, 78, 1140, 66, { fontSize: 44, bold: true });
   addText(slide, "2013–2026 · identical starting capital · modeled 5 bp one-way costs", 66, 151, 800, 28, { fontSize: 19, color: C.gray });
   const rows = wealthEvidence.rows;
   const sampled = rows.filter((_, idx) => idx % 50 === 0 || idx === rows.length - 1);
@@ -291,6 +300,7 @@ function addChevron(slide, x, y, color = C.green) {
   slide.charts.add("line", {
     position: { left: 64, top: 202, width: 650, height: 354 }, categories: prices.map((price) => `$${price}`),
     series: [{ name: "Expiry payoff", values: payoff, line: { style: "solid", fill: C.green, width: 5 }, marker: { symbol: "circle", size: 5 } }],
+    lineOptions: { smooth: false },
     hasLegend: false, xAxis: { visible: true, textStyle: { fill: C.gray, fontSize: 14 }, majorGridlines: null },
     yAxis: { visible: true, min: -400, max: 700, majorUnit: 200, numberFormatCode: "$#,##0", textStyle: { fill: C.gray, fontSize: 14 }, majorGridlines: { style: "solid", fill: "#D8E0DB", width: 1 } },
     chartFill: C.cream, chartLine: { style: "solid", fill: "none", width: 0 }, plotAreaFill: C.cream, plotAreaLine: { style: "solid", fill: "none", width: 0 },
@@ -326,10 +336,23 @@ function addChevron(slide, x, y, color = C.green) {
 {
   const slide = presentation.slides.add();
   slide.background.fill = C.navy;
-  addKicker(slide, "Separate forward score", C.mint);
-  addText(slide, "A human froze the allocation; the $100,000 account supplies the forward score.", 64, 78, 1140, 105, { fontSize: 44, bold: true, color: C.white });
-  addImage(slide, assets.live, 64, 214, 746, 418, { alt: "Finly live dashboard showing the verified Alpaca paper account", frameFill: C.cream, frameLine: C.mint, shadow: "shadow-lg" });
-  const bridge = [["1", "REPLAY", "$10k → $106,711", C.gold], ["2", "FREEZE", "Human-selected rule", C.mint], ["3", "SCORE", "$100,000 baseline", C.coral]];
+  addKicker(slide, "First session / closing-bell score", C.mint);
+  addText(slide, "Finly closed its first session $153.31 ahead of SPY.", 64, 78, 1140, 105, { fontSize: 44, bold: true, color: C.white });
+  addImage(slide, assets.live, 64, 230, 746, 280, {
+    alt: "Finly live dashboard showing its first-session same-clock result against SPY",
+    fit: "contain",
+    frameFill: C.cream,
+    frameLine: C.mint,
+    shadow: "shadow-lg",
+  });
+  addShape(slide, 64, 548, 746, 2, C.green);
+  addText(slide, "One receipt, one baseline, one timestamp.", 64, 568, 746, 30, { fontSize: 22, bold: true, color: C.mint });
+  addText(slide, "The public evidence file reconciles 15 broker fills and zero external cashflows.", 64, 606, 746, 46, { fontSize: 19, color: C.white });
+  const bridge = [
+    ["1", "FINLY", `+$${firstCloseEvidence.primary_kpi.net_pnl_dollars.toFixed(2)}`, C.mint],
+    ["2", "SPY", `-$${Math.abs(firstCloseEvidence.benchmark.ending_value_on_same_baseline_dollars - 100000).toFixed(2)}`, C.coral],
+    ["3", "ADVANTAGE", `+$${firstCloseEvidence.secondary_kpi.excess_pnl_dollars.toFixed(2)}`, C.gold],
+  ];
   bridge.forEach(([num, label, body, color], i) => {
     const y = 226 + i * 118;
     addShape(slide, 858, y, 54, 54, color, { geometry: "ellipse" });
@@ -339,15 +362,17 @@ function addChevron(slide, x, y, color = C.green) {
     if (i < 2) addShape(slide, 883, y + 62, 3, 48, "#527187");
   });
   addShape(slide, 858, 594, 344, 2, C.green);
-  addText(slide, "Historical upside nominates the test. The account—not the backtest—settles it.", 858, 610, 344, 56, { fontSize: 20, bold: true, color: C.mint });
+  addText(slide, "Same $100k baseline · exact 4:00 p.m. ET · 15 broker fills · zero cashflows", 858, 606, 344, 62, { fontSize: 18, bold: true, color: C.mint });
   addFooter(slide, 7, true);
   setNotes(slide, [
     "Sanitized live account: https://owlsowo.github.io/finly-bot/data/competition_live.json",
     "Public live dashboard: https://owlsowo.github.io/finly-bot/#live",
     "Human-frozen competition protocol: https://github.com/owlsowo/finly-bot/blob/main/config/g4-official-production.json",
     "Forward-score contract: https://github.com/owlsowo/finly-bot/blob/main/config/competition-forward-profit.json",
+    "First-close measurement: https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_08_31.json",
     `Verified starting equity: $${liveEvidence.account.equity.toLocaleString("en-US")}; per-trade risk ceiling: $${liveEvidence.exposure.per_trade_risk_limit_dollars}.`,
-    "Screenshot is project-owned and records paper-account state.",
+    `Exact first-close result: Finly +$${firstCloseEvidence.primary_kpi.net_pnl_dollars.toFixed(2)}, SPY -$${Math.abs(firstCloseEvidence.benchmark.ending_value_on_same_baseline_dollars - 100000).toFixed(2)}, excess +$${firstCloseEvidence.secondary_kpi.excess_pnl_dollars.toFixed(2)}.`,
+    "Screenshot is project-owned and records the public paper-account dashboard.",
   ]);
 }
 
@@ -366,9 +391,9 @@ function addChevron(slide, x, y, color = C.green) {
     addText(slide, body, 98, y + 24, 400, 34, { fontSize: 24, bold: true });
   });
   addShape(slide, 64, 560, 490, 2, C.rule);
-  addText(slide, "806", 64, 582, 110, 52, { fontSize: 46, bold: true, color: C.green });
+  addText(slide, "809", 64, 582, 110, 52, { fontSize: 46, bold: true, color: C.green });
   addText(slide, "tests discovered", 160, 592, 210, 30, { fontSize: 22, bold: true, color: C.gray });
-  addText(slide, "804 passed  ·  0 failed  ·  2 skipped", 64, 640, 500, 30, { fontSize: 21, bold: true, color: C.ink });
+  addText(slide, "807 passed  ·  0 failed  ·  2 skipped", 64, 640, 500, 30, { fontSize: 21, bold: true, color: C.ink });
   addShape(slide, 618, 594, 598, 64, C.navy, { geometry: "roundRect", borderRadius: "rounded-xl" });
   addText(slide, "Conflict → NO TRADE → $0 authorized loss", 640, 611, 554, 34, { fontSize: 21, bold: true, color: C.white, alignment: "center" });
   addFooter(slide, 8);
@@ -387,7 +412,7 @@ function addChevron(slide, x, y, color = C.green) {
   slide.background.fill = C.cream;
   addKicker(slide, "Judge the product");
   addText(slide, "Judge the live system—not the slide deck.", 64, 80, 790, 118, { fontSize: 54, bold: true });
-  addText(slide, "Watch the account. Challenge a decision. Inspect the code.", 64, 208, 780, 62, { fontSize: 28, color: C.gray });
+  addText(slide, "$153.31 ahead at the first close. Now challenge the decision and inspect the code.", 64, 208, 780, 62, { fontSize: 28, color: C.gray });
   const qrUrl = "https://quickchart.io/qr?text=https%3A%2F%2Fowlsowo.github.io%2Ffinly-bot%2F&size=500&margin=1";
   const qrResponse = await fetch(qrUrl);
   if (!qrResponse.ok) throw new Error(`QR generation failed: ${qrResponse.status}`);
@@ -404,7 +429,7 @@ function addChevron(slide, x, y, color = C.green) {
     if (i < 2) addShape(slide, 124, y + 50, 638, 1, C.rule);
   });
   addShape(slide, 64, 594, 1152, 3, C.green);
-  addText(slide, "Historical upside. Forward score. Every decision inspectable.", 64, 614, 930, 44, { fontSize: 30, bold: true, color: C.green });
+  addText(slide, "Historical upside. First-close proof. Every decision inspectable.", 64, 614, 1130, 40, { fontSize: 29, bold: true, color: C.green });
   addText(slide, "owlsowo.github.io/finly-bot", 64, 660, 540, 26, { fontSize: 20, bold: true, color: C.navy });
   addText(slide, "Bruce Wen  ·  bwen412@brandeis.edu", 810, 658, 406, 28, { fontSize: 18, color: C.gray, alignment: "right" });
   addFooter(slide, 9);
@@ -435,6 +460,7 @@ await fs.writeFile(path.join(evidenceDir, "source-notes.txt"), [
   "- External-era evidence: public/data/attempt150_public_evidence.json and Kenneth French Data Library.",
   "- Options evidence: public/data/latest_receipt.json and public/data/no_trade_receipt.json.",
   "- Live account evidence: public/data/competition_live.json.",
+  "- First-close same-clock evidence: public/data/competition_forward_profit_2026_08_31.json.",
   "- QR encodes https://owlsowo.github.io/finly-bot/.",
 ].join("\n"));
 const pptx = await PresentationFile.exportPptx(presentation);

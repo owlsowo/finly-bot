@@ -22,7 +22,9 @@ In the public options demonstration, Finly built one SPY debit spread with an ex
 
 Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. Its forward result starts from that baseline and is separate from the historical G4-versus-SPY simulation. The runner uses Alpaca's official MCP server, keeps the competition strategy fixed, records an intended action before submission, and reads the account back afterward. Its restart state is encrypted. The public dashboard shows current equity, positions, risk, and the latest decision without exposing credentials, account identifiers, or broker order identifiers. Any forward SPY comparison is measured separately at a shared timestamp.
 
-The public test run contains **806 automated tests: 804 passed, 0 failed, and 2 were skipped**. Those tests cover the strategy calculation, risk limits, order construction, broker translation, account checks, restart recovery, public-data filtering, and the scorer used for the competition account.
+At the first market close, Finly's paper account was **up $95.32** while a same-$100,000 SPY raw-price benchmark was **down $57.99** at the exact same 4:00 p.m. ET timestamp. Finly therefore finished the session **$153.31 ahead of SPY**, after 15 broker fills and with zero external cashflows. The read-only measurement is published at https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_08_31.json.
+
+The public test run contains **809 automated tests: 807 passed, 0 failed, and 2 were skipped**. Those tests cover the strategy calculation, risk limits, order construction, broker translation, account checks, restart recovery, public-data filtering, and the scorer used for the competition account.
 
 ## Why it matters
 

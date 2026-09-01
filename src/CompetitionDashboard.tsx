@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import firstCloseMeasurement from "./data/competition_forward_profit_2026_08_31.json";
 
 type MarketStatus = "OPEN" | "CLOSED" | "PRE_OPEN" | "HALTED";
 type CompetitionPhase = "READY" | "LIVE" | "COMPLETE";
@@ -70,10 +71,25 @@ const money = new Intl.NumberFormat("en-US", {
   style: "currency",
 });
 
+const moneyExact = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
+  style: "currency",
+});
+
 const signedMoney = new Intl.NumberFormat("en-US", {
   currency: "USD",
   maximumFractionDigits: 0,
   minimumFractionDigits: 0,
+  signDisplay: "always",
+  style: "currency",
+});
+
+const signedMoneyExact = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
   signDisplay: "always",
   style: "currency",
 });
@@ -316,6 +332,43 @@ export function CompetitionDashboard() {
               <small>The separate forward SPY comparison is measured at a shared timestamp.</small>
             </div>
           </div>
+
+          <section className="first-close-proof" aria-labelledby="first-close-proof-title">
+            <div className="first-close-proof-copy">
+              <p className="kicker">First session / closing-bell score</p>
+              <h3 id="first-close-proof-title">
+                Finly finished {moneyExact.format(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead of SPY at the same 4:00 p.m. mark.
+              </h3>
+              <p>
+                Both results start from the same $100,000 baseline and use the exact same valuation time. Finly's
+                first-session account result includes 15 broker fills and zero external cashflows.
+              </p>
+              <a href="./data/competition_forward_profit_2026_08_31.json">
+                Inspect the read-only measurement
+              </a>
+            </div>
+            <dl className="first-close-proof-metrics">
+              <div>
+                <dt>Finly</dt>
+                <dd>{signedMoneyExact.format(firstCloseMeasurement.primary_kpi.net_pnl_dollars)}</dd>
+                <p>Paper-account P&amp;L</p>
+              </div>
+              <div>
+                <dt>SPY</dt>
+                <dd>{signedMoneyExact.format(firstCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars - 100_000)}</dd>
+                <p>Same-clock price benchmark</p>
+              </div>
+              <div className="first-close-proof-win">
+                <dt>Finly advantage</dt>
+                <dd>{signedMoneyExact.format(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</dd>
+                <p>At the closing bell</p>
+              </div>
+            </dl>
+            <p className="first-close-proof-note">
+              First-session paper result, measured at 4:00 p.m. ET on August 31, 2026. SPY is a raw-price benchmark;
+              this is not the final competition result or a promise of future performance.
+            </p>
+          </section>
 
           <div className="live-decision-story">
             <div>

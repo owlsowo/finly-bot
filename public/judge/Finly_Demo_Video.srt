@@ -59,21 +59,25 @@ This example built one SPY spread with a $366 maximum loss and $634 maximum gain
 It still passed when we removed each of four data sources and changed the inputs 32 different ways.
 
 16
-00:00:59,831 --> 00:01:03,913
-For the competition, we froze one allocation before the opening bell.
+00:00:59,831 --> 00:01:01,597
+For the competition,
 
 17
-00:01:03,913 --> 00:01:07,253
-Historical performance does not carry into its live score.
+00:01:01,597 --> 00:01:06,895
+Finly ran in a dedicated $100,000 Alpaca paper account.
 
 18
-00:01:07,253 --> 00:01:10,593
-The verified $100,000 Alpaca paper account reports every result.
+00:01:06,895 --> 00:01:09,250
+At the first close,
 
 19
-00:01:10,793 --> 00:01:13,062
-Every decision has a receipt. Follow the paper test,
+00:01:09,250 --> 00:01:14,549
+Finly gained $95.32 while SPY lost $57.99—a $153.31 advantage.
 
 20
-00:01:13,062 --> 00:01:14,826
+00:01:14,749 --> 00:01:17,018
+Every decision has a receipt. Follow the paper test,
+
+21
+00:01:17,018 --> 00:01:18,782
 check the numbers, and read the code.

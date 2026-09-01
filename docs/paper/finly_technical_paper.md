@@ -14,7 +14,7 @@ The system has two execution branches. The first is G4, a frozen four-ETF compet
 
 The second branch is a SPY options agent. A separate long-only SPY/BIL policy supplies a bounded bullish direction or no-trade authority. Deterministic market and option-surface evidence must confirm that direction. Qwen3-32B, hosted through Featherless, sees only canonical public Alpaca news and is reduction-only: supportive prose cannot increase exposure, while adverse evidence may reduce or veto a proposal. Code enumerates defined-risk vertical debit spreads, evaluates two 2,048-path scenario models, applies conservative expected-value and probability gates, sizes maximum loss, and issues a thirty-second HMAC-signed risk certificate bound to one exact order projection. Alpaca execution proceeds through a durable state machine, deterministic client-order identifiers, pre-mutation checkpoints, broker read-back, and fail-closed reconciliation.
 
-This paper specifies the algorithms, causal timing, cost conventions, statistical tests, risk constraints, state transitions, and reproducibility boundary. The evidence supports an inspectable paper-trading experiment, not durable alpha, verified live options profit, or future outperformance.
+This paper specifies the algorithms, causal timing, cost conventions, statistical tests, risk constraints, state transitions, and reproducibility boundary. At the first closing bell, Finly was up $95.32 while the same-$100,000 SPY raw-price benchmark was down $57.99, a $153.31 advantage at one exact timestamp. The evidence supports an inspectable paper-trading experiment, not durable alpha, verified live options profit, or future outperformance.
 
 ## 1. Problem, scope, and contributions
 
@@ -473,11 +473,11 @@ GitHub Actions runs while the laptop is off. Schedule time is not authority: an 
 
 Lifecycle journals are encrypted with AES-256-GCM under a secret different from the certificate secret and stored on an isolated state branch. State is checkpointed before entry and exit mutation. The public branch contains only allowlisted competition_live.json without credentials, raw account identity, or broker IDs. GitHub Pages fetches that file; it never receives a trading secret [27].
 
-The scorer is GET-only. Primary P&L is verified account equity minus $100,000. Secondary comparison values Finly and SPY at one exact timestamp from regular-hours raw one-minute Alpaca IEX prices without forward filling. It checks the activity interval, rejects unexplained transfers, and verifies order provenance [28]. At this paper's cutoff, no live-window result existed.
+The GET-only scorer compares Finly with same-timestamp SPY and rejects cashflow or provenance breaks [28]. At the first close, Finly was +$95.32 versus SPY -$57.99 at 4:00 p.m. ET: +$153.31 after 15 fills and zero external cashflows [35].
 
 ## 10. Verification, reproducibility, and hackathon fit
 
-The public run executed 806 tests: 804 passed, none failed, and two were skipped [29]. Coverage includes schemas, evidence separation, G4 weights, causal lag, costs, option payoff, Black–Scholes, scenario determinism, removals, perturbations, risk limits, HMAC scopes, broker translation, stale preflight, duplicate recovery, encryption, calendar boundaries, forward attribution, and artifact checks. This establishes tested software behavior, not forecast accuracy or profitability.
+The public run executed 809 tests: 807 passed, none failed, and two were skipped [29]. Coverage includes schemas, evidence separation, G4 weights, causal lag, costs, option payoff, Black–Scholes, scenario determinism, removals, perturbations, risk limits, HMAC scopes, broker translation, stale preflight, duplicate recovery, encryption, calendar boundaries, forward attribution, and artifact checks. This establishes tested software behavior, not forecast accuracy or profitability.
 
 The repository pins Node.js 26.7.0. A clean reproduction begins:
 
@@ -596,3 +596,5 @@ Finly's contribution is controlled delegation: every component has a useful job,
 [33] H. White. “A Reality Check for Data Snooping.” *Econometrica* 68, no. 5 (2000): 1097–1126. [doi:10.1111/1468-0262.00152](https://doi.org/10.1111/1468-0262.00152).
 
 [34] D. H. Bailey and M. López de Prado. “The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting, and Non-Normality.” *Journal of Portfolio Management* 40, no. 5 (2014): 94–107. [doi:10.3905/jpm.2014.40.5.094](https://doi.org/10.3905/jpm.2014.40.5.094).
+
+[35] Finly. “First-Session Same-Clock Forward Measurement.” [public/data/competition_forward_profit_2026_08_31.json](https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_08_31.json).

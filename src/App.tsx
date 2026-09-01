@@ -284,7 +284,7 @@ export function DemoClient() {
               <a className="text-action" href="#controls">Try the demo <span aria-hidden="true">↓</span></a>
             </div>
             <p className="hero-thesis">
-              Everything is public: the account, the decision record, and the code.
+              Everything is inspectable: the sanitized account state, the decision record, and the code.
             </p>
           </div>
 
@@ -574,10 +574,10 @@ export function DemoClient() {
             <small>Rules were locked before measurement began.</small>
           </div>
           <div className="forward-copy">
-              <p className="kicker">How future evidence will be earned</p>
-              <h2>Two forward tests lock the rules before the market supplies the answer.</h2>
+              <p className="kicker">How additional forward evidence is being earned</p>
+              <h2>Two research trials locked their rules before the market supplied the answer.</h2>
             <p>
-              We published the strategy, dates, and decision rules before the first eligible market session.
+              These pre-registered research trials are distinct from the competition account's measured closing-bell score.
             </p>
             <ol className="forward-trials">
               {futureTests.map((test) => (

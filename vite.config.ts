@@ -6,6 +6,7 @@ import { defineConfig } from "vite";
 const hostedDataAllowlist = new Set([
   "attempt150_public_evidence.json",
   "competition-deployment-record.json",
+  "competition_forward_profit_2026_08_31.json",
   "competition_live.json",
   "latest_receipt.json",
   "no_trade_receipt.json",

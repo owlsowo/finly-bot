@@ -1,5 +1,7 @@
 # Finly
 
+![Finly finished its first Alpaca paper-trading session $153.31 ahead of same-clock SPY](public/brand/finly-cover-16x9.png)
+
 **Finly shows its work before it trades.**
 
 We built Finly to answer a simple question: can an AI research a market idea without getting unchecked control of the account?
@@ -32,6 +34,8 @@ Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper ac
 
 The [public dashboard](https://owlsowo.github.io/finly-bot/#live) shows sanitized account state, current positions, recent decisions, and paper-account P&L from the $100,000 baseline without exposing credentials or the raw account identifier. The forward SPY comparison is scored separately at a shared timestamp. The laptop does not need to stay awake.
 
+At the first closing bell, the paper account was **up $95.32** while the same-$100,000, same-timestamp SPY price benchmark was **down $57.99**. That put Finly **$153.31 ahead of SPY** at exactly 4:00 p.m. ET, after 15 broker fills and with zero external cashflows. The [read-only measurement](public/data/competition_forward_profit_2026_08_31.json) preserves the score independently of the changing after-hours account mark.
+
 ## Check the numbers
 
 The public test suite covers reproduction of the operator-selected, frozen G4 signal, option payoff arithmetic, position limits, quote freshness, account checks, lost acknowledgements, restart recovery, encrypted state, broker-field translation, and the rules used to score the live account. These implementation checks do not turn the historical simulation into a forward performance claim.
@@ -42,7 +46,7 @@ npm test
 npm run build
 ```
 
-Current public result: **806 tests run, 804 passed, 0 failed, 2 skipped.**
+Current public result: **809 tests run, 807 passed, 0 failed, 2 skipped.**
 
 Useful focused checks:
 

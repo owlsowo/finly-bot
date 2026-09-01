@@ -436,7 +436,7 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
   const dashboard = await readFile(new URL("../src/CompetitionDashboard.tsx", import.meta.url), "utf8");
   const introspection = await readFile(new URL("../scripts/introspect_alpaca_mcp.py", import.meta.url), "utf8");
   assert.match(workflow, /cancel-in-progress:\s*false/);
-  assert.match(workflow, /FINLY_CODE_VERSION:\s*ed35238f1cd701d20b821494ca13ff2a7e46eb89/);
+  assert.match(workflow, /FINLY_CODE_VERSION:\s*e0d8dc3ec374d69caf2cfaae27503a8aca2cd7f4/);
   assert.equal(
     [...workflow.matchAll(/^\s*FINLY_CODE_VERSION:/gm)].length,
     1,
