@@ -722,7 +722,7 @@ test("measurement workflow is separately pinned, read-only, scheduled, and artif
   const workflow = await readFile(
     new URL("../.github/workflows/competition-forward-profit.yml", import.meta.url), "utf8",
   );
-  assert.match(workflow, /FINLY_MEASUREMENT_CODE_VERSION: 8815b8d37bdf0e0629c88ce5bd963103a6452501/u);
+  assert.match(workflow, /FINLY_MEASUREMENT_CODE_VERSION: 2e648aa1f98e883032e97d7069b3ed5974638abe/u);
   assert.match(workflow, /permissions:\n {2}contents: read/u);
   assert.match(workflow, /node scripts\/run_competition_forward_profit\.mjs/u);
   assert.match(workflow, /actions\/upload-artifact@v6\.0\.0/u);
