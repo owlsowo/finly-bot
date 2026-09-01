@@ -33,15 +33,15 @@ Finly must not claim future profitability, next-month SPY outperformance, verifi
 | Form field or upload | Finly artifact or paste-ready source | Final check |
 | --- | --- | --- |
 | Project title, maximum 50 characters | `Finly: AI Trading That Shows Its Work` | 37 characters. |
-| Short description, maximum 255 characters | [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md) | 174 characters. Recheck after pasting. |
-| Long description, minimum 100 words | [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md) | 298 words and 1,974 characters in the current draft. |
+| Short description, maximum 255 characters | [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md) | 144 characters. Recheck after pasting. |
+| Long description, minimum 100 words and maximum 2,000 characters | [`docs/SUBMISSION_COPY.md`](SUBMISSION_COPY.md) | 316 words and 1,996 characters in the current draft. |
 | Main track | `Options Alpha Agents` | Select explicitly; do not rely on technology tags. |
 | Technologies and categories | Alpaca, Alpaca MCP, Featherless AI, Qwen3-32B, React, Vite, TypeScript, Node.js, Python, GitHub Actions | Choose the closest categories exposed by the final form. |
 | 16:9 cover image | [`finly-cover-16x9.png`](../public/brand/finly-cover-16x9.png) | Verify PNG/JPG acceptance and preview crop. |
 | Slide presentation | [`Finly_Consulting_Deck.pdf`](../public/judge/Finly_Consulting_Deck.pdf), with editable [`PPTX`](../public/judge/Finly_Consulting_Deck.pptx) | Final nine-page PDF; overflow, template fidelity, links, and rendered pages passed QA. |
-| Video presentation | [`Finly_Demo_Video.mp4`](../public/judge/Finly_Demo_Video.mp4) | Final 87.533-second, 14,625,701-byte, 1920×1080 H.264/AAC cut with ElevenLabs narration and synchronized captions; codec, duration, loudness, claims, and sampled frames passed QA. |
+| Video presentation | [`Finly_Demo_Video.mp4`](../public/judge/Finly_Demo_Video.mp4) | Final 87.533-second, 13,619,230-byte, 1920×1080 H.264/AAC cut with ElevenLabs narration and synchronized captions; codec, duration, loudness, claims, and sampled frames passed QA. |
 | Public repository | <https://github.com/owlsowo/finly-bot> | Open from a signed-out session after the final push. |
-| Demo application platform and URL | Canonical: GitHub Pages at <https://owlsowo.github.io/finly-bot/> | Use a Vercel artifact-only mirror only as hosting insurance, never as a conflicting canonical URL. |
+| Demo application platform and URL | Select `OTHER`; canonical GitHub Pages URL: <https://owlsowo.github.io/finly-bot/> | The live form accepts `OTHER`; keep one canonical URL. |
 | Alpaca paper-account ID | Stored only in the ignored local environment | Enter directly into the private form; never paste it into Git, slides, video, or social posts. |
 | Optional Additional Information | Links to the one-page essay, seven-page mathematical note, engineering appendix, source gate, and accessibility notes | Use if the live form exposes the field. |
 
