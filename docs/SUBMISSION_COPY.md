@@ -42,6 +42,10 @@ This file contains paste-ready language for the Lablab submission form and publi
 
 > Other — GitHub Pages
 
+**Additional information**
+
+> Start with the required one-page write-up: https://owlsowo.github.io/finly-bot/judge/Finly_Judge_Brief.pdf. It covers Finly's AI logic, deterministic risk gates, and Alpaca implementation. Technical judges can continue to the mathematical note (https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf) and engineering appendix (https://owlsowo.github.io/finly-bot/judge/Finly_Engineering_Appendix.pdf). The live account and interactive decision are at https://owlsowo.github.io/finly-bot/. Public evidence reproduces from the repository with `npm ci && npm run verify`: 809 tests ran, 807 passed, none failed, and two credential-dependent tests were skipped. The dedicated Alpaca account ID is entered in the required private field, not repeated here.
+
 ## Form completion checklist
 
 The Lablab form has three steps. Do not rely on public URLs for the upload fields.
