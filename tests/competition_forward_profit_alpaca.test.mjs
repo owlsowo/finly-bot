@@ -369,6 +369,29 @@ test("request plan fixes the safe cutoff and every exact GET query", () => {
   assert.equal(finalPlan.maximum_valued_at, "2026-09-04T13:29:00.000Z");
   assert.equal(finalPlan.portfolio.query.end, "2026-09-04T13:28:00.000Z");
   assert.equal(finalPlan.spy.query.end, "2026-09-04T13:28:00.000Z");
+
+  const openingPlan = buildAlpacaForwardProfitRequestPlan(
+    contract, "2026-09-01T13:31:05.000Z", marketCalendar,
+  );
+  assert.equal(openingPlan.maximum_valued_at, "2026-09-01T13:30:00.000Z");
+  assert.equal(openingPlan.portfolio.query.end, "2026-08-31T19:59:00.000Z");
+  assert.equal(openingPlan.spy.query.end, "2026-08-31T19:59:00.000Z");
+
+  const firstSessionPlan = buildAlpacaForwardProfitRequestPlan(contract, OBSERVED_AT, marketCalendar);
+  assert.equal(firstSessionPlan.portfolio.query.end, AT_1330);
+  assert.equal(firstSessionPlan.spy.query.end, AT_1330);
+
+  const intradayPlan = buildAlpacaForwardProfitRequestPlan(
+    contract, "2026-09-01T13:37:30.000Z", marketCalendar,
+  );
+  assert.equal(intradayPlan.portfolio.query.end, "2026-09-01T13:35:00.000Z");
+  assert.equal(intradayPlan.spy.query.end, "2026-09-01T13:35:00.000Z");
+
+  const afterClosePlan = buildAlpacaForwardProfitRequestPlan(
+    contract, "2026-08-31T20:02:30.000Z", marketCalendar,
+  );
+  assert.equal(afterClosePlan.portfolio.query.end, "2026-08-31T19:59:00.000Z");
+  assert.equal(afterClosePlan.spy.query.end, "2026-08-31T19:59:00.000Z");
 });
 
 test("account mismatch aborts before calendar, history, activity, or market-data reads", async () => {
