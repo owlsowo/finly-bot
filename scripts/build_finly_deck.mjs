@@ -176,7 +176,7 @@ function addChevron(slide, x, y, color = C.green) {
   addShape(slide, 64, 530, 1152, 1, C.mint);
   addMetric(slide, "$106,711", "historical ending wealth", 64, 552, 250, { valueSize: 38, valueColor: C.gold, labelColor: "#C5D4D8" });
   addMetric(slide, "+$38,629", "versus the S&P 500 tracker", 360, 552, 240, { valueSize: 38, valueColor: C.white, labelColor: "#C5D4D8", labelSize: 12 });
-  addMetric(slide, "+$153.31", "Core vs S&P tracker · day one", 650, 552, 250, { valueSize: 38, valueColor: C.mint, labelColor: "#C5D4D8", labelSize: 12 });
+  addMetric(slide, "+$153.31", "First paper session vs SPY", 650, 552, 250, { valueSize: 38, valueColor: C.mint, labelColor: "#C5D4D8", labelSize: 12 });
   addMetric(slide, "$500", "max loss / options trade", 980, 552, 210, { valueSize: 38, valueColor: C.coral, labelColor: "#C5D4D8", labelSize: 13 });
   addText(slide, "Bruce Wen  ·  Brandeis University", 64, 652, 430, 22, { fontSize: 16, color: "#AFC2C8" });
   addFooter(slide, 1, true);
@@ -257,7 +257,7 @@ function addChevron(slide, x, y, color = C.green) {
   slide.background.fill = C.paper;
   addKicker(slide, "Historical replay");
   addText(slide, "$10,000 became $106,711: $38,629 ahead of SPY.", 64, 78, 1140, 66, { fontSize: 44, bold: true });
-  addText(slide, "Finly Core is the rules-based four-fund portfolio: roughly half QQQ, half three trend-selected sectors, and 3% cash.", 66, 148, 1100, 28, { fontSize: 17, color: C.gray });
+  addText(slide, "Finly's base portfolio holds roughly half in QQQ, a Nasdaq-100 fund, half in three trend-selected sectors, and 3% in cash.", 66, 148, 1100, 28, { fontSize: 17, color: C.gray });
   addText(slide, "2013–2026 · same $10,000 start · modeled 0.05% cost per buy or sell", 66, 176, 850, 24, { fontSize: 16, color: C.gray });
   const rows = wealthEvidence.rows;
   const sampled = rows.filter((_, idx) => idx % 50 === 0 || idx === rows.length - 1);
@@ -267,7 +267,7 @@ function addChevron(slide, x, y, color = C.green) {
   slide.charts.add("line", {
     position: { left: 64, top: 210, width: 910, height: 312 }, categories,
     series: [
-      { name: "Finly Core", values: finlyWealth, line: { style: "solid", fill: C.green, width: 4 }, marker: { symbol: "none" } },
+      { name: "Finly", values: finlyWealth, line: { style: "solid", fill: C.green, width: 4 }, marker: { symbol: "none" } },
       { name: "SPY · S&P 500 tracker", values: spyWealth, line: { style: "dash", fill: C.navy, width: 3 }, marker: { symbol: "none" } },
     ],
     hasLegend: true, legend: { position: "top", overlay: false, textStyle: { fill: C.ink, fontSize: 16, bold: true } },
@@ -308,19 +308,19 @@ function addChevron(slide, x, y, color = C.green) {
   const slide = presentation.slides.add();
   slide.background.fill = C.navy;
   addKicker(slide, "A separate historical stress test", C.gold);
-  addText(slide, "An 80-year industry test stayed ahead over the full period under every monthly start date tested.", 64, 78, 1130, 110, { fontSize: 41, bold: true, color: C.white });
+  addText(slide, "An 80-year market test stayed ahead on all 21 tested monthly update days.", 64, 78, 1130, 110, { fontSize: 41, bold: true, color: C.white });
   addShape(slide, 100, 262, 1080, 4, "#527187");
   addShape(slide, 100, 252, 22, 22, C.gold, { geometry: "ellipse" });
   addShape(slide, 1158, 252, 22, 22, C.gold, { geometry: "ellipse" });
   addText(slide, "1927", 76, 286, 80, 28, { fontSize: 19, bold: true, color: C.gold, alignment: "center" });
   addText(slide, "2007", 1128, 286, 80, 28, { fontSize: 19, bold: true, color: C.gold, alignment: "center" });
   addText(slide, "21,218 public market days", 430, 224, 420, 42, { fontSize: 30, bold: true, color: C.white, alignment: "center" });
-  addText(slide, "INDUSTRY-PROXY RECONSTRUCTION", 430, 280, 420, 24, { fontSize: 13, bold: true, color: C.gold, alignment: "center" });
+  addText(slide, "SEPARATE PUBLIC INDUSTRY DATASET", 430, 280, 420, 24, { fontSize: 13, bold: true, color: C.gold, alignment: "center" });
   addMetric(slide, "13.37%", "Finly growth per year", 88, 352, 260, { valueSize: 48, valueColor: C.mint, labelColor: "#C4D4D8" });
   addText(slide, "vs 9.48% market", 88, 450, 260, 32, { fontSize: 22, color: C.white });
-  addMetric(slide, "21 / 21", "monthly start dates", 480, 352, 300, { valueSize: 48, valueColor: C.gold, labelColor: "#C4D4D8" });
+  addMetric(slide, "21 / 21", "tested monthly update days", 480, 352, 300, { valueSize: 48, valueColor: C.gold, labelColor: "#C4D4D8" });
   for (let i = 0; i < 21; i += 1) addShape(slide, 484 + (i % 11) * 23, 458 + Math.floor(i / 11) * 26, 13, 13, C.gold, { geometry: "ellipse" });
-  addMetric(slide, "+2.45 points", "edge at 0.25% trading costs", 890, 352, 280, { valueSize: 40, valueColor: C.gold, labelColor: "#C4D4D8" });
+  addMetric(slide, "+2.45 points", "more annual return after 0.25% costs", 890, 352, 280, { valueSize: 40, valueColor: C.gold, labelColor: "#C4D4D8" });
   addText(slide, "0.05%  →  0.10%  →  0.25%", 880, 450, 320, 34, { fontSize: 18, bold: true, color: C.white });
   addShape(slide, 890, 496, 232, 8, C.gold, { geometry: "roundRect", borderRadius: "rounded-xl" });
   addShape(slide, 890, 496, 78, 8, C.mint, { geometry: "roundRect", borderRadius: "rounded-xl" });
@@ -367,7 +367,7 @@ function addChevron(slide, x, y, color = C.green) {
   addText(slide, "Simulated plan · no broker order or fill", 794, 518, 360, 32, { fontSize: 17, color: "#C4D4D8" });
   addMetric(slide, "$366", "maximum loss", 80, 582, 210, { valueSize: 38, valueColor: C.coral });
   addMetric(slide, "$634", "maximum gain", 346, 582, 210, { valueSize: 38, valueColor: C.green });
-  addMetric(slide, "4 / 4", "sources removed · same result", 760, 582, 200, { valueSize: 36, valueColor: C.green, labelSize: 11 });
+  addMetric(slide, "4 / 4", "removed one at a time · same result", 760, 582, 200, { valueSize: 36, valueColor: C.green, labelSize: 11 });
   addMetric(slide, "32 / 32", "still valid after small changes", 1000, 582, 210, { valueSize: 36, valueColor: C.green, labelSize: 11 });
   addFooter(slide, 6);
   setNotes(slide, [
@@ -383,22 +383,22 @@ function addChevron(slide, x, y, color = C.green) {
   const slide = presentation.slides.add();
   slide.background.fill = C.navy;
   addKicker(slide, "Verified $100,000 paper account / first close", C.mint);
-  addText(slide, "Finly Core closed its first session $153.31 ahead of SPY.", 64, 78, 1140, 105, { fontSize: 44, bold: true, color: C.white });
+  addText(slide, "Finly closed its first paper session $153.31 ahead of SPY.", 64, 78, 1140, 105, { fontSize: 44, bold: true, color: C.white });
   addShape(slide, 64, 230, 746, 280, C.cream, { geometry: "roundRect", borderRadius: "rounded-2xl", line: { style: "solid", fill: C.mint, width: 2 }, shadow: "shadow-lg" });
   addText(slide, "SAME $100,000 START", 102, 258, 650, 24, { fontSize: 15, bold: true, color: C.green, alignment: "center" });
   addText(slide, "9:30 A.M.", 104, 304, 180, 30, { fontSize: 18, bold: true, color: C.gray, alignment: "center" });
   addText(slide, "$100,000", 102, 342, 184, 48, { fontSize: 34, bold: true, color: C.navy, alignment: "center" });
   addChevron(slide, 316, 338, C.green);
   addText(slide, "4:00 P.M.", 392, 286, 190, 30, { fontSize: 18, bold: true, color: C.green, alignment: "center" });
-  addText(slide, "Finly Core", 392, 326, 190, 24, { fontSize: 16, bold: true, color: C.green, alignment: "center" });
+  addText(slide, "Finly", 392, 326, 190, 24, { fontSize: 16, bold: true, color: C.green, alignment: "center" });
   addText(slide, "$100,095.32", 370, 356, 234, 44, { fontSize: 29, bold: true, color: C.navy, alignment: "center" });
   addText(slide, "SPY", 612, 326, 150, 24, { fontSize: 16, bold: true, color: C.coral, alignment: "center" });
   addText(slide, "$99,942.01", 586, 356, 202, 44, { fontSize: 29, bold: true, color: C.navy, alignment: "center" });
   addShape(slide, 102, 420, 660, 1, C.rule);
-  addText(slide, "15 fills built the four-fund Core portfolio · no options position was open", 102, 446, 660, 34, { fontSize: 17, color: C.gray, alignment: "center" });
+  addText(slide, "15 fill events built the four-fund base portfolio · no options position was open", 102, 446, 660, 34, { fontSize: 17, color: C.gray, alignment: "center" });
   addShape(slide, 64, 548, 746, 2, C.green);
   addText(slide, "One start, one close, one fair comparison.", 64, 568, 746, 30, { fontSize: 22, bold: true, color: C.mint });
-  addText(slide, "Finly Core produced this measured account result. The AI options demonstration is separate.", 64, 606, 746, 46, { fontSize: 18, color: C.white });
+  addText(slide, "The base portfolio produced this measured account result. The AI-assisted options demo is separate.", 64, 606, 746, 46, { fontSize: 18, color: C.white });
   addText(slide, "FINLY CORE", 858, 226, 180, 24, { fontSize: 15, bold: true, color: C.mint });
   addText(slide, `+$${firstCloseEvidence.primary_kpi.net_pnl_dollars.toFixed(2)}`, 858, 256, 300, 52, { fontSize: 34, bold: true, color: C.white });
   addText(slide, "virtual-money account profit", 858, 306, 300, 24, { fontSize: 16, color: "#C4D4D8" });
@@ -439,7 +439,7 @@ function addChevron(slide, x, y, color = C.green) {
   });
   addShape(slide, 64, 560, 490, 2, C.rule);
   addText(slide, "809", 64, 582, 110, 52, { fontSize: 46, bold: true, color: C.green });
-  addText(slide, "tests discovered", 160, 592, 210, 30, { fontSize: 22, bold: true, color: C.gray });
+  addText(slide, "automated tests", 160, 592, 210, 30, { fontSize: 22, bold: true, color: C.gray });
   addText(slide, "807 passed  ·  0 failed  ·  2 skipped", 64, 640, 500, 30, { fontSize: 21, bold: true, color: C.ink });
   addShape(slide, 618, 594, 598, 64, C.navy, { geometry: "roundRect", borderRadius: "rounded-xl" });
   addText(slide, "Conflicting evidence → no trade → $0 new options risk", 640, 611, 554, 34, { fontSize: 19, bold: true, color: C.white, alignment: "center" });

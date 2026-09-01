@@ -218,7 +218,7 @@ function publicDecisionStory(snapshot: CompetitionSnapshot): { headline: string;
     explanation: "Finly will not send another order until the broker reports what happened to this one.",
   };
   if (snapshot.exposure.g4_equity_positions > 0) return {
-    headline: "Finly Core's four-fund portfolio is invested and being monitored.",
+    headline: "Finly's four-fund base portfolio is invested and being monitored.",
     explanation: "The base portfolio remains invested. The separate options assistant will trade only when every evidence and risk check passes.",
   };
   if (snapshot.exposure.open_orders > 0) return {
@@ -318,7 +318,7 @@ export function CompetitionDashboard() {
           </div>
           <p>
             A paper account follows real market prices without using real money. This dashboard shows the latest safe
-            Alpaca account summary. It starts at $100,000 and is separate from the historical Finly Core replay above.
+            Alpaca account summary. It starts at $100,000 and is separate from the historical replay below.
           </p>
         </div>
 
@@ -345,32 +345,15 @@ export function CompetitionDashboard() {
             </p>
           )}
 
-          <div className="live-scorecard">
-            <div className="live-equity-block">
-              <p>Current paper-account value</p>
-              <strong>{money.format(snapshot.account.equity)}</strong>
-              <span>Measured against a {money.format(snapshot.competition.baseline_equity)} starting balance.</span>
-            </div>
-            <div className={`live-pnl-block live-pnl-${resultTone}`}>
-              <p>Gain or loss since the $100,000 start</p>
-              <div>
-                <strong>{signedMoney.format(result.pnl)}</strong>
-                <span>{signedPercent.format(result.pnlPercent)}</span>
-              </div>
-              <small>The SPY comparison uses the same starting amount and exact market time.</small>
-            </div>
-          </div>
-
           <section className="first-close-proof" aria-labelledby="first-close-proof-title">
             <div className="first-close-proof-copy">
-              <p className="kicker">First session / closing-bell score</p>
+              <p className="kicker">Official day-one score · locked at 4:00 p.m.</p>
               <h3 id="first-close-proof-title">
-                Finly ended day one {moneyExact.format(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead of SPY, an S&amp;P 500 tracker.
+                Finly finished its first paper-trading session {moneyExact.format(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead of SPY.
               </h3>
               <p>
-                Both started at $100,000 and were valued at exactly 4:00 p.m. ET. Finly's first-day account result
-                came from Finly Core's four-fund portfolio, with 15 broker fill events and no money added or removed.
-                No options position was open at that close.
+                Both started at $100,000 and were valued at the same closing-bell price. Finly gained $95.32;
+                SPY, a fund that tracks the S&amp;P 500, lost $57.99. No options position was open at that close.
               </p>
               <a href="./data/competition_forward_profit_2026_08_31.json">
                 Inspect the read-only measurement
@@ -378,7 +361,7 @@ export function CompetitionDashboard() {
             </div>
             <dl className="first-close-proof-metrics">
               <div>
-                <dt>Finly Core</dt>
+                <dt>Finly</dt>
                 <dd>{signedMoneyExact.format(firstCloseMeasurement.primary_kpi.net_pnl_dollars)}</dd>
                 <p>Virtual-money gain or loss</p>
               </div>
@@ -394,10 +377,36 @@ export function CompetitionDashboard() {
               </div>
             </dl>
             <p className="first-close-proof-note">
-              First-day paper result, measured at 4:00 p.m. ET on August 31, 2026. SPY is a fund that tracks the
-              S&amp;P 500. No options position was open at that close. This one-day comparison is not the final competition result.
+              Locked first-day paper result · 4:00 p.m. ET on August 31, 2026 · same starting balance and timestamp ·
+              15 broker fill events · no deposits or withdrawals. This is the locked day-one score, not the changing account mark below.
             </p>
           </section>
+
+          <div className="current-mark-heading">
+            <div>
+              <p className="kicker">Latest account mark · changes with market prices</p>
+              <h3>Where the $100,000 paper account stands now.</h3>
+            </div>
+            <p>
+              This later account value can move as Alpaca re-prices the four funds. It is not the locked day-one score above.
+            </p>
+          </div>
+
+          <div className="live-scorecard">
+            <div className="live-equity-block">
+              <p>Latest published account value</p>
+              <strong>{money.format(snapshot.account.equity)}</strong>
+              <span>Measured against a {money.format(snapshot.competition.baseline_equity)} starting balance.</span>
+            </div>
+            <div className={`live-pnl-block live-pnl-${resultTone}`}>
+              <p>Change since the $100,000 start</p>
+              <div>
+                <strong>{signedMoney.format(result.pnl)}</strong>
+                <span>{signedPercent.format(result.pnlPercent)}</span>
+              </div>
+              <small>Changing account mark · separate from the locked first-session comparison above.</small>
+            </div>
+          </div>
 
           <div className="live-decision-story">
             <div>
@@ -409,7 +418,7 @@ export function CompetitionDashboard() {
 
           <dl className="live-operating-metrics">
             <div>
-              <dt>Currently invested in Finly Core</dt>
+              <dt>Currently in the base portfolio</dt>
               <dd>{money.format(snapshot.exposure.g4_equity_market_value_dollars)}</dd>
               <p>{snapshot.exposure.g4_equity_positions === 0 ? "The core portfolio is waiting in cash." : `Across ${snapshot.exposure.g4_equity_positions} diversified fund position${snapshot.exposure.g4_equity_positions === 1 ? "" : "s"}.`}</p>
             </div>

@@ -39,7 +39,7 @@ Finly must not claim future profitability, next-month SPY outperformance, verifi
 | Technologies and categories | Alpaca, Alpaca MCP, Featherless AI, Qwen3-32B, React, Vite, TypeScript, Node.js, Python, GitHub Actions | Choose the closest categories exposed by the final form. |
 | 16:9 cover image | [`finly-cover-16x9.png`](../public/brand/finly-cover-16x9.png) | Verify PNG/JPG acceptance and preview crop. |
 | Slide presentation | [`Finly_Consulting_Deck.pdf`](../public/judge/Finly_Consulting_Deck.pdf), with editable [`PPTX`](../public/judge/Finly_Consulting_Deck.pptx) | Final nine-page PDF; overflow, template fidelity, links, and rendered pages passed QA. |
-| Video presentation | [`Finly_Demo_Video.mp4`](../public/judge/Finly_Demo_Video.mp4) | Final 79.507-second, 13,893,062-byte, 1920×1080 H.264/AAC cut with ElevenLabs narration and synchronized captions; codec, duration, loudness, claims, and sampled frames passed QA. |
+| Video presentation | [`Finly_Demo_Video.mp4`](../public/judge/Finly_Demo_Video.mp4) | Final 87.533-second, 14,625,701-byte, 1920×1080 H.264/AAC cut with ElevenLabs narration and synchronized captions; codec, duration, loudness, claims, and sampled frames passed QA. |
 | Public repository | <https://github.com/owlsowo/finly-bot> | Open from a signed-out session after the final push. |
 | Demo application platform and URL | Canonical: GitHub Pages at <https://owlsowo.github.io/finly-bot/> | Use a Vercel artifact-only mirror only as hosting insurance, never as a conflicting canonical URL. |
 | Alpaca paper-account ID | Stored only in the ignored local environment | Enter directly into the private form; never paste it into Git, slides, video, or social posts. |

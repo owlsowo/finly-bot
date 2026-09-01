@@ -14,21 +14,23 @@ This file contains paste-ready language for the Lablab submission form and publi
 
 **Short description**
 
-> Finly lets AI study trades while tested code caps the loss and controls each order. Its first $100K paper session ended $153.31 ahead of the S&P 500 fund (SPY).
+> Finly is a paper-trading bot: AI explains the market, but tested code controls the money. Its first $100K session finished $153.31 ahead of SPY.
 
 **Long description**
 
-> We built Finly around a simple belief: AI can study a trade, but it should not control the money.
+> Finly is a paper-trading bot that lets AI study the market without giving it control of the account. Paper trading follows real prices with virtual money. In Finly's first session on a dedicated $100,000 Alpaca paper account, the portfolio gained $95.32 while SPY—the fund commonly used to represent the S&P 500—lost $57.99 from the same starting point. Finly finished the session $153.31 ahead. No options position was open at that close.
 >
-> Finly has two parts. Finly Core is a rules-based portfolio that holds QQQ, three sector funds, and 3% cash. QQQ tracks the Nasdaq-100. We chose and locked the competition mix before paper trading began. Finly Options is a separate AI-assisted workflow. Qwen3-32B, hosted by Featherless, reviews public Alpaca news and explains what supports or weakens a trade. Fixed, tested code chooses the direction, contracts, size, maximum loss, and every Alpaca order field. The AI may lower confidence or stop a trade; it cannot increase the amount at risk.
+> Finly starts with a rules-based portfolio: 48.5% in QQQ, which tracks the Nasdaq-100; 48.5% divided among three sector funds with stronger longer-term price trends; and 3% in cash. We fixed the portfolio and its selection rule before paper trading began. When the evidence supports it, the same system can also consider one small SPY options trade with a defined maximum loss.
 >
-> The evidence is measurable. In a 2013–2026 historical simulation with modeled trading costs, $10,000 became $106,711 with Finly Core and $68,082 with SPY, a fund that tracks the S&P 500—a $38,629 difference in ending wealth. A simpler industry version was checked across 21,218 earlier market days. It averaged 13.37% growth per year versus 9.48% for the market, stayed ahead in all 21 tests that changed which trading day of the month the holdings were updated, and remained ahead when the trading-cost assumption increased fivefold. These are historical tests, separate from the live account.
+> Qwen3-32B, hosted by Featherless, reads public Alpaca news and explains what supports the trade, what argues against it, and what remains uncertain. The model does not decide how much money to risk or write the broker order. Fixed, tested code chooses the direction, contracts, quantity, maximum loss, and every field sent to Alpaca. The competition limit is $500 of maximum loss per options trade. AI can make Finly more cautious or stop a trade; it cannot raise that limit.
 >
-> Finly is also running in a dedicated $100,000 Alpaca paper account, which follows real prices with virtual money. At exactly 4:00 p.m. ET on its first day, Finly Core was up $95.32 while SPY was down $57.99 from the same $100,000 starting point—a $153.31 advantage. No options position was open at that close. The public dashboard shows both that recorded closing result and the changing account value.
+> Finly's historical tests provide a longer view. In a January 2013–August 2026 simulation after modeled trading costs, $10,000 became $106,711 with Finly's portfolio rule and $68,082 with SPY—a $38,629 difference in ending wealth. A simpler version built from long-running industry data was tested across 21,218 earlier market days. It averaged 13.37% growth per year versus 9.48% for the market, remained ahead in all 21 tests that changed the monthly update day, and stayed ahead when the assumed trading cost increased fivefold. These are historical simulations, separate from the live account.
 >
-> The options workflow is equally concrete. In the interactive demonstration, Finly builds a one-contract, two-option SPY plan with a $366 maximum loss and $634 maximum gain. It runs the decision again after removing each of four information sources one at a time and after 32 small input changes. No broker order or fill occurred. The demo shows both rising- and falling-price cases; during the competition, the live account may open only a rise-focused options trade or do nothing.
+> The options controls are also visible. In the interactive demonstration, Finly built a one-contract, two-option SPY plan with a $366 maximum loss and $634 maximum gain. It ran the decision again after removing each of four information sources in turn and after 32 small input changes. With conflicting evidence, the safety check blocked the order. No broker order or fill occurred in the demonstration. During the competition, the live account may open only an approved rising-price options trade—or do nothing.
 >
-> This is not a chatbot bolted onto a broker. It is an inspectable chain from market information to a checked decision and one exact paper order. A cloud runner uses Alpaca's official connection, locks the code version allowed to trade, saves its progress before each action, and publishes a safe account summary. Judges can watch the paper account, replay both the trade and no-trade demonstrations, inspect the code, and reproduce the historical evidence.
+> Finly runs in the cloud through Alpaca's official connection. It locks the version of the code allowed to trade, saves its progress before each action, and checks the paper account after an order. The public dashboard clearly separates the recorded first-close comparison from the account value that keeps changing with market prices. Judges can watch the account, replay both an approval and a safety stop, inspect the code, and reproduce the historical evidence.
+>
+> Finly's contribution is straightforward: the AI may explain an investment idea, but tested software decides whether that idea deserves money.
 
 **Technologies to select where available**
 
@@ -61,23 +63,23 @@ Each post stands on its own. Attach the 1200×630 cover to the launch post and u
 
 ### Post 1 — launch
 
-> We built Finly so AI can study a trade without controlling the account. Tested code caps the loss and controls the order. At the first 4:00 p.m. close on its $100,000 Alpaca paper account, Finly Core gained $95.32 while SPY lost $57.99—a $153.31 advantage. No options position was open. Watch it here: https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
+> We built Finly so AI can study the market without controlling the account. In its first session on a $100,000 Alpaca paper account, Finly gained $95.32 while SPY lost $57.99 from the same starting point—a $153.31 advantage at the closing bell. See the account and the evidence: https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
 
 ### Post 2 — how it works
 
-> Most trading agents ask one model to research, size, and send. Finly splits those jobs. AI explains the information. Tested code chooses the exact position and maximum loss. A final check either prepares the Alpaca paper order or leaves the account alone. Try both paths: https://owlsowo.github.io/finly-bot/#controls @lablabai @AlpacaHQ
+> Finly gives AI one job: explain the market. Tested code chooses the position, fixes the maximum loss, and decides whether an order may reach Alpaca. If the evidence conflicts, Finly leaves the paper account alone. Try both decisions: https://owlsowo.github.io/finly-bot/#controls @lablabai @AlpacaHQ
 
 ### Post 3 — the options proof
 
-> In Finly's public options demo, one two-option SPY trade had a $366 maximum loss and $634 maximum gain. Finly reached the same decision after removing each of four sources one at a time and making 32 small input changes. Every number has a saved decision record. https://owlsowo.github.io/finly-bot/#controls @lablabai @AlpacaHQ
+> Finly's public options demo built a SPY trade with a $366 maximum loss and $634 maximum gain. It kept the same decision after four source-removal tests and 32 small input changes—and its safety check blocked the order when the evidence conflicted. Replay it: https://owlsowo.github.io/finly-bot/#controls @lablabai @AlpacaHQ
 
 ### Post 4 — the live account
 
-> Finly does not need my laptop to stay awake. It runs in the cloud through Alpaca's official connection, locks the version of code allowed to trade, and publishes a safe view of the dedicated $100,000 paper account. Watch it here: https://owlsowo.github.io/finly-bot/#live @lablabai @AlpacaHQ
+> Finly runs in the cloud, so my laptop does not need to stay awake. It uses Alpaca's official connection, locks the code version allowed to trade, and publishes a safe view of its dedicated $100,000 paper account. Watch it here: https://owlsowo.github.io/finly-bot/#live @lablabai @AlpacaHQ
 
 ### Post 5 — why we built it
 
-> Better trading AI is not only about generating more ideas. It is about knowing which ideas deserve money. Finly explains the market case, builds a trade with a fixed maximum loss, stress-tests the decision, and shows why it traded—or why it stayed out. The bull has horns; the model still does not get the keys. https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
+> A better trading agent should do more than produce confident opinions. Finly explains the case, fixes the possible loss, tests whether the decision survives small changes, and shows why it traded—or why it stayed out. AI reads the market; code controls the money. https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
 
 ## Disclosure sentence
 

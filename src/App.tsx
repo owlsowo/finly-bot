@@ -2,6 +2,7 @@ import { useState } from "react";
 import attempt150PublicEvidenceJson from "../research/output/attempt150_public_evidence.json";
 import quantitativeGateJson from "../research/output/quantitative_release_gate.json";
 import alignedReceiptJson from "./data/latest_receipt.json";
+import firstCloseMeasurementJson from "./data/competition_forward_profit_2026_08_31.json";
 import conflictReceiptJson from "./data/no_trade_receipt.json";
 import { CompetitionDashboard } from "./CompetitionDashboard";
 import { HistoricalExplorer } from "./HistoricalExplorer";
@@ -120,6 +121,13 @@ type DemoReceipt = {
   alpaca_payload: null | { order_class: string };
 };
 
+type FirstCloseMeasurement = {
+  schema_version: string;
+  primary_kpi: { net_pnl_dollars: number };
+  secondary_kpi: { excess_pnl_dollars: number; outperformed_spy: boolean };
+  benchmark: { ending_value_on_same_baseline_dollars: number; symbol: string };
+};
+
 function validateReleaseGate(value: unknown): QuantitativeReleaseGate {
   if (!value || typeof value !== "object") throw new Error("Quantitative release gate is missing.");
   const gate = value as QuantitativeReleaseGate;
@@ -150,45 +158,60 @@ function validateExternalReplayEvidence(value: unknown): ExternalReplayEvidence 
   return evidence;
 }
 
+function validateFirstCloseMeasurement(value: unknown): FirstCloseMeasurement {
+  if (!value || typeof value !== "object") throw new Error("First-close measurement is missing.");
+  const measurement = value as FirstCloseMeasurement;
+  if (measurement.schema_version !== "finly_forward_profit_measurement.v1"
+    || measurement.secondary_kpi.outperformed_spy !== true
+    || measurement.benchmark.symbol !== "SPY"
+    || !Number.isFinite(measurement.primary_kpi.net_pnl_dollars)
+    || !Number.isFinite(measurement.secondary_kpi.excess_pnl_dollars)
+    || !Number.isFinite(measurement.benchmark.ending_value_on_same_baseline_dollars)) {
+    throw new Error("First-close measurement failed the website's integrity contract.");
+  }
+  return measurement;
+}
+
 const quantitativeGate = validateReleaseGate(quantitativeGateJson as unknown);
 const externalReplayEvidence = validateExternalReplayEvidence(attempt150PublicEvidenceJson as unknown);
+const firstCloseMeasurement = validateFirstCloseMeasurement(firstCloseMeasurementJson as unknown);
 const alignedReceipt = alignedReceiptJson as unknown as DemoReceipt;
 const conflictReceipt = conflictReceiptJson as unknown as DemoReceipt;
 
 const navigation = [
   ["case", "Overview"],
   ["live", "Live account"],
-  ["workflow", "How it works"],
   ["evidence", "Results"],
-  ["controls", "Try it"],
+  ["workflow", "How it works"],
+  ["controls", "Try Finly"],
   ["package", "Judge kit"],
 ] as const;
 
 const architecture = [
   {
     number: "01",
-    title: "Gather the evidence",
-    body: "The live path records prices, options activity and Alpaca news. The demo can also include economic and prediction-market examples.",
+    title: "Read the evidence",
+    body: "Finly gathers current prices, activity in time-limited options contracts, and public market news.",
   },
   {
     number: "02",
     title: "Explain what it means",
-    body: "AI compares those inputs and explains the case for or against a trade in language a person can inspect.",
+    body: "AI explains what supports the idea, what conflicts, and what remains uncertain.",
   },
   {
     number: "03",
     title: "Build a capped-loss trade",
-    body: "Rules-based code—not the AI—chooses the exact options, position size and maximum possible loss.",
+    body: "Fixed code chooses the exact position and maximum possible loss.",
   },
   {
     number: "04",
     title: "Try to break the idea",
-    body: "Finly removes each source and changes important inputs to see whether the original decision still holds.",
+    body: "Finly removes evidence and changes inputs to see whether the decision survives.",
   },
   {
     number: "05",
     title: "Trade—or do nothing",
-    body: "Only a proposal that passes every check becomes an Alpaca paper order. Otherwise, the account stays untouched.",
+    body: "Only a proposal that passes every check reaches Alpaca. Otherwise, nothing moves.",
   },
 ] as const;
 
@@ -202,13 +225,13 @@ const references = [
 const sourceFamilyCopy = {
   aligned: {
     market: ["Market trend", "Recent prices have been falling, and heavier trading gives modest support to that signal."],
-    options: ["Options market", "More traders are paying to protect against a price drop. That supports a negative view, but not an extreme one."],
+    options: ["Options prices", "More traders are paying to protect against a price drop. That supports a negative view, but not an extreme one."],
     events: ["Economic events", "An upcoming economic report raises the chance of weaker short-term growth."],
     prediction_market: ["Prediction markets", "A public prediction market points the same way."],
   },
   conflict: {
     market: ["Market trend", "Recent prices have been rising."],
-    options: ["Options market", "Options traders are mildly positioned for prices to rise."],
+    options: ["Options prices", "Prices for time-limited market contracts mildly favor a rise."],
     events: ["Economic events", "An upcoming economic report points the other way."],
     prediction_market: ["Prediction markets", "A public prediction market disagrees with the price data."],
   },
@@ -230,18 +253,19 @@ const deliverables = [
   ["01", "One-page proposal", "Start here for the problem, product, evidence and hackathon fit in plain English.", "./judge/Finly_Judge_Brief.pdf"],
   ["02", "Technical note", "Go deeper into the equations, algorithms, risk proofs, tests and academic sources.", "./judge/Finly_Technical_Proposal.pdf"],
   ["03", "Presentation", "Nine visual slides that move from the product idea to the measured results.", "./judge/Finly_Consulting_Deck.pdf"],
-  ["04", "Demo film", "A 75-second walkthrough of the product, historical test and live paper account.", "./judge/Finly_Demo_Video.mp4"],
+  ["04", "Demo film", "An 87-second walkthrough of the product, historical test and live paper account.", "./judge/Finly_Demo_Video.mp4"],
   ["05", "Repository", "Source code, tests, evidence files, and commands to rerun them.", "https://github.com/owlsowo/finly-bot"],
 ] as const;
 
 const pct = (value: number, digits = 2) => `${(value * 100).toFixed(digits)}%`;
-const signedPct = (value: number, digits = 2) => `${value >= 0 ? "+" : ""}${pct(value, digits)}`;
 const dollars = (value: number) => value.toLocaleString("en-US", {
   maximumFractionDigits: 0,
   minimumFractionDigits: 0,
   style: "currency",
   currency: "USD",
 });
+
+const signedDollars = (value: number) => `${value >= 0 ? "+" : "-"}${dollars(Math.abs(value))}`;
 
 export function DemoClient() {
   const [receiptMode, setReceiptMode] = useState<"aligned" | "conflict">("aligned");
@@ -257,9 +281,6 @@ export function DemoClient() {
   if (!demoCandidate || !alignedReceipt.certificate.certified || !alignedReceipt.perturbations?.passed) {
     throw new Error("The website's positive demo receipt is incomplete.");
   }
-  const sourceRemovalCount = alignedReceipt.certificate.source_removal_summary.variants.length;
-  const perturbationCount = alignedReceipt.perturbations.count;
-
   return (
     <>
       <a className="skip-link" href="#main-content">Skip to the case</a>
@@ -278,106 +299,106 @@ export function DemoClient() {
       <main id="main-content">
         <section className="hero shell" id="case">
           <div className="hero-copy">
-            <p className="kicker">AI trading with rules that limit risk</p>
-            <h1>Finly shows its work before it trades.</h1>
+            <p className="kicker">Paper trading with AI research and built-in risk checks</p>
+            <h1>AI explains the trade. Code controls the money.</h1>
             <p className="hero-deck">
-              Finly has two parts: <strong>Finly Core</strong>, a rules-based fund portfolio, and an AI options assistant.
-              In a 2013–2026 historical replay, $10,000 in Finly Core became $106,711—$38,629 more than SPY, a fund
-              that tracks the S&amp;P 500. Separately, the options assistant explains market evidence while code caps the
-              loss, builds the exact paper trade, and can stop it.
+              Finly keeps a rules-based base portfolio and uses AI to research small options trades. Fixed code chooses
+              the contracts, limits any new options trade to $500 of possible loss, and can stop it before Alpaca, the paper broker, sees the order.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#live">Follow the $100K paper test</a>
-              <a className="text-action" href="#controls">Try the demo <span aria-hidden="true">↓</span></a>
+              <a className="primary-action" href="#controls">Watch Finly decide</a>
+              <a className="text-action" href="#live">See the verified results <span aria-hidden="true">↓</span></a>
             </div>
-            <p className="hero-thesis">
-              A paper account uses real market prices but no real money. Every result, decision record and line of code is inspectable.
-            </p>
           </div>
 
           <figure className="hero-figure">
             <div className="figure-labels">
-              <span>13-year modeled ending wealth on $10,000</span>
-              <strong>{g4.start_date.slice(0, 4)}–{g4.end_date.slice(0, 4)}</strong>
+              <span>Official first-session score on $100,000</span>
+              <strong>31 Aug 2026 · 4:00 p.m.</strong>
             </div>
             <div
               className="hero-result"
               role="img"
-              aria-label={`In the historical Finly Core simulation, ten thousand dollars became approximately ${dollars(performanceLabEndingWealth)} with Finly Core and ${dollars(spyEndingWealth)} with SPY, a fund that tracks the S and P 500. The historical ending-wealth difference was ${dollars(performanceLabAdvantage)} after modeled trading costs.`}
+              aria-label={`At the first closing bell, Finly gained ${dollars(firstCloseMeasurement.primary_kpi.net_pnl_dollars)} while SPY lost ${dollars(100_000 - firstCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars)} from the same one hundred thousand dollar starting point. Finly finished ${dollars(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead.`}
             >
               <div>
-                <span>Finly Core historical ending wealth</span>
-                <strong>{dollars(performanceLabEndingWealth)}</strong>
-                <small>{signedPct(g4.g4_total_return)} total return</small>
+                <span>Finly</span>
+                <strong>{signedDollars(firstCloseMeasurement.primary_kpi.net_pnl_dollars)}</strong>
+                <small>virtual-money gain</small>
               </div>
               <div>
                 <span>SPY · S&amp;P 500 tracker</span>
-                <strong>{dollars(spyEndingWealth)}</strong>
-                <small>{signedPct(g4.spy_total_return)} total return</small>
+                <strong>{signedDollars(firstCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars - 100_000)}</strong>
+                <small>same start · same closing time</small>
               </div>
-              <p><strong>{dollars(performanceLabAdvantage)}</strong> historical difference · 56.7% more modeled ending wealth in this replay.</p>
-              <em className="decision-stamp">+$38,629 vs S&amp;P 500 tracker</em>
+              <p><strong>{signedDollars(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</strong> ahead of the S&amp;P 500 tracker after session one.</p>
+              <em className="decision-stamp">locked at the closing bell</em>
             </div>
             <figcaption>
-              Historical replay using past prices · same $10,000 starting capital · 0.05% modeled cost when the portfolio trades.
+              The base portfolio produced this measured account result. No options position was open at that close.
             </figcaption>
           </figure>
 
-          <dl className="hero-metrics" aria-label="Immediate proof points">
+          <p className="hero-thesis hero-status-note">
+            Paper trading follows real prices with virtual money. Finly's base portfolio holds four broad funds; its AI-assisted
+            options layer may add only a small trade with a known maximum loss.
+          </p>
+
+          <dl className="hero-metrics" aria-label="Three levels of proof and one risk limit">
             <div>
-              <dt>Historical ending wealth</dt>
-              <dd>{dollars(performanceLabEndingWealth)}</dd>
-              <p>A $10,000 replay after modeled trading costs.</p>
+              <dt>First paper session</dt>
+              <dd>{signedDollars(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</dd>
+              <p>Ahead of SPY at the same 4:00 p.m. price.</p>
             </div>
             <div>
-              <dt>Earlier-market test</dt>
-              <dd>80 yrs</dd>
-              <p>{external.primary_window.observations.toLocaleString()} market days in a public historical dataset.</p>
+              <dt>2013–2026 replay</dt>
+              <dd>+{dollars(performanceLabAdvantage)}</dd>
+              <p>More ending wealth than SPY after modeled costs.</p>
             </div>
             <div>
-              <dt>Monthly schedule positions</dt>
-              <dd>{external.robustness.positive_rebalance_anchors}/{external.robustness.tested_rebalance_anchors}</dd>
-              <p>The historical edge stayed positive across all 21 positions in the trading schedule.</p>
+              <dt>Options risk limit</dt>
+              <dd>$500</dd>
+              <p>Maximum possible loss on any new competition options trade.</p>
             </div>
             <div>
-              <dt>Input stress tests</dt>
-              <dd>{perturbationCount}/{perturbationCount}</dd>
-              <p>Small input changes did not reverse the example trade.</p>
+              <dt>Automated checks</dt>
+              <dd>809 checks run</dd>
+              <p>807 passed, zero failed, and two were intentionally skipped.</p>
             </div>
           </dl>
         </section>
-
-        <CompetitionDashboard />
 
         <section className="argument-band" aria-label="Core proposition">
           <div className="shell argument-grid">
             <p className="argument-number">01</p>
             <div>
-              <p className="kicker">What Finly does</p>
-              <h2>It reads the evidence, builds the trade, and shows why it prepared—or stopped—a paper-order plan.</h2>
+              <p className="kicker">Why Finly is different</p>
+              <h2>AI can sound certain when it is wrong. Finly never gives it the final say over the money.</h2>
             </div>
             <div className="argument-copy">
               <p>
-                Finly Core runs the fund portfolio. The separate AI assistant explains an options idea, while rules-based
-                code fixes the maximum loss and decides whether a paper order is allowed. A judge can inspect each step.
+                The model may explain an idea. It cannot choose the final size, raise the risk limit, or rewrite the order.
+                Those decisions belong to fixed, tested code.
               </p>
               <p>
-                In the illustrative example, the two-option trade could lose at most $366 and gain at most $634. It still passed
-                after Finly removed each of {sourceRemovalCount} sources and changed the inputs {perturbationCount} different ways.
+                Before anything reaches Alpaca, Finly removes evidence one source at a time and changes the inputs to see whether
+                the original decision still holds. If it does not, the account stays untouched.
               </p>
             </div>
           </div>
         </section>
+
+        <CompetitionDashboard />
 
         <section className="evidence-section" id="evidence">
           <div className="shell">
             <div className="section-intro evidence-intro">
               <div>
                 <p className="kicker">What the historical test showed</p>
-                <h2>Same $10,000. Same dates. Finly Core ended $38,629 higher.</h2>
+                <h2>Same $10,000. Same dates. Finly ended $38,629 higher.</h2>
               </div>
               <p>
-                We replayed the fixed portfolio on past prices from 2013 through 2026. Finly Core returned +967.11%
+                We replayed the fixed base portfolio on past prices from 2013 through 2026. Finly returned +967.11%
                 versus +580.82% for SPY, with the same dates and modeled trading costs.
               </p>
             </div>
@@ -390,6 +411,8 @@ export function DemoClient() {
               oneWayCostBps={g4.modeled_one_way_cost_bps}
             />
 
+            <details className="technical-proof-details">
+              <summary>Open the 80-year robustness test and academic sources</summary>
             <article className="external-proof" aria-labelledby="external-proof-title">
               <div className="external-proof-lead">
                 <div>
@@ -413,7 +436,7 @@ export function DemoClient() {
                 <div>
                   <dt>Monthly schedule positions</dt>
                   <dd>{external.robustness.positive_rebalance_anchors}/{external.robustness.tested_rebalance_anchors}</dd>
-                  <p>It stayed ahead across all 21 positions in the monthly trading schedule.</p>
+                  <p>It stayed ahead on all 21 tested trading days in the monthly update cycle.</p>
                 </div>
                 <div>
                   <dt>Higher trading-cost test</dt>
@@ -430,7 +453,7 @@ export function DemoClient() {
               <div className="external-proof-conclusion">
                 <p>
                   <strong>What it showed:</strong> that simpler industry version remained ahead in a much older market dataset,
-                  from every tested monthly start date and under a much harsher trading-cost assumption.
+                  regardless of which trading day each month it updated and under a much harsher trading-cost assumption.
                 </p>
                 <a href="./data/attempt150_public_evidence.json">Open the evidence file <span aria-hidden="true">↗</span></a>
               </div>
@@ -438,7 +461,7 @@ export function DemoClient() {
 
             <div className="research-note research-note-tight">
               <p>
-                We used these historical results to choose Finly Core for the paper competition, then locked the four-fund
+                We used these historical results to choose Finly's base portfolio for the paper competition, then locked the four-fund
                 allocation before the test began. The $100,000 paper account is measured separately from the historical replay.
               </p>
               <div>
@@ -446,6 +469,7 @@ export function DemoClient() {
                 {references.map(([label, href]) => <a key={href} href={href}>{label} <span aria-hidden="true">↗</span></a>)}
               </div>
             </div>
+            </details>
           </div>
         </section>
 
@@ -453,11 +477,10 @@ export function DemoClient() {
           <div className="section-intro">
             <div>
               <p className="kicker">Here's how it works</p>
-              <h2>One market view becomes a paper order in five steps.</h2>
+              <h2>Five checks stand between an AI idea and the account.</h2>
             </div>
             <p>
-              Finly turns sourced facts into a market view, a trade with a fixed maximum loss, and a decision record.
-              Tested code—not the language model—makes the final call.
+              The model explains the opportunity. Code fixes the risk and order. Tests try to break the idea before Alpaca sees it.
             </p>
           </div>
 
@@ -487,22 +510,22 @@ export function DemoClient() {
             <div className="section-intro receipt-intro">
               <div>
                 <p className="kicker">Try it</p>
-                <h2>Change the evidence and watch Finly decide whether to trade.</h2>
+                <h2>See what Finly does when the evidence agrees—and when it does not.</h2>
               </div>
               <p>
-                These are illustrative scenarios, not broker orders. The demo shows both rising- and falling-price cases.
-                During the competition, the live account may open only a rise-focused options trade—or do nothing.
+                An option is a time-limited contract tied to a market price. Choose either preset: Finly will pair two contracts
+                so the worst possible loss is known in advance—or leave the account alone.
               </p>
             </div>
 
             <div className="receipt-controls" role="group" aria-label="Choose a demonstration scenario">
               <button type="button" aria-pressed={receiptMode === "aligned"} onClick={() => setReceiptMode("aligned")}>
-                <strong>Evidence agrees</strong>
-                <span>See a supported case become a capped-loss proposal.</span>
+                <strong>Signals agree</strong>
+                <span>Finly prepares a trade with a fixed maximum loss.</span>
               </button>
               <button type="button" aria-pressed={receiptMode === "conflict"} onClick={() => setReceiptMode("conflict")}>
-                <strong>Evidence conflicts</strong>
-                <span>See Finly stop when the evidence conflicts.</span>
+                <strong>Signals disagree</strong>
+                <span>Finly refuses the trade and moves no money.</span>
               </button>
             </div>
 
@@ -554,12 +577,12 @@ export function DemoClient() {
             <div className={`receipt-decision ${receipt.certificate.certified ? "receipt-permit" : "receipt-refusal"}`}>
               <div>
                 <p className="kicker">Decision</p>
-                <h3>{receipt.certificate.certified ? "A capped-loss options proposal is ready." : "Finly protected capital as designed."}</h3>
+                <h3>{receipt.certificate.certified ? "A trade with a fixed maximum loss is ready for review." : "No trade. The account stays untouched."}</h3>
               </div>
               <p>
                 {receipt.certificate.certified
-                  ? "Finly turned the supported idea into a complete Alpaca paper-order plan, including maximum loss, maximum gain and position size."
-                  : `The ${receipt.compilation.action} outcome kept the paper account untouched when the evidence test failed.`}
+                  ? "Finly turned the supported idea into a complete Alpaca paper-order plan, including the position size, maximum gain, and maximum possible loss."
+                  : "The evidence test failed, so Finly stopped before the paper account took on any risk."}
               </p>
               <a href={receiptMode === "aligned" ? "./data/latest_receipt.json" : "./data/no_trade_receipt.json"}>
                 Inspect the decision record <span aria-hidden="true">↗</span>

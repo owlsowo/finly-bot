@@ -2,57 +2,55 @@
 
 ![Finly finished its first Alpaca paper-trading session $153.31 ahead of SPY, a fund that tracks the S&P 500](public/brand/finly-cover-16x9.png)
 
-**Finly shows its work before it trades.**
+**Finly is a paper-trading bot that lets AI explain the market while tested code controls the money.**
 
-AI can study a trade. It should not control your money. Finly lets AI explain public market information while fixed, tested code chooses the position, caps the possible loss, and decides whether anything may reach Alpaca paper trading.
+Paper trading follows real prices with virtual money. In Finly's first session on a dedicated $100,000 Alpaca paper account, the portfolio gained **$95.32** while SPY—the fund commonly used to represent the S&P 500—lost **$57.99** from the same starting point. Finly therefore finished the session **$153.31 ahead of SPY**. No options position was open at that close.
 
-Paper trading follows real market prices with virtual money. SPY is a fund that tracks the S&P 500; QQQ is a fund that tracks the Nasdaq-100.
+[Open Finly](https://owlsowo.github.io/finly-bot/) · [Watch the paper account](https://owlsowo.github.io/finly-bot/#live) · [Try a decision](https://owlsowo.github.io/finly-bot/#controls) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Open the mathematical note](public/judge/Finly_Technical_Proposal.pdf) · [View the deck](public/judge/Finly_Consulting_Deck.pdf)
 
-[Open Finly](https://owlsowo.github.io/finly-bot/) · [Watch the $100K paper account](https://owlsowo.github.io/finly-bot/#live) · [Try the trade decision](https://owlsowo.github.io/finly-bot/#controls) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Open the mathematical note](public/judge/Finly_Technical_Proposal.pdf) · [View the deck](public/judge/Finly_Consulting_Deck.pdf)
+## What Finly does
 
-## Finly has two parts
+Finly starts with a rules-based base portfolio: roughly half the account in QQQ, which tracks the Nasdaq-100; most of the remainder divided among three market sectors with stronger longer-term price trends; and 3% held in cash. The competition portfolio and its selection rule were fixed before paper trading began.
 
-**Finly Core** is the base portfolio. It keeps roughly half the competition account in QQQ, divides most of the remainder across three market sectors selected for stronger longer-term price trends, and keeps 3% in cash. We chose and locked the competition mix before paper trading began.
+Finly can also consider a small, defined-risk SPY options trade. A hosted AI model reads public Alpaca news and explains what supports or weakens the idea. It does not choose how much money to risk or write the broker order. Fixed code chooses the direction, contracts, quantity, maximum loss, and every field sent to Alpaca. The competition limit is **$500 of maximum loss per options trade**. The AI may make the system more cautious or stop a trade; it cannot raise that limit.
 
-**Finly Options** is the AI-assisted options workflow. A hosted model reviews public Alpaca news and explains what supports or weakens a trade. Fixed code chooses the direction, contracts, size, maximum loss, and every broker field. The AI may lower confidence or stop a trade; it cannot increase the amount at risk.
+The idea is simple: use AI for the part it does well—reading and explaining—while ordinary software keeps control of the account.
 
-The two systems share one principle: the explanation can be flexible, but control of the money is not.
+## What judges can verify
 
-## The results in plain English
+### A real paper account
 
-### Tested in the past
+Finly runs in the cloud against a verified Alpaca paper account, so the laptop does not need to stay awake. At the first 4:00 p.m. close, the account had recorded 15 broker fill events, no deposits or withdrawals, and the **$153.31 advantage over SPY** described above. That result is a record of one session, not a promise about the next one.
 
-In a historical simulation from January 2013 through August 2026, with modeled trading costs, **$10,000 became $106,711 with Finly Core** and **$68,082 with SPY**—a **$38,629 difference in ending wealth**.
+The [live dashboard](https://owlsowo.github.io/finly-bot/#live) separates the locked first-close comparison from the account value that continues to change with market prices. It also shows the current holdings, the latest options decision, and the risk limit without exposing credentials or account numbers.
 
-A simpler industry version was then checked on **21,218 earlier market days** from 1927 through 2007. It averaged **13.37% growth per year versus 9.48% for the market**, stayed ahead in all 21 tests that changed which trading day of the month the holdings were updated, and remained ahead when the trading-cost assumption was increased fivefold.
+### Historical tests
 
-### Running in the present
+In a simulation from January 2013 through August 2026, after modeled trading costs, **$10,000 became $106,711 with Finly's portfolio rule** and **$68,082 with SPY**. That is a **$38,629 difference in ending wealth**.
 
-Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. At the first closing bell, Finly Core was **up $95.32**. SPY, measured from the same $100,000 starting point at the same 4:00 p.m. price, was **down $57.99**. Finly therefore ended day one **$153.31 ahead**, after 15 broker fill events and with no deposits or withdrawals. No options position was open at that close.
+A simpler version built from long-running industry data was also tested on **21,218 market days from 1927 through 2007**. It averaged **13.37% growth per year versus 9.48% for the market**, remained ahead in all 21 tests that changed the monthly update day, and stayed ahead when the assumed trading cost was increased fivefold.
 
-The [live dashboard](https://owlsowo.github.io/finly-bot/#live) shows the changing paper-account value, current positions, latest decision, and fixed risk limits without exposing credentials or account numbers. The laptop does not need to stay awake.
+### A decision anyone can replay
 
-### Inspectable at every step
+The interactive options demonstration shows what the risk controls do. In one illustrative SPY plan, the most that could be lost was **$366** and the most that could be gained was **$634**. Finly reached the same decision when each of four information sources was removed in turn and after 32 small changes to the inputs. No broker order or fill occurred.
 
-In the interactive options demonstration, Finly prepared one illustrative SPY two-option plan with a **$366 maximum loss** and **$634 maximum gain**. It reached the same decision after each of four information sources was removed one at a time and after 32 small changes to the inputs. No broker order or fill occurred. Switch the website to conflicting evidence and Finly stops before the paper account takes on any risk.
+Change the demonstration to conflicting evidence and Finly stops before the paper account takes on any risk. The demo can illustrate rising- and falling-price cases; during the competition, the live account may open only an approved rising-price options trade—or do nothing.
 
-The demo shows both rising- and falling-price cases. During the competition, the live account may open only a rise-focused options trade—or do nothing.
+## How one idea becomes one checked order
 
-## How a trade moves through Finly
-
-1. **Gather the evidence.** The live path records current prices, options activity and public Alpaca news. The interactive demonstration can also include economic and prediction-market examples.
-2. **Explain the idea.** AI states what the evidence supports, what conflicts, and what remains uncertain.
-3. **Build the trade.** Fixed code chooses the exact options, size, possible gain, and maximum loss.
-4. **Try to break it.** Remove information sources and change important inputs to see whether the decision still holds.
-5. **Trade—or do nothing.** If every check passes, prepare one exact Alpaca paper order. Otherwise, leave the account untouched.
+1. **Finly gathers current information.** The live path records prices, option quotes, trading activity, and public Alpaca news.
+2. **AI explains the case.** The model identifies the evidence for the trade, the evidence against it, and what remains uncertain.
+3. **Code builds the position.** Tested rules choose the exact options, quantity, possible gain, and maximum loss.
+4. **Finly tries to disprove the decision.** It removes information sources and changes important inputs to see whether the result still holds.
+5. **The system trades or stays out.** Only a decision that passes every check can become one exact Alpaca paper order. Otherwise, the account is left untouched.
 
 ## For technical judges
 
-The public explanation stays simple; the implementation does not. The [mathematical technical note](public/judge/Finly_Technical_Proposal.pdf) derives the portfolio rule, AI authority limit, options payoff, conservative valuation, risk sizing, one-order approval, and restart-safe execution. The [engineering appendix](public/judge/Finly_Engineering_Appendix.pdf) maps those claims to code, tests, evidence files, and cloud operations.
+The [mathematical technical note](public/judge/Finly_Technical_Proposal.pdf) derives the portfolio rule, the limit on AI authority, options payoff, conservative valuation, risk sizing, one-order approval, and restart-safe execution. The [engineering appendix](public/judge/Finly_Engineering_Appendix.pdf) maps those claims to code, tests, evidence files, and cloud operations.
 
-Internally, Finly Core retains the research identifier `G4` in frozen code and evidence files. That identifier is kept for reproducibility; it is not a separate public product.
+Some frozen research files call the base portfolio configuration `G4`. That is an internal experiment label retained for reproducibility, not a product generation or a second Finly product.
 
-The public verification run discovered **809 automated tests: 807 passed, 0 failed, and 2 were skipped**. Coverage includes historical timing and costs, option payoff arithmetic, data freshness, position limits, account checks, order construction, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
+The public verification run found **809 automated tests: 807 passed, 0 failed, and 2 were skipped**. The suite covers historical timing and trading costs, options payoff arithmetic, data freshness, position limits, account checks, order construction, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
 
 ```bash
 npm install
@@ -62,18 +60,18 @@ npm run verify
 ## Repository map
 
 ```text
-lib/         strategy logic, options compiler, risk checks, and broker guards
+lib/         portfolio logic, options compiler, risk checks, and broker guards
 research/    historical studies, frozen protocols, and forward measurement
 scripts/     cloud runner, receipt checkers, model tools, and artifact builders
 evidence/    redacted runtime records
 fixtures/    aligned, conflicting, and boundary-test scenarios
-src/         public product website and live dashboard
+src/         public website, interactive decision, and live dashboard
 tests/       unit, integration, restart, statistical, and reporting tests
 docs/        proposal, mathematical note, engineering appendix, and operating notes
 ```
 
 ## Research and broker sources
 
-The strategy draws on published work on [time-series momentum](https://doi.org/10.1016/j.jfineco.2011.11.003) and [volatility-managed portfolios](https://doi.org/10.1111/jofi.12513), plus [Kenneth French's public Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html). The broker path follows Alpaca's documentation for [options trading](https://docs.alpaca.markets/us/docs/options-trading), [multi-leg orders](https://docs.alpaca.markets/reference/postorder), and [paper trading](https://docs.alpaca.markets/us/docs/paper-trading).
+The portfolio research draws on published work about [time-series momentum](https://doi.org/10.1016/j.jfineco.2011.11.003) and [volatility-managed portfolios](https://doi.org/10.1111/jofi.12513), together with [Kenneth French's public Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html). The broker path follows Alpaca's documentation for [options trading](https://docs.alpaca.markets/us/docs/options-trading), [multi-leg orders](https://docs.alpaca.markets/reference/postorder), and [paper trading](https://docs.alpaca.markets/us/docs/paper-trading).
 
 Finly is an educational paper-trading project. Historical simulations are not live results or promises of future returns, and options can lose their full premium.

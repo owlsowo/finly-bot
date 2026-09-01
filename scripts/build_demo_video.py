@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """Build Finly's short, proof-led, captioned product launch.
 
-The film uses the final deck plus project-owned site captures. A publishable
-render requires licensed human or ElevenLabs scene audio through --audio-dir.
-The bundled neural voice is available only for a local draft preview; it is
-never copied to public/ or dist/. The builder never reads credentials or calls
-a broker.
+The film uses the final deck plus project-owned site captures. Every render
+requires licensed human or ElevenLabs scene audio through --audio-dir. There is
+no system-voice path. The builder never reads credentials or calls a broker.
 """
 
 from __future__ import annotations
@@ -27,8 +25,6 @@ OUTPUT = ROOT / "public" / "judge" / "Finly_Demo_Video.mp4"
 SUBTITLE_OUTPUT = ROOT / "public" / "judge" / "Finly_Demo_Video.srt"
 DIST_OUTPUT = ROOT / "dist" / "judge" / "Finly_Demo_Video.mp4"
 DIST_SUBTITLE_OUTPUT = ROOT / "dist" / "judge" / "Finly_Demo_Video.srt"
-DRAFT_OUTPUT = ROOT / "tmp" / "Finly_Demo_Video_DRAFT.mp4"
-DRAFT_SUBTITLE_OUTPUT = ROOT / "tmp" / "Finly_Demo_Video_DRAFT.srt"
 DECK_PDF = ROOT / "public" / "judge" / "Finly_Consulting_Deck.pdf"
 GATE_PATH = ROOT / "research" / "output" / "quantitative_release_gate.json"
 EXTERNAL_REPLAY_PATH = ROOT / "public" / "data" / "attempt150_public_evidence.json"
@@ -36,18 +32,14 @@ RECEIPT_PATH = ROOT / "public" / "data" / "latest_receipt.json"
 LIVE_ACCOUNT_PATH = ROOT / "public" / "data" / "competition_live.json"
 FIRST_CLOSE_PATH = ROOT / "public" / "data" / "competition_forward_profit_2026_08_31.json"
 
-VOICE = "en-US-AndrewMultilingualNeural"
-VOICE_RATE = "+40%"
-VOICE_PITCH = "-2Hz"
-
 INK = "#152630"
 WHITE = "#ffffff"
 INTER_SCENE_PAUSE = 0.20
 FINAL_PAUSE = 0.55
-MIN_FINAL_SECONDS = 65.0
-MAX_FINAL_SECONDS = 80.0
-SUPPLIED_AUDIO_TEMPO = 1.25
-FIRST_CLOSE_AUDIO_TEMPO = 1.45
+MIN_FINAL_SECONDS = 75.0
+MAX_FINAL_SECONDS = 90.0
+SUPPLIED_AUDIO_TEMPO = 1.27
+FIRST_CLOSE_AUDIO_TEMPO = 1.27
 
 
 @dataclass(frozen=True)
@@ -60,58 +52,58 @@ class Scene:
 
 SCENES = [
     Scene(
-        "the-number",
-        "asset:public/judge/video-hero.jpg",
-        8.0,
-        "In our 2013-to-2026 historical simulation, $10,000 became $106,711 with Finly—$38,629 more than S P Y after modeled trading costs.",
-    ),
-    Scene(
-        "what-we-built",
-        "slide:3",
+        "hook",
+        "slide:2",
         7.0,
-        "We built Finly to turn market evidence into a paper trade while code keeps control of the account.",
+        "A I can sound certain and still be wrong. Finly does not give it the account keys.",
     ),
     Scene(
-        "second-test",
+        "product",
+        "slide:3",
+        12.0,
+        "Finly is a trading bot that uses real market prices and virtual money. A I studies the market and explains a trade. Fixed code caps the loss and decides what reaches Alpaca.",
+    ),
+    Scene(
+        "approve",
+        "asset:public/judge/video-controls-aligned.jpg",
+        8.0,
+        "When signals agree, Finly builds the paper order. A I explains it; only rules can approve it.",
+    ),
+    Scene(
+        "refuse",
+        "asset:public/judge/video-controls-conflict.jpg",
+        7.0,
+        "When signals conflict, Finly does nothing. It shows why and stops before the account.",
+    ),
+    Scene(
+        "receipt",
+        "slide:6",
+        10.0,
+        "Every decision carries a receipt: the proposed position, dollars at risk, and checks passed. This checked S and P 500 options example risked at most $366—below Finly's $500 limit. It was a test case, not a live fill.",
+    ),
+    Scene(
+        "live-result",
+        "slide:7",
+        11.0,
+        "Finly's separate rules-based base portfolio then ran during live market hours. At the first close, it gained $95.32 while S P Y lost $57.99—a $153.31 advantage from the same $100,000 start.",
+    ),
+    Scene(
+        "historical-result",
+        "slide:4",
+        10.0,
+        "We also replayed that base-portfolio rule from 2013 to 2026. $10,000 became $106,711 with Finly—$38,629 more than S P Y after modeled trading costs.",
+    ),
+    Scene(
+        "older-market-test",
         "slide:5",
         10.0,
-        "This separate, 80-year industry replay returned 13.37% a year versus 9.48% for the market and stayed ahead at all 21 rebalance dates.",
+        "A simpler version of the portfolio was tested on a separate 80-year market record. It returned 13.37% a year versus 9.48% for the market and stayed ahead at every tested rebalance date.",
     ),
     Scene(
-        "how-it-works",
-        "slide:2",
-        12.0,
-        "Here's how it works. Finly reads market signals and explains one view. Code chooses the position size, option legs, maximum loss, and exact Alpaca order. A final check either sends the paper trade or stops it.",
-    ),
-    Scene(
-        "watch-it-run",
-        "asset:public/judge/video-controls-aligned.jpg",
-        5.0,
-        "Watch it run. With aligned evidence, Finly builds a defined-risk paper order.",
-    ),
-    Scene(
-        "change-the-evidence",
-        "asset:public/judge/video-controls-conflict.jpg",
-        5.0,
-        "Change the evidence, and Finly stops. The same screen shows exactly why.",
-    ),
-    Scene(
-        "risk-check",
-        "slide:6",
-        11.0,
-        "This example built one S P Y spread with a $366 maximum loss and $634 maximum gain. It still passed when we removed each of four data sources and changed the inputs 32 different ways.",
-    ),
-    Scene(
-        "live-account",
-        "slide:7",
-        9.0,
-        "For the competition, Finly ran in a dedicated $100,000 Alpaca paper account. At the first close, Finly gained $95.32 while S P Y lost $57.99—a $153.31 advantage.",
-    ),
-    Scene(
-        "close",
+        "technical-handoff",
         "slide:9",
-        7.0,
-        "Every decision has a receipt. Follow the paper test, check the numbers, and read the code.",
+        8.0,
+        "Judges can open the decision, rerun tests, inspect the Alpaca order, and verify every number in the public repository.",
     ),
 ]
 
@@ -132,7 +124,7 @@ def duration(path: Path) -> float:
 
 
 def supplied_audio_tempo(scene: Scene) -> float:
-    return FIRST_CLOSE_AUDIO_TEMPO if scene.slug == "live-account" else SUPPLIED_AUDIO_TEMPO
+    return FIRST_CLOSE_AUDIO_TEMPO if scene.slug == "live-result" else SUPPLIED_AUDIO_TEMPO
 
 
 def srt_time(seconds: float) -> str:
@@ -161,6 +153,8 @@ def caption_chunks(text: str, limit: int = 70) -> list[str]:
 
 def display_narration(text: str) -> str:
     replacements = {
+        "A I": "AI",
+        "S and P 500": "S&P 500",
         "S P Y": "SPY",
     }
     for spoken, displayed in replacements.items():
@@ -271,11 +265,13 @@ def verify_claims() -> None:
 
     narration = " ".join(scene.narration for scene in SCENES)
     required = [
-        "We built Finly", "Here's how it works", "Watch it run", "Change the evidence",
+        "does not give it the account keys", "uses real market prices and virtual money",
+        "Fixed code caps the loss", "only rules can approve it",
+        "signals conflict", "Every decision carries a receipt",
+        "$366", "$500 limit", "during live market hours",
         "$10,000", "$106,711", "$38,629", "13.37%", "9.48%",
-        "21 rebalance dates", "$366 maximum loss", "$634 maximum gain",
-        "removed each of four data sources", "changed the inputs 32 different ways",
-        "$100,000 Alpaca paper account", "$95.32", "$57.99", "$153.31 advantage",
+        "$100,000 start", "$95.32", "$57.99", "$153.31",
+        "Judges can open the decision", "public repository",
     ]
     for phrase in required:
         if phrase.lower() not in narration.lower():
@@ -327,7 +323,7 @@ def structural_check(audio_dir: Path | None = None) -> None:
 
     target_duration = sum(scene.target_seconds for scene in SCENES)
     if not MIN_FINAL_SECONDS <= target_duration <= MAX_FINAL_SECONDS:
-        raise RuntimeError(f"Storyboard target is outside 65–80 seconds: {target_duration:.1f}s")
+        raise RuntimeError(f"Storyboard target is outside 75–90 seconds: {target_duration:.1f}s")
 
     word_count = sum(len(re.findall(r"\b[\w'-]+\b", scene.narration)) for scene in SCENES)
     print(f"Structural check passed: {len(SCENES)} scenes, {word_count} written tokens, {target_duration:.1f}s target")
@@ -345,7 +341,7 @@ def structural_check(audio_dir: Path | None = None) -> None:
         actual_with_pauses = audio_seconds + INTER_SCENE_PAUSE * (len(SCENES) - 1) + FINAL_PAUSE
         if not MIN_FINAL_SECONDS <= actual_with_pauses <= MAX_FINAL_SECONDS:
             raise RuntimeError(
-                f"Supplied narration would produce a {actual_with_pauses:.1f}s cut; final must be 65–80s"
+            f"Supplied narration would produce a {actual_with_pauses:.1f}s cut; final must be {MIN_FINAL_SECONDS:.0f}–{MAX_FINAL_SECONDS:.0f}s"
             )
         print(f"Supplied narration check passed: {actual_with_pauses:.1f}s including pauses")
 
@@ -361,16 +357,13 @@ def render_deck_frames() -> list[Path]:
     return frames
 
 
-def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bool) -> None:
-    if audio_dir is None and not draft_preview:
-        raise RuntimeError("Final builds require --audio-dir with licensed human or ElevenLabs narration")
-    if audio_dir is not None and draft_preview:
-        raise RuntimeError("Choose either --audio-dir for a final build or --draft-preview, not both")
+def build(keep_work: bool, audio_dir: Path | None) -> None:
+    if audio_dir is None:
+        raise RuntimeError("Builds require --audio-dir with licensed human or ElevenLabs narration")
     structural_check(audio_dir)
 
-    final_build = audio_dir is not None
-    output = OUTPUT if final_build else DRAFT_OUTPUT
-    subtitle_output = SUBTITLE_OUTPUT if final_build else DRAFT_SUBTITLE_OUTPUT
+    output = OUTPUT
+    subtitle_output = SUBTITLE_OUTPUT
     if WORK.exists():
         shutil.rmtree(WORK)
     (WORK / "frames").mkdir(parents=True)
@@ -379,13 +372,9 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bo
     (WORK / "captions").mkdir()
 
     frames = render_deck_frames()
-    tts = ROOT / ".venv-media" / "bin" / "edge-tts"
-    if audio_dir is not None:
-        audio_dir = audio_dir.expanduser().resolve()
-        if not audio_dir.is_dir():
-            raise RuntimeError(f"Supplied narration directory does not exist: {audio_dir}")
-    elif not tts.exists():
-        raise RuntimeError("Draft preview requires the pinned neural voice in .venv-media")
+    audio_dir = audio_dir.expanduser().resolve()
+    if not audio_dir.is_dir():
+        raise RuntimeError(f"Supplied narration directory does not exist: {audio_dir}")
 
     scene_files: list[Path] = []
     scene_durations: list[float] = []
@@ -400,23 +389,14 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bo
     ]
 
     for index, scene in enumerate(SCENES, start=1):
-        generated_audio = WORK / "audio" / f"{index:02d}-{scene.slug}.mp3"
         audio_path = WORK / "audio" / f"{index:02d}-{scene.slug}.wav"
         segment_path = WORK / "segments" / f"{index:02d}-{scene.slug}.mp4"
         frame_path = source_path(scene, frames)
 
-        if audio_dir is not None:
-            raw_audio = supplied_audio(audio_dir, index, scene)
-        else:
-            raw_audio = generated_audio
-            run(
-                str(tts), "--voice", voice, "--rate", VOICE_RATE,
-                "--pitch", VOICE_PITCH, "--text", scene.narration,
-                "--write-media", str(raw_audio),
-            )
+        raw_audio = supplied_audio(audio_dir, index, scene)
 
         source_audio_duration = duration(raw_audio)
-        audio_tempo = supplied_audio_tempo(scene) if audio_dir is not None else 1.0
+        audio_tempo = supplied_audio_tempo(scene)
         raw_duration = source_audio_duration / audio_tempo
         pause = INTER_SCENE_PAUSE if index < len(SCENES) else FINAL_PAUSE
         scene_duration = raw_duration + pause
@@ -479,7 +459,10 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bo
 
     ffmpeg_args = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(joined_path)]
     for caption_path in caption_inputs:
-        ffmpeg_args.extend(["-i", str(caption_path)])
+        # Keep every caption image alive for the whole timeline. Without an
+        # explicit loop, later overlay inputs can reach EOF before their
+        # enable window and silently disappear from the rendered film.
+        ffmpeg_args.extend(["-loop", "1", "-framerate", "1", "-i", str(caption_path)])
     filters: list[str] = ["[0:v]format=yuv420p[base]"]
     previous = "base"
     for index, (start, end, _) in enumerate(srt_entries, start=1):
@@ -493,13 +476,15 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bo
     ffmpeg_args.extend([
         "-filter_complex", ";".join(filters), "-map", f"[{previous}]", "-map", "[audio]",
         "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-c:a", "aac", "-b:a", "192k",
-        "-ar", "48000", "-movflags", "+faststart", str(output),
+        "-ar", "48000", "-t", f"{cursor:.3f}", "-movflags", "+faststart", str(output),
     ])
     run(*ffmpeg_args)
 
     final_duration = duration(output)
     if not MIN_FINAL_SECONDS <= final_duration <= MAX_FINAL_SECONDS:
-        raise RuntimeError(f"Video duration is outside the 65–80 second launch window: {final_duration:.2f}s")
+        raise RuntimeError(
+            f"Video duration is outside the {MIN_FINAL_SECONDS:.0f}–{MAX_FINAL_SECONDS:.0f} second launch window: {final_duration:.2f}s"
+        )
     if output.stat().st_size >= 300 * 1024 * 1024:
         raise RuntimeError("Video exceeds 300 MB")
 
@@ -515,17 +500,13 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bo
     if audio_stream.get("sample_rate") != "48000" or audio_stream.get("channels") != 2:
         raise RuntimeError("Audio must be 48 kHz stereo AAC")
 
-    if final_build:
-        DIST_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(output, DIST_OUTPUT)
-        shutil.copy2(subtitle_output, DIST_SUBTITLE_OUTPUT)
+    DIST_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(output, DIST_OUTPUT)
+    shutil.copy2(subtitle_output, DIST_SUBTITLE_OUTPUT)
     size_mb = output.stat().st_size / (1024 * 1024)
     print(f"Built {output.relative_to(ROOT)}: {final_duration:.2f}s, {size_mb:.2f} MB, H.264/AAC 1920x1080")
     print("Scene durations: " + ", ".join(f"{value:.1f}s" for value in scene_durations))
-    if final_build:
-        print("Voice: supplied licensed narration; copied to public/ and dist/")
-    else:
-        print(f"DRAFT PREVIEW ONLY: {voice} at {VOICE_RATE}, pitch {VOICE_PITCH}; not copied to public/ or dist/")
+    print("Voice: supplied licensed narration; copied to public/ and dist/")
     if not keep_work:
         shutil.rmtree(WORK)
 
@@ -533,17 +514,13 @@ def build(keep_work: bool, audio_dir: Path | None, voice: str, draft_preview: bo
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--keep-work", action="store_true", help="Retain rendered frames, audio, captions, and segments")
-    parser.add_argument("--audio-dir", type=Path, help="Licensed human/ElevenLabs files named 01-slug.wav/mp3/... through 09-close")
+    parser.add_argument("--audio-dir", type=Path, help="Licensed human/ElevenLabs files named 01-hook.wav/mp3/... through 09-technical-handoff")
     parser.add_argument("--check", action="store_true", help="Validate claims, sources, audio filenames, and runtime without rendering")
-    parser.add_argument("--draft-preview", action="store_true", help="Render a local, non-publishable system-voice pacing draft")
-    parser.add_argument("--voice", default=VOICE, help="System voice used only with --draft-preview")
     args = parser.parse_args()
     if args.check:
-        if args.draft_preview:
-            parser.error("--check cannot be combined with --draft-preview")
         structural_check(args.audio_dir)
         return
-    build(args.keep_work, args.audio_dir, args.voice, args.draft_preview)
+    build(args.keep_work, args.audio_dir)
 
 
 if __name__ == "__main__":

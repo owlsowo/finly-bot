@@ -47,12 +47,13 @@ test("dashboard labels the first-close comparison without replacing the moving l
   assert.match(exactUnsignedFormatter[1], /minimumFractionDigits: 2/u);
   assert.doesNotMatch(exactUnsignedFormatter[1], /signDisplay/u);
   assert.match(dashboard, /competition_forward_profit_2026_08_31\.json/);
-  assert.match(dashboard, /First session \/ closing-bell score/);
-  assert.match(dashboard, /exactly 4:00 p\.m\. ET/);
-  assert.match(dashboard, /Finly ended day one \{moneyExact\.format\(firstCloseMeasurement\.secondary_kpi\.excess_pnl_dollars\)\} ahead/);
+  assert.match(dashboard, /Official day-one score · locked at 4:00 p\.m\./);
+  assert.match(dashboard, /same closing-bell price/);
+  assert.match(dashboard, /Finly finished its first paper-trading session \{moneyExact\.format\(firstCloseMeasurement\.secondary_kpi\.excess_pnl_dollars\)\} ahead/);
   assert.doesNotMatch(dashboard, /Finly ended day one \{money\.format\(/);
-  assert.match(dashboard, /15 broker fill events and no money added or removed/);
+  assert.match(dashboard, /15 broker fill events · no deposits or withdrawals/);
   assert.match(dashboard, /No options position was open at that close/);
-  assert.match(dashboard, /not the final competition result/);
+  assert.match(dashboard, /locked day-one score, not the changing account mark below/);
+  assert.match(dashboard, /Latest account mark · changes with market prices/);
   assert.match(dashboard, /REMOTE_SNAPSHOT_URL/);
 });

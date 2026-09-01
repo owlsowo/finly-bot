@@ -40,11 +40,11 @@ export function HistoricalExplorer({
     <section className="range-explorer" aria-labelledby="historical-explorer-title">
       <div className="range-explorer-heading">
         <div>
-          <p className="kicker">Finly Core historical replay</p>
-          <h3 id="historical-explorer-title">In this replay, Finly Core ended with 56.7% more money than SPY.</h3>
+          <p className="kicker">Historical replay</p>
+          <h3 id="historical-explorer-title">In this replay, Finly ended with 56.7% more money than SPY.</h3>
         </div>
         <p>
-          Both started with $10,000 and used the same 2013–2026 prices. Finly Core returned +967.11% versus
+          Both started with $10,000 and used the same 2013–2026 prices. Finly returned +967.11% versus
           +580.82% for SPY, a fund that tracks the S&amp;P 500.
         </p>
       </div>
@@ -81,7 +81,7 @@ export function HistoricalExplorer({
           >
             <div className="audit-bar-row">
               <div className="audit-bar-label">
-                <span>Finly Core</span>
+                <span>Finly</span>
                 <strong>{signedPct(candidateReturn)}</strong>
               </div>
               <div className="audit-bar-track" aria-hidden="true">
@@ -100,7 +100,7 @@ export function HistoricalExplorer({
           </div>
           <p className="audit-panel-conclusion">
             A simulated {dollars(startingWealth)} became approximately <strong>{dollars(candidateEndingWealth)}</strong>
-            {" "}with Finly Core versus <strong>{dollars(spyEndingWealth)}</strong> with SPY—a historical ending-wealth difference of
+            {" "}with Finly versus <strong>{dollars(spyEndingWealth)}</strong> with SPY—a historical ending-wealth difference of
             {" "}<strong>{dollars(endingWealthAdvantage)}</strong>. The replay covers {startDate} through {endDate} and
             includes a modeled {oneWayCostPercent.toFixed(2)}% cost whenever the portfolio trades.
           </p>

@@ -1,83 +1,87 @@
 1
-00:00:00,000 --> 00:00:03,614
-In our 2013-to-2026 historical simulation,
+00:00:00,000 --> 00:00:01,676
+AI can sound certain and still be wrong.
 
 2
-00:00:03,614 --> 00:00:12,288
-$10,000 became $106,711 with Finly—$38,629 more than SPY after modeled trading costs.
+00:00:01,676 --> 00:00:03,353
+Finly does not give it the account keys.
 
 3
-00:00:12,488 --> 00:00:17,190
-We built Finly to turn market evidence into a paper trade while code keeps control of the account.
+00:00:03,553 --> 00:00:07,857
+Finly is a trading bot that uses real market prices and virtual money.
 
 4
-00:00:17,390 --> 00:00:18,207
-This separate,
+00:00:07,857 --> 00:00:10,506
+AI studies the market and explains a trade.
 
 5
-00:00:18,207 --> 00:00:26,376
-80-year industry replay returned 13.37% a year versus 9.48% for the market and stayed ahead at all 21 rebalance dates.
+00:00:10,506 --> 00:00:13,817
+Fixed code caps the loss and decides what reaches Alpaca.
 
 6
-00:00:26,576 --> 00:00:30,561
-Here's how it works. Finly reads market signals and explains one view.
+00:00:14,017 --> 00:00:17,538
+When signals agree, Finly builds the paper order. AI explains it;
 
 7
-00:00:30,561 --> 00:00:33,549
-Code chooses the position size, option legs, maximum loss,
+00:00:17,538 --> 00:00:19,138
+only rules can approve it.
 
 8
-00:00:33,549 --> 00:00:34,877
-and exact Alpaca order.
+00:00:19,338 --> 00:00:21,154
+When signals conflict, Finly does nothing.
 
 9
-00:00:34,877 --> 00:00:38,530
-A final check either sends the paper trade or stops it.
+00:00:21,154 --> 00:00:23,575
+It shows why and stops before the account.
 
 10
-00:00:38,730 --> 00:00:40,840
-Watch it run. With aligned evidence,
+00:00:23,775 --> 00:00:27,153
+Every decision carries a receipt: the proposed position,
 
 11
-00:00:40,840 --> 00:00:42,951
-Finly builds a defined-risk paper order.
+00:00:27,153 --> 00:00:29,687
+dollars at risk, and checks passed.
 
 12
-00:00:43,151 --> 00:00:45,168
-Change the evidence, and Finly stops.
+00:00:29,687 --> 00:00:35,176
+This checked S&P 500 options example risked at most $366—below Finly's $500 limit.
 
 13
-00:00:45,168 --> 00:00:47,184
-The same screen shows exactly why.
+00:00:35,176 --> 00:00:38,976
+It was a test case, not a live fill.
 
 14
-00:00:47,384 --> 00:00:52,951
-This example built one SPY spread with a $366 maximum loss and $634 maximum gain.
+00:00:39,176 --> 00:00:45,292
+Finly's separate rules-based base portfolio then ran during live market hours.
 
 15
-00:00:52,951 --> 00:00:59,631
-It still passed when we removed each of four data sources and changed the inputs 32 different ways.
-
-16
-00:00:59,831 --> 00:01:01,597
-For the competition,
-
-17
-00:01:01,597 --> 00:01:06,895
-Finly ran in a dedicated $100,000 Alpaca paper account.
-
-18
-00:01:06,895 --> 00:01:09,250
+00:00:45,292 --> 00:00:47,517
 At the first close,
 
+16
+00:00:47,517 --> 00:00:55,302
+it gained $95.32 while SPY lost $57.99—a $153.31 advantage from the same $100,000 start.
+
+17
+00:00:55,502 --> 00:01:02,149
+We also replayed that base-portfolio rule from 2013 to 2026.
+
+18
+00:01:02,149 --> 00:01:10,126
+$10,000 became $106,711 with Finly—$38,629 more than SPY after modeled trading costs.
+
 19
-00:01:09,250 --> 00:01:14,549
-Finly gained $95.32 while SPY lost $57.99—a $153.31 advantage.
+00:01:10,326 --> 00:01:15,023
+A simpler version of the portfolio was tested on a separate 80-year market record.
 
 20
-00:01:14,749 --> 00:01:17,018
-Every decision has a receipt. Follow the paper test,
+00:01:15,023 --> 00:01:21,063
+It returned 13.37% a year versus 9.48% for the market and stayed ahead at every tested rebalance date.
 
 21
-00:01:17,018 --> 00:01:18,782
-check the numbers, and read the code.
+00:01:21,263 --> 00:01:24,562
+Judges can open the decision, rerun tests, inspect the Alpaca order,
+
+22
+00:01:24,562 --> 00:01:26,961
+and verify every number in the public repository.

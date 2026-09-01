@@ -129,8 +129,8 @@ assert.ok(audioStream, "demo video must contain AAC narration");
 assert.equal(audioStream.sample_rate, "48000", "demo narration must use 48 kHz audio");
 assert.equal(audioStream.channels, 2, "demo narration must use stereo audio");
 const videoDuration = Number(probe.format.duration);
-assert.ok(videoDuration >= 65 && videoDuration <= 80,
-  `final demo video must run between 65 and 80 seconds; found ${videoDuration.toFixed(1)}s`);
+assert.ok(videoDuration >= 75 && videoDuration <= 90,
+  `final demo video must run between 75 and 90 seconds; found ${videoDuration.toFixed(1)}s`);
 
 assert.deepEqual(pngDimensions("public/brand/finly-cover-16x9.png"), { width: 1920, height: 1080 });
 assert.deepEqual(pngDimensions("public/brand/finly-social-cover.png"), { width: 1200, height: 630 });
@@ -259,12 +259,12 @@ const earlierEraPatterns = [
   /21,218/iu,
   /13\.37(?:%| percent)/iu,
   /9\.48(?:%| percent)/iu,
-  /(?:21\s*\/\s*21|21 of 21|all (?:twenty-one|21)).{0,120}(?:anchors?|offsets?|rebalance (?:dates?|offsets?|schedule)|monthly start dates|tests? that changed which trading day)/iu,
+  /(?:21\s*\/\s*21|21 of 21|all (?:twenty-one|21)).{0,120}(?:anchors?|offsets?|rebalance (?:dates?|offsets?|schedule)|monthly (?:start|update) (?:dates?|days?)|tests? that changed (?:which trading day|the monthly update day))/iu,
 ];
 const optionsPatterns = [
   /\$366.{0,30}maximum loss|maximum loss.{0,30}\$366/iu,
   /\$634.{0,30}maximum gain|maximum gain.{0,30}\$634/iu,
-  /(?:4\s*\/\s*4|4 of 4|all four|four).{0,100}(?:removals?|source-removal|source removal|data sources?|sources?.{0,20}removed)/iu,
+  /(?:4\s*\/\s*4|4 of 4|all four|four).{0,100}(?:removed|removals?|source-removal|source removal|data sources?|sources?.{0,20}removed)|remov(?:ing|ed).{0,40}(?:each of )?four sources/iu,
   /(?:32\s*\/\s*32|32 of 32|all (?:thirty-two|32)|thirty-two).{0,100}(?:input|perturb|small.{0,20}changes?)/iu,
 ];
 const accountPatterns = [
@@ -359,28 +359,29 @@ for (const contract of documentContracts) {
 
 const captions = readFileSync(requireFile("public/judge/Finly_Demo_Video.srt", 800).path, "utf8");
 requirePatterns("video captions", captions, [
-  /historical simulation/iu,
+  /real market prices and virtual money/iu,
+  /AI studies the market and explains a trade/iu,
+  /Fixed code caps the loss/iu,
+  /When signals agree/iu,
+  /When signals conflict/iu,
+  /Every decision carries a receipt/iu,
+  /test case, not a live fill/iu,
+  /rules-based base portfolio/iu,
+  /first close/iu,
+  /gained \$95\.32/iu,
+  /SPY lost \$57\.99/iu,
+  /\$153\.31 advantage/iu,
+  /2013 to 2026/iu,
   /\$10,000/iu,
   /\$106,711/iu,
   /\$38,629/iu,
-  /We built Finly/iu,
-  /80(?:-year| years)/iu,
+  /80-year market record/iu,
   /13\.37%/iu,
   /9\.48%/iu,
-  /21 rebalance dates/iu,
-  /Here's how it works/iu,
-  /Watch it run/iu,
-  /Change the evidence/iu,
-  /\$366 maximum loss/iu,
-  /\$634 maximum gain/iu,
-  /four data sources/iu,
-  /32 different ways/iu,
-  /dedicated \$100,000 Alpaca paper account/iu,
-  /Finly gained \$95\.32/iu,
-  /SPY lost \$57\.99/iu,
-  /\$153\.31 advantage/iu,
-  /Every decision has a receipt/iu,
-  /Follow the paper test/iu,
+  /every tested rebalance date/iu,
+  /\$366/iu,
+  /\$500 limit/iu,
+  /verify every number in the public repository/iu,
 ]);
 requireNoPatterns("video captions", captions, [...staleStoryPatterns, ...evaluatorInstructionPatterns, /llama still does not get the keys/iu]);
 
@@ -400,7 +401,7 @@ requirePatterns("machine-readable summary", machineSummary, [
   zeroFailurePattern,
   /809 automated tests: 807 passed, 0 failed, and 2 were skipped/iu,
   /\$153\.31 ahead of SPY/iu,
-  /15 broker fills/iu,
+  /15 broker fill(?:s| events)/iu,
   /Alpaca's official (?:MCP server|connection)/iu,
   /Start with the live dashboard/iu,
 ]);
@@ -409,7 +410,7 @@ assert.doesNotMatch(normalizedText(machineSummary), /Finly (?:will|is likely to)
 
 const indexHtml = readFileSync(pathFor("index.html"), "utf8");
 requirePatterns("social metadata", indexHtml, [
-  /\$153\.31 ahead of the S&P 500 tracker after session one/iu,
+  /\$153\.31 ahead of SPY in its first paper-trading session/iu,
   /Same \$100K starting point and same 4:00 p\.m\. price/iu,
 ]);
 requireNoPatterns("social metadata", indexHtml, [
