@@ -1,6 +1,6 @@
 {
   "schema_version": "finly_competition_dashboard.v2",
-  "snapshot_at": "2026-09-01T22:06:56.692Z",
+  "snapshot_at": "2026-09-01T22:29:52.960Z",
   "competition": {
     "phase": "LIVE",
     "baseline_equity": 100000,
@@ -8,9 +8,9 @@
     "official_window_end": "2026-09-04T13:30:00.000Z"
   },
   "account": {
-    "equity": 99558.97,
+    "equity": 99577.59,
     "cash": 3000.05,
-    "buying_power": 51279.5
+    "buying_power": 51288.81
   },
   "market": {
     "status": "CLOSED",
@@ -29,12 +29,12 @@
     "open_positions": 4,
     "open_orders": 0,
     "g4_equity_positions": 4,
-    "g4_equity_market_value_dollars": 96558.92,
+    "g4_equity_market_value_dollars": 96577.54,
     "option_positions": 0,
     "option_open_orders": 0,
     "options_defined_risk_dollars": 0,
-    "per_trade_risk_limit_dollars": 497.79,
-    "aggregate_risk_limit_dollars": 2986.77
+    "per_trade_risk_limit_dollars": 497.89,
+    "aggregate_risk_limit_dollars": 2987.33
   },
   "integrity": {
     "paper_account": true,
