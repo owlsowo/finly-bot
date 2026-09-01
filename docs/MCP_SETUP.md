@@ -2,9 +2,10 @@
 
 Finly is configured for Alpaca's official MCP package
 `alpaca-mcp-server==2.2.1`. Paper mode is explicit and the repository enables
-only the seven toolsets used by the project.
+only the seven toolsets used by its coordinated four-fund and SPY-options
+sleeves.
 
-## What has actually been verified
+## Current verified state
 
 The package was installed locally, built with dummy credentials, and asked to
 list its tools without making a network call. The resulting
@@ -22,15 +23,18 @@ this tool version.
 
 The order-tool introspection is an **offline runtime-schema check**, not proof
 of broker mutation. Separately, the same pinned official server was invoked
-over MCP stdio with live paper credentials: its read-only `get_account_info`
-tool succeeded and produced the redacted trace at
+over MCP stdio with paper credentials: its read-only `get_account_info` tool
+succeeded and produced the redacted trace at
 `evidence/alpaca_mcp_read_trace.json`. That trace confirms paper mode, an active
 and unblocked options-level-3 account, the required starting balance, and
 `mutation_requested:false` without serializing credentials or the raw response.
-The market was closed, so the autonomous read/decide pass still terminated in
-fail-closed `NO_TRADE` on stale after-hours quote data. No MCP order, REST
-order, fill, retry, cancel, or exit has been run. Mutation remains disabled
-until the controlled checklist below is complete.
+
+That trace records the pre-launch read check, not the current release ceiling.
+The pinned competition runner later enabled paper-only mutation and completed
+15 ETF fill events on the dedicated account. Finly's coordinated options sleeve
+uses the same official MCP boundary and a tested entry/retry/reconciliation/exit
+lifecycle, but no live options order or fill is claimed. The public options
+examples remain synthetic approval and `NO_TRADE` demonstrations.
 
 ## Configure locally
 
@@ -86,14 +90,14 @@ It reports `check_type: "READ_ONLY_HEALTH"` plus:
 moment. The output always reports `mutation_authorized:false`; it does not
 authorize an order.
 
-## Controlled paper integration checklist
+## Controlled paper deployment checklist
 
 The guarded runner is for the dedicated hackathon **paper account only**. It
 must never be pointed at a live-money account. Run it during market hours, after
 the read-only health check reports `READY`, and keep the default one-cycle
 interval unless a longer supervised run is intentional.
 
-Before enabling mutation, put the following values in the ignored `.env.local`.
+For a fresh isolated paper deployment, put the following values in the ignored `.env.local`.
 The REST client and preflight are code-locked to the paper host shown below, and
 the acknowledgement must match exactly. Generate the signing secret locally; it
 must contain at least 32 bytes. The ledger path must remain in the ignored
@@ -143,7 +147,7 @@ Then complete this guarded sequence:
    legs and reconciled exactly against Finly's canonical projection;
 5. disable mutation again by restoring `FINLY_EXECUTION_ENABLED=false` and
    clearing `FINLY_PAPER_MUTATION_ACK`;
-6. before describing the integration as complete, exercise duplicate
+6. before describing the options integration as broker-proven, exercise duplicate
    submission, timeout recovery, rejection, partial-fill, restart, cancel, and
    exit behavior without increasing risk.
 
@@ -156,8 +160,11 @@ input. The paper agent does not load that committed file as its live guard.
 Each cycle refreshes and validates its own authenticated bundle immediately
 before evaluating a new position.
 
-Until then, the honest release state is: synthetic replay works; broker
-read-side authentication works; broker execution is prohibited.
+The current release state is narrower and clearer: paper-only ETF execution is
+broker-observed, the options workflow is implemented and may act only when all
+existing gates approve, and no live options fill or options P&L is claimed.
+Failure to approve remains a valid `NO_TRADE`, not permission to relax the
+risk controls.
 
 The public repository must never contain API keys. Code and static artifacts
 are published through GitHub/GitHub Pages, not GPT Sites.

@@ -3,3 +3,10 @@
 evidence/current_economic_decision.json whitespace=-blank-at-eof
 public/data/current_economic_decision.json whitespace=-blank-at-eof
 src/data/current_economic_decision.json whitespace=-blank-at-eof
+
+# Judge-facing artifacts are intentionally committed as generated binaries.
+*.pdf binary
+*.docx binary
+*.pptx binary
+*.mp4 binary
+*.png binary

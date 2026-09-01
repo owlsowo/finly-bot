@@ -218,12 +218,12 @@ function publicDecisionStory(snapshot: CompetitionSnapshot): { headline: string;
     explanation: "Finly will not send another order until the broker reports what happened to this one.",
   };
   if (snapshot.exposure.g4_equity_positions > 0) return {
-    headline: "Finly's four-fund base portfolio is invested and being monitored.",
-    explanation: "The base portfolio remains invested. The separate options assistant will trade only when every evidence and risk check passes.",
+    headline: "Finly's four-fund allocation sleeve is invested and being monitored.",
+    explanation: "The allocation remains invested while the coordinated options sleeve waits for every evidence and risk check to pass.",
   };
   if (snapshot.exposure.open_orders > 0) return {
-    headline: "Finly is setting up its four-fund base portfolio.",
-    explanation: "The virtual-money broker is processing the allocation. The options assistant remains locked until its own checks pass.",
+    headline: "Finly is setting up its four-fund allocation sleeve.",
+    explanation: "The virtual-money broker is processing the allocation. The coordinated options sleeve remains locked until its own checks pass.",
   };
   if (snapshot.decision.status === "NO_TRADE") return {
     headline: "Finly checked the market and decided not to trade.",
@@ -231,7 +231,7 @@ function publicDecisionStory(snapshot: CompetitionSnapshot): { headline: string;
   };
   return {
     headline: "Finly is watching for a trade worth taking.",
-    explanation: "The assistant is reviewing market and options evidence. Hard rules keep the account locked until every check passes.",
+    explanation: "The options sleeve is reviewing market and news evidence. Hard rules keep the account locked until every check passes.",
   };
 }
 
@@ -306,7 +306,7 @@ export function CompetitionDashboard() {
   const marketIsLive = snapshot.market.status === "OPEN" && snapshot.competition.phase === "LIVE";
   const feedLabel = origin === "live"
     ? (freshness.stale ? "Latest published account snapshot" : "Live published account snapshot")
-    : "Verified launch snapshot";
+    : "Archived prelaunch snapshot";
 
   return (
     <section className="live-competition" id="live" aria-labelledby="live-title">
@@ -328,7 +328,9 @@ export function CompetitionDashboard() {
               <span className={`live-status-dot ${marketIsLive && !freshness.stale ? "is-live" : ""}`} aria-hidden="true" />
               <div>
                 <strong>{feedLabel}</strong>
-                <span>{marketStatusCopy(snapshot)}</span>
+                <span>{freshness.stale || origin === "fallback"
+                  ? "Status at the published snapshot; the current market state may have changed."
+                  : marketStatusCopy(snapshot)}</span>
               </div>
             </div>
             <div className="live-refresh-lockup">
@@ -341,7 +343,7 @@ export function CompetitionDashboard() {
 
           {origin === "fallback" && (
             <p className="live-fallback-note" role="status">
-              The cloud feed is between updates, so this view is showing Finly's verified launch snapshot.
+              The cloud feed is unavailable, so this view is showing an archived prelaunch snapshot from August 30—not the current account. The locked first-close result below remains separately verified.
             </p>
           )}
 
@@ -378,7 +380,7 @@ export function CompetitionDashboard() {
             </dl>
             <p className="first-close-proof-note">
               Locked first-day paper result · 4:00 p.m. ET on August 31, 2026 · same starting balance and timestamp ·
-              15 broker fill events · no deposits or withdrawals. This is the locked day-one score, not the changing account mark below.
+              15 ETF fill events · no deposits or withdrawals. This is the locked day-one score, not the changing account mark below.
             </p>
           </section>
 
@@ -410,7 +412,9 @@ export function CompetitionDashboard() {
 
           <div className="live-decision-story">
             <div>
-              <p className="kicker">What Finly is doing now</p>
+              <p className="kicker">{freshness.stale || origin === "fallback"
+                ? "What Finly was doing at the latest snapshot"
+                : "What Finly is doing now"}</p>
               <h3>{decisionStory.headline}</h3>
             </div>
             <p>{decisionStory.explanation}</p>
@@ -418,9 +422,9 @@ export function CompetitionDashboard() {
 
           <dl className="live-operating-metrics">
             <div>
-              <dt>Currently in the base portfolio</dt>
+              <dt>Currently in the allocation sleeve</dt>
               <dd>{money.format(snapshot.exposure.g4_equity_market_value_dollars)}</dd>
-              <p>{snapshot.exposure.g4_equity_positions === 0 ? "The core portfolio is waiting in cash." : `Across ${snapshot.exposure.g4_equity_positions} diversified fund position${snapshot.exposure.g4_equity_positions === 1 ? "" : "s"}.`}</p>
+              <p>{snapshot.exposure.g4_equity_positions === 0 ? "The allocation sleeve is waiting in cash." : `Across ${snapshot.exposure.g4_equity_positions} diversified fund position${snapshot.exposure.g4_equity_positions === 1 ? "" : "s"}.`}</p>
             </div>
             <div>
               <dt>Options maximum loss</dt>

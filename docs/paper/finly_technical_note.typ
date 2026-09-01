@@ -62,7 +62,7 @@
   #linebreak()
   #text(size: 20pt, weight: "bold")[AI-Assisted Trading]
   #v(7pt)
-  #text(size: 10.5pt, style: "italic")[A mathematical specification of reduction-only model authority,]
+  #text(size: 10.5pt, style: "italic")[A mathematical specification of one strategy with coordinated sleeves,]
   #linebreak()
   #text(size: 10.5pt, style: "italic")[defined-risk option compilation, and restart-safe Alpaca execution]
   #v(10pt)
@@ -73,9 +73,9 @@
 
 #v(8pt)
 #noindent[
-  *Abstract.* Finly is a paper-trading agent built around a narrow division of authority: a language model may interpret public information, but it may not create financial exposure. A deterministic policy first computes the maximum direction and size the system is willing to consider. Model evidence can reduce that envelope or veto the decision; it cannot enlarge it. Code then enumerates defined-risk option spreads, values each candidate under two scenario models, sizes maximum loss, and binds one exact order to a short-lived cryptographic permit. A restart-safe state machine submits through Alpaca and reconciles the broker before advancing.
+  *Abstract.* Finly is one autonomous paper-trading strategy with two coordinated execution sleeves and a narrow division of authority: a language model may interpret public information, but it may not create financial exposure. A deterministic policy first computes the maximum direction and size the system is willing to consider. Model evidence can reduce that envelope or veto the decision; it cannot enlarge it. Code then enumerates defined-risk option spreads, values each candidate under two scenario models, sizes maximum loss, and binds one exact order to a short-lived cryptographic permit. A restart-safe state machine submits through Alpaca and reconciles the broker before advancing.
 
-  The competition account also holds a separate, frozen four-fund allocation called *Finly Core* (internal research identifier: G4). In a causal 2013--2026 simulation with five-basis-point one-way costs, a modeled \$10,000 became \$106,711 versus \$68,082 in SPY, the fund used here to represent the S&P 500. Finly Core and the options agent are deliberately not presented as one strategy: the former motivates the forward experiment; the latter demonstrates controlled AI delegation. At the first measured close, the paper account finished \$95.32 above its \$100,000 baseline while the same-clock SPY baseline was \$57.99 below, a \$153.31 difference. The contribution is therefore architectural as well as empirical: every capital-bearing decision has a rules-based owner, and every broker mutation can be traced to the evidence, policy, and risk state that authorized it.
+  The allocation sleeve, called *Finly Core* (internal research identifier: G4), is a frozen four-fund rule. The coordinated options sleeve uses its own direction model and risk account so that the two sleeves remain independently auditable without becoming separate competition strategies. In a causal 2013--2026 simulation with five-basis-point one-way costs, a modeled \$10,000 became \$106,711 with the allocation rule versus \$68,082 in SPY, the fund used here to represent the S&P 500. At the first measured close, the complete paper account finished \$95.32 above its \$100,000 baseline while the same-clock SPY baseline was \$57.99 below, a \$153.31 difference after 15 ETF fill events. The contribution is therefore architectural as well as empirical: every capital-bearing decision has a rules-based owner, and every broker mutation can be traced to the evidence, policy, and risk state that authorized it.
 ]
 
 = The problem: useful judgment without unbounded authority
@@ -98,9 +98,9 @@ The remainder derives those three claims and states where the available evidence
 
 #pagebreak()
 
-= Finly Core: the frozen allocation
+= Finly Core: the coordinated allocation sleeve
 
-Finly Core supplies the competition account's equity allocation. It is not the direction model for the options branch. Its universe is QQQ, a fund tracking the Nasdaq-100, and the original nine Select Sector SPDR funds. On an eligible signal close $t$, it computes twelve-to-six-month momentum
+Finly Core supplies the four-fund sleeve of the competition strategy. The coordinated options sleeve uses a distinct direction model rather than inferring its direction from the Core backtest. The Core universe is QQQ, a fund tracking the Nasdaq-100, and the original nine Select Sector SPDR funds. On an eligible signal close $t$, it computes twelve-to-six-month momentum
 
 $
   m_s(t) = ln frac(P_(s,t-126), P_(s,t-252)),
@@ -155,7 +155,7 @@ As a distinct stress test, a 1927--2007 industry-proxy reconstruction covered 21
 
 = Reduction-only model evidence
 
-The options branch begins from a separate long-only SPY/BIL authority. For horizons $h in {21,63,252}$,
+The coordinated options sleeve begins from a distinct long-only SPY/BIL authority. For horizons $h in {21,63,252}$,
 
 $
   x_h(t) = ln frac("SPY"_t, "SPY"_(t-h)) - ln frac("BIL"_t, "BIL"_(t-h)),
@@ -317,7 +317,7 @@ $ <eq:states>
 
 with any hard contradiction entering `FROZEN`. One cycle may issue at most one broker-changing call.
 
-The options lifecycle is separate:
+The coordinated options sleeve uses a distinct lifecycle:
 
 #block[
   #set text(size: 8.1pt)
@@ -351,7 +351,7 @@ The principal historical comparison uses aligned adjusted closes from 2 January 
 
 #figure(
   image("../../public/figures/technical-paper/g4-wealth-drawdown.svg", width: 98%),
-  caption: [Modeled wealth and drawdown under an identical date, lag, capital, and cost convention. Finly Core is the frozen historical allocation; it is not the options agent's realized P&L.],
+  caption: [Modeled wealth and drawdown under an identical date, lag, capital, and cost convention. Finly Core is the four-fund sleeve's historical allocation; this is not realized options P&L.],
 ) <fig:wealth>
 
 #table(
@@ -372,7 +372,7 @@ The principal historical comparison uses aligned adjusted closes from 2 January 
 
 The \$38,629 ending-wealth difference is the strongest simple description of the ledger. It should be read with two facts. First, Finly Core did not beat QQQ over the full interval; part of its return is an explicit growth allocation. Second, the candidate did not pass its selection-adjusted promotion gate: the Deflated Sharpe probability was 3.75 percent and the worst familywise bootstrap $p$-value was 37.18 percent. The result is therefore sufficiently strong to motivate a forward paper experiment, but not to establish expected future outperformance.
 
-The verified \$100,000 Alpaca paper account supplies a separate operational observation. At the first exact 4:00 p.m. ET close, account equity was \$100,095.32. A same-\$100,000 raw-price SPY baseline was \$99,942.01, giving a \$153.31 difference. The reconciliation record contains 15 broker *fill events* from four stock orders and zero external cashflows [8]. No live options position existed, so this is evidence for deployment and measurement, not realized options profitability.
+The verified \$100,000 Alpaca paper account supplies the operational observation for the complete strategy. At the first exact 4:00 p.m. ET close, account equity was \$100,095.32. A same-\$100,000 raw-price SPY baseline was \$99,942.01, giving a \$153.31 difference. The reconciliation record contains 15 ETF *fill events* from four orders and zero external cashflows [8]. No live options position existed, so this is evidence for deployment and measurement, not realized options profitability.
 
 The public verification run discovered 809 tests: 807 passed, none failed, and two were skipped [9]. Tests cover evidence separation, payoff arithmetic, scenario determinism, source removal, perturbation stability, risk ceilings, HMAC scope, stale permits, client-order recovery, state encryption, causal backtest timing, cost parity, and submission artifacts. Tests establish implemented invariants; they do not turn one forward session into a forecast.
 
@@ -394,7 +394,7 @@ The complete implementation, tests, evidence JSON, and build sources are public.
 `npm run verify`
 ]
 
-The technical boundary is inspectable in the source modules for the frozen Finly Core (`G4`) engine, the separate SPY/BIL economic authority, signal aggregation, option compiler, risk certificate, stability suite, and both broker lifecycles [6,10]. The PDF figures are generated from the same public data used by the website and deck.
+The technical boundary is inspectable in the source modules for the frozen Finly Core (`G4`) engine, the options sleeve's distinct SPY/BIL economic authority, signal aggregation, option compiler, risk certificate, stability suite, and both broker lifecycles [6,10]. The PDF figures are generated from the same public data used by the website and deck.
 
 == References
 

@@ -8,11 +8,11 @@ Paper trading follows real prices with virtual money. In Finly's first session o
 
 [Open Finly](https://owlsowo.github.io/finly-bot/) · [Watch the paper account](https://owlsowo.github.io/finly-bot/#live) · [Try a decision](https://owlsowo.github.io/finly-bot/#controls) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Open the mathematical note](public/judge/Finly_Technical_Proposal.pdf) · [View the deck](public/judge/Finly_Consulting_Deck.pdf)
 
-## What Finly does
+## One strategy, two coordinated sleeves
 
-Finly starts with a rules-based base portfolio: roughly half the account in QQQ, which tracks the Nasdaq-100; most of the remainder divided among three market sectors with stronger longer-term price trends; and 3% held in cash. The competition portfolio and its selection rule were fixed before paper trading began.
+Finly is one autonomous competition strategy with two coordinated sleeves. Its four-fund allocation keeps roughly half the account in QQQ, which tracks the Nasdaq-100; divides most of the remainder among three market sectors with stronger longer-term price trends; and holds 3% in cash. The allocation and its selection rule were fixed before paper trading began.
 
-Finly can also consider a small, defined-risk SPY options trade. A hosted AI model reads public Alpaca news and explains what supports or weakens the idea. It does not choose how much money to risk or write the broker order. Fixed code chooses the direction, contracts, quantity, maximum loss, and every field sent to Alpaca. The competition limit is **$500 of maximum loss per options trade**. The AI may make the system more cautious or stop a trade; it cannot raise that limit.
+The coordinated SPY options sleeve evaluates a small, defined-risk trade on the same paper account. Qwen3-32B, hosted through Featherless, reads public Alpaca news and explains what supports or weakens the case. It does not choose how much money to risk or write the broker order. Fixed code chooses the direction, contracts, quantity, maximum loss, and every field sent to Alpaca. The competition limit is **$500 of maximum loss per options trade**. The model may make Finly more cautious or stop a trade; it cannot raise that limit.
 
 The idea is simple: use AI for the part it does well—reading and explaining—while ordinary software keeps control of the account.
 
@@ -20,13 +20,13 @@ The idea is simple: use AI for the part it does well—reading and explaining—
 
 ### A real paper account
 
-Finly runs in the cloud against a verified Alpaca paper account, so the laptop does not need to stay awake. At the first 4:00 p.m. close, the account had recorded 15 broker fill events, no deposits or withdrawals, and the **$153.31 advantage over SPY** described above. That result is a record of one session, not a promise about the next one.
+Finly runs in the cloud against a verified Alpaca paper account, so the laptop does not need to stay awake. At the first 4:00 p.m. close, the account had recorded 15 ETF fill events, no deposits or withdrawals, and the **$153.31 same-timestamp advantage over SPY** described above. No options position was open at that close. That result is a record of one session, not a promise about the next one.
 
 The [live dashboard](https://owlsowo.github.io/finly-bot/#live) separates the locked first-close comparison from the account value that continues to change with market prices. It also shows the current holdings, the latest options decision, and the risk limit without exposing credentials or account numbers.
 
 ### Historical tests
 
-In a simulation from January 2013 through August 2026, after modeled trading costs, **$10,000 became $106,711 with Finly's portfolio rule** and **$68,082 with SPY**. That is a **$38,629 difference in ending wealth**.
+In a simulation from January 2013 through August 2026, after modeled trading costs, **$10,000 became $106,711 with Finly's underlying four-fund research rule (before the competition's 3% cash scaling)** and **$68,082 with SPY**. That is a **$38,629 difference in ending wealth**.
 
 A simpler version built from long-running industry data was also tested on **21,218 market days from 1927 through 2007**. It averaged **13.37% growth per year versus 9.48% for the market**, remained ahead in all 21 tests that changed the monthly update day, and stayed ahead when the assumed trading cost was increased fivefold.
 
@@ -34,7 +34,7 @@ A simpler version built from long-running industry data was also tested on **21,
 
 The interactive options demonstration shows what the risk controls do. In one illustrative SPY plan, the most that could be lost was **$366** and the most that could be gained was **$634**. Finly reached the same decision when each of four information sources was removed in turn and after 32 small changes to the inputs. No broker order or fill occurred.
 
-Change the demonstration to conflicting evidence and Finly stops before the paper account takes on any risk. The demo can illustrate rising- and falling-price cases; during the competition, the live account may open only an approved rising-price options trade—or do nothing.
+Change the demonstration to conflicting evidence and Finly stops before the paper account takes on any risk. The demo can illustrate rising- and falling-price cases; during the competition, the options sleeve may open only an approved rising-price trade—or record `NO_TRADE`.
 
 ## How one idea becomes one checked order
 
@@ -48,7 +48,7 @@ Change the demonstration to conflicting evidence and Finly stops before the pape
 
 The [mathematical technical note](public/judge/Finly_Technical_Proposal.pdf) derives the portfolio rule, the limit on AI authority, options payoff, conservative valuation, risk sizing, one-order approval, and restart-safe execution. The [engineering appendix](public/judge/Finly_Engineering_Appendix.pdf) maps those claims to code, tests, evidence files, and cloud operations.
 
-Some frozen research files call the base portfolio configuration `G4`. That is an internal experiment label retained for reproducibility, not a product generation or a second Finly product.
+Some frozen research files call the four-fund allocation `G4`. That is an internal experiment label retained for reproducibility, not a product generation or a second Finly strategy.
 
 The public verification run found **809 automated tests: 807 passed, 0 failed, and 2 were skipped**. The suite covers historical timing and trading costs, options payoff arithmetic, data freshness, position limits, account checks, order construction, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
 

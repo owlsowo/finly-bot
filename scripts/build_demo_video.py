@@ -38,8 +38,8 @@ INTER_SCENE_PAUSE = 0.20
 FINAL_PAUSE = 0.55
 MIN_FINAL_SECONDS = 75.0
 MAX_FINAL_SECONDS = 90.0
-SUPPLIED_AUDIO_TEMPO = 1.27
-FIRST_CLOSE_AUDIO_TEMPO = 1.27
+SUPPLIED_AUDIO_TEMPO = 1.38
+FIRST_CLOSE_AUDIO_TEMPO = 1.50
 
 
 @dataclass(frozen=True)
@@ -67,7 +67,7 @@ SCENES = [
         "approve",
         "asset:public/judge/video-controls-aligned.jpg",
         8.0,
-        "When signals agree, Finly builds the paper order. A I explains it; only rules can approve it.",
+        "When signals agree, Finly builds a paper-order plan. A I explains it; only rules can approve it.",
     ),
     Scene(
         "refuse",
@@ -85,25 +85,25 @@ SCENES = [
         "live-result",
         "slide:7",
         11.0,
-        "Finly's separate rules-based base portfolio then ran during live market hours. At the first close, it gained $95.32 while S P Y lost $57.99—a $153.31 advantage from the same $100,000 start.",
+        "Finly's allocation sleeve traded during live market hours, while its options sleeve was flat at the close rather than forcing a trade. Finly gained $95.32 while S P Y lost $57.99—a $153.31 advantage from the same $100,000 start.",
     ),
     Scene(
         "historical-result",
         "slide:4",
         10.0,
-        "We also replayed that base-portfolio rule from 2013 to 2026. $10,000 became $106,711 with Finly—$38,629 more than S P Y after modeled trading costs.",
+        "We also replayed the allocation rule from 2013 to 2026. $10,000 became $106,711 with Finly—$38,629 more than S P Y after modeled trading costs.",
     ),
     Scene(
         "older-market-test",
         "slide:5",
         10.0,
-        "A simpler version of the portfolio was tested on a separate 80-year market record. It returned 13.37% a year versus 9.48% for the market and stayed ahead at every tested rebalance date.",
+        "A simpler version of the portfolio was tested on a separate 80-year market record. It returned 13.37% a year versus 9.48% for the market and stayed ahead across all 21 tested monthly rebalance schedules.",
     ),
     Scene(
         "technical-handoff",
         "slide:9",
         8.0,
-        "Judges can open the decision, rerun tests, inspect the Alpaca order, and verify every number in the public repository.",
+        "Judges can inspect the 15 Alpaca ETF fill events, replay the options decisions, rerun the tests, and verify every number in the public repository.",
     ),
 ]
 
@@ -271,7 +271,7 @@ def verify_claims() -> None:
         "$366", "$500 limit", "during live market hours",
         "$10,000", "$106,711", "$38,629", "13.37%", "9.48%",
         "$100,000 start", "$95.32", "$57.99", "$153.31",
-        "Judges can open the decision", "public repository",
+        "Judges can inspect the 15 Alpaca ETF fill events", "public repository",
     ]
     for phrase in required:
         if phrase.lower() not in narration.lower():
@@ -462,13 +462,15 @@ def build(keep_work: bool, audio_dir: Path | None) -> None:
         # Keep every caption image alive for the whole timeline. Without an
         # explicit loop, later overlay inputs can reach EOF before their
         # enable window and silently disappear from the rendered film.
-        ffmpeg_args.extend(["-loop", "1", "-framerate", "1", "-i", str(caption_path)])
+        ffmpeg_args.extend(["-loop", "1", "-framerate", "30", "-i", str(caption_path)])
     filters: list[str] = ["[0:v]format=yuv420p[base]"]
     previous = "base"
     for index, (start, end, _) in enumerate(srt_entries, start=1):
+        caption_label = f"caption{index}"
         output_label = f"captioned{index}"
+        filters.append(f"[{index}:v]setpts=PTS-STARTPTS[{caption_label}]")
         filters.append(
-            f"[{previous}][{index}:v]overlay=x=0:y=930:"
+            f"[{previous}][{caption_label}]overlay=x=0:y=930:eof_action=repeat:shortest=0:"
             f"enable='between(t,{start:.3f},{end:.3f})'[{output_label}]"
         )
         previous = output_label

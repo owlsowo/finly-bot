@@ -178,7 +178,7 @@ test("public competition feed separates Finly Core from the options maximum loss
   assert.equal(snapshot.exposure.option_positions, 2);
   assert.equal(snapshot.exposure.options_defined_risk_dollars, 500);
   assert.equal(snapshot.decision.status, "HOLDING");
-  assert.match(snapshot.exposure.position_summary, /four-fund base portfolio.*capped-loss options/i);
+  assert.match(snapshot.exposure.position_summary, /four-fund allocation sleeve.*capped-loss options/i);
 });
 
 test("public competition feed refuses to guess options risk or accept an unknown asset class", () => {

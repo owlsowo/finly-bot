@@ -1,6 +1,6 @@
 # Finly: Controlled Delegation for an Alpaca Trading Agent
 
-## A frozen equity sleeve, a reduction-only news model, a deterministic options compiler, and restart-safe paper execution
+## One autonomous strategy with a four-fund allocation sleeve, a capped-risk options sleeve, and restart-safe paper execution
 
 Bruce Wen · Brandeis University · [bwen412@brandeis.edu](mailto:bwen412@brandeis.edu)
 
@@ -8,13 +8,13 @@ Bruce Wen · Brandeis University · [bwen412@brandeis.edu](mailto:bwen412@brande
 
 ## Abstract
 
-Finly is an AI-assisted trading system built for the Alpaca paper-trading environment. Its design begins from a narrow observation: interpreting information and authorizing financial risk are different jobs. A language model may be useful for reading current public news, but it should not silently acquire the authority to choose an instrument, enlarge a position, alter a loss bound, or manufacture a broker order. Finly therefore separates model judgment from capital-bearing decisions and records the boundary in machine-checkable artifacts.
+Finly is one autonomous competition strategy built for the Alpaca paper-trading environment. It coordinates a diversified four-fund allocation sleeve with a capped-risk SPY options sleeve while keeping each sleeve's signals, risk account, and broker lifecycle independently auditable. The design begins from a narrow observation: interpreting information and authorizing financial risk are different jobs. A language model may be useful for reading current public news, but it should not silently acquire the authority to choose an instrument, enlarge a position, alter a loss bound, or manufacture a broker order. Finly therefore separates model judgment from capital-bearing decisions and records the boundary in machine-checkable artifacts.
 
-The system has two execution branches. The first is G4, a frozen four-ETF competition sleeve. G4 assigns one half of its research allocation to QQQ and divides the other half among the three strongest original Select Sector SPDR funds under a twelve-to-six-month relative-momentum rule. The competition deployment scales that allocation to 97 percent, preserves a 3 percent cash reserve, and performs one initial rebalance without in-contest re-optimization. In a consumed, post-selected simulation from 2 January 2013 through 27 August 2026, with modeled one-way costs of five basis points, G4 returned 967.11 percent while SPY returned 580.82 percent. The result is economically large but did not pass Finly's promotion gate: its Deflated Sharpe probability was 3.75 percent, its worst familywise-adjusted bootstrap p-value was 37.18 percent, it did not consistently beat a static SPY/QQQ growth control, and the frozen Yahoo-versus-Alpaca source reconciliation failed closed.
+The four-fund sleeve is internally identified as G4. It assigns one half of its research allocation to QQQ and divides the other half among the three strongest original Select Sector SPDR funds under a twelve-to-six-month relative-momentum rule. The competition deployment scales that allocation to 97 percent, preserves a 3 percent cash reserve, and performs one initial rebalance without in-contest re-optimization. In a consumed, post-selected simulation from 2 January 2013 through 27 August 2026, with modeled one-way costs of five basis points, G4 returned 967.11 percent while SPY returned 580.82 percent. The result is economically large but did not pass Finly's promotion gate: its Deflated Sharpe probability was 3.75 percent, its worst familywise-adjusted bootstrap p-value was 37.18 percent, it did not consistently beat a static SPY/QQQ growth control, and the frozen Yahoo-versus-Alpaca source reconciliation failed closed.
 
-The second branch is a SPY options agent. A separate long-only SPY/BIL policy supplies a bounded bullish direction or no-trade authority. Deterministic market and option-surface evidence must confirm that direction. Qwen3-32B, hosted through Featherless, sees only canonical public Alpaca news and is reduction-only: supportive prose cannot increase exposure, while adverse evidence may reduce or veto a proposal. Code enumerates defined-risk vertical debit spreads, evaluates two 2,048-path scenario models, applies conservative expected-value and probability gates, sizes maximum loss, and issues a thirty-second HMAC-signed risk certificate bound to one exact order projection. Alpaca execution proceeds through a durable state machine, deterministic client-order identifiers, pre-mutation checkpoints, broker read-back, and fail-closed reconciliation.
+The coordinated SPY options sleeve uses a distinct long-only SPY/BIL policy to supply a bounded bullish direction or no-trade authority. Deterministic market and option-surface evidence must confirm that direction. Qwen3-32B, hosted through Featherless, sees only canonical public Alpaca news and is reduction-only: supportive prose cannot increase exposure, while adverse evidence may reduce or veto a proposal. Code enumerates defined-risk vertical debit spreads, evaluates two 2,048-path scenario models, applies conservative expected-value and probability gates, sizes maximum loss, and issues a thirty-second HMAC-signed risk certificate bound to one exact order projection. Alpaca execution proceeds through a durable state machine, deterministic client-order identifiers, pre-mutation checkpoints, broker read-back, and fail-closed reconciliation.
 
-This paper specifies the algorithms, causal timing, cost conventions, statistical tests, risk constraints, state transitions, and reproducibility boundary. At the first closing bell, Finly was up $95.32 while the same-$100,000 SPY raw-price benchmark was down $57.99, a $153.31 advantage at one exact timestamp. The evidence supports an inspectable paper-trading experiment, not durable alpha, verified live options profit, or future outperformance.
+This paper specifies the algorithms, causal timing, cost conventions, statistical tests, risk constraints, state transitions, and reproducibility boundary. At the first closing bell, 15 ETF fill events had built the allocation sleeve; Finly was up $95.32 while the same-$100,000 SPY raw-price benchmark was down $57.99, a $153.31 advantage at one exact timestamp. The evidence supports an inspectable paper-trading experiment, not durable alpha, verified live options profit, or future outperformance.
 
 ## 1. Problem, scope, and contributions
 
@@ -22,7 +22,7 @@ Trading-agent demonstrations often collapse a chain of unlike decisions into one
 
 Finly treats the agent as a controlled pipeline rather than a single oracle. The project makes four contributions.
 
-1. **A two-branch quantitative design.** G4 is a frozen equity allocation used for the time-bounded competition account. The options overlay has a separate SPY/BIL economic authority and does not infer its direction from the G4 backtest.
+1. **One strategy with coordinated sleeves.** G4 supplies a frozen four-fund allocation for the time-bounded competition account. The capped-risk options sleeve uses a distinct SPY/BIL economic authority instead of inferring direction from the G4 backtest; separate signals and risk accounts preserve auditability without creating a second competition strategy.
 2. **Reduction-only model authority.** The hosted model extracts bounded scores and rationales from canonical public news. It cannot amplify the deterministic direction, choose an option, choose quantity, access account secrets, or authorize a broker mutation.
 3. **A deterministic compiler and permit.** Typed evidence becomes a checked intent; an enumerator constructs vertical spreads; two scenario models evaluate them; fixed gates select at most one candidate; and an HMAC-signed certificate binds evidence, policy, risk, account, market, candidate, quantity, and order projection.
 4. **Restart-safe Alpaca execution.** The cloud runner persists intent before mutation, advances at most one broker-changing step per cycle, assigns deterministic client-order identifiers, reconciles ambiguous acknowledgements, and publishes only sanitized status.
@@ -31,7 +31,7 @@ Research, synthetic demonstration, paper authorization, and broker observation a
 
 ## 2. Architecture and authority
 
-Finly has two independent paths that meet at the same paper account and measurement layer.
+Finly coordinates two execution paths inside one competition strategy. They meet at the same paper account and measurement layer while retaining distinct state and risk records.
 
 ~~~text
 Historical adjusted closes
@@ -59,7 +59,7 @@ Alpaca public news ──── Qwen structured assessment ── reduce/veto┤
                                                                   │
                                              Alpaca MCP multi-leg paper order
 
-Both branches ── broker read-back ── encrypted state ── sanitized feed/scorer
+Both sleeves ─── broker read-back ── encrypted state ── sanitized feed/scorer
 ~~~
 
 | Component | May decide | May not decide |
@@ -249,9 +249,9 @@ $$
 
 The Deflated Sharpe probability was 0.7182. Eight of nine precommitted gates passed, but the overall statistical gate failed. This supplies cross-era economic evidence, not independent proof of durable alpha.
 
-## 6. The separate SPY/BIL economic authority
+## 6. The options sleeve's distinct SPY/BIL authority
 
-G4 chooses the competition equity sleeve; it does not authorize options. The options branch uses a frozen long-only SPY/BIL policy called tsmom_ensemble_vol [13,14].
+G4 chooses the competition equity sleeve; it does not authorize options. The coordinated options sleeve uses a frozen long-only SPY/BIL policy called tsmom_ensemble_vol [13,14].
 
 For h in {21, 63, 252}, it computes SPY's excess log trend:
 
@@ -473,7 +473,7 @@ GitHub Actions runs while the laptop is off. Schedule time is not authority: an 
 
 Lifecycle journals are encrypted with AES-256-GCM under a secret different from the certificate secret and stored on an isolated state branch. State is checkpointed before entry and exit mutation. The public branch contains only allowlisted competition_live.json without credentials, raw account identity, or broker IDs. GitHub Pages fetches that file; it never receives a trading secret [27].
 
-The GET-only scorer compares Finly with same-timestamp SPY and rejects cashflow or provenance breaks [28]. At the first close, Finly was +$95.32 versus SPY -$57.99 at 4:00 p.m. ET: +$153.31 after 15 fills and zero external cashflows [35].
+The GET-only scorer compares Finly with same-timestamp SPY and rejects cashflow or provenance breaks [28]. At the first close, Finly was +$95.32 versus SPY -$57.99 at 4:00 p.m. ET: +$153.31 after 15 ETF fill events and zero external cashflows [35].
 
 ## 10. Verification, reproducibility, and hackathon fit
 
@@ -499,7 +499,7 @@ Finly maps to the Options Alpha Agents requirements [1,30].
 | One-page explanation | Separate judge brief plus this technical paper | The paper supplements the brief |
 | Public original work | MIT repository and source-bound artifacts [31] | Secrets and private state excluded |
 
-The strongest claim is not that an LLM found a guaranteed trade. It is that the division of authority is executable: the model reads; code computes; the permit binds; Alpaca records; and a public scorer measures without rewriting the rule.
+The strongest claim is not that an LLM found a guaranteed trade. It is that the division of authority is executable: the model reads; code computes; the permit binds one exact options plan; Alpaca records the allocation execution; and a public scorer measures the complete account without rewriting the rule.
 
 ## 11. Threats and limitations
 
@@ -521,9 +521,9 @@ The strongest claim is not that an LLM found a guaranteed trade. It is that the 
 
 ## 12. Conclusion
 
-Finly combines a frozen quantitative sleeve, an AI evidence reader, a deterministic options compiler, and restart-safe Alpaca execution without pretending they are one model. G4 supplies a compelling historical reason to test: $10,000 became $106,711 versus $68,082 for SPY. The failed statistical, control, and source gates supply the reason to be careful.
+Finly is one autonomous competition strategy with two coordinated execution sleeves; it does not pretend that their models, signals, or risk accounts are interchangeable. The four-fund sleeve supplies a compelling historical reason to test: $10,000 became $106,711 versus $68,082 for SPY. The failed statistical, control, and source gates supply the reason to be careful.
 
-The system turns that tension into design. A separate SPY/BIL rule bounds options direction. News may reduce or veto but cannot amplify it. Code owns payoff, EV gates, quantity, loss, and broker fields. A short-lived HMAC certificate binds one state to one projection. Encrypted checkpoints and deterministic IDs make uncertain acknowledgements recoverable. The paper account then observes what happens without changing the rule.
+The system turns that tension into design. A distinct SPY/BIL rule bounds the coordinated options sleeve's direction. News may reduce or veto but cannot amplify it. Code owns payoff, EV gates, quantity, loss, and broker fields. A short-lived HMAC certificate binds one state to one projection. Encrypted checkpoints and deterministic IDs make uncertain acknowledgements recoverable. The paper account then observes what happens without changing the rule.
 
 Finly's contribution is controlled delegation: every component has a useful job, every capital-bearing decision has a deterministic owner, and every public claim traces to supporting evidence.
 

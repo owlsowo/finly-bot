@@ -946,6 +946,45 @@ h1 {
 .receipt-decision a { color: white; font-size: 11px; font-weight: 700; text-underline-offset: 4px; white-space: nowrap; }
 .receipt-disclosure { max-width: 75ch; margin: 18px 0 0; color: #95a8ae; font-size: 12px; line-height: 1.55; }
 
+.decision-story {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+  border-block: 1px solid #58748a;
+}
+
+.decision-story li {
+  min-width: 0;
+  min-height: 184px;
+  padding: 24px 24px 22px 0;
+}
+
+.decision-story li + li { padding-left: 24px; border-left: 1px solid #58748a; }
+.decision-story li > span { color: #94bbaa; font-size: 10px; font-weight: 780; letter-spacing: .1em; }
+
+.decision-story-label {
+  margin: 18px 0 7px;
+  color: #93ada4;
+  font-size: 10px;
+  font-weight: 760;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.decision-story strong {
+  display: block;
+  margin-bottom: 8px;
+  color: white;
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 540;
+  line-height: 1.25;
+}
+
+.decision-story li > p:last-child { margin: 0; color: #b8c6c9; font-size: 12px; line-height: 1.55; }
+
 .evidence-section {
   padding-block: 96px;
   background: var(--paper-bright);
@@ -1548,6 +1587,46 @@ h1 {
   border-top: 2px solid var(--navy);
 }
 
+.claim-matrix {
+  margin-bottom: 62px;
+  padding: 34px 36px 30px;
+  background: var(--paper-bright);
+  border-top: 5px solid var(--green);
+  box-shadow: 0 18px 45px rgb(31 46 49 / 7%);
+}
+
+.claim-matrix-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .65fr);
+  gap: clamp(44px, 7vw, 88px);
+  align-items: end;
+  margin-bottom: 28px;
+}
+
+.claim-matrix-heading .kicker { margin-bottom: 10px; }
+.claim-matrix-heading h3 {
+  max-width: 720px;
+  margin: 0;
+  color: var(--navy);
+  font-family: var(--serif);
+  font-size: clamp(29px, 3vw, 42px);
+  font-weight: 520;
+  letter-spacing: -.04em;
+  line-height: 1.08;
+}
+
+.claim-matrix-heading > p { margin: 0; color: #58656a; font-family: var(--serif); font-size: 15px; line-height: 1.62; }
+.claim-table th:first-child { width: 42%; }
+.claim-table a { color: var(--green-dark); font-weight: 700; text-underline-offset: 4px; }
+.claim-table code {
+  color: #35484e;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.claim-status-cell small { display: block; margin-top: 6px; color: var(--stone); font-size: 9px; line-height: 1.35; }
+
 .deliverable-list li {
   display: grid;
   grid-template-columns: 64px minmax(180px, .6fr) minmax(280px, 1fr) 80px;
@@ -1594,6 +1673,9 @@ footer {
   .live-technical-record dl > div:nth-child(odd) { padding-left: 0; border-left: 0; }
   .live-technical-record dl > div:nth-child(even) { padding-left: 18px; border-left: 1px solid var(--rule-light); }
   .argument-grid { grid-template-columns: 44px 1fr; }
+  .decision-story { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .decision-story li:nth-child(3) { padding-left: 0; border-top: 1px solid #58748a; border-left: 0; }
+  .decision-story li:nth-child(4) { border-top: 1px solid #58748a; }
   .argument-copy { grid-column: 2; }
   .process-line { grid-template-columns: repeat(3, 1fr); }
   .process-line li:nth-child(4) { border-left: 0; }
@@ -1622,6 +1704,7 @@ footer {
   .first-close-proof { grid-template-columns: 1fr; gap: 30px; }
   .live-decision-story { grid-template-columns: 1fr; gap: 24px; }
   .argument-grid, .section-intro, .production-clarifier, .evidence-ledger, .forward, .broker-grid, .research-note, .range-explorer-heading, .range-proof-strip, .external-proof-lead, .current-mark-heading { grid-template-columns: 1fr; }
+  .claim-matrix-heading { grid-template-columns: 1fr; gap: 22px; }
   .argument-grid { gap: 28px; }
   .argument-copy { grid-column: auto; }
   .section-intro { gap: 28px; margin-bottom: 46px; }
@@ -1716,6 +1799,9 @@ footer {
   .receipt-controls button + button { border-top: 1px solid #527087; border-left: 0; }
   .receipt-facts { grid-template-columns: 1fr; }
   .receipt-facts > div:nth-child(even) { padding-left: 0; border-left: 0; }
+  .decision-story { grid-template-columns: 1fr; }
+  .decision-story li { min-height: 0; padding: 22px 0 !important; border-top: 1px solid #58748a; border-left: 0 !important; }
+  .decision-story li:first-child { border-top: 0; }
   .gate-table { min-width: 0; }
   .gate-table thead {
     position: absolute;
@@ -1786,6 +1872,7 @@ footer {
   .broker-seal hr { width: 100%; height: 0; margin-block: 16px; border-left: 0; border-top: 1px solid #75998a; }
   .deliverable-list li { grid-template-columns: 32px 1fr auto; }
   .deliverable-list h3 { font-size: 17px; }
+  .claim-matrix { margin-inline: -6px; padding: 28px 20px 24px; }
   .footer-grid { grid-template-columns: 1fr; }
 }
 

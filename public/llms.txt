@@ -1,18 +1,18 @@
 # Finly
 
-Finly is an AI trading agent designed around one rule: AI may study and explain a trade, but it may not control the account. Fixed, tested code chooses the direction, contracts, size, maximum loss, broker fields, and whether an order may reach Alpaca paper trading.
+Finly is one autonomous AI trading strategy with two coordinated sleeves: a diversified four-fund allocation and a capped-risk SPY options sleeve. It is designed around one rule: AI may study and explain a trade, but it may not control the account. Fixed, tested code chooses the direction, contracts, size, maximum loss, broker fields, and whether an order may reach Alpaca paper trading.
 
 Paper trading follows real market prices with virtual money. SPY is a fund that tracks the S&P 500. QQQ is a fund that tracks the Nasdaq-100.
 
-## Two parts, one product
+## One strategy, two coordinated sleeves
 
-Finly keeps the competition account in a rules-based four-fund base portfolio. It keeps roughly half in QQQ, divides most of the remainder across three sector funds selected for stronger longer-term price trends, and keeps 3% in cash. The competition mix was chosen and locked before paper trading began. Technical code and evidence files retain the internal research identifier G4 for reproducibility; G4 is not a separate public product.
+Finly runs one autonomous competition strategy with two coordinated sleeves. Its four-fund allocation keeps roughly half in QQQ, divides most of the remainder across three sector funds selected for stronger longer-term price trends, and keeps 3% in cash. The competition mix was chosen and locked before paper trading began. Technical code and evidence files retain the internal research identifier G4 for reproducibility; G4 is not a product generation or a separate strategy.
 
-Finly's AI-assisted options layer reviews public Alpaca news and explains what supports or weakens a small, time-limited market trade. Qwen3-32B is hosted through Featherless. Fixed code chooses the contracts, limits any new competition options trade to $500 of possible loss, and can stop it before Alpaca sees the order. The live path uses prices, options data, and Alpaca news. Economic and prediction-market examples appear only in the interactive demonstration.
+The coordinated options sleeve reviews public Alpaca news and explains what supports or weakens a small, time-limited market trade. Qwen3-32B is hosted through Featherless. Fixed code chooses the contracts, limits any new competition options trade to $500 of possible loss, and can stop it before Alpaca sees the order. The two sleeves share one account and risk policy while keeping separate decision records for auditability. The live path uses prices, options data, and Alpaca news. Economic and prediction-market examples appear only in the interactive demonstration.
 
 ## Historical results
 
-In a cost-adjusted historical simulation from 2013 through 2026, a modeled **$10,000 became $106,711 with Finly's base portfolio**. SPY became **$68,082** over the same dates. That is a **$38,629 historical ending-wealth difference**, with total return of **+967.11%** for Finly versus **+580.82%** for SPY after modeled 0.05% one-way trading costs.
+In a cost-adjusted historical simulation from 2013 through 2026, a modeled **$10,000 became $106,711 with Finly's underlying four-fund research rule, before the competition's 3% cash scaling**. SPY became **$68,082** over the same dates. That is a **$38,629 historical ending-wealth difference**, with total return of **+967.11%** for Finly versus **+580.82%** for SPY after modeled 0.05% one-way trading costs.
 
 A simpler industry version was checked on **21,218 earlier market days** from 1927 through 2007. It averaged **13.37% growth per year versus 9.48% for the market**, stayed ahead in all 21 tests that changed which trading day of the month the holdings were updated, and kept a positive advantage when the trading-cost assumption rose fivefold to 0.25%.
 
@@ -24,13 +24,13 @@ In the public demonstration, Finly prepared one illustrative SPY two-option plan
 
 Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. The runner uses **Alpaca's official connection**, locks the code version allowed to trade, saves its progress before each action, and checks the broker afterward. The public dashboard publishes account value, positions, risk totals, and the latest decision without exposing credentials, account numbers, or order identifiers.
 
-At exactly 4:00 p.m. ET on the first market day, Finly was **up $95.32** while a same-$100,000 SPY price benchmark was **down $57.99**. Finly therefore finished the first session **$153.31 ahead of SPY**, after **15 broker fill events** and with no deposits or withdrawals. The base portfolio produced this result; no options position was open at that close.
+At exactly 4:00 p.m. ET on the first market day, Finly was **up $95.32** while a same-$100,000 SPY price benchmark was **down $57.99**. Finly therefore finished the first session **$153.31 ahead of SPY**, after **15 ETF fill events** and with no deposits or withdrawals. Those fills built the four-fund sleeve; no options position was open at that close.
 
 The public verification run discovered **809 automated tests: 807 passed, 0 failed, and 2 were skipped**. They cover the portfolio calculation, causal historical timing, trading costs, option payoff, data freshness, risk limits, order construction, account checks, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
 
 ## Why it matters
 
-Most trading demos show either an attractive chart or an AI recommendation. Finly joins the research, exact trade, account checks, and broker-shaped order in one inspectable product. A persuasive AI explanation cannot silently become a larger position or a different order.
+Most trading demos show either an attractive chart or an AI recommendation. Finly joins a diversified allocation, an AI-assisted options decision, exact account checks, and broker-shaped orders in one inspectable strategy. A persuasive AI explanation cannot silently become a larger position or a different order.
 
 ## Where to start
 

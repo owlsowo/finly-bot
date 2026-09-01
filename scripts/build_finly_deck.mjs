@@ -125,13 +125,13 @@ function addChevron(slide, x, y, color = C.green) {
   slide.background.fill = C.navy;
   slide.images.add({ blob: assets.mark.blob, contentType: assets.mark.contentType, alt: "Finly bull-horn mark", fit: "contain", position: { left: 64, top: 40, width: 54, height: 54 } });
   addText(slide, "FINLY", 130, 50, 180, 36, { fontSize: 24, bold: true, color: C.white });
-  addKicker(slide, "A tested portfolio + a risk-controlled AI assistant", C.mint, 64, 126);
-  addText(slide, "Finly combines a market-tested base portfolio with an AI options assistant.", 64, 170, 540, 222, { fontSize: 48, bold: true, color: C.white });
-  addText(slide, "AI studies the market. Rules set the risk, build the trade, and can still stop it.", 64, 416, 520, 92, { fontSize: 24, color: "#D7E3E5" });
+  addKicker(slide, "One autonomous strategy · two coordinated sleeves", C.mint, 64, 126);
+  addText(slide, "Finly pairs a tested allocation with capped-risk AI options.", 64, 170, 540, 222, { fontSize: 48, bold: true, color: C.white });
+  addText(slide, "The allocation keeps the account invested. AI studies small options trades; fixed rules cap the risk and can still stop them.", 64, 416, 520, 92, { fontSize: 22, color: "#D7E3E5" });
   addShape(slide, 654, 132, 1, 344, "#406278");
   slide.images.add({ blob: assets.mark.blob, contentType: assets.mark.contentType, alt: "Finly bull-horn mark", fit: "contain", position: { left: 824, top: 132, width: 240, height: 240 } });
-  addText(slide, "FINLY CORE  +  FINLY OPTIONS", 690, 386, 454, 42, { fontSize: 24, bold: true, color: C.white, alignment: "center" });
-  addText(slide, "Base portfolio  ·  AI assistant", 720, 436, 394, 30, { fontSize: 18, color: C.mint, alignment: "center" });
+  addText(slide, "ALLOCATION  +  OPTIONS", 690, 386, 454, 42, { fontSize: 24, bold: true, color: C.white, alignment: "center" });
+  addText(slide, "One account  ·  one risk policy", 720, 436, 394, 30, { fontSize: 18, color: C.mint, alignment: "center" });
   addShape(slide, 64, 530, 1152, 1, C.mint);
   addMetric(slide, "$106,711", "historical ending wealth", 64, 552, 250, { valueSize: 38, valueColor: C.gold, labelColor: "#C5D4D8" });
   addMetric(slide, "+$38,629", "versus the S&P 500 tracker", 360, 552, 240, { valueSize: 38, valueColor: C.white, labelColor: "#C5D4D8", labelSize: 12 });
@@ -178,7 +178,8 @@ function addChevron(slide, x, y, color = C.green) {
   addText(slide, "Finly's rules choose the maximum risk, the exact option pair, the order details, and whether a trade may be sent.", 80, 582, 1040, 58, { fontSize: 23, color: C.gray });
   addFooter(slide, 2);
   setNotes(slide, [
-    "Decision trace: https://owlsowo.github.io/finly-bot/data/llama_decision_trace.json",
+    "Deployed Qwen3-32B evidence path: https://github.com/owlsowo/finly-bot/blob/main/lib/evidence_extractor.mjs",
+    "Cloud model runner: https://github.com/owlsowo/finly-bot/blob/main/.github/workflows/paper-agent-cloud.yml",
     "Positive decision receipt: https://owlsowo.github.io/finly-bot/data/latest_receipt.json",
     "Conflict receipt: https://owlsowo.github.io/finly-bot/data/no_trade_receipt.json",
   ]);
@@ -191,7 +192,7 @@ function addChevron(slide, x, y, color = C.green) {
   addKicker(slide, "How the product works", C.mint);
   addText(slide, "AI explains the opportunity. Rules decide whether money can move.", 64, 80, 1120, 105, { fontSize: 46, bold: true, color: C.white });
   const workflowCards = [
-    { x: 64, width: 300, number: "01", label: "AI READS", title: "Market evidence", body: "Prices, options signals, events, and prediction markets.", color: C.mint },
+    { x: 64, width: 300, number: "01", label: "FINLY READS", title: "Bounded evidence", body: "Code reads prices and options; AI reads public Alpaca news.", color: C.mint },
     { x: 430, width: 300, number: "02", label: "CODE BUILDS", title: "Exact risk", body: "Position size, maximum loss, and every broker-order field.", color: C.gold },
   ];
   for (const card of workflowCards) {
@@ -214,11 +215,12 @@ function addChevron(slide, x, y, color = C.green) {
   addText(slide, "FAIL", 1034, 370, 140, 24, { fontSize: 15, bold: true, color: C.white, alignment: "center" });
   addText(slide, "NO TRADE", 1028, 398, 152, 24, { fontSize: 18, bold: true, color: C.white, alignment: "center" });
   addShape(slide, 64, 552, 1152, 3, C.green);
-  addText(slide, "AI proposes. Code fixes the risk. A failed check moves $0.", 64, 574, 1152, 48, { fontSize: 30, bold: true, color: C.mint });
+  addText(slide, "One strategy, two sleeves: allocation carries exposure; options activate only when every extra gate passes.", 64, 574, 1152, 48, { fontSize: 24, bold: true, color: C.mint });
   addFooter(slide, 3, true);
   setNotes(slide, [
     "Interactive product: https://owlsowo.github.io/finly-bot/#controls",
-    "Model trace: https://owlsowo.github.io/finly-bot/data/llama_decision_trace.json",
+    "Deployed Qwen3-32B evidence path: https://github.com/owlsowo/finly-bot/blob/main/lib/evidence_extractor.mjs",
+    "Hosted-model readiness gate: https://github.com/owlsowo/finly-bot/blob/main/scripts/featherless_readiness_check.mjs",
     "Compiled order receipt: https://owlsowo.github.io/finly-bot/data/latest_receipt.json",
   ]);
 }
@@ -229,7 +231,7 @@ function addChevron(slide, x, y, color = C.green) {
   slide.background.fill = C.paper;
   addKicker(slide, "Historical replay");
   addText(slide, "$10,000 became $106,711: $38,629 ahead of SPY.", 64, 78, 1140, 66, { fontSize: 44, bold: true });
-  addText(slide, "Finly's base portfolio holds roughly half in QQQ, a Nasdaq-100 fund, half in three trend-selected sectors, and 3% in cash.", 66, 148, 1100, 28, { fontSize: 17, color: C.gray });
+  addText(slide, "Historical rule: 50% QQQ + 50% across three trend-selected sectors. Competition deployment: 97% of those weights + 3% cash.", 66, 148, 1100, 28, { fontSize: 16, color: C.gray });
   addText(slide, "2013–2026 · same $10,000 start · modeled 0.05% cost per buy or sell", 66, 176, 850, 24, { fontSize: 16, color: C.gray });
   const rows = wealthEvidence.rows;
   const sampled = rows.filter((_, idx) => idx % 50 === 0 || idx === rows.length - 1);
@@ -264,20 +266,20 @@ function addChevron(slide, x, y, color = C.green) {
 {
   const slide = presentation.slides.add();
   slide.background.fill = C.navy;
-  addKicker(slide, "A separate historical stress test", C.gold);
-  addText(slide, "An 80-year market test stayed ahead on all 21 tested monthly update days.", 64, 78, 1130, 110, { fontSize: 41, bold: true, color: C.white });
+  addKicker(slide, "A second historical stress test", C.gold);
+  addText(slide, "An 80-year market test stayed ahead across all 21 tested monthly rebalance schedules.", 64, 78, 1130, 110, { fontSize: 41, bold: true, color: C.white });
   addShape(slide, 100, 262, 1080, 4, "#527187");
   addShape(slide, 100, 252, 22, 22, C.gold, { geometry: "ellipse" });
   addShape(slide, 1158, 252, 22, 22, C.gold, { geometry: "ellipse" });
   addText(slide, "1927", 76, 286, 80, 28, { fontSize: 19, bold: true, color: C.gold, alignment: "center" });
   addText(slide, "2007", 1128, 286, 80, 28, { fontSize: 19, bold: true, color: C.gold, alignment: "center" });
   addText(slide, "21,218 public market days", 430, 224, 420, 42, { fontSize: 30, bold: true, color: C.white, alignment: "center" });
-  addText(slide, "SEPARATE PUBLIC INDUSTRY DATASET", 430, 280, 420, 24, { fontSize: 13, bold: true, color: C.gold, alignment: "center" });
+  addText(slide, "PUBLIC INDUSTRY DATASET", 430, 280, 420, 24, { fontSize: 13, bold: true, color: C.gold, alignment: "center" });
   addMetric(slide, "13.37%", "Finly growth per year", 88, 352, 260, { valueSize: 48, valueColor: C.mint, labelColor: "#C4D4D8" });
   addText(slide, "vs 9.48% market", 88, 450, 260, 32, { fontSize: 22, color: C.white });
-  addMetric(slide, "21 / 21", "tested monthly update days", 480, 352, 300, { valueSize: 48, valueColor: C.gold, labelColor: "#C4D4D8" });
+  addMetric(slide, "21 / 21", "tested monthly rebalance schedules", 480, 352, 300, { valueSize: 48, valueColor: C.gold, labelColor: "#C4D4D8" });
   for (let i = 0; i < 21; i += 1) addShape(slide, 484 + (i % 11) * 23, 458 + Math.floor(i / 11) * 26, 13, 13, C.gold, { geometry: "ellipse" });
-  addMetric(slide, "+2.45 points", "more annual return after 0.25% costs", 890, 352, 280, { valueSize: 40, valueColor: C.gold, labelColor: "#C4D4D8" });
+  addMetric(slide, "+2.45 points", "annualized growth edge after 0.25% costs", 890, 352, 280, { valueSize: 40, valueColor: C.gold, labelColor: "#C4D4D8" });
   addText(slide, "0.05%  →  0.10%  →  0.25%", 880, 450, 320, 34, { fontSize: 18, bold: true, color: C.white });
   addShape(slide, 890, 496, 232, 8, C.gold, { geometry: "roundRect", borderRadius: "rounded-xl" });
   addShape(slide, 890, 496, 78, 8, C.mint, { geometry: "roundRect", borderRadius: "rounded-xl" });
@@ -324,8 +326,8 @@ function addChevron(slide, x, y, color = C.green) {
   addText(slide, "Simulated plan · no broker order or fill", 794, 518, 360, 32, { fontSize: 17, color: "#C4D4D8" });
   addMetric(slide, "$366", "maximum loss", 80, 582, 210, { valueSize: 38, valueColor: C.coral });
   addMetric(slide, "$634", "maximum gain", 346, 582, 210, { valueSize: 38, valueColor: C.green });
-  addMetric(slide, "4 / 4", "four source-removal checks", 760, 578, 200, { valueSize: 36, valueColor: C.green, labelSize: 14, labelOffset: 54 });
-  addMetric(slide, "32 / 32", "input-shock checks", 1000, 578, 210, { valueSize: 36, valueColor: C.green, labelSize: 14, labelOffset: 54 });
+  addMetric(slide, "4 / 4", "same decision after each source removal", 760, 578, 200, { valueSize: 36, valueColor: C.green, labelSize: 11, labelOffset: 54 });
+  addMetric(slide, "32 / 32", "same decision after small input changes", 1000, 578, 210, { valueSize: 36, valueColor: C.green, labelSize: 11, labelOffset: 54 });
   addFooter(slide, 6);
   setNotes(slide, [
     "Positive options receipt: https://owlsowo.github.io/finly-bot/data/latest_receipt.json",
@@ -352,11 +354,11 @@ function addChevron(slide, x, y, color = C.green) {
   addText(slide, "SPY", 612, 326, 150, 24, { fontSize: 16, bold: true, color: C.coral, alignment: "center" });
   addText(slide, "$99,942.01", 586, 356, 202, 44, { fontSize: 29, bold: true, color: C.navy, alignment: "center" });
   addShape(slide, 102, 420, 660, 1, C.rule);
-  addText(slide, "15 fill events built the four-fund base portfolio · no options position was open", 102, 446, 660, 34, { fontSize: 17, color: C.gray, alignment: "center" });
+  addText(slide, "15 ETF fill events built the allocation sleeve · no options position was open at the close", 102, 446, 660, 34, { fontSize: 17, color: C.gray, alignment: "center" });
   addShape(slide, 64, 548, 746, 2, C.green);
   addText(slide, "One start, one close, one fair comparison.", 64, 568, 746, 30, { fontSize: 22, bold: true, color: C.mint });
-  addText(slide, "The base portfolio produced this measured account result. The AI-assisted options demo is separate.", 64, 606, 746, 46, { fontSize: 18, color: C.white });
-  addText(slide, "FINLY CORE", 858, 226, 180, 24, { fontSize: 15, bold: true, color: C.mint });
+  addText(slide, "One strategy made both decisions: the allocation traded; the options sleeve was flat at the close rather than forcing a trade.", 64, 606, 746, 46, { fontSize: 18, color: C.white });
+  addText(slide, "FINLY", 858, 226, 180, 24, { fontSize: 15, bold: true, color: C.mint });
   addText(slide, `+$${firstCloseEvidence.primary_kpi.net_pnl_dollars.toFixed(2)}`, 858, 256, 300, 52, { fontSize: 34, bold: true, color: C.white });
   addText(slide, "virtual-money account profit", 858, 306, 300, 24, { fontSize: 16, color: "#C4D4D8" });
   addShape(slide, 858, 344, 344, 1, "#527187");
@@ -426,8 +428,8 @@ function addChevron(slide, x, y, color = C.green) {
   const slide = presentation.slides.add();
   slide.background.fill = C.cream;
   addKicker(slide, "Judge the product");
-  addText(slide, "Judge the live system—not the slide deck.", 64, 80, 790, 118, { fontSize: 54, bold: true });
-  addText(slide, "$153.31 ahead after session one. Now try the decision demo and inspect the proof.", 64, 208, 780, 62, { fontSize: 28, color: C.gray });
+  addText(slide, "Watch the account. Try the decision. Inspect the proof.", 64, 80, 790, 118, { fontSize: 50, bold: true });
+  addText(slide, "$153.31 ahead after session one—and every headline links to evidence you can rerun.", 64, 208, 780, 62, { fontSize: 27, color: C.gray });
   const qrUrl = "https://quickchart.io/qr?text=https%3A%2F%2Fowlsowo.github.io%2Ffinly-bot%2F&size=500&margin=1";
   const qrResponse = await fetch(qrUrl);
   if (!qrResponse.ok) throw new Error(`QR generation failed: ${qrResponse.status}`);
@@ -435,7 +437,7 @@ function addChevron(slide, x, y, color = C.green) {
   addShape(slide, 890, 70, 326, 326, C.white, { geometry: "roundRect", borderRadius: "rounded-2xl", line: { style: "solid", fill: C.green, width: 2 }, shadow: "shadow-md" });
   slide.images.add({ blob: qrBytes, contentType: "image/png", alt: "QR code to the live Finly product", fit: "contain", position: { left: 918, top: 98, width: 270, height: 270 } });
   addLinkedText(slide, "SCAN TO OPEN FINLY", "https://owlsowo.github.io/finly-bot/", 922, 410, 264, 26, { fontSize: 15, bold: true, color: C.green, alignment: "center" });
-  const actions = [["01", "WATCH", "Live $100k paper account", C.green], ["02", "TRY", "Evidence agrees vs conflicts", C.coral], ["03", "INSPECT", "Code, tests, and decision records", C.navy]];
+  const actions = [["01", "WATCH", "Live $100k paper account", C.green], ["02", "TRY", "Aligned decision vs refusal", C.coral], ["03", "INSPECT", "Code, tests, and decision records", C.navy]];
   actions.forEach(([num, label, body, color], i) => {
     const y = 318 + i * 82;
     addText(slide, num, 66, y, 44, 30, { fontSize: 18, bold: true, color });

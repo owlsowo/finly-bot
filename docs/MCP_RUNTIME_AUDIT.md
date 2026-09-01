@@ -1,13 +1,16 @@
-# Alpaca MCP runtime audit
+# Alpaca MCP runtime audit and current status
 
 Audit date: 2026-08-28
+Current-status update: 2026-09-01
 
 ## Decision
 
-The release may demonstrate a synthetic evidence-to-order replay. It may not
-submit an Alpaca order. Broker execution remains prohibited until a controlled
-paper roundtrip and the complete entry/retry/reconciliation/exit lifecycle are
-tested.
+This document began as a pre-launch audit and preserves what had been verified
+on 28 August. It is not the current execution policy. Finly's competition
+runner later enabled paper-only mutation at a pinned revision and completed 15
+ETF fill events on the dedicated $100,000 Alpaca paper account. The coordinated
+options sleeve is implemented and broker-capable, but no live options order or
+fill is claimed. Its public approval and refusal examples remain synthetic.
 
 ## Reproduced locally
 
@@ -33,7 +36,7 @@ the observed `place_stock_order` hash. The local verifier confirms:
 - `extended_hours` is absent; and
 - the example MCP configuration keeps paper mode explicit.
 
-## Authenticated MCP read
+## Authenticated MCP read at the 28 August checkpoint
 
 On 2026-08-28, Finly started the official `alpaca-mcp-server==2.2.1` as an MCP
 stdio subprocess and invoked its authenticated, read-only `get_account_info`
@@ -45,13 +48,13 @@ credentials, all account identifiers, balances, buying power, and the raw
 response. It records
 `mutation_requested:false`.
 
-The separate direct health check also read account configuration and the market
-clock. Because the market was closed, its health gate remained blocked on
+The direct health check also read account configuration and the market clock.
+Because the market was closed, its health gate remained blocked on
 `market_open`, and an autonomous snapshot attempt returned fail-closed
-`NO_TRADE` when the stock quote was stale. Execution stayed disabled
-throughout.
+`NO_TRADE` when the stock quote was stale. Execution stayed disabled throughout
+this pre-launch check.
 
-## Not reproduced yet
+## What this 28 August checkpoint had not reproduced
 
 The authenticated MCP read does **not** establish any of the following:
 
@@ -62,8 +65,11 @@ The authenticated MCP read does **not** establish any of the following:
 - cancel, close, expiry, assignment, or emergency-exit behavior; or
 - profitability, durable alpha, or live execution quality.
 
-Those are release blockers for mutation, not details inferred from the tool
-schema.
+At the time of this audit, those gaps blocked mutation. The current release has
+since exercised the stock-order path and tests the options entry, retry,
+reconciliation, and exit lifecycle. A real options acceptance, rejection,
+partial fill, close, assignment, or expiry is still not claimed without a
+corresponding broker artifact.
 
 ## Synthetic replay boundary
 
@@ -84,3 +90,14 @@ non-executable.
 
 Source code and static demonstration artifacts belong in the GitHub repository
 and, if published, GitHub Pages. They are not uploaded to GPT Sites.
+
+## Current release boundary
+
+Finly is one autonomous competition strategy with two coordinated sleeves. Its
+four-fund sleeve produced 15 ETF fill events; its capped-risk SPY options sleeve
+may submit only a fresh order that passes the existing evidence, payoff, loss,
+account, and lifecycle checks. Otherwise it records `NO_TRADE`. The public
+verification run contains 809 tests: 807 passed, none failed, and two were
+skipped. These facts supersede the pre-launch statement that all broker
+execution was prohibited; they do not establish live options P&L or future
+profitability.

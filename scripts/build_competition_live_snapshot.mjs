@@ -91,13 +91,13 @@ function decisionPresentation({
     status: "MONITORING",
     code: journal.code,
     headline: "Finly Core's four-fund portfolio is invested and being monitored.",
-    explanation: "The base portfolio remains invested while the separate options assistant waits for a setup that passes every risk check.",
+    explanation: "The allocation sleeve remains invested while the coordinated options sleeve waits for a setup that passes every risk check.",
   };
   if (equityOpenOrders > 0) return {
     status: "PROPOSING",
     code: journal.code,
-    headline: "Finly is establishing its four-fund base portfolio.",
-    explanation: "The virtual-money broker is processing the base allocation. The options assistant remains separate and cannot trade without passing its own checks.",
+    headline: "Finly is establishing its four-fund allocation sleeve.",
+    explanation: "The paper broker is processing the allocation sleeve. The coordinated options sleeve cannot trade unless it passes its own checks.",
   };
   if (journal.decision === "BULL_CALL_DEBIT_SPREAD") return {
     status: "PROPOSING",
@@ -334,13 +334,13 @@ export function buildCompetitionLiveSnapshot({
     : positionStatus === "PENDING"
       ? optionExposureExists
         ? "A certified options order is waiting for broker confirmation."
-        : "A four-fund base-portfolio order is waiting for broker confirmation."
+        : "A four-fund allocation order is waiting for broker confirmation."
       : positionStatus === "CLOSING"
         ? "Finly is checking the capped-loss position's closing order against the broker."
         : positionClasses.equity.length > 0 && positionClasses.options.length > 0
-          ? "The four-fund base portfolio is invested alongside a capped-loss options position."
+          ? "The four-fund allocation sleeve is invested alongside a capped-loss options position."
           : positionClasses.equity.length > 0
-            ? "The four-fund base portfolio is invested; no options trade is open."
+            ? "The four-fund allocation sleeve is invested; no options trade is open."
             : "Finly is managing an open options position with a fixed maximum loss.";
   return {
     schema_version: "finly_competition_dashboard.v2",

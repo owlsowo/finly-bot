@@ -38,7 +38,7 @@
 
     <g transform="translate(28 284)">
       <rect width="354" height="28" fill="#e7f0eb"/>
-      <text x="177" y="19" fill="#2e6f5c" font-size="11" font-weight="700" letter-spacing="0.8" text-anchor="middle">15 BROKER FILL EVENTS · $0 DEPOSITS OR WITHDRAWALS</text>
+      <text x="177" y="19" fill="#2e6f5c" font-size="11" font-weight="700" letter-spacing="0.8" text-anchor="middle">15 ETF FILL EVENTS · $0 DEPOSITS OR WITHDRAWALS</text>
     </g>
   </g>
 

@@ -262,8 +262,8 @@ const earlierEraPatterns = [
   /(?:21\s*\/\s*21|21 of 21|all (?:twenty-one|21)).{0,120}(?:anchors?|offsets?|rebalance (?:dates?|offsets?|schedule)|monthly (?:start|update) (?:dates?|days?)|tests? that changed (?:which trading day|the monthly update day))/iu,
 ];
 const optionsPatterns = [
-  /\$366.{0,30}maximum loss|maximum loss.{0,30}\$366/iu,
-  /\$634.{0,30}maximum gain|maximum gain.{0,30}\$634/iu,
+    /\$366.{0,80}maximum loss|maximum loss.{0,80}\$366/iu,
+  /\$634.{0,80}maximum gain|maximum gain.{0,80}\$634/iu,
   /(?:4\s*\/\s*4|4 of 4|all four|four).{0,100}(?:removed|removals?|source-removal|source removal|data sources?|sources?.{0,20}removed)|remov(?:ing|ed).{0,40}(?:each of )?four sources/iu,
   /(?:32\s*\/\s*32|32 of 32|all (?:thirty-two|32)|thirty-two).{0,100}(?:input|perturb|small.{0,20}changes?)/iu,
 ];
@@ -366,8 +366,8 @@ requirePatterns("video captions", captions, [
   /When signals conflict/iu,
   /Every decision carries a receipt/iu,
   /test case, not a live fill/iu,
-  /rules-based base portfolio/iu,
-  /first close/iu,
+  /allocation sleeve traded during live market hours/iu,
+  /at the close/iu,
   /gained \$95\.32/iu,
   /SPY lost \$57\.99/iu,
   /\$153\.31 advantage/iu,
@@ -378,7 +378,7 @@ requirePatterns("video captions", captions, [
   /80-year market record/iu,
   /13\.37%/iu,
   /9\.48%/iu,
-  /every tested rebalance date/iu,
+  /all 21 tested monthly rebalance schedules/iu,
   /\$366/iu,
   /\$500 limit/iu,
   /verify every number in the public repository/iu,
@@ -401,7 +401,7 @@ requirePatterns("machine-readable summary", machineSummary, [
   zeroFailurePattern,
   /809 automated tests: 807 passed, 0 failed, and 2 were skipped/iu,
   /\$153\.31 ahead of SPY/iu,
-  /15 broker fill(?:s| events)/iu,
+  /15 (?:ETF|broker) fill events/iu,
   /Alpaca's official (?:MCP server|connection)/iu,
   /Start with the live dashboard/iu,
 ]);

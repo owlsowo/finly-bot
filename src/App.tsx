@@ -253,8 +253,39 @@ const deliverables = [
   ["01", "One-page proposal", "Start here for the problem, product, evidence and hackathon fit in plain English.", "./judge/Finly_Judge_Brief.pdf"],
   ["02", "Technical note", "Go deeper into the equations, algorithms, risk proofs, tests and academic sources.", "./judge/Finly_Technical_Proposal.pdf"],
   ["03", "Presentation", "Nine visual slides that move from the product idea to the measured results.", "./judge/Finly_Consulting_Deck.pdf"],
-  ["04", "Demo film", "An 87-second walkthrough of the product, historical test and live paper account.", "./judge/Finly_Demo_Video.mp4"],
+  ["04", "Demo film", "A 90-second walkthrough of the product, historical test and live paper account.", "./judge/Finly_Demo_Video.mp4"],
   ["05", "Repository", "Source code, tests, evidence files, and commands to rerun them.", "https://github.com/owlsowo/finly-bot"],
+] as const;
+
+const claimEvidence = [
+  {
+    claim: "The first paper session closed at +$95.32, finishing $153.31 ahead of SPY from the same $100,000 starting point at 4:00 p.m.",
+    evidence: "First-close paper measurement",
+    href: "./data/competition_forward_profit_2026_08_31.json",
+    reproduce: "node --test tests/competition_forward_profit_public_evidence.test.mjs",
+    scope: "Measured close",
+  },
+  {
+    claim: "In the 2013–2026 modeled replay, $10,000 became $106,711 with Finly and $68,082 with SPY after modeled five-basis-point one-way costs.",
+    evidence: "Historical release record",
+    href: "./data/quantitative_release_gate.json",
+    reproduce: "node --test tests/historical_backtest.test.mjs tests/historical_reporting.test.mjs",
+    scope: "Historical replay",
+  },
+  {
+    claim: "In a 1927–2007 public dataset, a fixed industry version averaged 13.37% yearly growth versus 9.48% for the market.",
+    evidence: "Earlier-market evidence",
+    href: "./data/attempt150_public_evidence.json",
+    reproduce: "node --test tests/attempt150_public_evidence.test.mjs",
+    scope: "Earlier-market replay",
+  },
+  {
+    claim: "In the options demonstration, code fixed maximum loss at $366 and the decision passed 4/4 source-removal and 32/32 input-change checks.",
+    evidence: "Checked options decision",
+    href: "./data/latest_receipt.json",
+    reproduce: "npm run demo && npm run check",
+    scope: "Decision replay",
+  },
 ] as const;
 
 const pct = (value: number, digits = 2) => `${(value * 100).toFixed(digits)}%`;
@@ -302,8 +333,9 @@ export function DemoClient() {
             <p className="kicker">Paper trading with AI research and built-in risk checks</p>
             <h1>AI explains the trade. Code controls the money.</h1>
             <p className="hero-deck">
-              Finly keeps a rules-based base portfolio and uses AI to research small options trades. Fixed code chooses
-              the contracts, limits any new options trade to $500 of possible loss, and can stop it before Alpaca, the paper broker, sees the order.
+              Finly runs one autonomous strategy with two coordinated sleeves: a rules-based four-fund allocation and
+              an AI-researched options sleeve. Fixed code chooses the contracts, limits any new options trade to $500
+              of possible loss, and can stop it before Alpaca, the paper broker, sees the order.
             </p>
             <div className="hero-actions">
               <a className="primary-action" href="#controls">Watch Finly decide</a>
@@ -335,13 +367,13 @@ export function DemoClient() {
               <em className="decision-stamp">locked at the closing bell</em>
             </div>
             <figcaption>
-              The base portfolio produced this measured account result. No options position was open at that close.
+              Fifteen ETF fill events built the four-fund sleeve. No options position was open at that close.
             </figcaption>
           </figure>
 
           <p className="hero-thesis hero-status-note">
-            Paper trading follows real prices with virtual money. Finly's base portfolio holds four broad funds; its AI-assisted
-            options layer may add only a small trade with a known maximum loss.
+            Paper trading follows real prices with virtual money. The allocation and options sleeves share one account and
+            one risk policy, while keeping separate decision records so judges can trace every dollar.
           </p>
 
           <dl className="hero-metrics" aria-label="Three levels of proof and one risk limit">
@@ -363,7 +395,7 @@ export function DemoClient() {
             <div>
               <dt>Automated checks</dt>
               <dd>809 checks run</dd>
-              <p>807 passed, zero failed, and two were intentionally skipped.</p>
+              <p>807 passed, zero failed, and two optional private-ledger checks were skipped.</p>
             </div>
           </dl>
         </section>
@@ -398,7 +430,7 @@ export function DemoClient() {
                 <h2>Same $10,000. Same dates. Finly ended $38,629 higher.</h2>
               </div>
               <p>
-                We replayed the fixed base portfolio on past prices from 2013 through 2026. Finly returned +967.11%
+              We replayed the underlying four-fund research rule—before the competition's 3% cash scaling—on past prices from 2013 through 2026. Finly returned +967.11%
                 versus +580.82% for SPY, with the same dates and modeled trading costs.
               </p>
             </div>
@@ -461,7 +493,7 @@ export function DemoClient() {
 
             <div className="research-note research-note-tight">
               <p>
-                We used these historical results to choose Finly's base portfolio for the paper competition, then locked the four-fund
+                We used these historical results to choose Finly's allocation sleeve for the paper competition, then locked the four-fund
                 allocation before the test began. The $100,000 paper account is measured separately from the historical replay.
               </p>
               <div>
@@ -521,7 +553,7 @@ export function DemoClient() {
             <div className="receipt-controls" role="group" aria-label="Choose a demonstration scenario">
               <button type="button" aria-pressed={receiptMode === "aligned"} onClick={() => setReceiptMode("aligned")}>
                 <strong>Signals agree</strong>
-                <span>Finly prepares a trade with a fixed maximum loss.</span>
+                <span>Finly prepares a capped-loss plan with a fixed maximum loss.</span>
               </button>
               <button type="button" aria-pressed={receiptMode === "conflict"} onClick={() => setReceiptMode("conflict")}>
                 <strong>Signals disagree</strong>
@@ -546,38 +578,51 @@ export function DemoClient() {
                 <p className="receipt-label">Decision path</p>
                 <p className="assessment-sentence">
                   {receipt.certificate.certified
-                    ? <>Finly reads the evidence as <strong>{humanDirectionCopy(receipt.intent.direction)}</strong>. It then builds a capped-loss trade and checks every term before preparing the paper order.</>
+                    ? <>Finly reads the evidence as <strong>{humanDirectionCopy(receipt.intent.direction)}</strong>. It then builds a capped-loss plan and checks every term before preparing the paper-order plan.</>
                     : <>Finly initially reads the evidence as <strong>{humanDirectionCopy(receipt.intent.direction)}</strong>, but the case falls apart under testing. Instead of forcing a trade, it keeps the account protected.</>}
                 </p>
-                <dl className="receipt-facts">
-                  <div>
-                    <dt>What Finly sees</dt>
-                    <dd>The market view</dd>
-                    <p>AI compares the supplied information and explains why it supports—or weakens—the trade idea.</p>
-                  </div>
-                  <div>
-                    <dt>What Finly builds</dt>
-                    <dd>{receipt.compilation.selected ? "A two-option trade with capped loss" : "No trade was built"}</dd>
-                    <p>Code—not the language model—chooses the contracts, position size, possible gain, and maximum loss.</p>
-                  </div>
-                  <div>
-                    <dt>What the tests found</dt>
-                    <dd>{receipt.source_removal.passed && receipt.perturbations?.passed ? "The thesis held up" : "The thesis broke down"}</dd>
-                    <p>Finly removes each source and nudges the inputs before it trusts the original conclusion.</p>
-                  </div>
-                  <div>
-                    <dt>What happens next</dt>
-                    <dd>{receipt.certificate.certified ? "Ready for paper trading" : "No trade; capital stays untouched"}</dd>
-                    <p>{receipt.certificate.certified ? "Every field in the Alpaca paper order is now fixed and ready for review." : "The process stops before the paper account takes on any risk."}</p>
-                  </div>
-                </dl>
               </div>
             </div>
+
+            <ol className="decision-story" aria-label="How Finly turns evidence into a checked broker decision">
+              <li>
+                <span>01</span>
+                <p className="decision-story-label">What Finly saw</p>
+                <strong>{receipt.source_signals.length} kinds of evidence</strong>
+                <p>Prices, options, public events, and prediction-market signals were compared together.</p>
+              </li>
+              <li>
+                <span>02</span>
+                <p className="decision-story-label">AI conclusion</p>
+                <strong>{humanDirectionCopy(receipt.intent.direction)}</strong>
+                <p>The model explained the market view. Its explanation did not grant permission to trade.</p>
+              </li>
+              <li>
+                <span>03</span>
+                <p className="decision-story-label">What code allowed</p>
+                <strong>{receipt.certificate.certified ? "One capped-loss plan" : "No trade"}</strong>
+                <p>
+                  {receipt.certificate.certified
+                    ? `Fixed code chose the two contracts and held possible loss to ${dollars(receipt.certificate.max_loss_per_contract)} for one contract.`
+                    : "The checks rejected the idea before an order could exist."}
+                </p>
+              </li>
+              <li>
+                <span>04</span>
+                <p className="decision-story-label">What was prepared for Alpaca</p>
+                <strong>{receipt.alpaca_payload ? "A paper-order plan" : "Nothing"}</strong>
+                <p>
+                  {receipt.alpaca_payload
+                    ? "Finly generated an Alpaca-compatible paper-order payload for inspection. This demonstration did not transmit it."
+                    : "The pipeline stopped before any broker payload was created."}
+                </p>
+              </li>
+            </ol>
 
             <div className={`receipt-decision ${receipt.certificate.certified ? "receipt-permit" : "receipt-refusal"}`}>
               <div>
                 <p className="kicker">Decision</p>
-                <h3>{receipt.certificate.certified ? "A trade with a fixed maximum loss is ready for review." : "No trade. The account stays untouched."}</h3>
+                <h3>{receipt.certificate.certified ? "A capped-loss paper-order plan is ready for review." : "No trade. The account stays untouched."}</h3>
               </div>
               <p>
                 {receipt.certificate.certified
@@ -632,6 +677,47 @@ export function DemoClient() {
               source code are available for judges who want to audit every equation and claim.
             </p>
           </div>
+          <section className="claim-matrix" aria-labelledby="claim-matrix-title">
+            <div className="claim-matrix-heading">
+              <div>
+                <p className="kicker">Evidence map</p>
+                <h3 id="claim-matrix-title">Every headline points to the record and command that checks it.</h3>
+              </div>
+              <p>
+                Open the evidence, rerun the check, and see whether the result came from paper trading,
+                a historical replay, or a decision test.
+              </p>
+            </div>
+
+            <div className="table-scroll">
+              <table className="gate-table claim-table">
+                <caption>Claim → evidence → reproduce → status</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Claim</th>
+                    <th scope="col">Evidence</th>
+                    <th scope="col">Reproduce</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {claimEvidence.map((row) => (
+                    <tr key={row.href}>
+                      <th scope="row">{row.claim}</th>
+                      <td data-label="Evidence">
+                        <a href={row.href}>{row.evidence} <span aria-hidden="true">↗</span></a>
+                      </td>
+                      <td data-label="Reproduce"><code>{row.reproduce}</code></td>
+                      <td data-label="Status" className="claim-status-cell">
+                        <span className="passed">Verified</span>
+                        <small>{row.scope}</small>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
           <ol className="deliverable-list">
             {deliverables.map(([number, title, description, href]) => (
               <li key={title}>

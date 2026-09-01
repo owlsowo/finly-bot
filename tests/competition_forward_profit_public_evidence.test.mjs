@@ -51,7 +51,7 @@ test("dashboard labels the first-close comparison without replacing the moving l
   assert.match(dashboard, /same closing-bell price/);
   assert.match(dashboard, /Finly finished its first paper-trading session \{moneyExact\.format\(firstCloseMeasurement\.secondary_kpi\.excess_pnl_dollars\)\} ahead/);
   assert.doesNotMatch(dashboard, /Finly ended day one \{money\.format\(/);
-  assert.match(dashboard, /15 broker fill events · no deposits or withdrawals/);
+  assert.match(dashboard, /15 ETF fill events · no deposits or withdrawals/);
   assert.match(dashboard, /No options position was open at that close/);
   assert.match(dashboard, /locked day-one score, not the changing account mark below/);
   assert.match(dashboard, /Latest account mark · changes with market prices/);
