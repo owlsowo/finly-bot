@@ -16,21 +16,19 @@ This file contains paste-ready language for the Lablab submission form and publi
 
 > Finly is a paper-trading bot: AI explains the market, but tested code controls the money. Its first $100K session finished $153.31 ahead of SPY.
 
-**Long description**
+**Long description — 1,996 characters**
 
-> Finly is a paper-trading bot that lets AI study the market without giving it control of the account. Paper trading follows real prices with virtual money. In Finly's first session on a dedicated $100,000 Alpaca paper account, the portfolio gained $95.32 while SPY—the fund commonly used to represent the S&P 500—lost $57.99 from the same starting point. Finly finished the session $153.31 ahead. No options position was open at that close.
+> Most trading bots ask an AI what to buy and let confidence pass for evidence. Finly separates research from authority. On a dedicated $100,000 Alpaca paper account, Qwen3-32B through Featherless reads public Alpaca news and explains the case. Deterministic code fixes direction, contract, expiry, quantity, price, maximum loss, and the order payload. AI can make Finly more cautious or stop a trade; it cannot increase risk.
 >
-> Finly starts with a rules-based portfolio: 48.5% in QQQ, which tracks the Nasdaq-100; 48.5% divided among three sector funds with stronger longer-term price trends; and 3% in cash. We fixed the portfolio and its selection rule before paper trading began. When the evidence supports it, the same system can also consider one small SPY options trade with a defined maximum loss.
+> Finly's base portfolio follows a rule fixed before paper trading began: 48.5% QQQ, 48.5% divided among three market sectors with the strongest longer-term trends, and 3% cash. In its first session, the account gained $95.32 while SPY lost $57.99 from the same $100,000 starting point, leaving Finly $153.31 ahead at the close.
 >
-> Qwen3-32B, hosted by Featherless, reads public Alpaca news and explains what supports the trade, what argues against it, and what remains uncertain. The model does not decide how much money to risk or write the broker order. Fixed, tested code chooses the direction, contracts, quantity, maximum loss, and every field sent to Alpaca. The competition limit is $500 of maximum loss per options trade. AI can make Finly more cautious or stop a trade; it cannot raise that limit.
+> The options sleeve considers one-contract, defined-risk SPY verticals and caps maximum loss at $500 per trade. Before an order can move, Finly removes each of four evidence sources and tests 32 small input changes. Its public example produced a plan with $366 maximum loss and $634 maximum gain; conflicting evidence produced NO_TRADE and no broker payload.
 >
-> Finly's historical tests provide a longer view. In a January 2013–August 2026 simulation after modeled trading costs, $10,000 became $106,711 with Finly's portfolio rule and $68,082 with SPY—a $38,629 difference in ending wealth. A simpler version built from long-running industry data was tested across 21,218 earlier market days. It averaged 13.37% growth per year versus 9.48% for the market, remained ahead in all 21 tests that changed the monthly update day, and stayed ahead when the assumed trading cost increased fivefold. These are historical simulations, separate from the live account.
+> Finly runs in the cloud through Alpaca's official MCP and Trading API path. It locks the code version allowed to trade, saves state before every action, and reconciles any order with the broker after a restart. Judges can inspect the live account, replay an approval and a refusal, and reproduce the evidence with one command.
 >
-> The options controls are also visible. In the interactive demonstration, Finly built a one-contract, two-option SPY plan with a $366 maximum loss and $634 maximum gain. It ran the decision again after removing each of four information sources in turn and after 32 small input changes. With conflicting evidence, the safety check blocked the order. No broker order or fill occurred in the demonstration. During the competition, the live account may open only an approved rising-price options trade—or do nothing.
+> The longer record is visible. In a 2013–2026 simulation after modeled costs, $10,000 became $106,711 with Finly's rule and $68,082 with SPY. A separate 21,218-day test on earlier market data averaged 13.37% annual growth versus 9.48% for the market and remained ahead across all 21 monthly rebalance checks. The release includes 809 automated tests: 807 passed, none failed, and two credential-dependent tests were skipped.
 >
-> Finly runs in the cloud through Alpaca's official connection. It locks the version of the code allowed to trade, saves its progress before each action, and checks the paper account after an order. The public dashboard clearly separates the recorded first-close comparison from the account value that keeps changing with market prices. Judges can watch the account, replay both an approval and a safety stop, inspect the code, and reproduce the historical evidence.
->
-> Finly's contribution is straightforward: the AI may explain an investment idea, but tested software decides whether that idea deserves money.
+> Finly's advantage is not giving AI more power. It gives AI the smallest useful job, then makes every dollar answer to tested code.
 
 **Technologies to select where available**
 
@@ -42,7 +40,17 @@ This file contains paste-ready language for the Lablab submission form and publi
 
 **Demo application platform**
 
-> GitHub Pages
+> Other — GitHub Pages
+
+## Form completion checklist
+
+The Lablab form has three steps. Do not rely on public URLs for the upload fields.
+
+1. **Basic information:** paste the title, short description, and long description above; select Finance, Investment, Options Alpha Agents, Alpaca, Featherless, and the other technologies actually used.
+2. **Media:** upload `public/brand/finly-cover-16x9.png`, `public/judge/Finly_Demo_Video.mp4`, and `public/judge/Finly_Consulting_Deck.pdf`.
+3. **Application:** paste the public repository and live-application URLs below; select `OTHER` for the platform; enter the dedicated Alpaca paper-account ID from the ignored local environment.
+
+The account ID is required for judging. Keep it out of the public repository and enter it only in the private Lablab form field.
 
 ## Public links
 
