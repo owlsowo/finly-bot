@@ -71,7 +71,7 @@ SCENES = [
     ),
     Scene(
         "refuse",
-        "asset:public/judge/video-controls-conflict.jpg",
+        "slide:8",
         7.0,
         "When signals conflict, Finly does nothing. It shows why and stops before the account.",
     ),

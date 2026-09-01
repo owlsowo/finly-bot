@@ -33,11 +33,6 @@ const optionReceipt = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/
 const externalEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/attempt150_public_evidence.json"), "utf8"));
 
 const asset = (name) => path.join(ROOT, "public", name);
-const liveScreenshot = await fs.readFile(asset("judge/finly-live-account.png"));
-const firstCloseScreenshot = await sharp(liveScreenshot)
-  .extract({ left: 0, top: 240, width: 1280, height: 480 })
-  .jpeg({ quality: 94 })
-  .toBuffer();
 const finlyMarkPng = await sharp(await fs.readFile(asset("brand/finly-mark.svg")))
   .resize({ width: 1024, height: 1024, fit: "contain" })
   .png()
@@ -46,10 +41,6 @@ const assets = {
   // Embed the mark as a real high-resolution PNG. Some PowerPoint viewers do
   // not render SVG media and otherwise fall back to a transparent 1x1 image.
   mark: { blob: finlyMarkPng, contentType: "image/png" },
-  home: { blob: await fs.readFile(asset("judge/finly-product-home.png")), contentType: "image/png" },
-  aligned: { blob: await fs.readFile(asset("judge/video-controls-aligned.jpg")), contentType: "image/jpeg" },
-  conflict: { blob: await fs.readFile(asset("judge/video-controls-conflict.jpg")), contentType: "image/jpeg" },
-  live: { blob: firstCloseScreenshot, contentType: "image/jpeg" },
 };
 
 const presentation = Presentation.create({ slideSize: { width: W, height: H } });
@@ -96,38 +87,6 @@ function addLinkedText(slide, text, uri, x, y, width, height, options = {}) {
     paragraphStyle: { alignment: options.alignment || "left" },
   }]);
   return shape;
-}
-
-function sampleWithDrawdownExtrema(rows, binCount = 220) {
-  const binSize = Math.max(1, Math.ceil(rows.length / binCount));
-  const selected = new Map();
-  for (let start = 0; start < rows.length; start += binSize) {
-    const bin = rows.slice(start, Math.min(rows.length, start + binSize));
-    const candidates = [
-      bin[0],
-      bin.at(-1),
-      bin.reduce((minimum, row) => row.g4_drawdown < minimum.g4_drawdown ? row : minimum),
-      bin.reduce((minimum, row) => row.spy_drawdown < minimum.spy_drawdown ? row : minimum),
-    ];
-    for (const row of candidates) selected.set(row.date, row);
-  }
-  return [...selected.values()].sort((left, right) => left.date.localeCompare(right.date));
-}
-
-function addImage(slide, imageAsset, x, y, width, height, options = {}) {
-  if (options.frame !== false) {
-    addShape(slide, x - 5, y - 5, width + 10, height + 10, options.frameFill || C.white, {
-      geometry: "roundRect", borderRadius: "rounded-xl",
-      line: { style: "solid", fill: options.frameLine || C.rule, width: 1 },
-      shadow: options.shadow || "shadow-sm",
-    });
-  }
-  return slide.images.add({
-    ...(imageAsset.svg ? { svg: imageAsset.svg } : { blob: imageAsset.blob, contentType: imageAsset.contentType }),
-    alt: options.alt || "Finly product screenshot", fit: options.fit || "cover",
-    position: { left: x, top: y, width, height }, geometry: "roundRect", borderRadius: "rounded-lg",
-    ...(options.crop ? { crop: options.crop } : {}),
-  });
 }
 
 function addKicker(slide, text, color = C.green, x = 64, y = 36) {
@@ -231,23 +190,36 @@ function addChevron(slide, x, y, color = C.green) {
   slide.background.fill = C.navy;
   addKicker(slide, "How the product works", C.mint);
   addText(slide, "AI explains the opportunity. Rules decide whether money can move.", 64, 80, 1120, 105, { fontSize: 46, bold: true, color: C.white });
-  addImage(slide, assets.aligned, 590, 206, 626, 352, { alt: "Finly interactive decision screen with aligned evidence", fit: "contain", frameFill: C.cream, frameLine: C.mint, shadow: "shadow-lg" });
-  const steps = [["01", "RESEARCH", "Read market evidence", C.mint], ["02", "RISK RULES", "Set the loss and build", C.gold], ["03", "FINAL CHECK", "Send to Alpaca—or stop", C.coral]];
-  steps.forEach(([num, label, body, color], i) => {
-    const y = 210 + i * 116;
-    addText(slide, num, 68, y, 48, 32, { fontSize: 18, bold: true, color });
-    addText(slide, label, 128, y, 110, 28, { fontSize: 16, bold: true, color });
-    addText(slide, body, 128, y + 34, 390, 48, { fontSize: 26, bold: true, color: C.white });
-    if (i < 2) addShape(slide, 128, y + 96, 360, 1, "#406278");
-  });
-  addShape(slide, 64, 592, 480, 3, C.green);
-  addText(slide, "The model may explain or veto. It cannot choose size or write the broker order.", 64, 610, 500, 58, { fontSize: 23, bold: true, color: C.mint });
+  const workflowCards = [
+    { x: 64, width: 300, number: "01", label: "AI READS", title: "Market evidence", body: "Prices, options signals, events, and prediction markets.", color: C.mint },
+    { x: 430, width: 300, number: "02", label: "CODE BUILDS", title: "Exact risk", body: "Position size, maximum loss, and every broker-order field.", color: C.gold },
+  ];
+  for (const card of workflowCards) {
+    addShape(slide, card.x, 226, card.width, 280, C.navy2, { geometry: "roundRect", borderRadius: "rounded-xl", line: { style: "solid", fill: card.color, width: 2 } });
+    addText(slide, card.number, card.x + 24, 248, 44, 28, { fontSize: 16, bold: true, color: card.color });
+    addText(slide, card.label, card.x + 74, 248, 190, 28, { fontSize: 16, bold: true, color: card.color });
+    addText(slide, card.title, card.x + 24, 302, card.width - 48, 48, { fontSize: 28, bold: true, color: C.white });
+    addText(slide, card.body, card.x + 24, 372, card.width - 48, 86, { fontSize: 20, color: "#D7E3E5" });
+  }
+  addText(slide, "→", 370, 326, 54, 64, { fontSize: 44, bold: true, color: C.mint, alignment: "center" });
+  addText(slide, "→", 736, 326, 54, 64, { fontSize: 44, bold: true, color: C.gold, alignment: "center" });
+  addShape(slide, 796, 226, 420, 280, C.navy2, { geometry: "roundRect", borderRadius: "rounded-xl", line: { style: "solid", fill: C.coral, width: 2 } });
+  addText(slide, "03", 820, 248, 44, 28, { fontSize: 16, bold: true, color: C.coral });
+  addText(slide, "RULES DECIDE", 870, 248, 230, 28, { fontSize: 16, bold: true, color: C.coral });
+  addText(slide, "Can money move?", 820, 294, 360, 42, { fontSize: 28, bold: true, color: C.white });
+  addShape(slide, 820, 356, 172, 76, C.green, { geometry: "roundRect", borderRadius: "rounded-lg" });
+  addText(slide, "PASS", 838, 370, 136, 24, { fontSize: 15, bold: true, color: C.white, alignment: "center" });
+  addText(slide, "ORDER READY", 832, 398, 148, 24, { fontSize: 15, bold: true, color: C.white, alignment: "center" });
+  addShape(slide, 1016, 356, 176, 76, C.coral, { geometry: "roundRect", borderRadius: "rounded-lg" });
+  addText(slide, "FAIL", 1034, 370, 140, 24, { fontSize: 15, bold: true, color: C.white, alignment: "center" });
+  addText(slide, "NO TRADE", 1028, 398, 152, 24, { fontSize: 18, bold: true, color: C.white, alignment: "center" });
+  addShape(slide, 64, 552, 1152, 3, C.green);
+  addText(slide, "AI proposes. Code fixes the risk. A failed check moves $0.", 64, 574, 1152, 48, { fontSize: 30, bold: true, color: C.mint });
   addFooter(slide, 3, true);
   setNotes(slide, [
     "Interactive product: https://owlsowo.github.io/finly-bot/#controls",
     "Model trace: https://owlsowo.github.io/finly-bot/data/llama_decision_trace.json",
     "Compiled order receipt: https://owlsowo.github.io/finly-bot/data/latest_receipt.json",
-    "Screenshot is project-owned.",
   ]);
 }
 
@@ -265,7 +237,7 @@ function addChevron(slide, x, y, color = C.green) {
   const finlyWealth = sampled.map((row) => Math.round(row.g4_wealth * 10000));
   const spyWealth = sampled.map((row) => Math.round(row.spy_wealth * 10000));
   slide.charts.add("line", {
-    position: { left: 64, top: 210, width: 910, height: 312 }, categories,
+    position: { left: 64, top: 210, width: 910, height: 410 }, categories,
     series: [
       { name: "Finly", values: finlyWealth, line: { style: "solid", fill: C.green, width: 4 }, marker: { symbol: "none" } },
       { name: "SPY · S&P 500 tracker", values: spyWealth, line: { style: "dash", fill: C.navy, width: 3 }, marker: { symbol: "none" } },
@@ -278,21 +250,6 @@ function addChevron(slide, x, y, color = C.green) {
   addMetric(slide, "$106,711", "Finly ending wealth", 1000, 224, 210, { valueSize: 40 });
   addMetric(slide, "$68,082", "SPY ending wealth", 1000, 334, 210, { valueSize: 36, valueColor: C.navy });
   addMetric(slide, "+967.11%", "Finly total return", 1000, 444, 210, { valueSize: 34, valueColor: C.green });
-  const drawdownSampled = sampleWithDrawdownExtrema(rows);
-  const drawdownCategories = drawdownSampled.map((row) => row.date);
-  const finlyDrawdown = drawdownSampled.map((row) => row.g4_drawdown);
-  const spyDrawdown = drawdownSampled.map((row) => row.spy_drawdown);
-  slide.charts.add("line", {
-    position: { left: 64, top: 540, width: 910, height: 102 }, categories: drawdownCategories,
-    series: [
-      { name: "Finly drawdown", values: finlyDrawdown, line: { style: "solid", fill: C.green, width: 2 }, marker: { symbol: "none" } },
-      { name: "SPY drawdown", values: spyDrawdown, line: { style: "solid", fill: C.navy, width: 2 }, marker: { symbol: "none" } },
-    ],
-    hasLegend: false, xAxis: { visible: false, tickLabelPosition: "none", majorGridlines: null },
-    yAxis: { visible: true, min: -0.4, max: 0, majorUnit: 0.2, numberFormatCode: "0%", textStyle: { fill: C.gray, fontSize: 12 }, majorGridlines: { style: "solid", fill: "#E2E7E3", width: 1 } },
-    chartFill: C.paper, chartLine: { style: "solid", fill: "none", width: 0 }, plotAreaFill: C.paper, plotAreaLine: { style: "solid", fill: "none", width: 0 },
-  });
-  addText(slide, "DECLINE FROM A PREVIOUS HIGH", 184, 522, 260, 20, { fontSize: 12, bold: true, color: C.gray });
   addText(slide, "WORST DECLINE", 1000, 562, 220, 20, { fontSize: 13, bold: true, color: C.gray });
   addText(slide, "Finly −28.99%\nSPY −33.72%", 1000, 584, 220, 48, { fontSize: 18, bold: true, color: C.ink });
   addFooter(slide, 4);
@@ -367,8 +324,8 @@ function addChevron(slide, x, y, color = C.green) {
   addText(slide, "Simulated plan · no broker order or fill", 794, 518, 360, 32, { fontSize: 17, color: "#C4D4D8" });
   addMetric(slide, "$366", "maximum loss", 80, 582, 210, { valueSize: 38, valueColor: C.coral });
   addMetric(slide, "$634", "maximum gain", 346, 582, 210, { valueSize: 38, valueColor: C.green });
-  addMetric(slide, "4 / 4", "removed one at a time · same result", 760, 582, 200, { valueSize: 36, valueColor: C.green, labelSize: 11 });
-  addMetric(slide, "32 / 32", "still valid after small changes", 1000, 582, 210, { valueSize: 36, valueColor: C.green, labelSize: 11 });
+  addMetric(slide, "4 / 4", "four source-removal checks", 760, 578, 200, { valueSize: 36, valueColor: C.green, labelSize: 14, labelOffset: 54 });
+  addMetric(slide, "32 / 32", "input-shock checks", 1000, 578, 210, { valueSize: 36, valueColor: C.green, labelSize: 14, labelOffset: 54 });
   addFooter(slide, 6);
   setNotes(slide, [
     "Positive options receipt: https://owlsowo.github.io/finly-bot/data/latest_receipt.json",
@@ -429,27 +386,38 @@ function addChevron(slide, x, y, color = C.green) {
   slide.background.fill = C.paleMint;
   addKicker(slide, "What happens when a check fails");
   addText(slide, "Finly stops the trade—and records why.", 64, 78, 1120, 72, { fontSize: 47, bold: true });
-  addImage(slide, assets.conflict, 618, 208, 598, 336, { alt: "Finly interactive decision screen stopping when evidence conflicts", fit: "contain", frameFill: C.white, frameLine: C.coral, shadow: "shadow-lg" });
-  const ops = [["PREPARE", "Build exact intent", C.green], ["CHECK", "Challenge evidence", C.gold], ["READ BACK", "Reconcile with broker", C.navy], ["RECEIPT", "Publish what happened", C.coral]];
-  ops.forEach(([label, body, color], i) => {
-    const y = 212 + i * 82;
-    addShape(slide, 68, y, 12, 54, color, { geometry: "roundRect", borderRadius: "rounded-xl" });
-    addText(slide, label, 98, y - 2, 178, 24, { fontSize: 14, bold: true, color });
-    addText(slide, body, 98, y + 24, 400, 34, { fontSize: 24, bold: true });
+  const refusalRows = [
+    ["1", "EVIDENCE CONFLICTS", "One source points the other way.", C.coral],
+    ["2", "TEST FAILS", "Finly retests the idea without each source.", C.gold],
+    ["3", "ORDER BLOCKED", "No options instruction reaches Alpaca.", C.navy],
+    ["4", "RECEIPT SAVED", "The refusal and its reason remain inspectable.", C.green],
+  ];
+  refusalRows.forEach(([number, label, body, color], index) => {
+    const y = 188 + index * 88;
+    addShape(slide, 64, y, 54, 54, color, { geometry: "ellipse" });
+    addText(slide, number, 64, y + 10, 54, 28, { fontSize: 19, bold: true, color: C.white, alignment: "center" });
+    addText(slide, label, 144, y - 2, 260, 24, { fontSize: 15, bold: true, color });
+    addText(slide, body, 144, y + 28, 560, 34, { fontSize: 23, bold: true, color: C.ink });
+    if (index < refusalRows.length - 1) addShape(slide, 90, y + 58, 2, 28, C.rule);
   });
-  addShape(slide, 64, 560, 490, 2, C.rule);
-  addText(slide, "809", 64, 582, 110, 52, { fontSize: 46, bold: true, color: C.green });
-  addText(slide, "automated tests", 160, 592, 210, 30, { fontSize: 22, bold: true, color: C.gray });
-  addText(slide, "807 passed  ·  0 failed  ·  2 skipped", 64, 640, 500, 30, { fontSize: 21, bold: true, color: C.ink });
-  addShape(slide, 618, 594, 598, 64, C.navy, { geometry: "roundRect", borderRadius: "rounded-xl" });
-  addText(slide, "Conflicting evidence → no trade → $0 new options risk", 640, 611, 554, 34, { fontSize: 19, bold: true, color: C.white, alignment: "center" });
+  addShape(slide, 790, 188, 426, 326, C.navy, { geometry: "roundRect", borderRadius: "rounded-2xl", line: { style: "solid", fill: C.coral, width: 2 }, shadow: "shadow-md" });
+  addText(slide, "DECISION", 826, 222, 354, 24, { fontSize: 15, bold: true, color: C.coral, alignment: "center" });
+  addText(slide, "NO TRADE", 826, 268, 354, 58, { fontSize: 45, bold: true, color: C.white, alignment: "center" });
+  addText(slide, "$0", 826, 346, 354, 76, { fontSize: 64, bold: true, color: C.mint, alignment: "center" });
+  addText(slide, "NEW OPTIONS RISK", 826, 426, 354, 28, { fontSize: 17, bold: true, color: C.white, alignment: "center" });
+  addText(slide, "The safest trade can be no trade.", 826, 470, 354, 30, { fontSize: 18, color: "#D7E3E5", alignment: "center" });
+  addShape(slide, 64, 560, 1152, 82, C.white, { geometry: "roundRect", borderRadius: "rounded-xl", line: { style: "solid", fill: C.rule, width: 1 } });
+  addText(slide, "809", 88, 576, 110, 44, { fontSize: 38, bold: true, color: C.green });
+  addText(slide, "AUTOMATED TESTS", 190, 584, 210, 28, { fontSize: 17, bold: true, color: C.gray });
+  addText(slide, "807 PASSED", 510, 584, 170, 28, { fontSize: 18, bold: true, color: C.green, alignment: "center" });
+  addText(slide, "0 FAILED", 744, 584, 150, 28, { fontSize: 18, bold: true, color: C.navy, alignment: "center" });
+  addText(slide, "2 SKIPPED", 978, 584, 170, 28, { fontSize: 18, bold: true, color: C.gray, alignment: "center" });
   addFooter(slide, 8);
   setNotes(slide, [
     "Cloud runner: https://github.com/owlsowo/finly-bot/blob/main/docs/CLOUD_RUNNER.md",
     "Conflict receipt: https://owlsowo.github.io/finly-bot/data/no_trade_receipt.json",
     "Verified automated run: https://github.com/owlsowo/finly-bot/actions/runs/33369848292",
     "Public repository: https://github.com/owlsowo/finly-bot",
-    "Screenshot is project-owned.",
   ]);
 }
 
