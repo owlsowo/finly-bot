@@ -18,7 +18,7 @@ from docx.shared import Inches, Pt, RGBColor
 
 ROOT = Path(__file__).resolve().parents[1]
 ONE_PAGE_MD = ROOT / "docs/paper/one_page_writeup.md"
-PAPER_MD = ROOT / "docs/paper/finly_technical_paper.md"
+PAPER_MD = ROOT / "docs/paper/finly_engineering_appendix.md"
 PUBLIC_DIR = ROOT / "public/judge"
 DIST_DIR = ROOT / "dist/judge"
 
@@ -602,10 +602,10 @@ def build_technical_paper() -> Path:
             add_inline(paragraph, value, size=11.0)
         first_after_heading = False
 
-    set_metadata(doc, title=title, subject="Technical paper on controlled delegation and quantitative evidence")
+    set_metadata(doc, title=title, subject="Engineering appendix on controlled delegation and quantitative evidence")
     PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
     DIST_DIR.mkdir(parents=True, exist_ok=True)
-    output = PUBLIC_DIR / "Finly_Technical_Paper.docx"
+    output = PUBLIC_DIR / "Finly_Engineering_Appendix.docx"
     doc.save(output)
     shutil.copy2(output, DIST_DIR / output.name)
     return output

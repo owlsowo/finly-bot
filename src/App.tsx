@@ -222,7 +222,7 @@ function humanSignalCopy(mode: "aligned" | "conflict", family: string, fallback:
 
 const deliverables = [
   ["01", "One-page proposal", "A one-page summary of the product, proof, and live account.", "./judge/Finly_Judge_Brief.pdf"],
-  ["02", "Technical paper", "Full methodology, architecture, evidence and academic references.", "./judge/Finly_Technical_Proposal.pdf"],
+  ["02", "Technical note", "Derivations, algorithms, risk proofs, quantitative evidence, and academic references.", "./judge/Finly_Technical_Proposal.pdf"],
   ["03", "Presentation", "Nine slides covering the result, workflow, controls, and live account.", "./judge/Finly_Consulting_Deck.pdf"],
   ["04", "Demo film", "A short walkthrough of the historical result and order checks.", "./judge/Finly_Demo_Video.mp4"],
   ["05", "Repository", "Source code, tests, evidence files, and commands to rerun them.", "https://github.com/owlsowo/finly-bot"],

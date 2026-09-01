@@ -48,7 +48,8 @@ This file contains paste-ready language for the Lablab submission form and publi
 - Repository: <https://github.com/owlsowo/finly-bot>
 - Competition deployment record: <https://owlsowo.github.io/finly-bot/data/competition-deployment-record.json>
 - One-page proposal: <https://owlsowo.github.io/finly-bot/judge/Finly_Judge_Brief.pdf>
-- Technical paper: <https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf>
+- Mathematical technical note: <https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf>
+- Engineering appendix: <https://owlsowo.github.io/finly-bot/judge/Finly_Engineering_Appendix.pdf>
 - Slide deck: <https://owlsowo.github.io/finly-bot/judge/Finly_Consulting_Deck.pdf>
 - Demo video: <https://owlsowo.github.io/finly-bot/judge/Finly_Demo_Video.mp4>
 

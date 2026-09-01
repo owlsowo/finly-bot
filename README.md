@@ -8,7 +8,7 @@ We built Finly to answer a simple question: can an AI research a market idea wit
 
 Finly reads current market evidence, explains what it sees, builds a defined-risk trade, checks the numbers, and then sends the order to Alpaca paper trading—or stops it. The model can help interpret the evidence. Code sets the position, maximum loss, and every broker field.
 
-[Open Finly](https://owlsowo.github.io/finly-bot/) · [Watch the live account](https://owlsowo.github.io/finly-bot/#live) · [Try the decision demo](https://owlsowo.github.io/finly-bot/#controls) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Open the technical paper](public/judge/Finly_Technical_Proposal.pdf) · [View the deck](public/judge/Finly_Consulting_Deck.pdf)
+[Open Finly](https://owlsowo.github.io/finly-bot/) · [Watch the live account](https://owlsowo.github.io/finly-bot/#live) · [Try the decision demo](https://owlsowo.github.io/finly-bot/#controls) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Open the mathematical note](public/judge/Finly_Technical_Proposal.pdf) · [Read the engineering appendix](public/judge/Finly_Engineering_Appendix.pdf) · [View the deck](public/judge/Finly_Consulting_Deck.pdf)
 
 ## The result that made us build it
 
@@ -67,7 +67,7 @@ evidence/    redacted runtime records
 fixtures/    aligned, conflicting, and boundary-test scenarios
 src/         public product website and live dashboard
 tests/       unit, integration, restart, statistical, and reporting tests
-docs/        proposal, technical paper, submission copy, and operating notes
+docs/        proposal, mathematical note, engineering appendix, submission copy, and operating notes
 ```
 
 ## Research and broker sources

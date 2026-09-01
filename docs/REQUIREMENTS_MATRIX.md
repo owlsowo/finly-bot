@@ -43,7 +43,7 @@ Finly must not claim future profitability, next-month SPY outperformance, verifi
 | Public repository | <https://github.com/owlsowo/finly-bot> | Open from a signed-out session after the final push. |
 | Demo application platform and URL | Canonical: GitHub Pages at <https://owlsowo.github.io/finly-bot/> | Use a Vercel artifact-only mirror only as hosting insurance, never as a conflicting canonical URL. |
 | Alpaca paper-account ID | Stored only in the ignored local environment | Enter directly into the private form; never paste it into Git, slides, video, or social posts. |
-| Optional Additional Information | Links to the one-page essay, paper, source gate, and accessibility notes | Use if the live form exposes the field. |
+| Optional Additional Information | Links to the one-page essay, seven-page mathematical note, engineering appendix, source gate, and accessibility notes | Use if the live form exposes the field. |
 
 The generic guide requests an IBM Bob report only where IBM Bob assisted. No evidence indicates that it was used for Finly, so that item is currently inapplicable.
 
@@ -65,7 +65,7 @@ The separate social prize accepts up to five X or LinkedIn post links created du
 ## Final release sequence
 
 1. Run `npm run verify` and reproduce it from a clean clone using the pinned runtime; current suite: 809 total, 807 passed, 0 failed, 2 skipped.
-2. Confirm the one-page brief, fourteen-page paper, nine-page deck, and final video open correctly; inspect their renders rather than relying only on text extraction.
+2. Confirm the one-page brief, seven-page mathematical note, fourteen-page engineering appendix, nine-page deck, and final video open correctly; inspect their renders rather than relying only on text extraction.
 3. Sweep every public surface for stale claims, hidden internal audits, direct competitor matchup language, secrets, account identifiers, broken links, and incorrect organizer handles.
 4. Push the ordinary release commit, wait for CI and Pages, and open every final URL from a signed-out browser.
 5. Confirm the dedicated paper account and copy its ID only into the private form.

@@ -106,10 +106,11 @@ function pngDimensions(relativePath) {
 }
 
 const onePage = requirePdf("public/judge/Finly_Judge_Brief.pdf", 1);
-const paper = requirePdf("public/judge/Finly_Technical_Proposal.pdf", 14);
+const paper = requirePdf("public/judge/Finly_Technical_Proposal.pdf", 7);
+const appendix = requirePdf("public/judge/Finly_Engineering_Appendix.pdf", 14);
 const deck = requirePdf("public/judge/Finly_Consulting_Deck.pdf", 9);
 requireFile("public/judge/Finly_Judge_Proposal.docx", 20_000);
-requireFile("public/judge/Finly_Technical_Paper.docx", 40_000);
+requireFile("public/judge/Finly_Engineering_Appendix.docx", 40_000);
 requireFile("public/judge/Finly_Consulting_Deck.pptx", 100_000);
 
 const video = requireFile("public/judge/Finly_Demo_Video.mp4", 1_000_000);
@@ -324,8 +325,8 @@ const documentContracts = [
     forbiddenPatterns: [...staleStoryPatterns, ...evaluatorInstructionPatterns],
   },
   {
-    label: "technical paper",
-    sourcePath: "docs/paper/finly_technical_paper.md",
+    label: "technical note",
+    sourcePath: "docs/paper/finly_technical_note.typ",
     pdfPath: "public/judge/Finly_Technical_Proposal.pdf",
     patterns: [
       ...commonDocumentPatterns,
@@ -336,12 +337,7 @@ const documentContracts = [
       /HMAC[- ]SHA-?256/iu,
       /PLANNED.{0,80}ORDER_PENDING.{0,80}RECONCILING.{0,80}READY/isu,
       /SPY\s*\/\s*BIL/iu,
-      /15\.39(?:%| percent)/iu,
-      /10\.56(?:%| percent)/iu,
-      /33\.52(?:%| percent)/iu,
-      /8\.12(?:%| percent)/iu,
-      /[−-]5\.45(?:%| percent)/iu,
-      /(?:statistical promotion failed|did not pass Finly's promotion gate)/iu,
+      /(?:did not pass statistical promotion|did not pass its statistical promotion|statistical promotion failed)/iu,
     ],
     forbiddenPatterns: evaluatorInstructionPatterns,
   },
@@ -421,12 +417,12 @@ requireNoPatterns("social metadata", indexHtml, [
   ...evaluatorInstructionPatterns,
 ]);
 
-for (const [label, file] of [["one-page", onePage], ["paper", paper], ["deck", deck]]) {
+for (const [label, file] of [["one-page", onePage], ["technical note", paper], ["engineering appendix", appendix], ["deck", deck]]) {
   assert.ok(file.size < 20 * 1024 * 1024, `${label} PDF is unexpectedly large`);
 }
 
 console.log(
-  `submission artifacts verified: 1-page brief; 14-page paper; 9-slide deck; `
+  `submission artifacts verified: 1-page brief; 7-page mathematical note; 14-page engineering appendix; 9-slide deck; `
   + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 809 tests / 807 passed / 0 failed; `
   + `exact quantitative gate; sanitized public data`,
 );

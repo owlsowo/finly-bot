@@ -35,7 +35,8 @@ Most trading demos show either an attractive chart or a model-generated recommen
 - Live product and competition account: https://owlsowo.github.io/finly-bot/
 - Source repository: https://github.com/owlsowo/finly-bot
 - One-page proposal: https://owlsowo.github.io/finly-bot/judge/Finly_Judge_Brief.pdf
-- Technical paper: https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf
+- Mathematical technical note: https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf
+- Engineering appendix: https://owlsowo.github.io/finly-bot/judge/Finly_Engineering_Appendix.pdf
 - Presentation: https://owlsowo.github.io/finly-bot/judge/Finly_Consulting_Deck.pdf
 - Product video: https://owlsowo.github.io/finly-bot/judge/Finly_Demo_Video.mp4
 
