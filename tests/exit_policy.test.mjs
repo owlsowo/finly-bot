@@ -161,3 +161,48 @@ test("the official forced-flat guard exits an otherwise held spread at its exact
     /canonical ISO timestamp/,
   );
 });
+
+test("forced-flat repricing is bounded, becomes more executable, and never authorizes a debit", () => {
+  const forceExitAt = "2026-08-28T18:45:00.000Z";
+  const first = evaluateDebitSpreadExit({
+    certificate: receipt.certificate,
+    entryProjection,
+    quotes: quotes({ at: forceExitAt }),
+    observedAt: forceExitAt,
+    forceExitAt,
+    exitAttempt: 1,
+  });
+  const final = evaluateDebitSpreadExit({
+    certificate: receipt.certificate,
+    entryProjection,
+    quotes: quotes({ at: forceExitAt }),
+    observedAt: forceExitAt,
+    forceExitAt,
+    exitAttempt: 2,
+  });
+  assert.deepEqual([first.credit_limit, final.credit_limit], ["3.39", "0.01"]);
+  assert.equal(final.maximum_exit_attempts, 2);
+  assert.throws(() => evaluateDebitSpreadExit({
+    certificate: receipt.certificate,
+    entryProjection,
+    quotes: quotes({ at: forceExitAt }),
+    observedAt: forceExitAt,
+    forceExitAt,
+    exitAttempt: 3,
+  }), /bounded force-flat policy/);
+});
+
+test("a wide or economically worthless quote surface rests at one cent instead of crossing into a debit", () => {
+  const forceExitAt = "2026-08-28T18:45:00.000Z";
+  const assessment = evaluateDebitSpreadExit({
+    certificate: receipt.certificate,
+    entryProjection,
+    quotes: quotes({ longBid: 0.05, longAsk: 0.25, shortBid: 0.01, shortAsk: 0.20, at: forceExitAt }),
+    observedAt: forceExitAt,
+    forceExitAt,
+  });
+  assert.equal(assessment.trigger, "competition_end_guard");
+  assert.equal(assessment.estimated_credit, 0);
+  assert.equal(assessment.executable_credit_limit, "0.01");
+  assert.ok(Number(assessment.executable_credit_limit) > 0);
+});

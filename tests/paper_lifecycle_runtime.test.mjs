@@ -57,6 +57,7 @@ async function openRuntime({
   placeClosingOptionOrder,
   closingCapability,
   beforeClosingMutation,
+  cancelOptionOrder,
 } = {}) {
   return AlpacaPaperLifecycleRuntime.open({
     certificate,
@@ -67,6 +68,7 @@ async function openRuntime({
     mutationsEnabled,
     beforeClosingMutation,
     placeClosingOptionOrder,
+    cancelOptionOrder,
     closingCapability,
     runId: fixture.run_id,
     now: () => new Date(fixture.decision_time),
@@ -338,4 +340,94 @@ test("a terminal exit readback requires a new request ID and therefore a new Alp
   const secondId = runtime.snapshot().exit_projection.client_order_id;
   assert.notEqual(secondId, firstId);
   assert.equal(submitted.size, 2);
+});
+
+test("an accepted unfilled exit is canceled, reconciled, and replaced under a new idempotency key", async (t) => {
+  const store = await temporaryStore(t);
+  const submitted = new Map();
+  let cancelCalls = 0;
+  const lookup = async (clientOrderId) => {
+    if (clientOrderId === entryProjection.client_order_id) {
+      return nestedOrder(entryProjection, { status: "filled", filled: Number(entryProjection.qty) });
+    }
+    return submitted.get(clientOrderId) ?? null;
+  };
+  const runtime = await openRuntime({
+    store,
+    lookup,
+    mutationsEnabled: true,
+    placeClosingOptionOrder: async (projection) => {
+      submitted.set(projection.client_order_id, nestedOrder(projection, { id: `exit-order-${submitted.size + 1}-00000000` }));
+    },
+    cancelOptionOrder: async (orderId) => {
+      cancelCalls += 1;
+      const order = [...submitted.values()].find((candidate) => candidate.id === orderId);
+      order.status = "canceled";
+    },
+    closingCapability: ALPACA_MCP_CLOSING_CREDIT_CAPABILITY,
+  });
+  await runtime.reconcileEntry();
+  await runtime.requireExit("competition_end_guard");
+  await runtime.submitCreditExit({ requestId: "finly-exit-reprice001", creditLimit: 3.39 });
+  const firstId = runtime.snapshot().exit_projection.client_order_id;
+  const canceled = await runtime.cancelWorkingExit({ requestId: "finly-exitcancel-reprice001" });
+  assert.equal(canceled.phase, "EXIT_REQUIRED");
+  assert.equal(cancelCalls, 1);
+
+  await runtime.submitCreditExit({ requestId: "finly-exit-reprice002", creditLimit: 0.01 });
+  assert.equal(runtime.snapshot().phase, "EXIT_ACCEPTED");
+  assert.notEqual(runtime.snapshot().exit_projection.client_order_id, firstId);
+  assert.equal(runtime.exitSubmissionCount(), 2);
+  assert.equal(submitted.size, 2);
+});
+
+test("restart after a lost cancel acknowledgement reconciles the old order and cannot duplicate closing risk", async (t) => {
+  const store = await temporaryStore(t);
+  const submitted = new Map();
+  let cancelCalls = 0;
+  const lookup = async (clientOrderId) => {
+    if (clientOrderId === entryProjection.client_order_id) {
+      return nestedOrder(entryProjection, { status: "filled", filled: Number(entryProjection.qty) });
+    }
+    return submitted.get(clientOrderId) ?? null;
+  };
+  const open = () => openRuntime({
+    store,
+    lookup,
+    mutationsEnabled: true,
+    placeClosingOptionOrder: async (projection) => {
+      submitted.set(projection.client_order_id, nestedOrder(projection, { id: "lost-ack-exit-order-000001" }));
+    },
+    cancelOptionOrder: async (orderId) => {
+      cancelCalls += 1;
+      const order = [...submitted.values()].find((candidate) => candidate.id === orderId);
+      order.status = "pending_cancel";
+      throw new Error("simulated lost DELETE acknowledgement");
+    },
+    closingCapability: ALPACA_MCP_CLOSING_CREDIT_CAPABILITY,
+  });
+  let runtime = await open();
+  await runtime.reconcileEntry();
+  await runtime.requireExit("competition_end_guard");
+  await runtime.submitCreditExit({ requestId: "finly-exit-lostack001", creditLimit: 1.00 });
+  const pending = await runtime.cancelWorkingExit({ requestId: "finly-exitcancel-lostack001" });
+  assert.equal(pending.phase, "EXIT_ACCEPTED");
+  assert.equal(pending.active_exit.status, "pending_cancel");
+  assert.equal(cancelCalls, 1);
+
+  runtime = await open();
+  assert.equal(runtime.snapshot().phase, "EXIT_ACCEPTED");
+  const deduplicated = await runtime.cancelWorkingExit({ requestId: "finly-exitcancel-lostack001" });
+  assert.equal(deduplicated.revision, pending.revision);
+  assert.equal(cancelCalls, 1);
+  assert.equal(submitted.size, 1);
+
+  const working = [...submitted.values()][0];
+  working.status = "filled";
+  working.filled_qty = working.qty;
+  working.filled_at = fixture.decision_time;
+  working.legs.forEach((leg) => { leg.filled_qty = working.qty; });
+  const closed = await runtime.reconcileExit();
+  assert.equal(closed.phase, "CLOSED");
+  assert.equal(submitted.size, 1);
 });

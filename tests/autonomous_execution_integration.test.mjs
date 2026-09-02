@@ -114,6 +114,7 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
   let exitQuoteMode = "hold";
   let entryMutations = 0;
   let exitMutations = 0;
+  let exitCancelMutations = 0;
   const optionQuotes = () => {
     if (exitQuoteMode === "risk") {
       return {
@@ -128,8 +129,8 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
   };
   const paperPositions = () => {
     const entryOrder = [...ordersByClientId.values()].find((order) => !order.client_order_id.startsWith("finly-exit-"));
-    const exitOrder = [...ordersByClientId.values()].find((order) => order.client_order_id.startsWith("finly-exit-"));
-    if (entryOrder?.status !== "filled" || exitOrder?.status === "filled") return [];
+    const exitOrders = [...ordersByClientId.values()].filter((order) => order.client_order_id.startsWith("finly-exit-"));
+    if (entryOrder?.status !== "filled" || exitOrders.some((order) => order.status === "filled")) return [];
     return entryOrder.legs.map((leg) => ({
       symbol: leg.symbol,
       asset_class: "us_option",
@@ -173,6 +174,14 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
       return order ? { id: order.id } : null;
     },
     getOrderById: async (orderId) => structuredClone(ordersById.get(orderId)),
+    cancelOrder: async (orderId) => {
+      exitCancelMutations += 1;
+      const order = ordersById.get(orderId);
+      assert.ok(order, "cancel must target a known closing order");
+      order.status = "canceled";
+      ordersById.set(orderId, order);
+      return { acknowledged: true };
+    },
   };
   const mcpClient = {
     placeOptionOrder: async (projection) => {
@@ -184,7 +193,7 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
     },
     placeExitOrder: async (projection) => {
       exitMutations += 1;
-      const order = nestedOrder(projection, { id: "exit-order-00000001" });
+      const order = nestedOrder(projection, { id: `exit-order-0000000${exitMutations}` });
       ordersByClientId.set(projection.client_order_id, order);
       ordersById.set(order.id, order);
       return { isError: false };
@@ -270,8 +279,19 @@ test("guarded autonomous runtime persists entry, manages risk exit, and releases
   assert.equal(inputReads, 1);
   assert.equal(exitMutations, 1);
 
-  const exitOrder = [...ordersByClientId.values()].find((order) => order.client_order_id.startsWith("finly-exit-"));
-  assert.equal(Number(exitOrder.limit_price) < 0, true);
+  const firstExit = [...ordersByClientId.values()].find((order) => order.client_order_id.startsWith("finly-exit-"));
+  assert.equal(Number(firstExit.limit_price) < 0, true);
+
+  const repriced = await executor.positionManager.manageOpenSession();
+  assert.equal(repriced.status, "EXIT_SUBMITTED_OR_RECONCILED");
+  assert.equal(repriced.assessment.exit_attempt, 2);
+  assert.equal(exitCancelMutations, 1);
+  assert.equal(exitMutations, 2);
+  const exits = [...ordersByClientId.values()].filter((order) => order.client_order_id.startsWith("finly-exit-"));
+  assert.equal(exits[0].status, "canceled");
+  assert.ok(Math.abs(Number(exits[1].limit_price)) < Math.abs(Number(exits[0].limit_price)));
+
+  const exitOrder = exits[1];
   exitOrder.status = "filled";
   exitOrder.filled_qty = exitOrder.qty;
   exitOrder.filled_at = currentAt;
