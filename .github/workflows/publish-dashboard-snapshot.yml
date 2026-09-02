@@ -23,6 +23,7 @@ jobs:
       APCA_API_SECRET_KEY: ${{ secrets.FINLY_ALPACA_SECRET_KEY }}
       FINLY_COMPETITION_ACCOUNT_ID: ${{ secrets.FINLY_COMPETITION_ACCOUNT_ID }}
       FINLY_PAPER_SIGNING_SECRET: ${{ secrets.FINLY_PAPER_SIGNING_SECRET }}
+      FINLY_CLOUD_STATE_SECRET: ${{ secrets.FINLY_CLOUD_STATE_SECRET }}
       FINLY_PAPER_SESSION_PATH: data/private/paper-sessions
       FINLY_DECISION_LOG: outputs/autonomous_decisions.jsonl
     steps:
@@ -49,16 +50,14 @@ jobs:
             "APCA_API_SECRET_KEY",
             "FINLY_COMPETITION_ACCOUNT_ID",
             "FINLY_PAPER_SIGNING_SECRET",
+            "FINLY_CLOUD_STATE_SECRET",
           ];
           if (required.some((name) => !process.env[name] || Buffer.byteLength(process.env[name]) < 12)) {
             throw new Error("one or more required snapshot credentials are unavailable");
           }
           NODE
 
-      - name: Build a sanitized broker snapshot
-        run: node scripts/build_competition_live_snapshot.mjs --output "$RUNNER_TEMP/competition_live.json"
-
-      - name: Publish only the sanitized snapshot
+      - name: Restore the authenticated decision journal
         run: |
           set -eu
           publication="$RUNNER_TEMP/finly-cloud-state"
@@ -67,6 +66,27 @@ jobs:
           git -C "$publication" switch -C "$FINLY_CLOUD_STATE_BRANCH" "origin/$FINLY_CLOUD_STATE_BRANCH"
           git -C "$publication" config user.name "finly-dashboard-runner"
           git -C "$publication" config user.email "finly-dashboard-runner@users.noreply.github.com"
+          node scripts/cloud_state.mjs restore --input "$publication/private-state.enc.json"
+          echo "FINLY_STATE_PUBLICATION_DIR=$publication" >> "$GITHUB_ENV"
+
+      - name: Report bounded state size
+        run: |
+          node --input-type=module - <<'NODE'
+          import { buildCloudStatePayload } from "./scripts/cloud_state.mjs";
+          const payload = await buildCloudStatePayload();
+          process.stdout.write(`${JSON.stringify({
+            file_count: payload.files.length,
+            total_bytes: payload.total_bytes,
+          })}\n`);
+          NODE
+
+      - name: Build a sanitized broker snapshot
+        run: node scripts/build_competition_live_snapshot.mjs --output "$RUNNER_TEMP/competition_live.json"
+
+      - name: Publish only the sanitized snapshot
+        run: |
+          set -eu
+          publication="$FINLY_STATE_PUBLICATION_DIR"
           cp "$RUNNER_TEMP/competition_live.json" "$publication/competition_live.json"
           git -C "$publication" add -- competition_live.json
           if git -C "$publication" diff --cached --quiet; then
