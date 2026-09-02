@@ -1,0 +1,77 @@
+{
+  "schema_version": "finly_options_policy_revision.v1",
+  "revision_id": "live-options-v2-2026-09-01",
+  "recorded_at": "2026-09-02T01:15:14.000Z",
+  "activation": {
+    "status": "ACTIVE",
+    "activated_at": "2026-09-02T03:28:21.000Z",
+    "activation_evidence": {
+      "repository": "https://github.com/owlsowo/finly-bot",
+      "branch": "main",
+      "commit": "61af344bdeaef70c0b8500d8a243fb63caa53fa3"
+    }
+  },
+  "reason": {
+    "trigger": "PUBLISHED_LIVE_NO_TRADE_DIAGNOSTIC",
+    "observation": "The original live gate repeatedly abstained because ordinary downside option skew could not independently reproduce a bullish view after market evidence was removed.",
+    "change_goal": "Restore a reachable but selective live options path without weakening the paper-account safety boundary."
+  },
+  "provenance": {
+    "previous_authority_schema": "finly_economic_options_direction_authority.v1",
+    "new_authority_schema": "finly_economic_options_direction_authority.v2",
+    "implementation_commit": "36ce122519de1af370252459eb01948be99a7698",
+    "workflow_pin_commit": "610806b6a6fc6e5b6e622b6f50578966047e291b",
+    "assertion_commit": "55b0197be1c26126772f3006a0c3d9f9e94c4ba5",
+    "calibration_commit": "6646b361ac7594709755836f78d6761ba66bfdea",
+    "bounded_exit_commit": "038294751caa2c5dca40245eaeccff0aa06f482d",
+    "cancel_retry_commit": "b305a2f16d6e567063f0caee97959c5d9d30d7b8",
+    "cloud_pin_commit": "4e2f61aeb43561ca109d4d5eb279cd3273b56e4b",
+    "main_activation_commit": "61af344bdeaef70c0b8500d8a243fb63caa53fa3"
+  },
+  "changed": {
+    "direction": "Fresh SPY price momentum owns the sign; the live sleeve may compile either a bullish call spread or a bearish put spread.",
+    "evidence_roles": "Raw options skew and model-read Alpaca news may confirm, reduce, or neutralize the market view; neither may choose the sign.",
+    "alpha_thresholds": {
+      "direction_score": 0.12,
+      "minimum_coverage": 0.3,
+      "minimum_agreement": 0.45,
+      "minimum_probability_of_profit": 0.51,
+      "minimum_reward_to_risk": 1,
+      "minimum_conservative_ev_dollars": 5,
+      "minimum_conservative_ev_fraction_of_max_loss": 0.02
+    },
+    "challenge_role": "Source removals and 32 perturbations are published alpha diagnostics. An opposite-sign flip is prohibited, but diagnostic weakness cannot enlarge size or bypass execution safety.",
+    "cadence": "Three bounded cloud sessions run up to 24 five-minute cycles each during the options-entry window."
+  },
+  "unchanged": {
+    "allocation_sleeve": "The four-fund competition allocation, its original orders, and its recorded P&L are unchanged.",
+    "historical_evidence": "Frozen research receipts and historical replays remain attributed to their original policy and are not relabeled as live-v2 results.",
+    "execution_safety": [
+      "Alpaca paper endpoint only",
+      "exactly one options contract",
+      "$500 maximum loss and a tighter 0.5% equity budget",
+      "fresh account and option quotes",
+      "aggregate defined-risk cap",
+      "Level 3, liquidity, flat-position, and exact-debit preflight",
+      "HMAC-bound certificate",
+      "deterministic idempotency and broker reconciliation",
+      "bounded credit-only exit with cancel confirmation and one final $0.01 replacement"
+    ]
+  },
+  "verification": {
+    "test_total": 822,
+    "test_passed": 820,
+    "test_failed": 0,
+    "test_skipped": 2,
+    "lint_passed": true,
+    "production_build_passed": true,
+    "ordinary_surface_result": "NO_TRADE",
+    "modestly_improved_surface": {
+      "decision": "BULL_CALL_DEBIT_SPREAD",
+      "maximum_loss_dollars": 426,
+      "conservative_ev_dollars": 9.5,
+      "probability_of_profit": 0.5127
+    }
+  },
+  "claim_boundary": "The calibration proves reachability and selectivity, not realized options profit or future outperformance. A live order or fill may be claimed only from a broker receipt. The bounded $0.01 exit floor limits behavior but cannot guarantee a fill."
+}

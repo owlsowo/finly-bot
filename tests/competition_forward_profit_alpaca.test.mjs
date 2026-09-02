@@ -709,7 +709,7 @@ test("measurement adapter is GET-only and isolated from the pinned trader", asyn
   assert.doesNotMatch(source,
     /method:\s*["'](?:POST|PUT|PATCH|DELETE)["']|placeStockOrder|placeOptionOrder|cancelOrder|mutation_ack/iu);
   const workflow = await readFile(new URL("../.github/workflows/paper-agent-cloud.yml", import.meta.url), "utf8");
-  assert.match(workflow, /FINLY_CODE_VERSION: b305a2f16d6e567063f0caee97959c5d9d30d7b8/u);
+  assert.match(workflow, /FINLY_CODE_VERSION: 318c94379af14595e09f414504be8080bc822048/u);
   assert.doesNotMatch(workflow, /competition_forward_profit_alpaca/u);
   const runner = await readFile(new URL("../scripts/run_competition_forward_profit.mjs", import.meta.url), "utf8");
   assert.match(runner, /AlpacaForwardProfitReadClient/u);
@@ -733,6 +733,6 @@ test("measurement workflow is separately pinned, read-only, scheduled, and artif
   const traderWorkflow = await readFile(
     new URL("../.github/workflows/paper-agent-cloud.yml", import.meta.url), "utf8",
   );
-  assert.match(traderWorkflow, /FINLY_CODE_VERSION: b305a2f16d6e567063f0caee97959c5d9d30d7b8/u);
+  assert.match(traderWorkflow, /FINLY_CODE_VERSION: 318c94379af14595e09f414504be8080bc822048/u);
   assert.doesNotMatch(traderWorkflow, /FINLY_MEASUREMENT_CODE_VERSION|competition_forward_profit/u);
 });

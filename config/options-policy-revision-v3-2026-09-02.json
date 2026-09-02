@@ -1,0 +1,72 @@
+{
+  "schema_version": "finly_options_policy_revision.v1",
+  "revision_id": "live-options-v3-2026-09-02",
+  "recorded_at": "2026-09-02T04:01:01.000Z",
+  "activation": {
+    "status": "PREPARED_NOT_PUSHED",
+    "implementation_commit": "318c94379af14595e09f414504be8080bc822048",
+    "workflow_pin_target": "318c94379af14595e09f414504be8080bc822048",
+    "deployment_requires": "Push the implementation commit and this follow-up pin commit before the cloud runner can execute v3."
+  },
+  "reason": {
+    "trigger": "PROSPECTIVE_FAIR_SURFACE_REACHABILITY_AUDIT",
+    "observation": "Under the prior live-v2 alpha policy, 12 of 517 sampled fair-surface windows passed the conservative expected-value gate, but none passed the separate 0.51 probability-of-profit floor.",
+    "change_goal": "Permit selective positive-EV asymmetric spreads without changing any execution-safety authority or relabeling prior evidence."
+  },
+  "provenance": {
+    "previous_revision_record": "config/options-policy-revision-2026-09-01.json",
+    "implementation_commit": "318c94379af14595e09f414504be8080bc822048",
+    "calibration_artifact": "evidence/options_policy_calibration.json",
+    "calibration_artifact_sha256": "sha256:46112141a12486508e6c38869150238ba702f1b682ad6fb72ad8e867cb895a5d"
+  },
+  "changed": {
+    "minimum_probability_of_profit": {
+      "from": 0.51,
+      "to": 0.45
+    },
+    "minimum_reward_to_risk": {
+      "from": 1,
+      "to": 1.25
+    }
+  },
+  "unchanged": {
+    "minimum_conservative_ev_dollars": 5,
+    "minimum_conservative_ev_fraction_of_max_loss": 0.02,
+    "execution_safety": [
+      "Alpaca paper endpoint only",
+      "exactly one options contract",
+      "$500 maximum loss and the tighter 0.5% equity budget",
+      "fresh quotes, liquidity, Level 3, flat-position, and exact-debit preflight",
+      "HMAC-bound certificate and deterministic broker idempotency",
+      "broker reconciliation and bounded credit-only forced-exit lifecycle"
+    ]
+  },
+  "verification": {
+    "sample_count": 517,
+    "ordinary_symmetric_five_cent_half_spread": {
+      "eligible_count": 11,
+      "eligible_rate": 0.0212766,
+      "direction_mix": {
+        "bullish": 7,
+        "bearish": 4
+      },
+      "maximum_loss_dollars": {
+        "minimum": 440,
+        "maximum": 455
+      },
+      "conservative_ev_dollars": {
+        "minimum": 10.08,
+        "maximum": 22.26
+      },
+      "probability_profit": {
+        "minimum": 0.4512,
+        "maximum": 0.4771
+      },
+      "reward_risk": {
+        "minimum": 2.2967,
+        "maximum": 2.4091
+      }
+    }
+  },
+  "claim_boundary": "This is a prospective signal and modeled-quote eligibility calibration, not historical options P&L, a broker fill, or evidence of future profitability."
+}
