@@ -36,7 +36,7 @@ env:
   # Keep the live paper trader on the exact code revision that passed the
   # production audit. Website and submission-only commits on main must not
   # silently alter the competition engine after launch.
-  FINLY_CODE_VERSION: e0d8dc3ec374d69caf2cfaae27503a8aca2cd7f4
+  FINLY_CODE_VERSION: 36ce122519de1af370252459eb01948be99a7698
   FINLY_COMPETITION_START_AT: "2026-08-31T13:30:00.000Z"
   FINLY_COMPETITION_END_AT: "2026-09-04T13:30:00.000Z"
   FINLY_OPTIONS_ENTRY_CUTOFF_AT: "2026-09-02T19:00:00.000Z"
