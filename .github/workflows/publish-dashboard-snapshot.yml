@@ -1,0 +1,85 @@
+name: Publish Finly dashboard snapshot (read only)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: finly-dashboard-snapshot
+  cancel-in-progress: true
+
+env:
+  FINLY_RUNTIME_VERSION: ac4099b64d806f700f3e50afc60bab3142eb31aa
+  FINLY_CLOUD_STATE_BRANCH: finly-cloud-state
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      APCA_API_KEY_ID: ${{ secrets.FINLY_ALPACA_API_KEY_ID }}
+      APCA_API_SECRET_KEY: ${{ secrets.FINLY_ALPACA_SECRET_KEY }}
+      FINLY_COMPETITION_ACCOUNT_ID: ${{ secrets.FINLY_COMPETITION_ACCOUNT_ID }}
+      FINLY_PAPER_SIGNING_SECRET: ${{ secrets.FINLY_PAPER_SIGNING_SECRET }}
+      FINLY_PAPER_SESSION_PATH: data/private/paper-sessions
+      FINLY_DECISION_LOG: outputs/autonomous_decisions.jsonl
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ env.FINLY_RUNTIME_VERSION }}
+          fetch-depth: 1
+
+      - name: Attest the audited runtime revision
+        run: |
+          set -eu
+          test "$(git rev-parse --verify HEAD)" = "$FINLY_RUNTIME_VERSION"
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 26.7.0
+
+      - name: Verify required read-only credentials
+        run: |
+          node - <<'NODE'
+          const required = [
+            "APCA_API_KEY_ID",
+            "APCA_API_SECRET_KEY",
+            "FINLY_COMPETITION_ACCOUNT_ID",
+            "FINLY_PAPER_SIGNING_SECRET",
+          ];
+          if (required.some((name) => !process.env[name] || Buffer.byteLength(process.env[name]) < 12)) {
+            throw new Error("one or more required snapshot credentials are unavailable");
+          }
+          NODE
+
+      - name: Build a sanitized broker snapshot
+        run: node scripts/build_competition_live_snapshot.mjs --output "$RUNNER_TEMP/competition_live.json"
+
+      - name: Publish only the sanitized snapshot
+        run: |
+          set -eu
+          publication="$RUNNER_TEMP/finly-cloud-state"
+          git fetch --no-tags origin "$FINLY_CLOUD_STATE_BRANCH:refs/remotes/origin/$FINLY_CLOUD_STATE_BRANCH"
+          git worktree add --detach "$publication" "origin/$FINLY_CLOUD_STATE_BRANCH"
+          git -C "$publication" switch -C "$FINLY_CLOUD_STATE_BRANCH" "origin/$FINLY_CLOUD_STATE_BRANCH"
+          git -C "$publication" config user.name "finly-dashboard-runner"
+          git -C "$publication" config user.email "finly-dashboard-runner@users.noreply.github.com"
+          cp "$RUNNER_TEMP/competition_live.json" "$publication/competition_live.json"
+          git -C "$publication" add -- competition_live.json
+          if git -C "$publication" diff --cached --quiet; then
+            echo "The published snapshot is already current."
+            exit 0
+          fi
+          git -C "$publication" commit -m "Publish sanitized Finly dashboard snapshot"
+          git -C "$publication" push origin "HEAD:refs/heads/$FINLY_CLOUD_STATE_BRANCH"
+
+      - name: Retain the sanitized snapshot
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: finly-dashboard-snapshot-${{ github.run_id }}
+          path: ${{ runner.temp }}/competition_live.json
+          if-no-files-found: error
+          retention-days: 7
