@@ -1,1 +1,4 @@
 alpaca-mcp-server==2.2.1
+# Alpaca MCP 2.2.1 imports fastmcp.tools.tool, which FastMCP 4 removed.
+# Pin the last runtime whose broker-mutation schemas passed our frozen audit.
+fastmcp==3.4.7
