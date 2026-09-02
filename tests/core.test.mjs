@@ -169,6 +169,25 @@ test("read client permits only exact Alpaca paper/data origins and GET", async (
   assert.throws(() => new AlpacaPaperRestClient({ keyId: "paper-key-id", secretKey: "paper-secret-key", dataBase: "https://data.alpaca.markets.evil.test" }), /not allowlisted/);
 });
 
+test("paper client cancel is an exact single-order DELETE and requires Alpaca's 204 acknowledgement", async () => {
+  const calls = [];
+  const client = new AlpacaPaperRestClient({
+    keyId: "paper-key-id",
+    secretKey: "paper-secret-key",
+    fetchImpl: async (url, options) => {
+      calls.push({ url: url.toString(), method: options.method, redirect: options.redirect });
+      return { status: 204, ok: true };
+    },
+  });
+  await client.cancelOrder("exit-order-00000001");
+  assert.deepEqual(calls, [{
+    url: "https://paper-api.alpaca.markets/v2/orders/exit-order-00000001",
+    method: "DELETE",
+    redirect: "error",
+  }]);
+  await assert.rejects(() => client.cancelOrder("../orders"), /invalid Alpaca order ID/);
+});
+
 test("read client rejects symbols and feeds outside policy", async () => {
   const client = new AlpacaPaperRestClient({
     keyId: "paper-key-id",

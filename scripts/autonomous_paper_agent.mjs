@@ -16,7 +16,7 @@ import {
   buildLiveEconomicOptionsDirectionAuthority,
   buildLiveEconomicOptionsExecutionGuard,
 } from "../lib/live_economic_options_authority.mjs";
-import { evaluateDebitSpreadExit } from "../lib/exit_policy.mjs";
+import { evaluateDebitSpreadExit, FORCE_FLAT_EXIT_ATTEMPTS } from "../lib/exit_policy.mjs";
 import { HistoricalAlpacaClient } from "../lib/historical_alpaca.mjs";
 import { fetchAlpacaLiveSnapshot } from "../lib/live_snapshot.mjs";
 import { buildAlpacaPaperLiveFixture, buildLiveSignals } from "../lib/live_signals.mjs";
@@ -376,6 +376,7 @@ export function buildGuardedLocalPaperExecutor({
     mutationsEnabled: true,
     beforeClosingMutation: stateCheckpoint,
     placeClosingOptionOrder: (projection) => mutationClient.placeExitOrder(projection),
+    cancelOptionOrder: (orderId) => client.cancelOrder(orderId),
     closingCapability: ALPACA_MCP_CLOSING_CREDIT_CAPABILITY,
     runId: session.certificate.run_id,
     now,
@@ -478,7 +479,57 @@ export function buildGuardedLocalPaperExecutor({
         state = await runtime.reconcileEntry(entryOrder);
       }
 
-      if (state.phase === "EXIT_ACCEPTED") state = await runtime.reconcileExit();
+      if (state.phase === "EXIT_ACCEPTED") {
+        state = await runtime.reconcileExit();
+        const forceFlatAt = optionsCompetitionControls(environment, now()).force_flat_at;
+        const forceFlatActive = forceFlatAt !== null && new Date(now()) >= new Date(forceFlatAt);
+        if (state.phase === "EXIT_ACCEPTED" && forceFlatActive) {
+          const clock = await client.getClock();
+          if (clock?.is_open !== true) {
+            return {
+              active: true,
+              status: "MARKET_CLOSED_EXIT_WORKING",
+              phase: state.phase,
+              session_id: session.session_id,
+            };
+          }
+          const submissions = runtime.exitSubmissionCount();
+          const restingCredit = Number(state.exit_projection?.limit_price);
+          if (submissions >= FORCE_FLAT_EXIT_ATTEMPTS || restingCredit <= 0.01) {
+            return {
+              active: true,
+              status: "FORCE_FLAT_SAFE_FLOOR_WORKING",
+              phase: state.phase,
+              session_id: session.session_id,
+              exit_attempts: submissions,
+            };
+          }
+          if (state.cancel_operation !== null) {
+            return {
+              active: true,
+              status: "FORCE_FLAT_CANCEL_PENDING",
+              phase: state.phase,
+              session_id: session.session_id,
+              exit_attempts: submissions,
+            };
+          }
+          const cancelRequestId = `finly-exitcancel-${sha256({
+            session_id: session.session_id,
+            order_id: state.active_exit.order_id,
+            lifecycle_revision: state.revision,
+          }).slice(-20)}`;
+          state = await runtime.cancelWorkingExit({ requestId: cancelRequestId });
+          if (state.phase === "EXIT_ACCEPTED") {
+            return {
+              active: true,
+              status: "FORCE_FLAT_CANCEL_PENDING",
+              phase: state.phase,
+              session_id: session.session_id,
+              exit_attempts: submissions,
+            };
+          }
+        }
+      }
 
       if (state.phase.endsWith("FROZEN")) {
         const frozen = await sessionRegistry.markFrozen(session.session_id, {
@@ -524,6 +575,7 @@ export function buildGuardedLocalPaperExecutor({
           strategyDirection,
           entryFilledAt: state.active_entry?.filled_at ?? null,
           forceExitAt: optionsCompetitionControls(environment, now()).force_flat_at,
+          exitAttempt: Math.min(runtime.exitSubmissionCount() + 1, FORCE_FLAT_EXIT_ATTEMPTS),
         });
         if (state.phase === "POSITION_OPEN" && assessment.decision === "HOLD") {
           return {
