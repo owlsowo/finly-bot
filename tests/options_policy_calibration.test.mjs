@@ -97,6 +97,13 @@ test("ordinary historical momentum does not force a trade at a fair modeled surf
   assert.equal(result.action, "NO_TRADE");
 });
 
+test("prospective v3 alpha thresholds preserve strict EV while permitting asymmetric positive-EV payoffs", () => {
+  assert.equal(LIVE_ALPHA_CONFIDENCE_POLICY.minimumProbabilityOfProfit, 0.45);
+  assert.equal(LIVE_ALPHA_CONFIDENCE_POLICY.minimumRewardRisk, 1.25);
+  assert.equal(LIVE_ALPHA_CONFIDENCE_POLICY.minimumEvDollars, 5);
+  assert.equal(LIVE_ALPHA_CONFIDENCE_POLICY.minimumEvToMaxLoss, 0.02);
+});
+
 test("the same ordinary regime permits one modestly favorable, positive-margin spread", () => {
   // Four cents of ask improvement is smaller than the policy's modeled
   // two-leg round-trip slippage. It represents a plausible quote difference,
@@ -107,7 +114,8 @@ test("the same ordinary regime permits one modestly favorable, positive-margin s
   });
   assert.equal(result.selected?.action, "BULL_CALL_DEBIT_SPREAD");
   assert.ok(result.selected.max_loss <= 500);
-  assert.ok(result.selected.probability_profit >= 0.51);
+  assert.ok(result.selected.probability_profit >= LIVE_ALPHA_CONFIDENCE_POLICY.minimumProbabilityOfProfit);
+  assert.ok(result.selected.reward_risk >= 1.25);
   assert.ok(result.selected.conservative_ev >= Math.max(5, result.selected.max_loss * 0.02));
 });
 

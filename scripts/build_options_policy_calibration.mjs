@@ -6,17 +6,22 @@ import { buildOptionsPolicyCalibration } from "../lib/options_policy_calibration
 
 const projectRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const inputPath = resolve(projectRoot, "fixtures/spy_adjusted_closes_20160104_20260828.json");
-const defaultOutputPath = resolve(projectRoot, "evidence/options_policy_calibration.json");
+const defaultOutputPaths = [
+  resolve(projectRoot, "evidence/options_policy_calibration.json"),
+  resolve(projectRoot, "public/data/options_policy_calibration.json"),
+];
 
-export async function buildCalibrationArtifact({ outputPath = defaultOutputPath, verifyExisting = false } = {}) {
+export async function buildCalibrationArtifact({ outputPaths = defaultOutputPaths, verifyExisting = false } = {}) {
   const input = JSON.parse(await readFile(inputPath, "utf8"));
   const artifact = buildOptionsPolicyCalibration(input);
   const serialized = `${stableStringify(artifact)}\n`;
-  if (verifyExisting) {
-    const existing = await readFile(outputPath, "utf8");
-    if (existing !== serialized) throw new Error("checked-in options policy calibration differs from deterministic rebuild");
-  } else {
-    await writeFile(outputPath, serialized, { flag: "w" });
+  for (const outputPath of outputPaths) {
+    if (verifyExisting) {
+      const existing = await readFile(outputPath, "utf8");
+      if (existing !== serialized) throw new Error("checked-in options policy calibration differs from deterministic rebuild");
+    } else {
+      await writeFile(outputPath, serialized, { flag: "w" });
+    }
   }
   return artifact;
 }
