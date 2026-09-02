@@ -259,18 +259,18 @@ const deliverables = [
 
 const claimEvidence = [
   {
+    claim: "In the 2013–2026 cost-modeled replay, Finly finished $38,629 ahead of SPY: $106,711 versus $68,082 from the same $10,000 start.",
+    evidence: "Historical release record",
+    href: "./data/quantitative_release_gate.json",
+    reproduce: "node --test tests/historical_backtest.test.mjs tests/historical_reporting.test.mjs",
+    scope: "Historical replay",
+  },
+  {
     claim: "Through the September 2 close, Finly was up $141.24 while SPY was down $284.76 from the same $100,000 starting point—a $426.00 advantage at 4:00 p.m.",
     evidence: "Latest same-clock paper measurement",
     href: "./data/competition_forward_profit_2026_09_02.json",
     reproduce: "node --test tests/competition_forward_profit_public_evidence.test.mjs",
     scope: "Measured close",
-  },
-  {
-    claim: "In the 2013–2026 modeled replay, $10,000 became $106,711 with Finly and $68,082 with SPY after modeled five-basis-point one-way costs.",
-    evidence: "Historical release record",
-    href: "./data/quantitative_release_gate.json",
-    reproduce: "node --test tests/historical_backtest.test.mjs tests/historical_reporting.test.mjs",
-    scope: "Historical replay",
   },
   {
     claim: "In a 1927–2007 public dataset, a fixed industry version averaged 13.37% yearly growth versus 9.48% for the market.",
@@ -330,12 +330,12 @@ export function DemoClient() {
       <main id="main-content">
         <section className="hero shell" id="case">
           <div className="hero-copy">
-            <p className="kicker">Paper trading with AI research and built-in risk checks</p>
-            <h1>AI explains the trade. Code controls the money.</h1>
+            <p className="kicker">2013–2026 historical simulation · after modeled trading costs</p>
+            <h1>Finly finished $38,629 ahead of the S&amp;P 500 tracker.</h1>
             <p className="hero-deck">
-              Finly runs one autonomous strategy with two coordinated sleeves: a rules-based four-fund allocation and
-              an AI-researched options sleeve. Fresh price momentum can become a bullish call spread, a bearish put
-              spread, or no trade. Fixed code limits any live entry to one contract and $500 of possible loss.
+              Starting with the same $10,000, Finly's four-fund rule reached $106,711 while SPY reached $68,082.
+              The competition product turns that research into a live paper-trading system: AI explains the market,
+              while fixed code controls the allocation, the options order, and the maximum possible loss.
             </p>
             <div className="hero-actions">
               <a className="primary-action" href="#controls">Watch Finly decide</a>
@@ -345,29 +345,29 @@ export function DemoClient() {
 
           <figure className="hero-figure">
             <div className="figure-labels">
-              <span>Official score through September 2 on $100,000</span>
-              <strong>2 Sep 2026 · 4:00 p.m.</strong>
+              <span>Modeled ending wealth from the same $10,000</span>
+              <strong>Jan 2013–Aug 2026</strong>
             </div>
             <div
               className="hero-result"
               role="img"
-              aria-label={`At the September 2 closing bell, Finly gained ${dollars(latestCloseMeasurement.primary_kpi.net_pnl_dollars)} while SPY lost ${dollars(100_000 - latestCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars)} from the same one hundred thousand dollar starting point. Finly finished ${dollars(latestCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead.`}
+              aria-label={`In the 2013 through 2026 historical simulation, ten thousand dollars became ${dollars(performanceLabEndingWealth)} with Finly and ${dollars(spyEndingWealth)} with SPY after modeled trading costs. Finly finished ${dollars(performanceLabAdvantage)} ahead.`}
             >
               <div>
                 <span>Finly</span>
-                <strong>{signedDollars(latestCloseMeasurement.primary_kpi.net_pnl_dollars)}</strong>
-                <small>virtual-money gain</small>
+                <strong>{dollars(performanceLabEndingWealth)}</strong>
+                <small>modeled ending wealth</small>
               </div>
               <div>
                 <span>SPY · S&amp;P 500 tracker</span>
-                <strong>{signedDollars(latestCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars - 100_000)}</strong>
-                <small>same start · same closing time</small>
+                <strong>{dollars(spyEndingWealth)}</strong>
+                <small>same start · same dates</small>
               </div>
-              <p><strong>{signedDollars(latestCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</strong> ahead of the S&amp;P 500 tracker through September 2.</p>
-              <em className="decision-stamp">locked at the closing bell</em>
+              <p><strong>+{dollars(performanceLabAdvantage)}</strong> more ending wealth than SPY after modeled costs.</p>
+              <em className="decision-stamp">historical simulation</em>
             </div>
             <figcaption>
-              Fifteen ETF fill events built the allocation. On September 2, the options sleeve evaluated 24 live cycles and opened no position.
+              Historical simulation, not live returns or a forecast. The separate paper account later finished $426 ahead of SPY through September 2.
             </figcaption>
           </figure>
 
@@ -378,14 +378,14 @@ export function DemoClient() {
 
           <dl className="hero-metrics" aria-label="Three levels of proof and one risk limit">
             <div>
-              <dt>Verified through Sep 2</dt>
-              <dd>{signedDollars(latestCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</dd>
-              <p>Ahead of SPY at the same 4:00 p.m. price.</p>
-            </div>
-            <div>
               <dt>2013–2026 replay</dt>
               <dd>+{dollars(performanceLabAdvantage)}</dd>
               <p>More ending wealth than SPY after modeled costs.</p>
+            </div>
+            <div>
+              <dt>Verified paper result</dt>
+              <dd>{signedDollars(latestCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</dd>
+              <p>Ahead of SPY through Sep 2 at the same closing price.</p>
             </div>
             <div>
               <dt>Live options decisions</dt>

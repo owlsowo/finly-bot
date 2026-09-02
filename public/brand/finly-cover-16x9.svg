@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
-  <title id="title">Finly finished $426 ahead of the S&amp;P 500 tracker through the September 2 close</title>
-  <desc id="desc">Finly is one autonomous strategy with a four-fund allocation sleeve and a capped-risk AI-assisted SPY options sleeve.</desc>
+  <title id="title">Finly finished $38,629 ahead of the S&amp;P 500 tracker in a 2013–2026 historical simulation</title>
+  <desc id="desc">Starting with the same $10,000 and using modeled trading costs, Finly reached $106,711 while SPY reached $68,082.</desc>
   <rect width="1920" height="1080" fill="#f6f3ec"/>
   <rect x="0" y="0" width="44" height="1080" fill="#0d2b43"/>
 
@@ -15,30 +15,30 @@
   <text x="1808" y="118" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="2.5" text-anchor="end">ALPACA AI TRADING AGENTS HACKATHON</text>
   <line x1="112" y1="202" x2="1808" y2="202" stroke="#0d2b43" stroke-width="2"/>
 
-  <text x="112" y="292" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="3">VERIFIED PAPER RESULT · THROUGH 2 SEP 2026 · 4:00 PM ET</text>
+  <text x="112" y="292" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="3">2013–2026 HISTORICAL SIMULATION · AFTER MODELED TRADING COSTS</text>
   <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-weight="700" letter-spacing="-2">
-    <text x="112" y="426" font-size="86">Finly finished $426 ahead</text>
+    <text x="112" y="426" font-size="86">Finly finished $38,629 ahead</text>
     <text x="112" y="548" font-size="86">of the S&amp;P 500 tracker.</text>
   </g>
-  <text x="112" y="626" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="35">Same $100,000 starting point. Same closing-bell mark. Every decision inspectable.</text>
+  <text x="112" y="626" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="35">Same $10,000 start. Same dates. $106,711 with Finly versus $68,082 with SPY.</text>
 
   <line x1="112" y1="690" x2="1808" y2="690" stroke="#c8ccc7" stroke-width="2"/>
   <g font-family="Arial, Helvetica, sans-serif">
-    <text x="112" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">FINLY PAPER ACCOUNT</text>
-    <text x="112" y="850" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">+$141.24</text>
+    <text x="112" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">FINLY ENDING WEALTH</text>
+    <text x="112" y="850" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">$106,711</text>
 
-    <text x="612" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">SPY · S&amp;P 500 TRACKER</text>
-    <text x="612" y="850" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">−$284.76</text>
+    <text x="612" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">SPY ENDING WEALTH</text>
+    <text x="612" y="850" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">$68,082</text>
 
-    <text x="1112" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">ETF FILL EVENTS</text>
-    <text x="1112" y="850" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">15</text>
+    <text x="1112" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">SEPARATE PAPER ADVANTAGE</text>
+    <text x="1112" y="850" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">+$426</text>
 
-    <text x="1486" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">LIVE OPTIONS CHECKS</text>
-    <text x="1486" y="850" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">24</text>
+    <text x="1486" y="750" fill="#68706f" font-size="19" font-weight="700" letter-spacing="2">AUTOMATED CHECKS</text>
+    <text x="1486" y="850" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="700">827</text>
   </g>
 
   <line x1="112" y1="910" x2="1808" y2="910" stroke="#0d2b43" stroke-width="2"/>
   <text x="112" y="982" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="34">AI studies the market. Rules cap the risk. Alpaca executes.</text>
-  <text x="112" y="1032" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="19">Virtual-money account · Capped-loss options · Public evidence trail</text>
+  <text x="112" y="1032" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="19">Historical simulation, not live returns · Separate real-price paper deployment</text>
   <text x="1808" y="1032" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="end">FINLY SHOWS ITS WORK →</text>
 </svg>

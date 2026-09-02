@@ -447,8 +447,9 @@ assert.doesNotMatch(normalizedText(machineSummary), /Finly (?:will|is likely to)
 
 const indexHtml = readFileSync(pathFor("index.html"), "utf8");
 requirePatterns("social metadata", indexHtml, [
-  /\$426 ahead of SPY through the September 2 close/iu,
-  /Same \$100K starting point and same 4:00 p\.m\. price/iu,
+  /\$38,629 ahead of SPY in a 2013.{0,3}2026 replay/iu,
+  /Same \$10K start, same dates, modeled trading costs/iu,
+  /separate (?:live )?paper result finished \$426 ahead through September 2/iu,
 ]);
 requireNoPatterns("social metadata", indexHtml, [
   /A backtest returned \+967\.11%.{0,40}Finly rejected it/iu,

@@ -1,10 +1,12 @@
 # Finly
 
-![Finly finished $426 ahead of SPY through the September 2 Alpaca paper-trading close](public/brand/finly-cover-16x9.png)
+![Finly finished $38,629 ahead of SPY in a 2013–2026 cost-modeled historical simulation](public/brand/finly-cover-16x9.png)
 
 **Finly is a paper-trading bot that lets AI explain the market while tested code controls the money.**
 
-Paper trading follows real prices with virtual money. Through the September 2 close, Finly's dedicated $100,000 Alpaca paper account gained **$141.24** while SPY—the fund commonly used to represent the S&P 500—lost **$284.76** from the same starting point. Finly therefore finished **$426.00 ahead of SPY** at the same 4:00 p.m. timestamp.
+In a cost-modeled historical simulation from January 2013 through August 2026, **$10,000 became $106,711 with Finly and $68,082 with SPY**—a **$38,629 difference in ending wealth**. That is the headline research result. It is a historical simulation, not a live return or a forecast.
+
+The deployment evidence is separate: through the September 2 close, Finly's dedicated $100,000 Alpaca paper account gained **$141.24** while SPY—the fund commonly used to represent the S&P 500—lost **$284.76** from the same starting point. Finly therefore finished **$426.00 ahead of SPY** at the same 4:00 p.m. timestamp.
 
 [Open Finly](https://owlsowo.github.io/finly-bot/) · [Watch the paper account](https://owlsowo.github.io/finly-bot/#live) · [Try a decision](https://owlsowo.github.io/finly-bot/#controls) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Open the mathematical note](public/judge/Finly_Technical_Proposal.pdf) · [View the deck](public/judge/Finly_Consulting_Deck.pdf)
 

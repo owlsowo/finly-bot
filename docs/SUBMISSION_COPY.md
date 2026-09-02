@@ -14,11 +14,11 @@ This file contains paste-ready language for the Lablab submission form and publi
 
 **Short description**
 
-> Finly is a paper-trading bot: AI explains the market, but tested code controls the money. Through September 2, its $100K paper account finished $426 ahead of SPY.
+> In a 2013–2026 cost-modeled historical simulation, Finly turned $10K into $106,711—$38,629 more than SPY. AI explains the market; tested code controls the money.
 
 **Long description — maximum 2,000 characters**
 
-> Most trading bots ask AI what to buy and let confidence pass for evidence. Finly is one autonomous strategy with two coordinated sleeves and a strict line between research and authority. Qwen3-32B, hosted through Featherless, reads public Alpaca news and explains the case. Fresh price momentum chooses the sign; options data and AI-read news may support, weaken, or stop it. Tested code fixes the contracts, quantity, price, maximum loss, and every broker field.
+> In a 2013–2026 cost-modeled historical simulation, $10,000 became $106,711 with Finly and $68,082 with SPY—a $38,629 difference in ending wealth. Finly turns that research into one autonomous paper-trading strategy with two coordinated sleeves and a strict line between intelligence and authority. Qwen3-32B, hosted through Featherless, reads public Alpaca news and explains the case. Fresh price momentum chooses the sign; options data and AI-read news may support, weaken, or stop it. Tested code fixes the contracts, quantity, price, maximum loss, and every broker field.
 >
 > The four-fund sleeve follows a rule fixed before trading began: 48.5% QQQ, 48.5% divided among three stronger-trending sectors, and 3% cash. Fifteen ETF fill events built the allocation. Through September 2, Finly gained $141.24 while SPY lost $284.76 from the same $100,000 start, leaving Finly $426.00 ahead at the 4:00 p.m. close.
 >
@@ -26,7 +26,7 @@ This file contains paste-ready language for the Lablab submission form and publi
 >
 > Finly runs in the cloud through Alpaca's official MCP and Trading API path. It locks the trading version, saves state before every action, and reconciles orders after a restart. Judges can inspect the account, replay an approval and a refusal, and reproduce the evidence with one command.
 >
-> In a 2013–2026 cost-modeled replay of the underlying rule—before the 3% cash scaling—$10,000 became $106,711 versus $68,082 for SPY. A 21,218-day earlier-market test averaged 13.37% annually versus 9.48% for the market and led across all 21 tested monthly rebalance schedules. Of 827 automated tests, 825 passed, none failed, and two optional private-ledger checks were skipped.
+> A separate 21,218-day earlier-market test averaged 13.37% annually versus 9.48% for the market and led across all 21 tested monthly rebalance schedules. Of 827 automated tests, 825 passed, none failed, and two optional private-ledger checks were skipped.
 >
 > Finly's advantage is not giving AI more power. It gives AI the smallest useful job, then makes every dollar answer to tested code.
 
@@ -75,7 +75,7 @@ Each post stands on its own. Attach the 1200×630 cover to the launch post and u
 
 ### Post 1 — launch
 
-> We built Finly so AI can study the market without controlling the account. Through September 2, its $100,000 Alpaca paper account gained $141.24 while SPY lost $284.76 from the same start—a $426 advantage at the closing bell. See the account and the evidence: https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
+> Our model finished $38,629 ahead of the S&P 500 tracker in a 2013–2026 cost-modeled historical simulation: $10,000 became $106,711 with Finly versus $68,082 with SPY. Then we deployed it to a real-price Alpaca paper account, where it finished another $426 ahead through September 2. See the evidence: https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
 
 ### Post 2 — how it works
 

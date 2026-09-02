@@ -1,6 +1,6 @@
 # Finly
 
-Finly is one autonomous AI trading strategy with two coordinated sleeves: a diversified four-fund allocation and a capped-risk SPY options sleeve. It is designed around one rule: AI may study and explain a trade, but it may not control the account. Fixed, tested code chooses the direction, contracts, size, maximum loss, broker fields, and whether an order may reach Alpaca paper trading.
+In a 2013–2026 cost-modeled historical simulation, Finly finished **$38,629 ahead of SPY**: the same $10,000 became $106,711 with Finly and $68,082 with the S&P 500 tracker. That historical result is separate from live performance, and it is the economic case behind one autonomous AI trading strategy with two coordinated sleeves: a diversified four-fund allocation and a capped-risk SPY options sleeve. AI may study and explain a trade, but it may not control the account. Fixed, tested code chooses the direction, contracts, size, maximum loss, broker fields, and whether an order may reach Alpaca paper trading.
 
 Paper trading follows real market prices with virtual money. SPY is a fund that tracks the S&P 500. QQQ is a fund that tracks the Nasdaq-100.
 

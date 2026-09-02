@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Finly finished $426 ahead of the S&amp;P 500 tracker through the September 2 close</title>
-  <desc id="desc">From the same $100,000 starting point at the same 4:00 p.m. price, Finly gained $141.24 while SPY, an S&amp;P 500 tracker, lost $284.76.</desc>
+  <title id="title">Finly finished $38,629 ahead of the S&amp;P 500 tracker in a 2013–2026 historical simulation</title>
+  <desc id="desc">Starting with the same $10,000 and using modeled trading costs, Finly reached $106,711 while SPY reached $68,082.</desc>
   <rect width="1200" height="630" fill="#f6f3ec"/>
   <rect x="0" y="0" width="28" height="630" fill="#0d2b43"/>
 
@@ -15,35 +15,35 @@
   <text x="1130" y="68" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.6" text-anchor="end">ALPACA AI TRADING AGENTS HACKATHON</text>
   <line x1="70" y1="124" x2="1130" y2="124" stroke="#0d2b43" stroke-width="1.5"/>
 
-  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">VERIFIED PAPER RESULT · THROUGH 2 SEP 2026 · 4:00 PM ET</text>
+  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">2013–2026 HISTORICAL SIMULATION · AFTER MODELED COSTS</text>
   <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-weight="700" letter-spacing="-1.5">
     <text x="70" y="246" font-size="53">Finly finished</text>
-    <text x="70" y="328" font-size="76">$426 ahead.</text>
+    <text x="70" y="328" font-size="72">$38,629 ahead.</text>
   </g>
-  <text x="70" y="374" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="23">Same $100,000 baseline. Same closing-bell mark.</text>
+  <text x="70" y="374" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="23">Same $10,000 start. Same dates. Trading costs modeled.</text>
 
   <g transform="translate(720 160)" font-family="Arial, Helvetica, sans-serif">
     <rect width="410" height="332" fill="#fbfaf6" stroke="#c8ccc7" stroke-width="1"/>
-    <text x="28" y="37" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">CLOSING-BELL SCORE</text>
+    <text x="28" y="37" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.2">MODELED ENDING WEALTH</text>
     <line x1="28" y1="56" x2="382" y2="56" stroke="#c8ccc7" stroke-width="1"/>
 
-    <text x="28" y="91" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">FINLY PAPER ACCOUNT</text>
-    <text x="28" y="146" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="48" font-weight="700">+$141.24</text>
-    <text x="382" y="142" fill="#2e6f5c" font-size="13" font-weight="700" text-anchor="end">$100,141.24</text>
+    <text x="28" y="91" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">FINLY</text>
+    <text x="28" y="146" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="48" font-weight="700">$106,711</text>
+    <text x="382" y="142" fill="#2e6f5c" font-size="13" font-weight="700" text-anchor="end">+967.11%</text>
     <line x1="28" y1="172" x2="382" y2="172" stroke="#d7d9d5" stroke-width="1"/>
 
-    <text x="28" y="207" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">SPY · S&amp;P 500 TRACKER · SAME PRICE TIME</text>
-    <text x="28" y="262" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="48" font-weight="700">−$284.76</text>
-    <text x="382" y="258" fill="#0d2b43" font-size="13" font-weight="700" text-anchor="end">$99,715.24</text>
+    <text x="28" y="207" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">SPY · S&amp;P 500 TRACKER</text>
+    <text x="28" y="262" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="48" font-weight="700">$68,082</text>
+    <text x="382" y="258" fill="#0d2b43" font-size="13" font-weight="700" text-anchor="end">+580.82%</text>
 
     <g transform="translate(28 284)">
       <rect width="354" height="28" fill="#e7f0eb"/>
-      <text x="177" y="19" fill="#2e6f5c" font-size="11" font-weight="700" letter-spacing="0.8" text-anchor="middle">15 ETF FILLS · 24 LIVE OPTIONS CHECKS</text>
+      <text x="177" y="19" fill="#2e6f5c" font-size="11" font-weight="700" letter-spacing="0.8" text-anchor="middle">SEPARATE PAPER RESULT · +$426 VS SPY</text>
     </g>
   </g>
 
   <line x1="70" y1="516" x2="1130" y2="516" stroke="#0d2b43" stroke-width="1.5"/>
   <text x="70" y="558" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="21">AI studies the market. Rules cap the risk. Alpaca executes.</text>
-  <text x="70" y="590" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Virtual-money account; SPY comparison uses the same timestamp and starting capital.</text>
+  <text x="70" y="590" fill="#68706f" font-family="Arial, Helvetica, sans-serif" font-size="12">Historical simulation, not live returns or a forecast. Separate paper evidence on site.</text>
   <text x="1130" y="590" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" text-anchor="end">WATCH THE EVIDENCE →</text>
 </svg>
