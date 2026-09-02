@@ -1,0 +1,15 @@
+{
+  "schema_version": "finly_cloud_runtime_revision.v1",
+  "revision_id": "cloud-runtime-capacity-2026-09-02",
+  "recorded_at": "2026-09-02T20:07:00.000Z",
+  "strategy_implementation_commit": "318c94379af14595e09f414504be8080bc822048",
+  "mcp_compatibility_commit": "ac4099b64d806f700f3e50afc60bab3142eb31aa",
+  "state_capacity_commit": "572b8a60e845fabd910f5d4843c51697abcc82ad",
+  "runtime_pin_target": "572b8a60e845fabd910f5d4843c51697abcc82ad",
+  "trigger": "POST_SESSION_ENCRYPTED_STATE_CAPACITY_REJECTION",
+  "scope": [
+    "Increase the authenticated raw-state size ceiling for evidence-rich decision journals.",
+    "Keep the encrypted Git publication envelope below 90 MiB.",
+    "Leave signals, alpha thresholds, position sizing, broker authority, and all execution controls unchanged."
+  ]
+}

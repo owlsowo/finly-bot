@@ -6,8 +6,10 @@ import test from "node:test";
 import { LIVE_ALPHA_CONFIDENCE_POLICY } from "../lib/policy.mjs";
 
 const implementationCommit = "318c94379af14595e09f414504be8080bc822048";
+const runtimeCommit = "572b8a60e845fabd910f5d4843c51697abcc82ad";
 const priorBytes = await readFile(new URL("../config/options-policy-revision-2026-09-01.json", import.meta.url));
 const revision = JSON.parse(await readFile(new URL("../config/options-policy-revision-v3-2026-09-02.json", import.meta.url)));
+const runtimeRevision = JSON.parse(await readFile(new URL("../config/cloud-runtime-revision-2026-09-02.json", import.meta.url)));
 const calibration = JSON.parse(await readFile(new URL("../evidence/options_policy_calibration.json", import.meta.url)));
 const workflow = await readFile(new URL("../.github/workflows/paper-agent-cloud.yml", import.meta.url), "utf8");
 
@@ -27,7 +29,9 @@ test("v3 changes only the approved alpha thresholds and pins their implementatio
   assert.equal(LIVE_ALPHA_CONFIDENCE_POLICY.minimumEvToMaxLoss, 0.02);
   assert.equal(revision.activation.implementation_commit, implementationCommit);
   assert.equal(revision.activation.workflow_pin_target, implementationCommit);
-  assert.match(workflow, new RegExp(`FINLY_CODE_VERSION:\\s*${implementationCommit}`));
+  assert.equal(runtimeRevision.strategy_implementation_commit, implementationCommit);
+  assert.equal(runtimeRevision.runtime_pin_target, runtimeCommit);
+  assert.match(workflow, new RegExp(`FINLY_CODE_VERSION:\\s*${runtimeCommit}`));
 });
 
 test("v3 record and deterministic artifact agree on the exact fair-surface evidence", () => {

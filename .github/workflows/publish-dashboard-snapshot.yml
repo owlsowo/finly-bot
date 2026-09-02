@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FINLY_RUNTIME_VERSION: ac4099b64d806f700f3e50afc60bab3142eb31aa
+  FINLY_RUNTIME_VERSION: 572b8a60e845fabd910f5d4843c51697abcc82ad
   FINLY_CLOUD_STATE_BRANCH: finly-cloud-state
 
 jobs:
