@@ -24,6 +24,7 @@ import {
   ALPACA_MCP_CLOSING_CREDIT_CAPABILITY,
   AlpacaPaperLifecycleRuntime,
   FileLifecycleCheckpointStore,
+  MAX_EXIT_CANCEL_ATTEMPTS,
 } from "../lib/paper_lifecycle_runtime.mjs";
 import { FilePaperSessionRegistry } from "../lib/paper_session_registry.mjs";
 import { FilePermitLedger } from "../lib/permit_ledger.mjs";
@@ -504,13 +505,24 @@ export function buildGuardedLocalPaperExecutor({
               exit_attempts: submissions,
             };
           }
-          if (state.cancel_operation !== null) {
+          const cancelAttempts = runtime.exitCancelAttemptCount();
+          if (state.active_exit?.status === "pending_cancel") {
             return {
               active: true,
               status: "FORCE_FLAT_CANCEL_PENDING",
               phase: state.phase,
               session_id: session.session_id,
               exit_attempts: submissions,
+            };
+          }
+          if (cancelAttempts >= MAX_EXIT_CANCEL_ATTEMPTS) {
+            return {
+              active: true,
+              status: "FORCE_FLAT_CANCEL_RETRY_EXHAUSTED",
+              phase: state.phase,
+              session_id: session.session_id,
+              exit_attempts: submissions,
+              cancel_attempts: cancelAttempts,
             };
           }
           const cancelRequestId = `finly-exitcancel-${sha256({
