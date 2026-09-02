@@ -26,9 +26,11 @@ Live options eligibility was checked across **517 sampled SPY signal windows**. 
 
 Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper account**. The runner uses **Alpaca's official connection**, locks the code version allowed to trade, saves its progress before each action, and checks the broker afterward. The public dashboard publishes account value, positions, risk totals, and the latest decision without exposing credentials, account numbers, or order identifiers.
 
-At exactly 4:00 p.m. ET on the first market day, Finly was **up $95.32** while a same-$100,000 SPY price benchmark was **down $57.99**. Finly therefore finished the first session **$153.31 ahead of SPY**, after **15 ETF fill events** and with no deposits or withdrawals. Those fills built the four-fund sleeve; no options position was open at that close.
+At exactly 4:00 p.m. ET on September 2, Finly was **up $141.24** while a same-$100,000 SPY price benchmark was **down $284.76**. Finly therefore finished **$426.00 ahead of SPY**, after **15 ETF fill events** and with no deposits or withdrawals.
 
-The public verification run discovered **826 automated tests: 824 passed, 0 failed, and 2 optional private-ledger checks were skipped**. They cover the portfolio calculation, causal historical timing, trading costs, bullish and bearish options paths, ordinary-market calibration, option payoff, data freshness, risk limits, order construction, bounded cancel/reprice exits, account checks, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
+During the September 2 session, the options sleeve completed **24 live evaluation cycles**. Fourteen candidates failed deterministic certification, six lacked enough model evidence, and four arrived after the entry window closed. Every cycle ended `NO_TRADE`, so no options order or fill occurred and the sleeve added **$0 of new options risk**.
+
+The public verification run discovered **827 automated tests: 825 passed, 0 failed, and 2 optional private-ledger checks were skipped**. They cover the portfolio calculation, causal historical timing, trading costs, bullish and bearish options paths, ordinary-market calibration, option payoff, data freshness, risk limits, order construction, bounded cancel/reprice exits, account checks, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
 
 ## Why it matters
 

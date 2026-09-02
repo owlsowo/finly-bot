@@ -14,19 +14,19 @@ This file contains paste-ready language for the Lablab submission form and publi
 
 **Short description**
 
-> Finly is a paper-trading bot: AI explains the market, but tested code controls the money. Its first $100K session finished $153.31 ahead of SPY.
+> Finly is a paper-trading bot: AI explains the market, but tested code controls the money. Through September 2, its $100K paper account finished $426 ahead of SPY.
 
 **Long description — maximum 2,000 characters**
 
 > Most trading bots ask AI what to buy and let confidence pass for evidence. Finly is one autonomous strategy with two coordinated sleeves and a strict line between research and authority. Qwen3-32B, hosted through Featherless, reads public Alpaca news and explains the case. Fresh price momentum chooses the sign; options data and AI-read news may support, weaken, or stop it. Tested code fixes the contracts, quantity, price, maximum loss, and every broker field.
 >
-> The four-fund sleeve follows a rule fixed before trading began: 48.5% QQQ, 48.5% divided among three stronger-trending sectors, and 3% cash. In its first session on a dedicated $100,000 Alpaca paper account, 15 ETF fill events built the allocation. Finly gained $95.32 while SPY lost $57.99 from the same start, leaving Finly $153.31 ahead at the close.
+> The four-fund sleeve follows a rule fixed before trading began: 48.5% QQQ, 48.5% divided among three stronger-trending sectors, and 3% cash. Fifteen ETF fill events built the allocation. Through September 2, Finly gained $141.24 while SPY lost $284.76 from the same $100,000 start, leaving Finly $426.00 ahead at the 4:00 p.m. close.
 >
-> The coordinated options sleeve can build a bullish call spread, a bearish put spread, or no trade. Live entries are exactly one contract and capped at $500 maximum loss. Finly publishes source-removal and 32-shock confidence diagnostics, while hard quote, account, payoff, idempotency, and broker-read-back checks decide whether money may move.
+> The coordinated options sleeve can build a bullish call spread, a bearish put spread, or no trade. Live entries are exactly one contract and capped at $500 maximum loss. On September 2 it completed 24 live evaluation cycles; 14 candidates failed certification, six lacked enough model evidence, and four arrived after the entry window. Every cycle ended no trade, adding $0 of new options risk.
 >
 > Finly runs in the cloud through Alpaca's official MCP and Trading API path. It locks the trading version, saves state before every action, and reconciles orders after a restart. Judges can inspect the account, replay an approval and a refusal, and reproduce the evidence with one command.
 >
-> In a 2013–2026 cost-modeled replay of the underlying rule—before the 3% cash scaling—$10,000 became $106,711 versus $68,082 for SPY. A 21,218-day earlier-market test averaged 13.37% annually versus 9.48% for the market and led across all 21 tested monthly rebalance schedules. Of 826 automated tests, 824 passed, none failed, and two optional private-ledger checks were skipped.
+> In a 2013–2026 cost-modeled replay of the underlying rule—before the 3% cash scaling—$10,000 became $106,711 versus $68,082 for SPY. A 21,218-day earlier-market test averaged 13.37% annually versus 9.48% for the market and led across all 21 tested monthly rebalance schedules. Of 827 automated tests, 825 passed, none failed, and two optional private-ledger checks were skipped.
 >
 > Finly's advantage is not giving AI more power. It gives AI the smallest useful job, then makes every dollar answer to tested code.
 
@@ -44,7 +44,7 @@ This file contains paste-ready language for the Lablab submission form and publi
 
 **Additional information**
 
-> Start with the required one-page write-up: https://owlsowo.github.io/finly-bot/judge/Finly_Judge_Brief.pdf. It covers Finly's AI logic, deterministic risk gates, and Alpaca implementation. Technical judges can continue to the mathematical note (https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf) and engineering appendix (https://owlsowo.github.io/finly-bot/judge/Finly_Engineering_Appendix.pdf). The live account and interactive decision are at https://owlsowo.github.io/finly-bot/. Public evidence reproduces from the repository with `npm ci && npm run verify`: 826 tests ran, 824 passed, none failed, and two optional private-ledger checks were skipped. The dedicated Alpaca account ID is entered in the required private field, not repeated here.
+> Start with the required one-page write-up: https://owlsowo.github.io/finly-bot/judge/Finly_Judge_Brief.pdf. It covers Finly's AI logic, deterministic risk gates, and Alpaca implementation. Technical judges can continue to the mathematical note (https://owlsowo.github.io/finly-bot/judge/Finly_Technical_Proposal.pdf) and engineering appendix (https://owlsowo.github.io/finly-bot/judge/Finly_Engineering_Appendix.pdf). The live account and interactive decision are at https://owlsowo.github.io/finly-bot/. Public evidence reproduces from the repository with `npm ci && npm run verify`: 827 tests ran, 825 passed, none failed, and two optional private-ledger checks were skipped. The dedicated Alpaca account ID is entered in the required private field, not repeated here.
 
 ## Form completion checklist
 
@@ -75,7 +75,7 @@ Each post stands on its own. Attach the 1200×630 cover to the launch post and u
 
 ### Post 1 — launch
 
-> We built Finly so AI can study the market without controlling the account. In its first session on a $100,000 Alpaca paper account, Finly gained $95.32 while SPY lost $57.99 from the same starting point—a $153.31 advantage at the closing bell. See the account and the evidence: https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
+> We built Finly so AI can study the market without controlling the account. Through September 2, its $100,000 Alpaca paper account gained $141.24 while SPY lost $284.76 from the same start—a $426 advantage at the closing bell. See the account and the evidence: https://owlsowo.github.io/finly-bot/ @lablabai @AlpacaHQ
 
 ### Post 2 — how it works
 
@@ -83,7 +83,7 @@ Each post stands on its own. Attach the 1200×630 cover to the launch post and u
 
 ### Post 3 — the options proof
 
-> Finly can turn a rising SPY view into a capped-loss call spread, a falling view into a capped-loss put spread, or stop when the evidence is weak. One contract. $500 maximum loss. 826 automated tests, with zero failures. Replay it: https://owlsowo.github.io/finly-bot/#controls @lablabai @AlpacaHQ
+> Finly ran 24 live options checks on September 2. Fourteen candidates failed certification, six lacked enough model evidence, and four arrived after the entry window. It forced zero trades and added $0 of options risk. See the decision record: https://owlsowo.github.io/finly-bot/#live @lablabai @AlpacaHQ
 
 ### Post 4 — the live account
 

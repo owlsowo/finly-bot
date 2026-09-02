@@ -195,6 +195,22 @@ assert.equal(liveSnapshot.integrity.account_verified, true);
 assert.equal(liveSnapshot.integrity.sanitized, true);
 assert.equal(liveSnapshot.integrity.source, "Alpaca paper account");
 
+const latestClose = JSON.parse(readFileSync(pathFor("public/data/competition_forward_profit_2026_09_02.json"), "utf8"));
+assert.equal(latestClose.common_valued_at, "2026-09-02T20:00:00.000Z");
+assert.equal(latestClose.primary_kpi.net_pnl_dollars, 141.24);
+assert.equal(latestClose.benchmark.ending_value_on_same_baseline_dollars, 99_715.24);
+assert.equal(latestClose.secondary_kpi.excess_pnl_dollars, 426);
+assert.equal(latestClose.integrity.claim_publishable, true);
+
+const optionsDecisionFunnel = JSON.parse(readFileSync(pathFor("public/data/options_live_decision_funnel_2026_09_02.json"), "utf8"));
+assert.deepEqual(
+  [optionsDecisionFunnel.totals.evaluation_cycles, optionsDecisionFunnel.totals.no_trade_decisions,
+    optionsDecisionFunnel.totals.option_orders_submitted, optionsDecisionFunnel.totals.option_fills,
+    optionsDecisionFunnel.totals.new_options_risk_dollars],
+  [24, 24, 0, 0, 0],
+);
+assert.equal(optionsDecisionFunnel.outcomes.reduce((sum, outcome) => sum + outcome.count, 0), 24);
+
 for (const obsolete of [
   "public/data/submission_claims_lock.json",
   "public/data/g4_window_explorer.json",
@@ -210,6 +226,7 @@ const reviewedPublicData = [
   "attempt150_public_evidence.json",
   "competition-deployment-record.json",
   "competition_forward_profit_2026_08_31.json",
+  "competition_forward_profit_2026_09_02.json",
   "competition_live.json",
   "current_economic_decision.json",
   "economic_options_overlay_replay.json",
@@ -219,6 +236,7 @@ const reviewedPublicData = [
   "latest_receipt.json",
   "llama_decision_trace.json",
   "no_trade_receipt.json",
+  "options_live_decision_funnel_2026_09_02.json",
   "options_policy_calibration.json",
   "quantitative_release_gate.json",
 ];
@@ -226,9 +244,11 @@ const hostedData = [
   "attempt150_public_evidence.json",
   "competition-deployment-record.json",
   "competition_forward_profit_2026_08_31.json",
+  "competition_forward_profit_2026_09_02.json",
   "competition_live.json",
   "latest_receipt.json",
   "no_trade_receipt.json",
+  "options_live_decision_funnel_2026_09_02.json",
   "options_policy_calibration.json",
   "quantitative_release_gate.json",
 ];
@@ -278,9 +298,15 @@ const accountPatterns = [
   /(?:verified.{0,80}\$100,000|\$100,000.{0,80}(?:verified|paper account))/iu,
   /Alpaca/iu,
 ];
+const liveResultPatterns = [
+  /\$141\.24/u,
+  /\$284\.76/u,
+  /(?:\+?\$426(?:\.00)?).{0,120}(?:ahead|advantage|difference)|(?:ahead|advantage|difference).{0,120}(?:\+?\$426(?:\.00)?)/iu,
+  /(?:24|twenty-four).{0,100}(?:live )?(?:options )?(?:checks|evaluation cycles|evaluations|decisions)/iu,
+];
 const testCountPatterns = [
-  /826.{0,240}(?:automated )?tests|(?:automated )?tests.{0,240}826/iu,
-  /824.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}824/iu,
+  /827.{0,240}(?:automated )?tests|(?:automated )?tests.{0,240}827/iu,
+  /825.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}825/iu,
 ];
 const zeroFailurePattern = /(?:0|none).{0,20}failed|failed.{0,20}(?:0|none)/iu;
 const commonDocumentPatterns = [
@@ -289,6 +315,7 @@ const commonDocumentPatterns = [
   ...optionsPatterns,
   ...accountPatterns,
   ...testCountPatterns,
+  ...liveResultPatterns,
 ];
 const presentationPatterns = [
   historicalPatterns[0],
@@ -298,6 +325,7 @@ const presentationPatterns = [
   ...optionsPatterns,
   ...accountPatterns,
   ...testCountPatterns,
+  ...liveResultPatterns,
 ];
 
 const staleStoryPatterns = [
@@ -408,8 +436,8 @@ const machineSummary = readFileSync(requireFile("public/llms.txt", 1_500).path, 
 requirePatterns("machine-readable summary", machineSummary, [
   ...commonDocumentPatterns,
   zeroFailurePattern,
-  /826 automated tests: 824 passed, 0 failed, and 2.{0,50}were skipped/iu,
-  /\$153\.31 ahead of SPY/iu,
+  /827 automated tests: 825 passed, 0 failed, and 2.{0,50}were skipped/iu,
+  /\$426(?:\.00)? ahead of SPY/iu,
   /15 (?:ETF|broker) fill events/iu,
   /Alpaca's official (?:MCP server|connection)/iu,
   /Start with the live dashboard/iu,
@@ -419,7 +447,7 @@ assert.doesNotMatch(normalizedText(machineSummary), /Finly (?:will|is likely to)
 
 const indexHtml = readFileSync(pathFor("index.html"), "utf8");
 requirePatterns("social metadata", indexHtml, [
-  /\$153\.31 ahead of SPY in its first paper-trading session/iu,
+  /\$426 ahead of SPY through the September 2 close/iu,
   /Same \$100K starting point and same 4:00 p\.m\. price/iu,
 ]);
 requireNoPatterns("social metadata", indexHtml, [
@@ -433,6 +461,6 @@ for (const [label, file] of [["one-page", onePage], ["technical note", paper], [
 
 console.log(
   `submission artifacts verified: 1-page brief; 8-page mathematical note; 15-page engineering appendix; 9-slide deck; `
-  + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 826 tests / 824 passed / 0 failed; `
+  + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 827 tests / 825 passed / 0 failed; `
   + `exact quantitative gate; sanitized public data`,
 );

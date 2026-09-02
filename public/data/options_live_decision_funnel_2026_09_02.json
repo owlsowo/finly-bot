@@ -1,0 +1,42 @@
+{
+  "schema_version": "finly_live_options_decision_funnel.v1",
+  "session_date": "2026-09-02",
+  "window": {
+    "first_decision_at": "2026-09-02T17:44:05.628Z",
+    "last_decision_at": "2026-09-02T19:53:47.788Z",
+    "timezone_display": "America/New_York"
+  },
+  "totals": {
+    "evaluation_cycles": 24,
+    "no_trade_decisions": 24,
+    "option_orders_submitted": 0,
+    "option_fills": 0,
+    "new_options_risk_dollars": 0
+  },
+  "outcomes": [
+    {
+      "code": "NO_CERTIFIED_TRADE",
+      "count": 14,
+      "plain_english": "The candidate did not clear every deterministic certification gate."
+    },
+    {
+      "code": "MODEL_EVIDENCE_NO_TRADE",
+      "count": 6,
+      "plain_english": "The AI-read evidence did not support an options entry."
+    },
+    {
+      "code": "OPTIONS_ENTRY_CUTOFF_NO_TRADE",
+      "count": 4,
+      "plain_english": "The entry window had closed, so the runner could monitor but not open a new options position."
+    }
+  ],
+  "risk": {
+    "per_trade_max_loss_dollars": 500,
+    "paper_only": true
+  },
+  "source": {
+    "github_actions_run": "https://github.com/owlsowo/finly-bot/actions/runs/33662758327",
+    "evidence_class": "PUBLIC_CLOUD_RUN_LOG_SUMMARY"
+  },
+  "claim_boundary": "Twenty-four live evaluation cycles ended NO_TRADE; this is decision-process evidence, not an options fill or options P&L."
+}

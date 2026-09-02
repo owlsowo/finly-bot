@@ -2,7 +2,7 @@ import { useState } from "react";
 import attempt150PublicEvidenceJson from "../research/output/attempt150_public_evidence.json";
 import quantitativeGateJson from "../research/output/quantitative_release_gate.json";
 import alignedReceiptJson from "./data/latest_receipt.json";
-import firstCloseMeasurementJson from "./data/competition_forward_profit_2026_08_31.json";
+import latestCloseMeasurementJson from "./data/competition_forward_profit_2026_09_02.json";
 import conflictReceiptJson from "./data/no_trade_receipt.json";
 import { CompetitionDashboard } from "./CompetitionDashboard";
 import { HistoricalExplorer } from "./HistoricalExplorer";
@@ -158,8 +158,8 @@ function validateExternalReplayEvidence(value: unknown): ExternalReplayEvidence 
   return evidence;
 }
 
-function validateFirstCloseMeasurement(value: unknown): FirstCloseMeasurement {
-  if (!value || typeof value !== "object") throw new Error("First-close measurement is missing.");
+function validateCloseMeasurement(value: unknown): FirstCloseMeasurement {
+  if (!value || typeof value !== "object") throw new Error("Close measurement is missing.");
   const measurement = value as FirstCloseMeasurement;
   if (measurement.schema_version !== "finly_forward_profit_measurement.v1"
     || measurement.secondary_kpi.outperformed_spy !== true
@@ -167,14 +167,14 @@ function validateFirstCloseMeasurement(value: unknown): FirstCloseMeasurement {
     || !Number.isFinite(measurement.primary_kpi.net_pnl_dollars)
     || !Number.isFinite(measurement.secondary_kpi.excess_pnl_dollars)
     || !Number.isFinite(measurement.benchmark.ending_value_on_same_baseline_dollars)) {
-    throw new Error("First-close measurement failed the website's integrity contract.");
+    throw new Error("Close measurement failed the website's integrity contract.");
   }
   return measurement;
 }
 
 const quantitativeGate = validateReleaseGate(quantitativeGateJson as unknown);
 const externalReplayEvidence = validateExternalReplayEvidence(attempt150PublicEvidenceJson as unknown);
-const firstCloseMeasurement = validateFirstCloseMeasurement(firstCloseMeasurementJson as unknown);
+const latestCloseMeasurement = validateCloseMeasurement(latestCloseMeasurementJson as unknown);
 const alignedReceipt = alignedReceiptJson as unknown as DemoReceipt;
 const conflictReceipt = conflictReceiptJson as unknown as DemoReceipt;
 
@@ -259,9 +259,9 @@ const deliverables = [
 
 const claimEvidence = [
   {
-    claim: "The first paper session closed at +$95.32, finishing $153.31 ahead of SPY from the same $100,000 starting point at 4:00 p.m.",
-    evidence: "First-close paper measurement",
-    href: "./data/competition_forward_profit_2026_08_31.json",
+    claim: "Through the September 2 close, Finly was up $141.24 while SPY was down $284.76 from the same $100,000 starting point—a $426.00 advantage at 4:00 p.m.",
+    evidence: "Latest same-clock paper measurement",
+    href: "./data/competition_forward_profit_2026_09_02.json",
     reproduce: "node --test tests/competition_forward_profit_public_evidence.test.mjs",
     scope: "Measured close",
   },
@@ -345,29 +345,29 @@ export function DemoClient() {
 
           <figure className="hero-figure">
             <div className="figure-labels">
-              <span>Official first-session score on $100,000</span>
-              <strong>31 Aug 2026 · 4:00 p.m.</strong>
+              <span>Official score through September 2 on $100,000</span>
+              <strong>2 Sep 2026 · 4:00 p.m.</strong>
             </div>
             <div
               className="hero-result"
               role="img"
-              aria-label={`At the first closing bell, Finly gained ${dollars(firstCloseMeasurement.primary_kpi.net_pnl_dollars)} while SPY lost ${dollars(100_000 - firstCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars)} from the same one hundred thousand dollar starting point. Finly finished ${dollars(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead.`}
+              aria-label={`At the September 2 closing bell, Finly gained ${dollars(latestCloseMeasurement.primary_kpi.net_pnl_dollars)} while SPY lost ${dollars(100_000 - latestCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars)} from the same one hundred thousand dollar starting point. Finly finished ${dollars(latestCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead.`}
             >
               <div>
                 <span>Finly</span>
-                <strong>{signedDollars(firstCloseMeasurement.primary_kpi.net_pnl_dollars)}</strong>
+                <strong>{signedDollars(latestCloseMeasurement.primary_kpi.net_pnl_dollars)}</strong>
                 <small>virtual-money gain</small>
               </div>
               <div>
                 <span>SPY · S&amp;P 500 tracker</span>
-                <strong>{signedDollars(firstCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars - 100_000)}</strong>
+                <strong>{signedDollars(latestCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars - 100_000)}</strong>
                 <small>same start · same closing time</small>
               </div>
-              <p><strong>{signedDollars(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</strong> ahead of the S&amp;P 500 tracker after session one.</p>
+              <p><strong>{signedDollars(latestCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</strong> ahead of the S&amp;P 500 tracker through September 2.</p>
               <em className="decision-stamp">locked at the closing bell</em>
             </div>
             <figcaption>
-              Fifteen ETF fill events built the four-fund sleeve. No options position was open at that close.
+              Fifteen ETF fill events built the allocation. On September 2, the options sleeve evaluated 24 live cycles and opened no position.
             </figcaption>
           </figure>
 
@@ -378,8 +378,8 @@ export function DemoClient() {
 
           <dl className="hero-metrics" aria-label="Three levels of proof and one risk limit">
             <div>
-              <dt>First paper session</dt>
-              <dd>{signedDollars(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</dd>
+              <dt>Verified through Sep 2</dt>
+              <dd>{signedDollars(latestCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</dd>
               <p>Ahead of SPY at the same 4:00 p.m. price.</p>
             </div>
             <div>
@@ -388,14 +388,14 @@ export function DemoClient() {
               <p>More ending wealth than SPY after modeled costs.</p>
             </div>
             <div>
-              <dt>Options risk limit</dt>
-              <dd>$500</dd>
-              <p>Maximum possible loss on any new competition options trade.</p>
+              <dt>Live options decisions</dt>
+              <dd>24 checked</dd>
+              <p>Every September 2 cycle returned no trade; $0 new options risk.</p>
             </div>
             <div>
               <dt>Automated checks</dt>
-              <dd>826 checks run</dd>
-              <p>824 passed, zero failed, and two optional private-ledger checks were skipped.</p>
+              <dd>827 checks run</dd>
+              <p>825 passed, zero failed, and two optional private-ledger checks were skipped.</p>
             </div>
           </dl>
         </section>
@@ -736,7 +736,7 @@ export function DemoClient() {
           <div className="footer-brand"><img src="./brand/finly-mark.svg" alt="" /><strong>Finly</strong></div>
               <p>$38,629 historical ending-wealth difference · separately measured paper trading.</p>
           <p>Bruce Wen · <a href="mailto:bwen412@brandeis.edu">bwen412@brandeis.edu</a></p>
-          <p>Evidence files and rerun commands · first-close evidence added 31 August 2026</p>
+          <p>Evidence files and rerun commands · latest same-clock evidence added 2 September 2026</p>
         </div>
       </footer>
     </>

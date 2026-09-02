@@ -1,10 +1,10 @@
 # Finly
 
-![Finly finished its first Alpaca paper-trading session $153.31 ahead of SPY, a fund that tracks the S&P 500](public/brand/finly-cover-16x9.png)
+![Finly finished $426 ahead of SPY through the September 2 Alpaca paper-trading close](public/brand/finly-cover-16x9.png)
 
 **Finly is a paper-trading bot that lets AI explain the market while tested code controls the money.**
 
-Paper trading follows real prices with virtual money. In Finly's first session on a dedicated $100,000 Alpaca paper account, the portfolio gained **$95.32** while SPY—the fund commonly used to represent the S&P 500—lost **$57.99** from the same starting point. Finly therefore finished the session **$153.31 ahead of SPY**. No options position was open at that close.
+Paper trading follows real prices with virtual money. Through the September 2 close, Finly's dedicated $100,000 Alpaca paper account gained **$141.24** while SPY—the fund commonly used to represent the S&P 500—lost **$284.76** from the same starting point. Finly therefore finished **$426.00 ahead of SPY** at the same 4:00 p.m. timestamp.
 
 [Open Finly](https://owlsowo.github.io/finly-bot/) · [Watch the paper account](https://owlsowo.github.io/finly-bot/#live) · [Try a decision](https://owlsowo.github.io/finly-bot/#controls) · [Read the one-page proposal](public/judge/Finly_Judge_Brief.pdf) · [Open the mathematical note](public/judge/Finly_Technical_Proposal.pdf) · [View the deck](public/judge/Finly_Consulting_Deck.pdf)
 
@@ -20,9 +20,9 @@ The idea is simple: use AI for the part it does well—reading and explaining—
 
 ### A real paper account
 
-Finly runs in the cloud against a verified Alpaca paper account, so the laptop does not need to stay awake. At the first 4:00 p.m. close, the account had recorded 15 ETF fill events, no deposits or withdrawals, and the **$153.31 same-timestamp advantage over SPY** described above. No options position was open at that close. That result is a record of one session, not a promise about the next one.
+Finly runs in the cloud against a verified Alpaca paper account, so the laptop does not need to stay awake. Through the September 2 close, the account had recorded 15 ETF fill events, no deposits or withdrawals, and the **$426.00 same-timestamp advantage over SPY** described above. During that session the options sleeve completed **24 live evaluation cycles**: 14 candidates failed certification, six lacked enough model evidence, and four arrived after the entry window. Every cycle ended `NO_TRADE`, so the sleeve added **$0 of new options risk** instead of forcing a position.
 
-The [live dashboard](https://owlsowo.github.io/finly-bot/#live) separates the locked first-close comparison from the account value that continues to change with market prices. It also shows the current holdings, the latest options decision, and the risk limit without exposing credentials or account numbers.
+The [live dashboard](https://owlsowo.github.io/finly-bot/#live) separates the locked September 2 comparison from the account value that continues to change with market prices. It also shows the current holdings, the latest options decision, and the risk limit without exposing credentials or account numbers.
 
 ### Historical tests
 
@@ -50,7 +50,7 @@ The [mathematical technical note](public/judge/Finly_Technical_Proposal.pdf) der
 
 Some frozen research files call the four-fund allocation `G4`. That is an internal experiment label retained for reproducibility, not a product generation or a second Finly strategy.
 
-The public verification run found **826 automated tests: 824 passed, 0 failed, and 2 optional private-ledger checks were skipped**. The suite covers historical timing and trading costs, bullish and bearish options paths, ordinary-market calibration, payoff arithmetic, data freshness, position limits, account checks, order construction, bounded cancel/reprice exits, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
+The public verification run found **827 automated tests: 825 passed, 0 failed, and 2 optional private-ledger checks were skipped**. The suite covers historical timing and trading costs, bullish and bearish options paths, ordinary-market calibration, payoff arithmetic, data freshness, position limits, account checks, order construction, bounded cancel/reprice exits, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
 
 The allocation sleeve remained unchanged after paper trading began. The options sleeve was revised separately after a published no-trade diagnostic; the [current dated revision record](config/options-policy-revision-v3-2026-09-02.json) identifies the exact code, what changed, what did not, and how earlier decisions remain attributed. The [superseded v2 record](config/options-policy-revision-2026-09-01.json) remains public.
 

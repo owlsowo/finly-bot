@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import firstCloseMeasurement from "./data/competition_forward_profit_2026_08_31.json";
+import latestCloseMeasurement from "./data/competition_forward_profit_2026_09_02.json";
+import optionsDecisionFunnel from "./data/options_live_decision_funnel_2026_09_02.json";
 
 type MarketStatus = "OPEN" | "CLOSED" | "PRE_OPEN" | "HALTED";
 type CompetitionPhase = "READY" | "LIVE" | "COMPLETE";
@@ -343,44 +344,44 @@ export function CompetitionDashboard() {
 
           {origin === "fallback" && (
             <p className="live-fallback-note" role="status">
-              The cloud feed is unavailable, so this view is showing an archived prelaunch snapshot from August 30—not the current account. The locked first-close result below remains separately verified.
+              The cloud feed is unavailable, so this view is showing an archived prelaunch snapshot from August 30—not the current account. The locked September 2 close below remains separately verified.
             </p>
           )}
 
-          <section className="first-close-proof" aria-labelledby="first-close-proof-title">
+          <section className="first-close-proof" aria-labelledby="latest-close-proof-title">
             <div className="first-close-proof-copy">
-              <p className="kicker">Official day-one score · locked at 4:00 p.m.</p>
-              <h3 id="first-close-proof-title">
-                Finly finished its first paper-trading session {moneyExact.format(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead of SPY.
+              <p className="kicker">Official score through September 2 · locked at 4:00 p.m.</p>
+              <h3 id="latest-close-proof-title">
+                Finly finished {moneyExact.format(latestCloseMeasurement.secondary_kpi.excess_pnl_dollars)} ahead of SPY.
               </h3>
               <p>
-                Both started at $100,000 and were valued at the same closing-bell price. Finly gained $95.32;
-                SPY, a fund that tracks the S&amp;P 500, lost $57.99. No options position was open at that close.
+                Both started at $100,000 and were valued at the same closing-bell price. Finly gained $141.24;
+                SPY, a fund that tracks the S&amp;P 500, lost $284.76. No options position was open at that close.
               </p>
-              <a href="./data/competition_forward_profit_2026_08_31.json">
+              <a href="./data/competition_forward_profit_2026_09_02.json">
                 Inspect the read-only measurement
               </a>
             </div>
             <dl className="first-close-proof-metrics">
               <div>
                 <dt>Finly</dt>
-                <dd>{signedMoneyExact.format(firstCloseMeasurement.primary_kpi.net_pnl_dollars)}</dd>
+                <dd>{signedMoneyExact.format(latestCloseMeasurement.primary_kpi.net_pnl_dollars)}</dd>
                 <p>Virtual-money gain or loss</p>
               </div>
               <div>
                 <dt>SPY</dt>
-                <dd>{signedMoneyExact.format(firstCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars - 100_000)}</dd>
+                <dd>{signedMoneyExact.format(latestCloseMeasurement.benchmark.ending_value_on_same_baseline_dollars - 100_000)}</dd>
                 <p>S&amp;P 500 tracker at 4:00 p.m.</p>
               </div>
               <div className="first-close-proof-win">
                 <dt>Finly advantage</dt>
-                <dd>{signedMoneyExact.format(firstCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</dd>
+                <dd>{signedMoneyExact.format(latestCloseMeasurement.secondary_kpi.excess_pnl_dollars)}</dd>
                 <p>At the closing bell</p>
               </div>
             </dl>
             <p className="first-close-proof-note">
-              Locked first-day paper result · 4:00 p.m. ET on August 31, 2026 · same starting balance and timestamp ·
-              15 ETF fill events · no deposits or withdrawals. This is the locked day-one score, not the changing account mark below.
+              Locked paper result · 4:00 p.m. ET on September 2, 2026 · same starting balance and timestamp ·
+              15 ETF fill events · no deposits or withdrawals. This is the same-clock score, not the changing account mark below.
             </p>
           </section>
 
@@ -390,7 +391,7 @@ export function CompetitionDashboard() {
               <h3>Where the $100,000 paper account stands now.</h3>
             </div>
             <p>
-              This later account value can move as Alpaca re-prices the four funds and any open options position. It is not the locked day-one score above.
+              This later account value can move as Alpaca re-prices the four funds and any open options position. It is not the locked September 2 score above.
             </p>
           </div>
 
@@ -406,7 +407,7 @@ export function CompetitionDashboard() {
                 <strong>{signedMoney.format(result.pnl)}</strong>
                 <span>{signedPercent.format(result.pnlPercent)}</span>
               </div>
-              <small>Changing account mark · separate from the locked first-session comparison above.</small>
+              <small>Changing account mark · separate from the locked September 2 comparison above.</small>
             </div>
           </div>
 
@@ -419,6 +420,27 @@ export function CompetitionDashboard() {
             </div>
             <p>{decisionStory.explanation}</p>
           </div>
+
+          <section className="options-decision-funnel" aria-labelledby="options-decision-funnel-title">
+            <div className="options-decision-funnel-lead">
+              <p className="kicker">Live options decision record</p>
+              <h3 id="options-decision-funnel-title">24 live checks. 24 no-trade decisions. $0 new options risk.</h3>
+              <p>
+                Finly evaluated the market throughout the September 2 session. Fourteen candidates failed the hard
+                certification gates, six lacked enough model evidence, and four arrived after the entry window closed.
+              </p>
+              <a href="./data/options_live_decision_funnel_2026_09_02.json">Inspect the decision record</a>
+            </div>
+            <dl className="options-decision-funnel-metrics">
+              {optionsDecisionFunnel.outcomes.map((outcome) => (
+                <div key={outcome.code}>
+                  <dt>{outcome.code === "NO_CERTIFIED_TRADE" ? "Failed certification" : outcome.code === "MODEL_EVIDENCE_NO_TRADE" ? "Insufficient evidence" : "After cutoff"}</dt>
+                  <dd>{outcome.count}</dd>
+                  <p>{outcome.plain_english}</p>
+                </div>
+              ))}
+            </dl>
+          </section>
 
           <dl className="live-operating-metrics">
             <div>

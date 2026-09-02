@@ -27,8 +27,8 @@ const W = 1280;
 const H = 720;
 
 const wealthEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/g4_wealth_drawdown.json"), "utf8"));
-const liveEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/competition_live.json"), "utf8"));
-const firstCloseEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/competition_forward_profit_2026_08_31.json"), "utf8"));
+const latestCloseEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/competition_forward_profit_2026_09_02.json"), "utf8"));
+const optionsDecisionFunnel = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/options_live_decision_funnel_2026_09_02.json"), "utf8"));
 const externalEvidence = JSON.parse(await fs.readFile(path.join(ROOT, "public/data/attempt150_public_evidence.json"), "utf8"));
 
 const asset = (name) => path.join(ROOT, "public", name);
@@ -134,7 +134,7 @@ function addChevron(slide, x, y, color = C.green) {
   addShape(slide, 64, 530, 1152, 1, C.mint);
   addMetric(slide, "$106,711", "historical ending wealth", 64, 552, 250, { valueSize: 38, valueColor: C.gold, labelColor: "#C5D4D8" });
   addMetric(slide, "+$38,629", "versus the S&P 500 tracker", 360, 552, 240, { valueSize: 38, valueColor: C.white, labelColor: "#C5D4D8", labelSize: 12 });
-  addMetric(slide, "+$153.31", "First paper session vs SPY", 650, 552, 250, { valueSize: 38, valueColor: C.mint, labelColor: "#C5D4D8", labelSize: 12 });
+  addMetric(slide, "+$426", "vs SPY through Sep 2", 650, 552, 250, { valueSize: 38, valueColor: C.mint, labelColor: "#C5D4D8", labelSize: 12 });
   addMetric(slide, "$500", "max loss / options trade", 980, 552, 210, { valueSize: 38, valueColor: C.coral, labelColor: "#C5D4D8", labelSize: 13 });
   addText(slide, "Bruce Wen  ·  Brandeis University", 64, 652, 430, 22, { fontSize: 16, color: "#AFC2C8" });
   addFooter(slide, 1, true);
@@ -312,16 +312,16 @@ function addChevron(slide, x, y, color = C.green) {
   addShape(slide, 382, 442, 312, 76, C.white, { geometry: "roundRect", borderRadius: "rounded-xl", line: { style: "solid", fill: C.rule, width: 1 } });
   addText(slide, "4", 404, 450, 64, 54, { fontSize: 44, bold: true, color: C.coral });
   addText(slide, "bearish put spreads", 474, 466, 200, 28, { fontSize: 19, bold: true, color: C.ink });
-  addShape(slide, 758, 208, 458, 326, C.navy, { geometry: "roundRect", borderRadius: "rounded-2xl", shadow: "shadow-md" });
+  addShape(slide, 758, 208, 458, 350, C.navy, { geometry: "roundRect", borderRadius: "rounded-2xl", shadow: "shadow-md" });
   addText(slide, "ELIGIBLE-SPREAD RANGE", 792, 236, 390, 26, { fontSize: 15, bold: true, color: C.mint });
-  addText(slide, "Positive value. Capped loss.", 792, 278, 380, 42, { fontSize: 30, bold: true, color: C.white });
+  addText(slide, "Positive value. Capped loss.", 792, 274, 380, 64, { fontSize: 27, bold: true, color: C.white });
   const calibrationRows = [["MAX LOSS", "$440–$455"], ["CONSERVATIVE VALUE", "$10.08–$22.26"], ["REWARD / RISK", "2.30–2.41"]];
   calibrationRows.forEach(([label, value], i) => {
-    const y = 342 + i * 54;
-    addText(slide, label, 792, y, 220, 28, { fontSize: 14, bold: true, color: i === 0 ? C.coral : C.gold });
-    addText(slide, value, 1018, y - 4, 160, 34, { fontSize: 24, bold: true, color: C.white, alignment: "right" });
+    const y = 356 + i * 48;
+    addText(slide, label, 792, y, 190, 28, { fontSize: 14, bold: true, color: i === 0 ? C.coral : C.gold });
+    addText(slide, value, 972, y - 2, 208, 34, { fontSize: 21, bold: true, color: C.white, alignment: "right" });
   });
-  addText(slide, "Signal + fixed quote-surface test—not historical option prices or P&L.", 792, 496, 380, 30, { fontSize: 15, color: "#C4D4D8" });
+  addText(slide, "Signal + fixed quote-surface test—not historical option prices or P&L.", 792, 506, 380, 36, { fontSize: 13, color: "#C4D4D8" });
   addMetric(slide, "517", "sampled signal windows", 80, 574, 220, { valueSize: 38, valueColor: C.navy });
   addMetric(slide, "11", "cleared every alpha gate", 360, 574, 230, { valueSize: 38, valueColor: C.green, labelSize: 12 });
   addMetric(slide, "7 / 4", "bullish / bearish", 680, 574, 220, { valueSize: 38, valueColor: C.navy, labelSize: 12 });
@@ -334,90 +334,76 @@ function addChevron(slide, x, y, color = C.green) {
   ]);
 }
 
-// 7 — Historical-to-forward bridge.
+// 7 — Verified paper result.
 {
   const slide = presentation.slides.add();
   slide.background.fill = C.navy;
-  addKicker(slide, "Verified $100,000 paper account / first close", C.mint);
-  addText(slide, "Finly closed its first paper session $153.31 ahead of SPY.", 64, 78, 1140, 105, { fontSize: 44, bold: true, color: C.white });
-  addShape(slide, 64, 230, 746, 280, C.cream, { geometry: "roundRect", borderRadius: "rounded-2xl", line: { style: "solid", fill: C.mint, width: 2 }, shadow: "shadow-lg" });
-  addText(slide, "SAME $100,000 START", 102, 258, 650, 24, { fontSize: 15, bold: true, color: C.green, alignment: "center" });
-  addText(slide, "9:30 A.M.", 104, 304, 180, 30, { fontSize: 18, bold: true, color: C.gray, alignment: "center" });
-  addText(slide, "$100,000", 102, 342, 184, 48, { fontSize: 34, bold: true, color: C.navy, alignment: "center" });
-  addChevron(slide, 316, 338, C.green);
-  addText(slide, "4:00 P.M.", 392, 286, 190, 30, { fontSize: 18, bold: true, color: C.green, alignment: "center" });
-  addText(slide, "Finly", 392, 326, 190, 24, { fontSize: 16, bold: true, color: C.green, alignment: "center" });
-  addText(slide, "$100,095.32", 370, 356, 234, 44, { fontSize: 29, bold: true, color: C.navy, alignment: "center" });
-  addText(slide, "SPY", 612, 326, 150, 24, { fontSize: 16, bold: true, color: C.coral, alignment: "center" });
-  addText(slide, "$99,942.01", 586, 356, 202, 44, { fontSize: 29, bold: true, color: C.navy, alignment: "center" });
-  addShape(slide, 102, 420, 660, 1, C.rule);
-  addText(slide, "15 ETF fill events built the allocation sleeve · no options position was open at the close", 102, 446, 660, 34, { fontSize: 17, color: C.gray, alignment: "center" });
-  addShape(slide, 64, 548, 746, 2, C.green);
-  addText(slide, "One start, one close, one fair comparison.", 64, 568, 746, 30, { fontSize: 22, bold: true, color: C.mint });
-  addText(slide, "Aug 31: allocation traded and stayed unchanged. Sep 1: options v2 was versioned separately after a published no-trade diagnostic.", 64, 606, 746, 46, { fontSize: 17, color: C.white });
-  addText(slide, "FINLY", 858, 226, 180, 24, { fontSize: 15, bold: true, color: C.mint });
-  addText(slide, `+$${firstCloseEvidence.primary_kpi.net_pnl_dollars.toFixed(2)}`, 858, 256, 300, 52, { fontSize: 34, bold: true, color: C.white });
-  addText(slide, "virtual-money account profit", 858, 306, 300, 24, { fontSize: 16, color: "#C4D4D8" });
-  addShape(slide, 858, 344, 344, 1, "#527187");
-  addText(slide, "SPY · S&P 500 TRACKER", 858, 370, 260, 24, { fontSize: 15, bold: true, color: C.coral });
-  addText(slide, `−$${Math.abs(firstCloseEvidence.benchmark.ending_value_on_same_baseline_dollars - 100000).toFixed(2)}`, 858, 400, 300, 52, { fontSize: 34, bold: true, color: C.white });
-  addText(slide, "same-clock price benchmark", 858, 450, 300, 24, { fontSize: 16, color: "#C4D4D8" });
-  addShape(slide, 858, 490, 344, 2, C.gold);
-  addText(slide, "FINLY ADVANTAGE", 858, 512, 250, 24, { fontSize: 15, bold: true, color: C.gold });
-  addText(slide, `+$${firstCloseEvidence.secondary_kpi.excess_pnl_dollars.toFixed(2)}`, 858, 542, 300, 52, { fontSize: 34, bold: true, color: C.gold });
-  addText(slide, "Same $100k start · same 4:00 p.m. price · no deposits", 858, 606, 344, 52, { fontSize: 16, bold: true, color: C.mint });
+  addKicker(slide, "Verified $100,000 paper account · through September 2", C.mint);
+  addText(slide, "Finly finished $426 ahead of SPY at the same closing bell.", 64, 78, 1140, 92, { fontSize: 45, bold: true, color: C.white });
+  addShape(slide, 64, 204, 728, 318, C.cream, { geometry: "roundRect", borderRadius: "rounded-2xl", line: { style: "solid", fill: C.mint, width: 2 }, shadow: "shadow-lg" });
+  addText(slide, "SAME $100,000 START · SAME 4:00 P.M. PRICE", 94, 232, 668, 24, { fontSize: 15, bold: true, color: C.green, alignment: "center" });
+  addText(slide, "FINLY PAPER ACCOUNT", 98, 296, 276, 24, { fontSize: 15, bold: true, color: C.green });
+  addText(slide, "+$141.24", 98, 330, 286, 62, { fontSize: 48, bold: true, color: C.navy });
+  addText(slide, "$100,141.24 ending value", 98, 400, 286, 28, { fontSize: 17, color: C.gray });
+  addShape(slide, 418, 286, 1, 156, C.rule);
+  addText(slide, "SPY · S&P 500 TRACKER", 458, 296, 276, 24, { fontSize: 15, bold: true, color: C.coral });
+  addText(slide, "−$284.76", 458, 330, 286, 62, { fontSize: 48, bold: true, color: C.navy });
+  addText(slide, "$99,715.24 ending value", 458, 400, 286, 28, { fontSize: 17, color: C.gray });
+  addShape(slide, 98, 456, 636, 1, C.rule);
+  addText(slide, "15 ETF fill events · zero deposits or withdrawals", 98, 476, 636, 28, { fontSize: 17, bold: true, color: C.green, alignment: "center" });
+  addShape(slide, 842, 204, 374, 318, C.green, { geometry: "roundRect", borderRadius: "rounded-2xl", shadow: "shadow-md" });
+  addText(slide, "FINLY ADVANTAGE", 878, 244, 302, 26, { fontSize: 15, bold: true, color: C.mint, alignment: "center" });
+  addText(slide, "+$426", 876, 292, 306, 92, { fontSize: 70, bold: true, color: C.white, alignment: "center" });
+  addText(slide, "versus SPY", 878, 390, 302, 32, { fontSize: 24, bold: true, color: C.white, alignment: "center" });
+  addText(slide, "Measured from the same start at the exact same timestamp.", 884, 446, 290, 52, { fontSize: 17, color: C.mint, alignment: "center" });
+  addShape(slide, 64, 570, 1152, 2, C.mint);
+  addText(slide, "A live broker result—not a backtest—and every number links to the read-only measurement.", 64, 592, 1120, 44, { fontSize: 25, bold: true, color: C.mint });
   addFooter(slide, 7, true);
   setNotes(slide, [
     "Sanitized live account: https://owlsowo.github.io/finly-bot/data/competition_live.json",
     "Public live dashboard: https://owlsowo.github.io/finly-bot/#live",
-    "Human-frozen competition protocol: https://github.com/owlsowo/finly-bot/blob/main/config/g4-official-production.json",
-    "Current options-policy revision: https://github.com/owlsowo/finly-bot/blob/main/config/options-policy-revision-v3-2026-09-02.json",
-    "Forward-score contract: https://github.com/owlsowo/finly-bot/blob/main/config/competition-forward-profit.json",
-    "First-close measurement: https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_08_31.json",
-    `Verified starting equity: $${liveEvidence.account.equity.toLocaleString("en-US")}; per-trade risk ceiling: $${liveEvidence.exposure.per_trade_risk_limit_dollars}.`,
-    `Exact first-close result: Finly +$${firstCloseEvidence.primary_kpi.net_pnl_dollars.toFixed(2)}, SPY -$${Math.abs(firstCloseEvidence.benchmark.ending_value_on_same_baseline_dollars - 100000).toFixed(2)}, excess +$${firstCloseEvidence.secondary_kpi.excess_pnl_dollars.toFixed(2)}.`,
-    "Screenshot is project-owned and records the public paper-account dashboard.",
+    "September 2 same-clock measurement: https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_09_02.json",
+    `Exact close: Finly +$${latestCloseEvidence.primary_kpi.net_pnl_dollars.toFixed(2)}, SPY -$${Math.abs(latestCloseEvidence.benchmark.ending_value_on_same_baseline_dollars - 100000).toFixed(2)}, excess +$${latestCloseEvidence.secondary_kpi.excess_pnl_dollars.toFixed(2)}.`,
+    "Paper account only. The comparison uses SPY raw IEX price return, not total return or alpha.",
   ]);
 }
 
-// 8 — Fail closed and recover.
+// 8 — Live options decision funnel.
 {
   const slide = presentation.slides.add();
   slide.background.fill = C.paleMint;
-  addKicker(slide, "Receipts for both outcomes");
-  addText(slide, "Trade or no trade—Finly records what happened and why.", 64, 78, 1120, 72, { fontSize: 45, bold: true });
-  const refusalRows = [
-    ["1", "EVIDENCE CONFLICTS", "One source points the other way.", C.coral],
-    ["2", "TEST FAILS", "Finly retests the idea without each source.", C.gold],
-    ["3", "ORDER BLOCKED", "No options instruction reaches Alpaca.", C.navy],
-    ["4", "RECEIPT SAVED", "The refusal and its reason remain inspectable.", C.green],
+  addKicker(slide, "What the options agent did live");
+  addText(slide, "24 live options checks ended with no trade—and every reason is counted.", 64, 78, 1140, 92, { fontSize: 43, bold: true });
+  addShape(slide, 64, 208, 334, 304, C.navy, { geometry: "roundRect", borderRadius: "rounded-2xl", shadow: "shadow-md" });
+  addText(slide, "SEPTEMBER 2", 96, 240, 270, 24, { fontSize: 15, bold: true, color: C.mint, alignment: "center" });
+  addText(slide, String(optionsDecisionFunnel.totals.evaluation_cycles), 96, 284, 270, 94, { fontSize: 78, bold: true, color: C.white, alignment: "center" });
+  addText(slide, "LIVE EVALUATION CYCLES", 96, 386, 270, 28, { fontSize: 17, bold: true, color: C.white, alignment: "center" });
+  addShape(slide, 96, 432, 270, 1, "#527187");
+  addText(slide, "$0 NEW OPTIONS RISK", 96, 454, 270, 30, { fontSize: 21, bold: true, color: C.mint, alignment: "center" });
+  const funnelRows = [
+    ["14", "FAILED CERTIFICATION", "A candidate did not clear every deterministic gate.", C.coral],
+    ["6", "INSUFFICIENT EVIDENCE", "The AI-read market case did not support an entry.", C.gold],
+    ["4", "AFTER THE CUTOFF", "The entry window had closed; monitoring continued.", C.green],
   ];
-  refusalRows.forEach(([number, label, body, color], index) => {
-    const y = 188 + index * 88;
-    addShape(slide, 64, y, 54, 54, color, { geometry: "ellipse" });
-    addText(slide, number, 64, y + 10, 54, 28, { fontSize: 19, bold: true, color: C.white, alignment: "center" });
-    addText(slide, label, 144, y - 2, 260, 24, { fontSize: 15, bold: true, color });
-    addText(slide, body, 144, y + 28, 560, 34, { fontSize: 23, bold: true, color: C.ink });
-    if (index < refusalRows.length - 1) addShape(slide, 90, y + 58, 2, 28, C.rule);
+  funnelRows.forEach(([count, label, body, color], index) => {
+    const y = 208 + index * 102;
+    addShape(slide, 452, y, 764, 82, C.white, { geometry: "roundRect", borderRadius: "rounded-xl", line: { style: "solid", fill: C.rule, width: 1 } });
+    addText(slide, count, 474, y + 9, 84, 56, { fontSize: 42, bold: true, color, alignment: "center" });
+    addShape(slide, 574, y + 13, 3, 54, color);
+    addText(slide, label, 606, y + 12, 256, 25, { fontSize: 16, bold: true, color });
+    addText(slide, body, 606, y + 40, 574, 30, { fontSize: 17, color: C.ink });
   });
-  addShape(slide, 790, 188, 426, 326, C.navy, { geometry: "roundRect", borderRadius: "rounded-2xl", line: { style: "solid", fill: C.coral, width: 2 }, shadow: "shadow-md" });
-  addText(slide, "DECISION", 826, 222, 354, 24, { fontSize: 15, bold: true, color: C.coral, alignment: "center" });
-  addText(slide, "NO TRADE", 826, 268, 354, 58, { fontSize: 45, bold: true, color: C.white, alignment: "center" });
-  addText(slide, "$0", 826, 346, 354, 76, { fontSize: 64, bold: true, color: C.mint, alignment: "center" });
-  addText(slide, "NEW OPTIONS RISK", 826, 426, 354, 28, { fontSize: 17, bold: true, color: C.white, alignment: "center" });
-  addText(slide, "The safest trade can be no trade.", 826, 470, 354, 30, { fontSize: 18, color: "#D7E3E5", alignment: "center" });
-  addShape(slide, 64, 560, 1152, 82, C.white, { geometry: "roundRect", borderRadius: "rounded-xl", line: { style: "solid", fill: C.rule, width: 1 } });
-  addText(slide, "826", 88, 576, 110, 44, { fontSize: 38, bold: true, color: C.green });
-  addText(slide, "AUTOMATED TESTS", 190, 584, 210, 28, { fontSize: 17, bold: true, color: C.gray });
-  addText(slide, "824 PASSED", 510, 584, 170, 28, { fontSize: 18, bold: true, color: C.green, alignment: "center" });
-  addText(slide, "0 FAILED", 744, 584, 150, 28, { fontSize: 18, bold: true, color: C.navy, alignment: "center" });
-  addText(slide, "2 SKIPPED", 978, 584, 170, 28, { fontSize: 18, bold: true, color: C.gray, alignment: "center" });
+  addText(slide, "0 orders submitted  ·  0 option fills", 452, 534, 500, 30, { fontSize: 21, bold: true, color: C.navy });
+  addText(slide, "The agent was active; it simply found no setup that cleared the bar.", 452, 570, 744, 36, { fontSize: 22, color: C.green });
+  addShape(slide, 64, 626, 1152, 1, C.rule);
+  addText(slide, "827 automated tests", 64, 644, 310, 30, { fontSize: 22, bold: true, color: C.green });
+  addText(slide, "825 passed  ·  0 failed  ·  2 optional checks skipped", 420, 646, 730, 28, { fontSize: 19, bold: true, color: C.navy });
   addFooter(slide, 8);
   setNotes(slide, [
-    "Cloud runner: https://github.com/owlsowo/finly-bot/blob/main/docs/CLOUD_RUNNER.md",
-    "Conflict receipt: https://owlsowo.github.io/finly-bot/data/no_trade_receipt.json",
-    "Verified automated run: https://github.com/owlsowo/finly-bot/actions/runs/33369848292",
-    "Public repository: https://github.com/owlsowo/finly-bot",
+    "Live decision record: https://owlsowo.github.io/finly-bot/data/options_live_decision_funnel_2026_09_02.json",
+    "Public cloud run: https://github.com/owlsowo/finly-bot/actions/runs/33662758327",
+    "The 24 cycles are decision-process evidence. No live options order, fill, or options P&L is claimed.",
+    "Automated verification: https://github.com/owlsowo/finly-bot/actions",
   ]);
 }
 
@@ -427,7 +413,7 @@ function addChevron(slide, x, y, color = C.green) {
   slide.background.fill = C.cream;
   addKicker(slide, "Judge the product");
   addText(slide, "Watch the account. Try the decision. Inspect the proof.", 64, 80, 790, 118, { fontSize: 50, bold: true });
-  addText(slide, "$153.31 ahead after session one—and every headline links to evidence you can rerun.", 64, 208, 780, 62, { fontSize: 27, color: C.gray });
+  addText(slide, "$426 ahead of SPY through September 2—and every headline links to evidence you can inspect.", 64, 208, 780, 62, { fontSize: 27, color: C.gray });
   const qrUrl = "https://quickchart.io/qr?text=https%3A%2F%2Fowlsowo.github.io%2Ffinly-bot%2F&size=500&margin=1";
   const qrResponse = await fetch(qrUrl);
   if (!qrResponse.ok) throw new Error(`QR generation failed: ${qrResponse.status}`);
@@ -444,7 +430,7 @@ function addChevron(slide, x, y, color = C.green) {
     if (i < 2) addShape(slide, 124, y + 50, 638, 1, C.rule);
   });
   addShape(slide, 64, 594, 1152, 3, C.green);
-  addText(slide, "Historical results. First-session proof. Every decision inspectable.", 64, 614, 1130, 40, { fontSize: 29, bold: true, color: C.green });
+  addText(slide, "Historical depth. Live account proof. Every decision inspectable.", 64, 614, 1130, 40, { fontSize: 29, bold: true, color: C.green });
   addLinkedText(slide, "owlsowo.github.io/finly-bot", "https://owlsowo.github.io/finly-bot/", 64, 660, 540, 26, { fontSize: 20, bold: true, color: C.navy });
   addText(slide, "Bruce Wen  ·  bwen412@brandeis.edu", 810, 658, 406, 28, { fontSize: 18, color: C.gray, alignment: "right" });
   addFooter(slide, 9);
@@ -475,7 +461,8 @@ await fs.writeFile(path.join(evidenceDir, "source-notes.txt"), [
   "- External-era evidence: public/data/attempt150_public_evidence.json and Kenneth French Data Library.",
   "- Options evidence: public/data/latest_receipt.json and public/data/no_trade_receipt.json.",
   "- Live account evidence: public/data/competition_live.json.",
-  "- First-close same-clock evidence: public/data/competition_forward_profit_2026_08_31.json.",
+  "- September 2 same-clock evidence: public/data/competition_forward_profit_2026_09_02.json.",
+  "- September 2 live options decisions: public/data/options_live_decision_funnel_2026_09_02.json.",
   "- QR encodes https://owlsowo.github.io/finly-bot/.",
 ].join("\n"));
 const pptx = await PresentationFile.exportPptx(presentation);

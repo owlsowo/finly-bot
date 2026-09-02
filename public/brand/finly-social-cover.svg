@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Finly finished its first Alpaca paper-trading session $153.31 ahead of the S&amp;P 500 tracker</title>
-  <desc id="desc">From the same $100,000 starting point at the same 4:00 p.m. price, Finly gained $95.32 while SPY, an S&amp;P 500 tracker, lost $57.99.</desc>
+  <title id="title">Finly finished $426 ahead of the S&amp;P 500 tracker through the September 2 close</title>
+  <desc id="desc">From the same $100,000 starting point at the same 4:00 p.m. price, Finly gained $141.24 while SPY, an S&amp;P 500 tracker, lost $284.76.</desc>
   <rect width="1200" height="630" fill="#f6f3ec"/>
   <rect x="0" y="0" width="28" height="630" fill="#0d2b43"/>
 
@@ -15,10 +15,10 @@
   <text x="1130" y="68" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.6" text-anchor="end">ALPACA AI TRADING AGENTS HACKATHON</text>
   <line x1="70" y1="124" x2="1130" y2="124" stroke="#0d2b43" stroke-width="1.5"/>
 
-  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">VERIFIED FIRST PAPER CLOSE · 31 AUG 2026 · 4:00 PM ET</text>
+  <text x="70" y="175" fill="#2e6f5c" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2">VERIFIED PAPER RESULT · THROUGH 2 SEP 2026 · 4:00 PM ET</text>
   <g fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-weight="700" letter-spacing="-1.5">
     <text x="70" y="246" font-size="53">Finly finished</text>
-    <text x="70" y="328" font-size="76">$153.31 ahead.</text>
+    <text x="70" y="328" font-size="76">$426 ahead.</text>
   </g>
   <text x="70" y="374" fill="#263238" font-family="Georgia, Times New Roman, serif" font-size="23">Same $100,000 baseline. Same closing-bell mark.</text>
 
@@ -28,17 +28,17 @@
     <line x1="28" y1="56" x2="382" y2="56" stroke="#c8ccc7" stroke-width="1"/>
 
     <text x="28" y="91" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">FINLY PAPER ACCOUNT</text>
-    <text x="28" y="146" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="48" font-weight="700">+$95.32</text>
-    <text x="382" y="142" fill="#2e6f5c" font-size="13" font-weight="700" text-anchor="end">$100,095.32</text>
+    <text x="28" y="146" fill="#2e6f5c" font-family="Georgia, Times New Roman, serif" font-size="48" font-weight="700">+$141.24</text>
+    <text x="382" y="142" fill="#2e6f5c" font-size="13" font-weight="700" text-anchor="end">$100,141.24</text>
     <line x1="28" y1="172" x2="382" y2="172" stroke="#d7d9d5" stroke-width="1"/>
 
     <text x="28" y="207" fill="#68706f" font-size="12" font-weight="700" letter-spacing="1.1">SPY · S&amp;P 500 TRACKER · SAME PRICE TIME</text>
-    <text x="28" y="262" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="48" font-weight="700">−$57.99</text>
-    <text x="382" y="258" fill="#0d2b43" font-size="13" font-weight="700" text-anchor="end">$99,942.01</text>
+    <text x="28" y="262" fill="#0d2b43" font-family="Georgia, Times New Roman, serif" font-size="48" font-weight="700">−$284.76</text>
+    <text x="382" y="258" fill="#0d2b43" font-size="13" font-weight="700" text-anchor="end">$99,715.24</text>
 
     <g transform="translate(28 284)">
       <rect width="354" height="28" fill="#e7f0eb"/>
-      <text x="177" y="19" fill="#2e6f5c" font-size="11" font-weight="700" letter-spacing="0.8" text-anchor="middle">15 ETF FILL EVENTS · $0 DEPOSITS OR WITHDRAWALS</text>
+      <text x="177" y="19" fill="#2e6f5c" font-size="11" font-weight="700" letter-spacing="0.8" text-anchor="middle">15 ETF FILLS · 24 LIVE OPTIONS CHECKS</text>
     </g>
   </g>
 

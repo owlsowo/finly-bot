@@ -68,14 +68,14 @@
   #v(10pt)
   Bruce Wen · Brandeis University · #link("mailto:bwen412@brandeis.edu")[#text("bwen412@brandeis.edu")]
   #linebreak()
-  31 August 2026
+  2 September 2026
 ]
 
 #v(8pt)
 #noindent[
   *Abstract.* Finly is one autonomous paper-trading strategy with two coordinated execution sleeves and a narrow division of authority: a language model may interpret public information, but it may not create financial exposure. In the live options policy, fresh SPY price momentum owns the sign, while the option surface and model-assessed news may confirm, reduce, or veto that bounded view but cannot reverse it. The three outcomes are a bullish call spread, a bearish put spread, or no trade. A separately frozen long-horizon SPY/BIL receipt must also certify a risk-on state. Code then enumerates defined-risk bull-call or bear-put spreads, values each candidate under two scenario models, limits entry to one contract and at most \$500 of loss, and binds one exact order to a short-lived cryptographic permit. A restart-safe state machine submits through Alpaca and reconciles the broker before advancing.
 
-  The allocation sleeve, called *Finly Core* (internal research identifier: G4), is a frozen four-fund rule. The coordinated options sleeve uses its own direction model and risk account so that the two sleeves remain independently auditable without becoming separate competition strategies. In a causal 2013--2026 simulation with five-basis-point one-way costs, a modeled \$10,000 became \$106,711 with the allocation rule versus \$68,082 in SPY, the fund used here to represent the S&P 500. At the first measured close, the complete paper account finished \$95.32 above its \$100,000 baseline while the same-clock SPY baseline was \$57.99 below, a \$153.31 difference after 15 ETF fill events. The contribution is therefore architectural as well as empirical: every capital-bearing decision has a rules-based owner, and every broker mutation can be traced to the evidence, policy, and risk state that authorized it.
+  The allocation sleeve, called *Finly Core* (internal research identifier: G4), is a frozen four-fund rule. The coordinated options sleeve uses its own direction model and risk account so that the two sleeves remain independently auditable without becoming separate competition strategies. In a causal 2013--2026 simulation with five-basis-point one-way costs, a modeled \$10,000 became \$106,711 with the allocation rule versus \$68,082 in SPY, the fund used here to represent the S&P 500. Through the September 2 close, the complete paper account finished \$141.24 above its \$100,000 baseline while the same-clock SPY baseline was \$284.76 below, a \$426.00 difference after 15 ETF fill events. The contribution is therefore architectural as well as empirical: every capital-bearing decision has a rules-based owner, and every broker mutation can be traced to the evidence, policy, and risk state that authorized it.
 ]
 
 = The problem: useful judgment without unbounded authority
@@ -379,11 +379,11 @@ The principal historical comparison uses aligned adjusted closes from 2 January 
 
 The \$38,629 ending-wealth difference is the strongest simple description of the ledger. It should be read with two facts. First, Finly Core did not beat QQQ over the full interval; part of its return is an explicit growth allocation. Second, the candidate did not pass its selection-adjusted promotion gate: the Deflated Sharpe probability was 3.75 percent and the worst familywise bootstrap p-value was 37.18 percent. The result is therefore sufficiently strong to motivate a forward paper experiment, but not to establish expected future outperformance.
 
-The verified \$100,000 Alpaca paper account supplies the operational observation for the complete strategy. At the first exact 4:00 p.m. ET close, account equity was \$100,095.32. A same-\$100,000 raw-price SPY baseline was \$99,942.01, giving a \$153.31 difference. The reconciliation record contains 15 ETF *fill events* from four orders and zero external cashflows [8]. No live options position existed at that timestamp, and no live options fill is claimed. This is evidence for deployment and measurement, not realized options profitability.
+The verified \$100,000 Alpaca paper account supplies the operational observation for the complete strategy. At the exact 4:00 p.m. ET close on September 2, account equity was \$100,141.24. A same-\$100,000 raw-price SPY baseline was \$99,715.24, giving a \$426.00 difference. The reconciliation record contains 15 ETF *fill events* from four orders and zero external cashflows [8]. During the September 2 session, the options sleeve completed 24 live evaluation cycles: 14 returned `NO_CERTIFIED_TRADE`, six returned `MODEL_EVIDENCE_NO_TRADE`, and four returned `OPTIONS_ENTRY_CUTOFF_NO_TRADE`; no option order or fill occurred [12]. This is evidence for deployment, measurement, and decision discipline, not realized options profitability.
 
 The live-policy reachability check is deliberately narrower. It sampled 517 five-session SPY signal windows from 2016 through 2026 and compiled each signal against one fixed, symmetric modeled 14-day option surface. Eleven windows cleared every alpha gate: seven bullish call spreads and four bearish put spreads. Maximum loss ranged from \$440 to \$455, conservative modeled value after costs from \$10.08 to \$22.26, reward-to-risk from 2.30 to 2.41, and modeled probability of profit from 45.12 to 47.71 percent [11]. This experiment tests bidirectional signal and quote-surface eligibility. It does not use historical option quotes and therefore is not an options-return backtest.
 
-The public verification run discovered 826 tests: 824 passed, none failed, and two were skipped [9]. Tests cover evidence separation, signed live direction, eligibility-calibration integrity, payoff arithmetic, scenario determinism, source-removal and perturbation diagnostics, risk ceilings, v3 HMAC scope, stale permits, bounded cancel/reprice exits, client-order recovery, state encryption, causal backtest timing, cost parity, and submission artifacts. Tests establish implemented invariants; they do not turn one forward session into a forecast.
+The public verification run discovered 827 tests: 825 passed, none failed, and two were skipped [9]. Tests cover evidence separation, signed live direction, eligibility-calibration integrity, payoff arithmetic, scenario determinism, source-removal and perturbation diagnostics, risk ceilings, v3 HMAC scope, stale permits, bounded cancel/reprice exits, client-order recovery, state encryption, causal backtest timing, cost parity, and submission artifacts. Tests establish implemented invariants; they do not turn one forward session into a forecast.
 
 = Discussion and reproducibility
 
@@ -424,10 +424,12 @@ The frozen research boundary is inspectable at revision `36ce122`; the activated
 
 [7] Finly. “Frozen allocation protocol and current options implementation.” #link("https://github.com/owlsowo/finly-bot/blob/36ce122/config/g4-official-production.json")[allocation record] and #link("https://github.com/owlsowo/finly-bot/blob/318c943/lib/live_economic_options_authority.mjs")[live authority].
 
-[8] Finly. “First-session same-clock measurement.” #link("https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_08_31.json")[public evidence].
+[8] Finly. “September 2 same-clock measurement.” #link("https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_09_02.json")[public evidence].
 
 [9] Finly. “Automated verification.” #link("https://github.com/owlsowo/finly-bot/actions")[GitHub Actions].
 
 [10] Finly. “Activated implementation and pinned cloud workflow.” #link("https://github.com/owlsowo/finly-bot/tree/318c943")[implementation] and #link("https://github.com/owlsowo/finly-bot/tree/d8e1fcc")[deployment pin].
 
 [11] Finly. “Current signal and quote-surface eligibility calibration.” #link("https://owlsowo.github.io/finly-bot/data/options_policy_calibration.json")[public artifact].
+
+[12] Finly. “September 2 live options decision record.” #link("https://owlsowo.github.io/finly-bot/data/options_live_decision_funnel_2026_09_02.json")[public artifact].

@@ -7,9 +7,11 @@ const hostedDataAllowlist = new Set([
   "attempt150_public_evidence.json",
   "competition-deployment-record.json",
   "competition_forward_profit_2026_08_31.json",
+  "competition_forward_profit_2026_09_02.json",
   "competition_live.json",
   "latest_receipt.json",
   "no_trade_receipt.json",
+  "options_live_decision_funnel_2026_09_02.json",
   "options_policy_calibration.json",
   "quantitative_release_gate.json",
 ]);

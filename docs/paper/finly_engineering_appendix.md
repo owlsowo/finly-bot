@@ -4,7 +4,7 @@
 
 Bruce Wen · Brandeis University · [bwen412@brandeis.edu](mailto:bwen412@brandeis.edu)
 
-31 August 2026
+2 September 2026
 
 ## Abstract
 
@@ -14,7 +14,7 @@ The four-fund sleeve is internally identified as G4. It assigns one half of its 
 
 The coordinated SPY options sleeve uses the frozen long-only SPY/BIL receipt as a freshness and long-horizon risk-on guard, not as the short-horizon trade direction. In live policy v2, fresh SPY price momentum owns the bullish or bearish sign. Option skew and Qwen3-32B's assessment of canonical public Alpaca news may confirm, reduce, or veto that signed view but cannot reverse it. Code enumerates defined-risk bull-call or bear-put debit spreads, evaluates two 2,048-path scenario models, applies conservative expected-value and probability gates, limits live entry to one contract and at most $500 of loss, and issues a thirty-second HMAC-signed v3 risk certificate bound to one exact order projection. Alpaca execution proceeds through a fresh preflight, durable state machine, deterministic client-order identifiers, pre-mutation checkpoints, broker read-back, and fail-closed reconciliation.
 
-This paper specifies the algorithms, causal timing, cost conventions, statistical tests, risk constraints, state transitions, and reproducibility boundary. At the first closing bell, 15 ETF fill events had built the allocation sleeve; Finly was up $95.32 while the same-$100,000 SPY raw-price benchmark was down $57.99, a $153.31 advantage at one exact timestamp. The evidence supports an inspectable paper-trading experiment, not durable alpha, verified live options profit, or future outperformance.
+This paper specifies the algorithms, causal timing, cost conventions, statistical tests, risk constraints, state transitions, and reproducibility boundary. Through the September 2 closing bell, 15 ETF fill events had built the allocation sleeve; Finly was up $141.24 while the same-$100,000 SPY raw-price benchmark was down $284.76, a $426.00 advantage at one exact timestamp. The options sleeve completed 24 live evaluation cycles that day; all ended `NO_TRADE`, so it opened no option position and added no new options risk. The evidence supports an inspectable paper-trading experiment, not durable alpha, verified live options profit, or future outperformance.
 
 ## 1. Problem, scope, and contributions
 
@@ -486,7 +486,7 @@ GitHub Actions runs while the laptop is off. Schedule time is not authority: an 
 
 Lifecycle journals are encrypted with AES-256-GCM under a secret different from the certificate secret and stored on an isolated state branch. State is checkpointed before entry and exit mutation. The public branch contains only allowlisted competition_live.json without credentials, raw account identity, or broker IDs. GitHub Pages fetches that file; it never receives a trading secret [27].
 
-The GET-only scorer compares Finly with same-timestamp SPY and rejects cashflow or provenance breaks [28]. At the first close, Finly was +$95.32 versus SPY -$57.99 at 4:00 p.m. ET: +$153.31 after 15 ETF fill events and zero external cashflows [35].
+The GET-only scorer compares Finly with same-timestamp SPY and rejects cashflow or provenance breaks [28]. Through the September 2 close, Finly was +$141.24 versus SPY -$284.76 at 4:00 p.m. ET: +$426.00 after 15 ETF fill events and zero external cashflows [35]. The same day's 24 live options evaluations produced 14 certification failures, six insufficient-evidence decisions, and four post-cutoff decisions; all 24 ended `NO_TRADE` with zero option orders and fills [38].
 
 ### 9.4 Current eligibility calibration
 
@@ -496,7 +496,7 @@ This calibration establishes that the path is reachable but selective. It is not
 
 ## 10. Verification, reproducibility, and hackathon fit
 
-The public run executed 826 tests: 824 passed, none failed, and two were skipped [29]. Coverage includes schemas, evidence separation, G4 weights, causal lag, costs, signed live direction, eligibility-calibration integrity, option payoff, Black–Scholes, scenario determinism, removal and perturbation diagnostics, live one-contract risk limits, v3 HMAC scope, broker translation, stale preflight, bounded cancel/reprice exits, duplicate recovery, encryption, calendar boundaries, forward attribution, and artifact checks. This establishes tested software behavior, not forecast accuracy or profitability.
+The public run executed 827 tests: 825 passed, none failed, and two were skipped [29]. Coverage includes schemas, evidence separation, G4 weights, causal lag, costs, signed live direction, eligibility-calibration integrity, option payoff, Black–Scholes, scenario determinism, removal and perturbation diagnostics, live one-contract risk limits, v3 HMAC scope, broker translation, stale preflight, bounded cancel/reprice exits, duplicate recovery, encryption, calendar boundaries, forward attribution, and artifact checks. This establishes tested software behavior, not forecast accuracy or profitability.
 
 The repository pins Node.js 26.7.0. A clean reproduction begins:
 
@@ -618,8 +618,10 @@ Finly's contribution is controlled delegation: every component has a useful job,
 
 [34] D. H. Bailey and M. López de Prado. “The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting, and Non-Normality.” *Journal of Portfolio Management* 40, no. 5 (2014): 94–107. [doi:10.3905/jpm.2014.40.5.094](https://doi.org/10.3905/jpm.2014.40.5.094).
 
-[35] Finly. “First-Session Same-Clock Forward Measurement.” [public/data/competition_forward_profit_2026_08_31.json](https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_08_31.json).
+[35] Finly. “September 2 Same-Clock Forward Measurement.” [public/data/competition_forward_profit_2026_09_02.json](https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_09_02.json).
 
 [36] Finly. “Live v2 Economic Options Authority.” [lib/live_economic_options_authority.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/live_economic_options_authority.mjs).
 
 [37] Finly. “Current Signal and Quote-Surface Eligibility Calibration.” [public/data/options_policy_calibration.json](https://owlsowo.github.io/finly-bot/data/options_policy_calibration.json).
+
+[38] Finly. “September 2 Live Options Decision Record.” [public/data/options_live_decision_funnel_2026_09_02.json](https://owlsowo.github.io/finly-bot/data/options_live_decision_funnel_2026_09_02.json).
