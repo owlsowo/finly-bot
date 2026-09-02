@@ -10,6 +10,7 @@ import {
   ALPACA_MCP_CLOSING_CREDIT_CAPABILITY,
   AlpacaPaperLifecycleRuntime,
   FileLifecycleCheckpointStore,
+  MAX_EXIT_CANCEL_ATTEMPTS,
   toAlpacaClosingCreditProjection,
 } from "../lib/paper_lifecycle_runtime.mjs";
 import { runDecision } from "../lib/pipeline.mjs";
@@ -429,5 +430,56 @@ test("restart after a lost cancel acknowledgement reconciles the old order and c
   working.legs.forEach((leg) => { leg.filled_qty = working.qty; });
   const closed = await runtime.reconcileExit();
   assert.equal(closed.phase, "CLOSED");
+  assert.equal(submitted.size, 1);
+});
+
+test("a cancel request lost before Alpaca sees it retries only under a new durable request and is bounded", async (t) => {
+  const store = await temporaryStore(t);
+  const submitted = new Map();
+  let cancelCalls = 0;
+  const lookup = async (clientOrderId) => {
+    if (clientOrderId === entryProjection.client_order_id) {
+      return nestedOrder(entryProjection, { status: "filled", filled: Number(entryProjection.qty) });
+    }
+    return submitted.get(clientOrderId) ?? null;
+  };
+  const open = () => openRuntime({
+    store,
+    lookup,
+    mutationsEnabled: true,
+    placeClosingOptionOrder: async (projection) => {
+      submitted.set(projection.client_order_id, nestedOrder(projection, { id: "request-lost-exit-order-001" }));
+    },
+    cancelOptionOrder: async () => {
+      cancelCalls += 1;
+      throw new Error("request was lost before reaching Alpaca");
+    },
+    closingCapability: ALPACA_MCP_CLOSING_CREDIT_CAPABILITY,
+  });
+  let runtime = await open();
+  await runtime.reconcileEntry();
+  await runtime.requireExit("competition_end_guard");
+  await runtime.submitCreditExit({ requestId: "finly-exit-requestlost01", creditLimit: 1.00 });
+
+  const first = await runtime.cancelWorkingExit({ requestId: "finly-exitcancel-requestlost01" });
+  assert.equal(first.phase, "EXIT_ACCEPTED");
+  assert.equal(first.active_exit.status, "accepted");
+  assert.equal(runtime.exitCancelAttemptCount(), 1);
+  assert.equal(cancelCalls, 1);
+
+  runtime = await open();
+  const deduplicated = await runtime.cancelWorkingExit({ requestId: "finly-exitcancel-requestlost01" });
+  assert.equal(deduplicated.revision, first.revision);
+  assert.equal(cancelCalls, 1);
+
+  const second = await runtime.cancelWorkingExit({ requestId: "finly-exitcancel-requestlost02" });
+  assert.equal(second.active_exit.status, "accepted");
+  assert.equal(runtime.exitCancelAttemptCount(), MAX_EXIT_CANCEL_ATTEMPTS);
+  assert.equal(cancelCalls, 2);
+  await assert.rejects(
+    () => runtime.cancelWorkingExit({ requestId: "finly-exitcancel-requestlost03" }),
+    /bounded exit cancel attempts are exhausted/,
+  );
+  assert.equal(cancelCalls, 2);
   assert.equal(submitted.size, 1);
 });
