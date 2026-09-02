@@ -338,7 +338,7 @@ test("a certified bullish options entry is not submitted when judged model evide
     logPath: join(temporary, "decisions.jsonl"),
     lockPath: join(temporary, "agent.lock"),
   });
-  assert.equal(result.ok, true);
+  assert.equal(result.ok, true, JSON.stringify(result));
   assert.equal(result.receipt.certificate.certified, true, "the fixture isolates the event-model entry gate");
   assert.equal(result.execution.status, "MODEL_EVIDENCE_NO_TRADE");
   assert.equal(result.execution.event_evidence_gate.entry_gate_passed, false);
@@ -376,7 +376,7 @@ test("a certified bullish options entry is not submitted at the exact official e
     logPath: join(temporary, "decisions.jsonl"),
     lockPath: join(temporary, "agent.lock"),
   });
-  assert.equal(result.ok, true);
+  assert.equal(result.ok, true, JSON.stringify(result));
   assert.equal(result.receipt.certificate.certified, true, "the fixture isolates the official entry cutoff");
   assert.equal(result.execution.status, "OPTIONS_ENTRY_CUTOFF_NO_TRADE");
   assert.equal(result.execution.options_competition_controls.entry_gate_passed, false);
@@ -419,6 +419,9 @@ test("current pipeline consumes the live fixture without relabeling its data", a
   });
   assert.equal(result.receipt.data_mode, "alpaca_paper_live");
   assert.equal(result.receipt.certificate.authorization_scope, "paper_submit");
+  assert.equal(result.receipt.certificate.schema_version, "risk_certificate.v3");
+  assert.equal(result.receipt.sanitized_decision_diagnostics.schema_version, "finly_sanitized_decision_diagnostics.v1");
+  assert.ok(result.receipt.sanitized_decision_diagnostics.compiler_rejection_counts);
   assert.deepEqual(result.receipt.source_signals.map((signal) => signal.family), ["market", "options", "events"]);
   assert.match(result.fixture_sha256, /^sha256:[a-f0-9]{64}$/);
 });
@@ -444,7 +447,7 @@ test("autonomous cycle journals NO_TRADE first and never invokes an executor by 
     logPath,
     lockPath,
   });
-  assert.equal(result.ok, true);
+  assert.equal(result.ok, true, JSON.stringify(result));
   assert.equal(executorCalls, 0);
   const raw = await readFile(logPath, "utf8");
   const lines = raw.trim().split("\n").map(JSON.parse);
@@ -458,7 +461,7 @@ test("autonomous cycle journals NO_TRADE first and never invokes an executor by 
   assert.equal(raw.includes("ALSO_SHOULD_NOT_APPEAR"), false);
 });
 
-test("economic core vetoes a direction-mismatched new entry before the executor", async (t) => {
+test("bounded economic authority permits a checked bearish entry", async (t) => {
   const temporary = await mkdtemp(join(tmpdir(), "finly-economic-entry-gate-"));
   t.after(() => rm(temporary, { recursive: true, force: true }));
   let executorCalls = 0;
@@ -486,10 +489,10 @@ test("economic core vetoes a direction-mismatched new entry before the executor"
     lockPath: join(temporary, "agent.lock"),
   });
   assert.equal(result.ok, true);
-  assert.equal(result.execution.status, "ECONOMIC_GUARD_NO_TRADE");
-  assert.equal(result.execution.economic_guard.entry_gate_passed, false);
-  assert.ok(result.execution.economic_guard.reason_codes.includes("LONG_ONLY_ECONOMIC_DIRECTION_MISMATCH"));
-  assert.equal(executorCalls, 0);
+  assert.equal(result.execution.status, "SUBMITTED_BY_INJECTED_EXECUTOR");
+  assert.equal(result.execution.economic_guard.entry_gate_passed, true);
+  assert.equal(result.receipt.certificate.decision, "BEAR_PUT_DEBIT_SPREAD");
+  assert.equal(executorCalls, 1);
 });
 
 test("process lock and explicit-executor gate fail closed", async (t) => {

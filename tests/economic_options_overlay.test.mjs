@@ -9,8 +9,8 @@ import { sha256 } from "../lib/canonical.mjs";
 import {
   applyEconomicRiskCommitteeVeto,
   buildCurrentEconomicDecision,
-  buildEconomicOptionsDirectionAuthority,
 } from "../lib/economic_research.mjs";
+import { buildLiveEconomicOptionsDirectionAuthority as buildEconomicOptionsDirectionAuthority } from "../lib/live_economic_options_authority.mjs";
 import { POLICY } from "../lib/policy.mjs";
 import { aggregateSignals } from "../lib/signals.mjs";
 import { runAutonomousPaperCycle } from "../scripts/autonomous_paper_agent.mjs";
@@ -119,10 +119,10 @@ function supportiveInputs() {
   };
 }
 
-test("checked economic authority can permit only bullish direction and never broker mutation", () => {
+test("checked economic authority bounds either short-horizon direction and never broker mutation", () => {
   const allowed = buildEconomicOptionsDirectionAuthority(economicBundle(), { asOf: AS_OF });
-  assert.equal(allowed.direction, "bullish");
-  assert.equal(allowed.decision, "ALLOW_BULLISH_DIRECTION_ONLY");
+  assert.equal(allowed.direction, "bidirectional");
+  assert.equal(allowed.decision, "ALLOW_BOUNDED_DIRECTION");
   assert.ok(allowed.maximum_direction_score >= POLICY.directionThreshold);
   assert.equal(allowed.reduction_only, true);
   assert.equal(allowed.broker_mutation_authorized, false);
@@ -139,7 +139,17 @@ test("checked economic authority can permit only bullish direction and never bro
   assert.equal(vetoed.decision, "NO_TRADE");
 });
 
-test("economic core owns the sign while model event evidence is monotonically reduction-only", () => {
+test("bidirectional live authority remains contingent on material long-horizon risk exposure", () => {
+  const riskOn = buildEconomicOptionsDirectionAuthority(economicBundle(), { asOf: AS_OF });
+  assert.equal(riskOn.direction, "bidirectional");
+
+  const riskOffBundle = economicBundle({ multiplier: 0 });
+  const riskOff = buildEconomicOptionsDirectionAuthority(riskOffBundle, { asOf: AS_OF });
+  assert.equal(riskOff.decision, "NO_TRADE");
+  assert.equal(riskOff.direction, "neutral");
+});
+
+test("market momentum owns the sign while options and model evidence are reduction-only", () => {
   const authority = buildEconomicOptionsDirectionAuthority(economicBundle(), { asOf: AS_OF });
   const deterministic = replay.signals
     .filter((signal) => signal.family === "market" || signal.family === "options")
@@ -163,8 +173,15 @@ test("economic core owns the sign while model event evidence is monotonically re
 
   const conflictingDeterministic = replay.signals.filter((signal) => signal.family !== "events");
   const constrained = aggregateSignals(conflictingDeterministic, { economicDirectionAuthority: authority });
-  assert.equal(constrained.direction, "neutral", "bearish short-horizon evidence vetoes instead of reversing the long-only core");
-  assert.equal(constrained.direction_score, 0);
+  assert.equal(constrained.direction, "bearish", "bearish market momentum can select a capped-loss put spread");
+  assert.ok(constrained.direction_score < 0);
+
+  const marketBullOptionsBear = deterministic.map((signal) => signal.family === "options"
+    ? { ...signal, direction_score: -0.9 }
+    : signal);
+  const reduced = aggregateSignals(marketBullOptionsBear, { economicDirectionAuthority: authority });
+  assert.notEqual(reduced.direction, "bearish", "raw option skew cannot reverse the market-owned sign");
+  assert.ok(reduced.direction_score < withoutModel.direction_score);
 });
 
 test("tampered authority cannot enter the deterministic compiler", () => {
@@ -206,7 +223,7 @@ test("autonomous cycle can reach an injected executor with one bounded bullish S
     lockPath: join(temporary, "agent.lock"),
   });
 
-  assert.equal(result.ok, true);
+  assert.equal(result.ok, true, JSON.stringify(result));
   assert.equal(result.execution.status, "SUBMITTED_BY_INJECTED_EXECUTOR");
   assert.equal(result.execution.economic_guard.entry_gate_passed, true);
   assert.equal(submissions.length, 1);
@@ -216,7 +233,12 @@ test("autonomous cycle can reach an injected executor with one bounded bullish S
   assert.ok(candidate.max_loss <= POLICY.riskPerTradeDollarCap);
   assert.ok(certificate.reserved_max_loss <= POLICY.riskPerTradeDollarCap);
   assert.equal(certificate.certified, true);
-  assert.equal(result.receipt.economic_direction_authority.direction, "bullish");
+  assert.equal(certificate.schema_version, "risk_certificate.v3");
+  assert.equal(certificate.quantity, 1);
+  assert.deepEqual(certificate.rejection_codes, []);
+  assert.equal(result.receipt.sanitized_decision_diagnostics.schema_version, "finly_sanitized_decision_diagnostics.v1");
+  assert.deepEqual(result.receipt.sanitized_decision_diagnostics.hard_safety_blocking_reason_codes, []);
+  assert.equal(result.receipt.economic_direction_authority.direction, "bidirectional");
   assert.equal(result.receipt.intent.direction, "bullish");
 
   const journal = (await readFile(join(temporary, "decisions.jsonl"), "utf8")).trim().split("\n").map(JSON.parse);
@@ -257,7 +279,7 @@ test("every execution cycle refreshes and validates its economic bundle before r
       logPath: join(temporary, "decisions.jsonl"),
       lockPath: join(temporary, `agent-${cycle}.lock`),
     });
-    assert.equal(result.ok, true);
+    assert.equal(result.ok, true, JSON.stringify(result));
   }
   assert.equal(providerCalls, 2);
   assert.equal(inputCalls, 2);

@@ -13,9 +13,9 @@ import { buildFreshCurrentEconomicBundle } from "../lib/current_economic_bundle.
 import { FeatherlessEvidenceExtractor, LocalLlamaEvidenceExtractor } from "../lib/evidence_extractor.mjs";
 import { createG4OfficialEquityCoordinator } from "../lib/g4_official_coordinator.mjs";
 import {
-  buildEconomicOptionsDirectionAuthority,
-  buildEconomicOptionsExecutionGuard,
-} from "../lib/economic_research.mjs";
+  buildLiveEconomicOptionsDirectionAuthority,
+  buildLiveEconomicOptionsExecutionGuard,
+} from "../lib/live_economic_options_authority.mjs";
 import { evaluateDebitSpreadExit } from "../lib/exit_policy.mjs";
 import { HistoricalAlpacaClient } from "../lib/historical_alpaca.mjs";
 import { fetchAlpacaLiveSnapshot } from "../lib/live_snapshot.mjs";
@@ -258,7 +258,7 @@ export async function buildAutonomousPaperDecision({
   });
   const economicDirectionAuthority = economicBundle === null
     ? null
-    : buildEconomicOptionsDirectionAuthority(economicBundle, { asOf: inputs.decisionTime });
+    : buildLiveEconomicOptionsDirectionAuthority(economicBundle, { asOf: inputs.decisionTime });
   const receipt = await runDecision({
     fixture,
     planner: new DeterministicReplayPlanner(),
@@ -735,7 +735,7 @@ export async function runAutonomousPaperCycle({
       if (executionEnabled) {
         try {
           economicBundle = await economicBundleProvider({ client, now });
-          buildEconomicOptionsDirectionAuthority(economicBundle, { asOf: isoNow(now) });
+          buildLiveEconomicOptionsDirectionAuthority(economicBundle, { asOf: isoNow(now) });
         } catch (error) {
           economicRefreshError = error;
         }
@@ -809,7 +809,7 @@ export async function runAutonomousPaperCycle({
       let economicGuard = null;
       if (executionEnabled) {
         if (economicBundle === null) throw new Error("execution requires a freshly checked economic guard bundle");
-        economicGuard = buildEconomicOptionsExecutionGuard(economicBundle, {
+        economicGuard = buildLiveEconomicOptionsExecutionGuard(economicBundle, {
           asOf: isoNow(now),
           intentDirection: result.receipt.intent.direction,
         });
@@ -989,6 +989,7 @@ async function main() {
     })
     : undefined;
   const intervalSeconds = finiteInteger(process.env.FINLY_AGENT_INTERVAL_SECONDS ?? 0, "FINLY_AGENT_INTERVAL_SECONDS", { minimum: 0, maximum: 86_400 });
+  const maximumCycles = finiteInteger(process.env.FINLY_AGENT_MAXIMUM_CYCLES ?? 1, "FINLY_AGENT_MAXIMUM_CYCLES", { minimum: 1, maximum: 72 });
   const controller = new AbortController();
   process.once("SIGINT", () => controller.abort());
   process.once("SIGTERM", () => controller.abort());
@@ -1000,6 +1001,7 @@ async function main() {
     economicBundleProvider,
     signingSecret,
     intervalSeconds,
+    maximumCycles,
     signal: controller.signal,
     onCycle: (result) => {
       process.stdout.write(`${JSON.stringify({

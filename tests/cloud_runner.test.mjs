@@ -480,7 +480,7 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
   );
   assert.match(workflow, /cron:\s*"30 12 31 8 \*"/);
   assert.match(workflow, /cron:\s*"32 13 31 8 \*"/);
-  assert.match(workflow, /timeout-minutes:\s*12/);
+  assert.match(workflow, /timeout-minutes:\s*140/);
   assert.match(workflow, /FINLY_COMPETITION_START_AT:\s*"2026-08-31T13:30:00\.000Z"/);
   assert.match(workflow, /FINLY_COMPETITION_END_AT:\s*"2026-09-04T13:30:00\.000Z"/);
   assert.match(workflow, /FINLY_OPTIONS_ENTRY_CUTOFF_AT:\s*"2026-09-02T19:00:00\.000Z"/);
@@ -489,11 +489,10 @@ test("cloud workflow is date-gated, serialized, stateful, paper-only, with an op
   assert.match(workflow, /FINLY_G4_PRODUCTION_ENABLED:\s*"true"/);
   assert.match(workflow, /FINLY_G4_CHECKPOINT_PATH:\s*data\/private\/g4-official-equity/);
   assert.match(workflow, /FINLY_G4_LOG_PATH:\s*outputs\/g4_official_equity\.jsonl/);
-  assert.match(workflow, /FINLY_AGENT_INTERVAL_SECONDS:\s*"0"/);
-  assert.match(workflow, /for cycle in 1 2 3 4; do/);
+  assert.match(workflow, /FINLY_AGENT_INTERVAL_SECONDS:\s*"300"/);
+  assert.match(workflow, /FINLY_AGENT_MAXIMUM_CYCLES:\s*"24"/);
   assert.match(workflow, /node scripts\/autonomous_paper_agent\.mjs/);
-  assert.match(workflow, /\["RECONCILING", "READY", "FROZEN"\]\.includes/);
-  assert.match(workflow, /if \[ "\$cycle" -lt 4 \]; then sleep 2; fi/);
+  assert.doesNotMatch(workflow, /for cycle in 1 2 3 4; do/);
   assert.match(workflow, /FINLY_USE_LOCAL_LLAMA_EVENTS:\s*"false"/);
   assert.match(workflow, /FINLY_USE_FEATHERLESS_EVENTS:\s*"true"/);
   assert.match(workflow, /FINLY_FEATHERLESS_MODEL:\s*Qwen\/Qwen3-32B/);
