@@ -406,5 +406,5 @@ test("calculator is pure and cannot reach execution, credentials, network, or pe
   assert.doesNotMatch(frozenTrader, /competition_forward_profit/u);
   assert.doesNotMatch(coordinator, /competition_forward_profit/u);
   assert.doesNotMatch(workflow, /competition.forward.profit/u);
-  assert.match(workflow, /FINLY_CODE_VERSION: e0d8dc3ec374d69caf2cfaae27503a8aca2cd7f4/u);
+  assert.match(workflow, /FINLY_CODE_VERSION: 36ce122519de1af370252459eb01948be99a7698/u);
 });
