@@ -11,11 +11,13 @@ const revision = JSON.parse(await readFile(new URL("../config/options-policy-rev
 const calibration = JSON.parse(await readFile(new URL("../evidence/options_policy_calibration.json", import.meta.url)));
 const workflow = await readFile(new URL("../.github/workflows/paper-agent-cloud.yml", import.meta.url), "utf8");
 
-test("prospective v3 is additive and preserves the exact dated v2 record", () => {
+test("activated v3 is additive and preserves the exact dated v2 record", () => {
   assert.equal(createHash("sha256").update(priorBytes).digest("hex"), "e286323b38e2c686b7713c4b83b3da2c68183bb9128741d93aa261b7f40348e4");
   assert.equal(revision.revision_id, "live-options-v3-2026-09-02");
   assert.equal(revision.provenance.previous_revision_record, "config/options-policy-revision-2026-09-01.json");
-  assert.equal(revision.activation.status, "PREPARED_NOT_PUSHED");
+  assert.equal(revision.activation.status, "ACTIVE_ON_MAIN");
+  assert.equal(revision.activation.activated_at, "2026-09-02T04:08:18Z");
+  assert.equal(revision.activation.deployment_commit, "d8e1fcceb50552c0bcd3cd11e3aad1cec8e454e4");
 });
 
 test("v3 changes only the approved alpha thresholds and pins their implementation commit", () => {

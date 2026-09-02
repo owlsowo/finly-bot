@@ -12,7 +12,7 @@ Paper trading follows real prices with virtual money. In Finly's first session o
 
 Finly is one autonomous competition strategy with two coordinated sleeves. Its four-fund allocation keeps roughly half the account in QQQ, which tracks the Nasdaq-100; divides most of the remainder among three market sectors with stronger longer-term price trends; and holds 3% in cash. The allocation and its selection rule were fixed before paper trading began.
 
-The coordinated SPY options sleeve evaluates a small, defined-risk trade on the same paper account. Qwen3-32B, hosted through Featherless, reads public Alpaca news and explains what supports or weakens the case. It does not choose how much money to risk or write the broker order. Fixed code chooses the direction, contracts, quantity, maximum loss, and every field sent to Alpaca. The competition limit is **$500 of maximum loss per options trade**. The model may make Finly more cautious or stop a trade; it cannot raise that limit.
+The coordinated SPY options sleeve evaluates a small, defined-risk trade on the same paper account. Fresh SPY price momentum chooses a positive or negative short-horizon view. Option-market evidence and Qwen3-32B's reading of public Alpaca news may support it, weaken it, or stop it. Fixed code—not the model—chooses a bullish call spread, a bearish put spread, or no trade; fixes every broker field; and limits a live entry to **one contract and no more than $500 of possible loss**.
 
 The idea is simple: use AI for the part it does well—reading and explaining—while ordinary software keeps control of the account.
 
@@ -32,17 +32,17 @@ A simpler version built from long-running industry data was also tested on **21,
 
 ### A decision anyone can replay
 
-The interactive options demonstration shows what the risk controls do. In one illustrative SPY plan, the most that could be lost was **$366** and the most that could be gained was **$634**. Finly reached the same decision when each of four information sources was removed in turn and after 32 small changes to the inputs. No broker order or fill occurred.
+The interactive options demonstration shows all three outcomes: a bullish call spread, a bearish put spread, or no trade. In one illustrative SPY plan, the most that could be lost was **$366** and the most that could be gained was **$634**. Change the evidence and Finly shows why the decision weakens or stops before the paper account takes on risk.
 
-Change the demonstration to conflicting evidence and Finly stops before the paper account takes on any risk. The demo can illustrate rising- and falling-price cases; during the competition, the options sleeve may open only an approved rising-price trade—or record `NO_TRADE`.
+The live policy is deliberately selective without requiring every good trade to win more than half the time. Across **517 sampled SPY signal windows**, **11 cleared every alpha gate** on the symmetric modeled quote surface: **7 bullish call spreads and 4 bearish put spreads**. Their certified maximum losses were **$440–$455**, conservative modeled values after costs were **$10.08–$22.26**, and reward-to-risk ratios were **2.30–2.41**. The [reproducible calibration artifact](evidence/options_policy_calibration.json) shows that both directions are reachable under the same rules; it is not a claim of historical option quotes or realized profit.
 
 ## How one idea becomes one checked order
 
 1. **Finly gathers current information.** The live path records prices, option quotes, trading activity, and public Alpaca news.
 2. **AI explains the case.** The model identifies the evidence for the trade, the evidence against it, and what remains uncertain.
 3. **Code builds the position.** Tested rules choose the exact options, quantity, possible gain, and maximum loss.
-4. **Finly tries to disprove the decision.** It removes information sources and changes important inputs to see whether the result still holds.
-5. **The system trades or stays out.** Only a decision that passes every check can become one exact Alpaca paper order. Otherwise, the account is left untouched.
+4. **Finly challenges the decision.** It removes information sources and changes important inputs, publishing whether confidence survives without allowing those diagnostics to enlarge the trade.
+5. **Hard rules decide whether money may move.** A short-lived certificate, one-contract limit, $500 ceiling, fresh-account checks, exact order binding, idempotency, and broker read-back still control execution.
 
 ## For technical judges
 
@@ -50,7 +50,9 @@ The [mathematical technical note](public/judge/Finly_Technical_Proposal.pdf) der
 
 Some frozen research files call the four-fund allocation `G4`. That is an internal experiment label retained for reproducibility, not a product generation or a second Finly strategy.
 
-The public verification run found **809 automated tests: 807 passed, 0 failed, and 2 were skipped**. The suite covers historical timing and trading costs, options payoff arithmetic, data freshness, position limits, account checks, order construction, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
+The public verification run found **826 automated tests: 824 passed, 0 failed, and 2 optional private-ledger checks were skipped**. The suite covers historical timing and trading costs, bullish and bearish options paths, ordinary-market calibration, payoff arithmetic, data freshness, position limits, account checks, order construction, bounded cancel/reprice exits, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
+
+The allocation sleeve remained unchanged after paper trading began. The options sleeve was revised separately after a published no-trade diagnostic; the [current dated revision record](config/options-policy-revision-v3-2026-09-02.json) identifies the exact code, what changed, what did not, and how earlier decisions remain attributed. The [superseded v2 record](config/options-policy-revision-2026-09-01.json) remains public.
 
 ```bash
 npm install

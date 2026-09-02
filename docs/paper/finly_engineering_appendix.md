@@ -12,7 +12,7 @@ Finly is one autonomous competition strategy built for the Alpaca paper-trading 
 
 The four-fund sleeve is internally identified as G4. It assigns one half of its research allocation to QQQ and divides the other half among the three strongest original Select Sector SPDR funds under a twelve-to-six-month relative-momentum rule. The competition deployment scales that allocation to 97 percent, preserves a 3 percent cash reserve, and performs one initial rebalance without in-contest re-optimization. In a consumed, post-selected simulation from 2 January 2013 through 27 August 2026, with modeled one-way costs of five basis points, G4 returned 967.11 percent while SPY returned 580.82 percent. The result is economically large but did not pass Finly's promotion gate: its Deflated Sharpe probability was 3.75 percent, its worst familywise-adjusted bootstrap p-value was 37.18 percent, it did not consistently beat a static SPY/QQQ growth control, and the frozen Yahoo-versus-Alpaca source reconciliation failed closed.
 
-The coordinated SPY options sleeve uses a distinct long-only SPY/BIL policy to supply a bounded bullish direction or no-trade authority. Deterministic market and option-surface evidence must confirm that direction. Qwen3-32B, hosted through Featherless, sees only canonical public Alpaca news and is reduction-only: supportive prose cannot increase exposure, while adverse evidence may reduce or veto a proposal. Code enumerates defined-risk vertical debit spreads, evaluates two 2,048-path scenario models, applies conservative expected-value and probability gates, sizes maximum loss, and issues a thirty-second HMAC-signed risk certificate bound to one exact order projection. Alpaca execution proceeds through a durable state machine, deterministic client-order identifiers, pre-mutation checkpoints, broker read-back, and fail-closed reconciliation.
+The coordinated SPY options sleeve uses the frozen long-only SPY/BIL receipt as a freshness and long-horizon risk-on guard, not as the short-horizon trade direction. In live policy v2, fresh SPY price momentum owns the bullish or bearish sign. Option skew and Qwen3-32B's assessment of canonical public Alpaca news may confirm, reduce, or veto that signed view but cannot reverse it. Code enumerates defined-risk bull-call or bear-put debit spreads, evaluates two 2,048-path scenario models, applies conservative expected-value and probability gates, limits live entry to one contract and at most $500 of loss, and issues a thirty-second HMAC-signed v3 risk certificate bound to one exact order projection. Alpaca execution proceeds through a fresh preflight, durable state machine, deterministic client-order identifiers, pre-mutation checkpoints, broker read-back, and fail-closed reconciliation.
 
 This paper specifies the algorithms, causal timing, cost conventions, statistical tests, risk constraints, state transitions, and reproducibility boundary. At the first closing bell, 15 ETF fill events had built the allocation sleeve; Finly was up $95.32 while the same-$100,000 SPY raw-price benchmark was down $57.99, a $153.31 advantage at one exact timestamp. The evidence supports an inspectable paper-trading experiment, not durable alpha, verified live options profit, or future outperformance.
 
@@ -22,12 +22,16 @@ Trading-agent demonstrations often collapse a chain of unlike decisions into one
 
 Finly treats the agent as a controlled pipeline rather than a single oracle. The project makes four contributions.
 
-1. **One strategy with coordinated sleeves.** G4 supplies a frozen four-fund allocation for the time-bounded competition account. The capped-risk options sleeve uses a distinct SPY/BIL economic authority instead of inferring direction from the G4 backtest; separate signals and risk accounts preserve auditability without creating a second competition strategy.
-2. **Reduction-only model authority.** The hosted model extracts bounded scores and rationales from canonical public news. It cannot amplify the deterministic direction, choose an option, choose quantity, access account secrets, or authorize a broker mutation.
+1. **One strategy with coordinated sleeves.** G4 supplies a frozen four-fund allocation for the time-bounded competition account. The capped-risk options sleeve uses a distinct signed live policy instead of inferring direction from the G4 backtest; separate signals and risk accounts preserve auditability without creating a second competition strategy.
+2. **Signed price authority with reduction-only confirmation.** Fresh market momentum owns the short-horizon sign. Option skew and the hosted model's bounded news assessments may confirm, reduce, or veto that view, but cannot reverse it, choose an option, choose quantity, access account secrets, or authorize a broker mutation.
 3. **A deterministic compiler and permit.** Typed evidence becomes a checked intent; an enumerator constructs vertical spreads; two scenario models evaluate them; fixed gates select at most one candidate; and an HMAC-signed certificate binds evidence, policy, risk, account, market, candidate, quantity, and order projection.
 4. **Restart-safe Alpaca execution.** The cloud runner persists intent before mutation, advances at most one broker-changing step per cycle, assigns deterministic client-order identifiers, reconciles ambiguous acknowledgements, and publishes only sanitized status.
 
 Research, synthetic demonstration, paper authorization, and broker observation are distinct. A replay is not a fill, a fixture is not an executable permit, and a paper fill is not real-capital execution. Tests establish software behavior, not forecast accuracy [1–7].
+
+### 1.1 Versioned live-policy provenance
+
+The G4 allocation rule, historical ledger, frozen SPY/BIL economic research, and first-session measurements were not revised. After the original options policy produced repeated `NO_TRADE` decisions, Finly activated bidirectional live policy v2 at **3:28:21 UTC** and a prospective asymmetric-payoff calibration at **4:08:18 UTC on 2 September 2026**. The cloud workflow in revision [`d8e1fcc`](https://github.com/owlsowo/finly-bot/tree/d8e1fcc) pins implementation [`318c943`](https://github.com/owlsowo/finly-bot/tree/318c943): fresh market momentum may select a bounded bullish or bearish view, while the frozen economic receipt remains a freshness and risk-on guard. A candidate must show positive conservative value, at least 1.25-to-1 reward/risk, and at least 45 percent modeled probability of profit. The $500 loss ceiling, 0.5-percent equity budget, one-contract limit, paper-only endpoint, HMAC permit, final preflight, idempotent order identity, and broker reconciliation remained hard controls. Every earlier decision and P&L observation remains attributed to the policy revision that produced it. No live options fill is claimed.
 
 ## 2. Architecture and authority
 
@@ -44,16 +48,16 @@ Historical adjusted closes
         │                                      │
         │                              Alpaca MCP stock orders
         │
-Alpaca SPY/BIL bars ── deterministic economic policy ── bullish cap / NO_TRADE
-Alpaca SPY market ───── deterministic market score ───────────────┐
-Alpaca option chain ─── deterministic option-surface score ──────┤
-Alpaca public news ──── Qwen structured assessment ── reduce/veto┤
+Alpaca SPY/BIL bars ── frozen freshness + risk-on guard ──────────┐
+Alpaca SPY market ───── price-momentum sign: bull / bear / neutral├──┐
+Alpaca option chain ─── deterministic confirmation / reduction ──┤  │
+Alpaca public news ──── Qwen confirmation / reduction / veto ────┘  │
                                                                   ▼
                                                     checked economic intent
                                                                   │
                                      enumerate and value SPY vertical spreads
                                                                   │
-                              source-removal + 32-case perturbation challenge
+                              source-removal + 32-case alpha diagnostics
                                                                   │
                                      HMAC risk certificate + fresh preflight
                                                                   │
@@ -66,8 +70,9 @@ Both sleeves ─── broker read-back ── encrypted state ── sanitized 
 | --- | --- | --- |
 | G4 research rule | Ranked sectors and research weights | Options, credentials, or discretionary overrides |
 | Frozen competition protocol | Dated one-time allocation and 3% reserve | In-contest re-optimization |
-| SPY/BIL economic policy | Maximum long-only SPY weight or no trade | Contract, quantity, or broker payload |
-| Qwen news assessor | Bounded event scores and rationales | Direction amplification, contract, size, credentials, mutation |
+| Frozen SPY/BIL economic receipt | Freshness and long-horizon risk-on gate | Short-horizon sign, contract, quantity, or broker payload |
+| Market-momentum policy | Bullish, bearish, or neutral short-horizon sign | Contract, quantity, credentials, or mutation |
+| Options and Qwen confirmation | Bounded confirmation, reduction, or veto | Sign reversal, contract, size, credentials, mutation |
 | Deterministic compiler | Eligible spread and order-independent risk | Broker submission |
 | Certificate and preflight | Permit or no trade for one projection | General permission to trade |
 | Alpaca executor | Submit or reconcile the bound paper order | Change certified economics |
@@ -249,9 +254,9 @@ $$
 
 The Deflated Sharpe probability was 0.7182. Eight of nine precommitted gates passed, but the overall statistical gate failed. This supplies cross-era economic evidence, not independent proof of durable alpha.
 
-## 6. The options sleeve's distinct SPY/BIL authority
+## 6. Frozen economic research and the live risk-on guard
 
-G4 chooses the competition equity sleeve; it does not authorize options. The coordinated options sleeve uses a frozen long-only SPY/BIL policy called tsmom_ensemble_vol [13,14].
+G4 chooses the competition equity sleeve; it does not authorize options. A separate frozen long-only SPY/BIL policy called tsmom_ensemble_vol supplies a reproducible long-horizon economic receipt [13,14]. Live v2 reuses that checked receipt only as a freshness and risk-on guard; it does not use the receipt to choose bullish versus bearish short-horizon direction [36].
 
 For h in {21, 63, 252}, it computes SPY's excess log trend:
 
@@ -265,11 +270,17 @@ $$
 q(t) = (1/3) Σ_h I[x_h(t) > 0]; v(t) = min[1, 0.10/σ₂₀(t)]; w_SPY(t) = q(t)v(t); w_BIL(t) = 1 − w_SPY(t).
 $$
 
-The policy is unlevered, never shorts, and proposes a rebalance every five completed sessions. A daily bar becomes eligible only after regular close plus fifteen minutes, and SPY/BIL sessions must align. In research, a close-t signal executes at t+1 and first earns t+1-to-t+2 returns. In deployment it produces a hashed economic receipt and does not mutate the broker.
+The frozen research policy is unlevered, never shorts, and proposes a rebalance every five completed sessions. A daily bar becomes eligible only after regular close plus fifteen minutes, and SPY/BIL sessions must align. In research, a close-t signal executes at t+1 and first earns t+1-to-t+2 returns. In deployment it produces a hashed economic receipt and does not mutate the broker.
 
 In the separate 2 January 2025 through 28 August 2026 execution-realism artifact, it returned 15.39 percent at five basis points per traded leg and 10.56 percent at twenty-five basis points, versus SPY's 33.52 percent. At five basis points it had 8.12 percent modeled annualized volatility and −5.45 percent maximum drawdown. It was risk-controlled, not market-beating on total return [4].
 
-For an options entry, the guard requires a fresh rebalance proposal and at least 50 percent indicated SPY exposure. If it passes, it supplies a bullish-only direction cap equal to the SPY weight. If it fails, the outcome is no trade. Thus the library supports bullish calls and bearish puts, but the competition's live-authorized path can advance only a bullish spread or no trade.
+For an options entry, the guard requires a fresh checked receipt and at least 50 percent indicated SPY exposure. If it fails, the outcome is no trade. If it passes, the current live path derives bounded directional capacity from the checked SPY weight,
+
+$$
+u(t) = 0.5 + 0.5|w_SPY(t)-0.5|,
+$$
+
+but leaves the short-horizon sign to fresh SPY price momentum. This preserves the frozen research artifact without converting its long-only allocation into a bullish-only options rule.
 
 ## 7. Evidence, model role, and deterministic intent
 
@@ -301,7 +312,7 @@ Qwen3-32B receives only canonical public news text, required evidence IDs, under
 
 The model has no account identifier, credential, equity, buying power, position, compiler state, risk object, candidate list, order payload, or mutation tool. Source text is untrusted data, not instructions. Model output is evidence assessment, not a trade.
 
-### 7.3 Aggregation and reduction-only authority
+### 7.3 Signed market authority and reduction-only confirmation
 
 For family j,
 
@@ -315,21 +326,21 @@ $$
 d = Σ_j a_jd_j / Σ_j a_j.
 $$
 
-Coverage is min(1, Σ a_j); agreement is the share of absolute directional weight aligned with the aggregate sign. Trading requires |d| ≥ 0.18, coverage ≥ 0.35, and agreement ≥ 0.55 [16,18].
+Coverage is min(1, Σ a_j); agreement is the share of absolute directional weight aligned with the permitted sign. The generic frozen library path retains thresholds |d| ≥ 0.18, coverage ≥ 0.35, and agreement ≥ 0.55. Live v2 uses |d| ≥ 0.12, coverage ≥ 0.30, and agreement ≥ 0.45 [16,18].
 
-The live economic-authority path removes events from deterministic direction. Let d_D be deterministic direction and u the bullish economic cap. Negative event evidence creates
+In the current live path, market momentum alone owns the sign. Let s = sign(d_market), and let u be the capacity from the frozen risk-on guard. Options and event evidence that oppose s create
 
 $$
-g_model = clip[1 − Σ_events,dⱼ<0 {(−d_j)a_j / 0.25}, 0, 1].
+g_confirm = clip[1 − Σ_{j∈{options,events}, sign(d_j)=−s} {|d_j|a_j/b_j}, 0, 1].
 $$
 
 The supported score is
 
 $$
-d_supported = min[u, max(0,d_D)] × g_model.
+d_supported = s × min[u, |d_market|] × g_confirm.
 $$
 
-Positive model evidence cannot increase it. Negative evidence reduces it and may drive it to zero. This monotone, reduction-only relationship is Finly's central controlled-delegation property.
+Thus a bullish market score can compile only a bull-call spread, a bearish market score can compile only a bear-put spread, and neutral or insufficiently confirmed evidence becomes no trade. Options skew and Qwen-assessed news may improve agreement or reduce the view; neither can reverse the price sign or enlarge its magnitude above the market-and-guard envelope. This signed, reduction-only relationship is Finly's central controlled-delegation property.
 
 ## 8. Deterministic options compilation
 
@@ -349,7 +360,7 @@ $$
 Maximum loss = 100D; Maximum gain = 100(W − D).
 $$
 
-with reward-to-risk at least 1.25. Terminal payoff is
+with live-policy reward-to-risk at least 1.25. Terminal payoff is
 
 $$
 Π_call(S_T) = 100{min[W, max(0, S_T − K_long)] − D}; Π_put(S_T) = 100{min[W, max(0, K_long − S_T)] − D}.
@@ -386,32 +397,32 @@ $$
 Close value is clipped to [0,W] after two $0.03 exit-slippage charges. For model m, Finly records mean profit μ_m, standard error SE_m, probability of profit, and five-percent expected shortfall. Conservative expected value is
 
 $$
-CEV = min_m [μ_m − 1.645 SE_m]; require CEV ≥ max[$10, 0.06 × maximum loss] and conservative probability ≥ 0.53.
+CEV = min_m [μ_m − 1.645 SE_m]; the live policy requires CEV ≥ max[$5, 0.02 × maximum loss], conservative probability ≥ 0.45, and reward/risk ≥ 1.25.
 $$
 
 Probability and expected shortfall take the worse model. Among candidates with loss no greater than $500, the compiler maximizes CEV divided by maximum loss and breaks exact ties by stable candidate hash.
 
 ### 8.3 Size and challenge suite
 
-With equity E and per-contract loss L,
+With equity E and per-contract loss L, the live policy permits
 
 $$
-Q = min{4, floor[min(fE, $500)/L]},
+Q = 1 if L ≤ min(0.005E, $500), and Q = 0 otherwise.
 $$
 
-where f = 0.005 normally and 0.0025 at half-risk. New plus open defined risk may not exceed 0.03E [22].
+There is no live half-risk or multi-contract branch. New plus open defined risk may not exceed 0.03E [22]. Thus every live entry is one contract, fits a 0.5-percent equity budget, and has no more than $500 of certified maximum loss.
 
-The complete synthetic fixture contains four families, so leave-one-family-out testing creates four variants. Each must retain the same nonneutral direction, pass coverage and agreement, compile the same action, and leave the fixed candidate above EV and probability gates.
+The complete synthetic fixture contains four families, so leave-one-family-out testing creates four variants. In the current live policy these variants are alpha diagnostics: every nonneutral variant must retain the base sign, and an opposite-sign flip is prohibited. Neutralization is recorded as lost confidence rather than a hard-safety failure.
 
-Thirty-two deterministic Halton variants perturb source direction by ±0.05, quality by ±0.03, freshness and calibration by ±0.02, independence by ±0.015, spot by ±0.2 percent, leg IV by ±4 percent, history scale from 0.94 to 1.06, interest rate by ±0.5 percentage points, horizon by −1/0/+1, and entry debit by less than $0.04 [23]. Passing requires zero direction flips, at least 90 percent nonneutral direction, 80 percent trade rate, 75 percent same structure, and positive nearest-rank fifth-percentile CEV.
+Thirty-two deterministic Halton variants perturb source direction by ±0.05, quality by ±0.03, freshness and calibration by ±0.02, independence by ±0.015, spot by ±0.2 percent, leg IV by ±4 percent, history scale from 0.94 to 1.06, interest rate by ±0.5 percentage points, horizon by −1/0/+1, and entry debit by less than $0.04 [23]. Live diagnostics require zero opposite-sign flips, at least 75 percent nonneutral direction, 50 percent trade rate, 50 percent same structure, and nonnegative nearest-rank fifth-percentile CEV. These statistics describe alpha confidence. They do not authorize broker mutation.
 
-In the published synthetic run, four of four removals passed; all thirty-two variants retained direction and trade; trade and same-structure rates were 100 percent; and fifth-percentile CEV was $71.48. The selected bearish fixture had $3.66 debit, $366 maximum loss, $634 maximum gain, CEV $97.18, and 60.89 percent conservative probability [24]. It is a synthetic compiler test. Its synthetic_replay certificate cannot authorize the paper executor.
+In the frozen published synthetic run, four of four removals passed; all thirty-two variants retained direction and trade; trade and same-structure rates were 100 percent; and fifth-percentile CEV was $71.48. The selected bearish fixture had $3.66 debit, $366 maximum loss, $634 maximum gain, CEV $97.18, and 60.89 percent conservative probability [24]. It remains a synthetic compiler test under the generic replay policy. Its `synthetic_replay` certificate cannot authorize the paper executor, and its figures are not evidence of a live options fill.
 
 ## 9. Certificate and paper execution
 
 ### 9.1 One permit for one order
 
-A paper-submit certificate is valid for thirty seconds. It contains run and expiry times, paper mode, scope, intent hash, candidate ID and snapshot hash, desired order-projection hash, policy hash, evidence root, account and market hashes, observed spot and time, feed, quantity, loss reservation, entry ceiling, account equity, open risk, CEV, probability, expected shortfall, challenge summaries, and all Boolean checks [22].
+A paper-submit `risk_certificate.v3` is valid for thirty seconds. It contains run and expiry times, paper mode, scope, intent hash, candidate ID and snapshot hash, desired order-projection hash, policy hash, evidence root, account and market hashes, observed spot and time, feed, quantity, loss reservation, entry ceiling, account equity, open risk, CEV, probability, expected shortfall, diagnostic summaries, and all Boolean checks [22]. The hard certificate checks require an eligible candidate, exactly one contract, maximum loss within $500 and the 0.5-percent budget, aggregate risk within three percent of equity, a fresh recognized quote feed, a fresh unblocked paper account, and MCP execution transport. Source-removal and perturbation results are recorded as alpha diagnostics rather than hard authorization checks.
 
 The certificate ID hashes its canonical body. A separate secret of at least thirty-two bytes signs it:
 
@@ -419,7 +430,7 @@ $$
 signature = HMAC-SHA256(secret, canonical certificate body).
 $$
 
-Verification recomputes body hash and HMAC with timing-safe equality, checks paper mode and paper_submit scope, and rejects stale permits. Synthetic certificates use a separate scope. Final preflight may be fifteen seconds old at most; reviewed debit may drift $0.10, SPY 0.5 percent; the account needs Level 3 options and at least 25 percent post-trade buying power.
+Verification recomputes body hash and HMAC with timing-safe equality, checks paper mode and `paper_submit` scope, and rejects stale permits. Synthetic certificates use a separate scope. Final preflight may be fifteen seconds old at most; reviewed debit may drift $0.10 and SPY 0.5 percent; the account needs Level 3 options and at least 25 percent post-trade buying power. Preflight, idempotent client-order identity, pre-mutation state persistence, and broker reconciliation remain mandatory after certificate issuance.
 
 ### 9.2 Broker state machine
 
@@ -467,6 +478,8 @@ Each cycle permits at most one broker-changing call. Deterministic IDs hash the 
 
 Final readiness requires filled notional no lower than $20 below the authorized total and no higher than 97 percent of baseline plus one cent; cash no lower than 3 percent minus $5; exactly QQQ, XLB, XLE, and XLV; no open equity order; and broker quantities matching signed fills. Temporary endpoint convergence defers; arithmetic or identity contradiction freezes.
 
+The options lifecycle is separate. At the force-flat deadline, Finly reconciles the exact working close, cancels only that order, waits for terminal cancellation, and permits at most one deterministic replacement at a $0.01 credit floor. Lost cancellation acknowledgements and restarts recover by exact client-order identifier. Finly never expands the close into a debit or market order; the floor bounds behavior but cannot guarantee a fill.
+
 ### 9.3 Cloud state and measurement
 
 GitHub Actions runs while the laptop is off. Schedule time is not authority: an in-process UTC window and Alpaca clock govern mutation. Concurrency permits one cycle. The official Alpaca MCP server is pinned at 2.2.1 [26,27].
@@ -475,9 +488,15 @@ Lifecycle journals are encrypted with AES-256-GCM under a secret different from 
 
 The GET-only scorer compares Finly with same-timestamp SPY and rejects cashflow or provenance breaks [28]. At the first close, Finly was +$95.32 versus SPY -$57.99 at 4:00 p.m. ET: +$153.31 after 15 ETF fill events and zero external cashflows [35].
 
+### 9.4 Current eligibility calibration
+
+The separately versioned live options policy has a deterministic reachability check [37]. It samples 517 five-session SPY signal windows from 20 May 2016 through 26 August 2026, each using 96 completed daily returns, and compiles them against one fixed, symmetric 14-DTE, 20-percent-IV modeled quote surface at a common spot. Eleven of 517 windows (2.12766 percent) clear every gate: seven bullish call spreads and four bearish put spreads. Their maximum losses are $440–$455, conservative EVs are $10.08–$22.26 against required margins of $8.80–$9.10, reward/risk ratios are 2.2967–2.4091, and modeled probabilities of profit are 0.4512–0.4771. The artifact binds the 2,679 Alpaca adjusted closes and all policy inputs by hash.
+
+This calibration establishes that the path is reachable but selective. It is not an options P&L backtest: the option surfaces are fixed modeled sensitivities, not historical quotes, and no broker order, fill, or return is inferred.
+
 ## 10. Verification, reproducibility, and hackathon fit
 
-The public run executed 809 tests: 807 passed, none failed, and two were skipped [29]. Coverage includes schemas, evidence separation, G4 weights, causal lag, costs, option payoff, Black–Scholes, scenario determinism, removals, perturbations, risk limits, HMAC scopes, broker translation, stale preflight, duplicate recovery, encryption, calendar boundaries, forward attribution, and artifact checks. This establishes tested software behavior, not forecast accuracy or profitability.
+The public run executed 826 tests: 824 passed, none failed, and two were skipped [29]. Coverage includes schemas, evidence separation, G4 weights, causal lag, costs, signed live direction, eligibility-calibration integrity, option payoff, Black–Scholes, scenario determinism, removal and perturbation diagnostics, live one-contract risk limits, v3 HMAC scope, broker translation, stale preflight, bounded cancel/reprice exits, duplicate recovery, encryption, calendar boundaries, forward attribution, and artifact checks. This establishes tested software behavior, not forecast accuracy or profitability.
 
 The repository pins Node.js 26.7.0. A clean reproduction begins:
 
@@ -499,7 +518,7 @@ Finly maps to the Options Alpha Agents requirements [1,30].
 | One-page explanation | Separate judge brief plus this technical paper | The paper supplements the brief |
 | Public original work | MIT repository and source-bound artifacts [31] | Secrets and private state excluded |
 
-The strongest claim is not that an LLM found a guaranteed trade. It is that the division of authority is executable: the model reads; code computes; the permit binds one exact options plan; Alpaca records the allocation execution; and a public scorer measures the complete account without rewriting the rule.
+The strongest claim is not that an LLM found a guaranteed trade. It is that the division of authority is executable and versioned: market momentum chooses a bounded sign; options and model evidence may confirm or reduce it; code computes the exact spread and risk; the v3 permit binds one projection; Alpaca records allocation execution; and a public scorer measures the account without retroactively rewriting earlier results.
 
 ## 11. Threats and limitations
 
@@ -513,7 +532,9 @@ The strongest claim is not that an LLM found a guaranteed trade. It is that the 
 
 **Options model risk.** Positive CEV inside two approximate models can fail under jumps, regime change, surface movement, or unmodeled dependence. Defined risk does not make direction correct.
 
-**News model.** Qwen can misunderstand or omit context. Schema validation controls shape, not truth; reduction-only authority only limits the consequence.
+**News model.** Qwen can misunderstand or omit context. Schema validation controls shape, not truth; confirmation-only authority limits the consequence but does not establish forecast accuracy.
+
+**Post-diagnostic calibration.** Live v2 was calibrated after the original configuration repeatedly abstained. Its direction and confidence thresholds therefore have little independent forward exposure. The revision is disclosed and versioned, but it is not evidence of proven options alpha.
 
 **Operations.** GitHub Actions can fail or run late. State, timing, read, or reconciliation failures become no trade or frozen state.
 
@@ -523,78 +544,82 @@ The strongest claim is not that an LLM found a guaranteed trade. It is that the 
 
 Finly is one autonomous competition strategy with two coordinated execution sleeves; it does not pretend that their models, signals, or risk accounts are interchangeable. The four-fund sleeve supplies a compelling historical reason to test: $10,000 became $106,711 versus $68,082 for SPY. The failed statistical, control, and source gates supply the reason to be careful.
 
-The system turns that tension into design. A distinct SPY/BIL rule bounds the coordinated options sleeve's direction. News may reduce or veto but cannot amplify it. Code owns payoff, EV gates, quantity, loss, and broker fields. A short-lived HMAC certificate binds one state to one projection. Encrypted checkpoints and deterministic IDs make uncertain acknowledgements recoverable. The paper account then observes what happens without changing the rule.
+The system turns that tension into design. The frozen SPY/BIL receipt supplies a freshness and long-horizon risk-on guard without choosing the live sign. Fresh SPY price momentum owns that sign; option skew and news may confirm, reduce, or veto but cannot reverse it. Code owns payoff, EV gates, one-contract quantity, loss, and broker fields. A short-lived v3 HMAC certificate binds one state to one projection, while final preflight, encrypted checkpoints, deterministic IDs, and broker reconciliation make uncertain acknowledgements recoverable. The paper account then observes each versioned rule without retroactively changing earlier results.
 
 Finly's contribution is controlled delegation: every component has a useful job, every capital-bearing decision has a deterministic owner, and every public claim traces to supporting evidence.
 
 ## References
 
-[1] Finly. “Submission Requirements and Release Checklist.” [docs/REQUIREMENTS_MATRIX.md](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/docs/REQUIREMENTS_MATRIX.md).
+[1] Finly. “Submission Requirements and Release Checklist.” [docs/REQUIREMENTS_MATRIX.md](https://github.com/owlsowo/finly-bot/blob/36ce122/docs/REQUIREMENTS_MATRIX.md).
 
-[2] Finly. “Frozen G4 Source Signal.” [config/g4-official-source-signal.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/config/g4-official-source-signal.json).
+[2] Finly. “Frozen G4 Source Signal.” [config/g4-official-source-signal.json](https://github.com/owlsowo/finly-bot/blob/36ce122/config/g4-official-source-signal.json).
 
-[3] Finly. “Frozen G4 Competition Protocol.” [config/g4-official-production.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/config/g4-official-production.json).
+[3] Finly. “Frozen G4 Competition Protocol.” [config/g4-official-production.json](https://github.com/owlsowo/finly-bot/blob/36ce122/config/g4-official-production.json).
 
-[4] Finly. “Quantitative Release Gate.” [research/output/quantitative_release_gate.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/research/output/quantitative_release_gate.json).
+[4] Finly. “Quantitative Release Gate.” [research/output/quantitative_release_gate.json](https://github.com/owlsowo/finly-bot/blob/36ce122/research/output/quantitative_release_gate.json).
 
-[5] Finly. “Generation 4 Simulation Engine.” [research/champion_engine.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/research/champion_engine.mjs).
+[5] Finly. “Generation 4 Simulation Engine.” [research/champion_engine.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/research/champion_engine.mjs).
 
-[6] Finly. “Generation 4 Robustness Result.” [research/output/quant_champion_generation4_robustness.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/research/output/quant_champion_generation4_robustness.json).
+[6] Finly. “Generation 4 Robustness Result.” [research/output/quant_champion_generation4_robustness.json](https://github.com/owlsowo/finly-bot/blob/36ce122/research/output/quant_champion_generation4_robustness.json).
 
-[7] Finly. “G4 Wealth and Drawdown Series.” [public/data/g4_wealth_drawdown.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/public/data/g4_wealth_drawdown.json).
+[7] Finly. “G4 Wealth and Drawdown Series.” [public/data/g4_wealth_drawdown.json](https://github.com/owlsowo/finly-bot/blob/36ce122/public/data/g4_wealth_drawdown.json).
 
-[8] Finly. “Generation 4 Strategy Definitions.” [research/champion_strategies_generation4.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/research/champion_strategies_generation4.mjs).
+[8] Finly. “Generation 4 Strategy Definitions.” [research/champion_strategies_generation4.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/research/champion_strategies_generation4.mjs).
 
 [9] T. J. Moskowitz, Y. H. Ooi, and L. H. Pedersen. “Time Series Momentum.” *Journal of Financial Economics* 104, no. 2 (2012): 228–250. [doi:10.1016/j.jfineco.2011.11.003](https://doi.org/10.1016/j.jfineco.2011.11.003).
 
-[10] Finly. “Generation 4 Statistical Methods.” [research/champion_statistics.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/research/champion_statistics.mjs).
+[10] Finly. “Generation 4 Statistical Methods.” [research/champion_statistics.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/research/champion_statistics.mjs).
 
 [11] Kenneth R. French. [Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
 
-[12] Finly. “External-Era Public Evidence.” [public/data/attempt150_public_evidence.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/public/data/attempt150_public_evidence.json).
+[12] Finly. “External-Era Public Evidence.” [public/data/attempt150_public_evidence.json](https://github.com/owlsowo/finly-bot/blob/36ce122/public/data/attempt150_public_evidence.json).
 
-[13] Finly. “Economic Research and Current Policy.” [lib/economic_research.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/economic_research.mjs).
+[13] Finly. “Frozen Economic Research Policy.” [lib/economic_research.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/economic_research.mjs).
 
-[14] Finly. “Economic Research Evidence.” [public/data/economic_research.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/public/data/economic_research.json).
+[14] Finly. “Economic Research Evidence.” [public/data/economic_research.json](https://github.com/owlsowo/finly-bot/blob/36ce122/public/data/economic_research.json).
 
-[15] Finly. “Live Signal Construction.” [lib/live_signals.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/live_signals.mjs).
+[15] Finly. “Live Signal Construction.” [lib/live_signals.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/live_signals.mjs).
 
-[16] Finly. “Evidence Aggregation.” [lib/signals.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/signals.mjs).
+[16] Finly. “Signed Evidence Aggregation.” [lib/signals.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/signals.mjs).
 
-[17] Finly. “Hosted Evidence Extractor.” [lib/evidence_extractor.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/evidence_extractor.mjs).
+[17] Finly. “Hosted Evidence Extractor.” [lib/evidence_extractor.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/evidence_extractor.mjs).
 
-[18] Finly. “Options and Risk Policy.” [lib/policy.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/policy.mjs).
+[18] Finly. “Options, Live Alpha, and Safety Policy.” [lib/policy.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/policy.mjs).
 
-[19] Finly. “Deterministic Options Compiler.” [lib/compiler.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/compiler.mjs).
+[19] Finly. “Deterministic Options Compiler.” [lib/compiler.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/compiler.mjs).
 
-[20] Finly. “Scenario and Black–Scholes Functions.” [lib/quant.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/quant.mjs).
+[20] Finly. “Scenario and Black–Scholes Functions.” [lib/quant.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/quant.mjs).
 
 [21] F. Black and M. Scholes. “The Pricing of Options and Corporate Liabilities.” *Journal of Political Economy* 81, no. 3 (1973): 637–654. [doi:10.1086/260062](https://doi.org/10.1086/260062).
 
-[22] Finly. “Risk Certificate.” [lib/risk.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/risk.mjs).
+[22] Finly. “v3 Risk Certificate.” [lib/risk.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/risk.mjs).
 
-[23] Finly. “Source-Removal and Perturbation Gate.” [lib/stability.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/stability.mjs).
+[23] Finly. “Source-Removal and Perturbation Diagnostics.” [lib/stability.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/stability.mjs).
 
-[24] Finly. “Latest Synthetic Options Decision Receipt.” [public/data/latest_receipt.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/public/data/latest_receipt.json).
+[24] Finly. “Latest Synthetic Options Decision Receipt.” [public/data/latest_receipt.json](https://github.com/owlsowo/finly-bot/blob/36ce122/public/data/latest_receipt.json).
 
-[25] Finly. “Official G4 Equity Runner.” [lib/g4_official_equity.mjs](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/lib/g4_official_equity.mjs).
+[25] Finly. “Official G4 Equity Runner.” [lib/g4_official_equity.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/g4_official_equity.mjs).
 
 [26] Alpaca. “MCP Server.” [Official documentation](https://docs.alpaca.markets/us/docs/alpaca-mcp-server).
 
-[27] Finly. “Cloud Runner and Restart Design.” [docs/CLOUD_RUNNER.md](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/docs/CLOUD_RUNNER.md).
+[27] Finly. “Cloud Runner and Restart Design.” [docs/CLOUD_RUNNER.md](https://github.com/owlsowo/finly-bot/blob/36ce122/docs/CLOUD_RUNNER.md).
 
-[28] Finly. “Competition Forward-Profit Contract.” [config/competition-forward-profit.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/config/competition-forward-profit.json).
+[28] Finly. “Competition Forward-Profit Contract.” [config/competition-forward-profit.json](https://github.com/owlsowo/finly-bot/blob/36ce122/config/competition-forward-profit.json).
 
-[29] Finly. “Public Automated-Test Run.” [GitHub Actions run 33369848292](https://github.com/owlsowo/finly-bot/actions/runs/33369848292).
+[29] Finly. “Public Automated Verification.” [GitHub Actions](https://github.com/owlsowo/finly-bot/actions).
 
 [30] lablab.ai. [Alpaca AI Trading Agents Hackathon](https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon).
 
 [31] Finly. [Public repository](https://github.com/owlsowo/finly-bot).
 
-[32] Finly. “Sanitized Competition Account Snapshot.” [public/data/competition_live.json](https://github.com/owlsowo/finly-bot/blob/fe3a766bcc518b2961bbcae82e836417746af2a6/public/data/competition_live.json).
+[32] Finly. “Sanitized Competition Account Snapshot.” [public/data/competition_live.json](https://github.com/owlsowo/finly-bot/blob/36ce122/public/data/competition_live.json).
 
 [33] H. White. “A Reality Check for Data Snooping.” *Econometrica* 68, no. 5 (2000): 1097–1126. [doi:10.1111/1468-0262.00152](https://doi.org/10.1111/1468-0262.00152).
 
 [34] D. H. Bailey and M. López de Prado. “The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting, and Non-Normality.” *Journal of Portfolio Management* 40, no. 5 (2014): 94–107. [doi:10.3905/jpm.2014.40.5.094](https://doi.org/10.3905/jpm.2014.40.5.094).
 
 [35] Finly. “First-Session Same-Clock Forward Measurement.” [public/data/competition_forward_profit_2026_08_31.json](https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_08_31.json).
+
+[36] Finly. “Live v2 Economic Options Authority.” [lib/live_economic_options_authority.mjs](https://github.com/owlsowo/finly-bot/blob/36ce122/lib/live_economic_options_authority.mjs).
+
+[37] Finly. “Current Signal and Quote-Surface Eligibility Calibration.” [public/data/options_policy_calibration.json](https://owlsowo.github.io/finly-bot/data/options_policy_calibration.json).

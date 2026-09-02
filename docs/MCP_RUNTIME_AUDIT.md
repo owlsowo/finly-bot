@@ -97,7 +97,7 @@ Finly is one autonomous competition strategy with two coordinated sleeves. Its
 four-fund sleeve produced 15 ETF fill events; its capped-risk SPY options sleeve
 may submit only a fresh order that passes the existing evidence, payoff, loss,
 account, and lifecycle checks. Otherwise it records `NO_TRADE`. The public
-verification run contains 809 tests: 807 passed, none failed, and two were
+verification run contains 826 tests: 824 passed, none failed, and two were
 skipped. These facts supersede the pre-launch statement that all broker
 execution was prohibited; they do not establish live options P&L or future
 profitability.

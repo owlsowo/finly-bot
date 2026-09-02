@@ -73,7 +73,7 @@
 
 #v(8pt)
 #noindent[
-  *Abstract.* Finly is one autonomous paper-trading strategy with two coordinated execution sleeves and a narrow division of authority: a language model may interpret public information, but it may not create financial exposure. A deterministic policy first computes the maximum direction and size the system is willing to consider. Model evidence can reduce that envelope or veto the decision; it cannot enlarge it. Code then enumerates defined-risk option spreads, values each candidate under two scenario models, sizes maximum loss, and binds one exact order to a short-lived cryptographic permit. A restart-safe state machine submits through Alpaca and reconciles the broker before advancing.
+  *Abstract.* Finly is one autonomous paper-trading strategy with two coordinated execution sleeves and a narrow division of authority: a language model may interpret public information, but it may not create financial exposure. In the live options policy, fresh SPY price momentum owns the sign, while the option surface and model-assessed news may confirm, reduce, or veto that bounded view but cannot reverse it. The three outcomes are a bullish call spread, a bearish put spread, or no trade. A separately frozen long-horizon SPY/BIL receipt must also certify a risk-on state. Code then enumerates defined-risk bull-call or bear-put spreads, values each candidate under two scenario models, limits entry to one contract and at most \$500 of loss, and binds one exact order to a short-lived cryptographic permit. A restart-safe state machine submits through Alpaca and reconciles the broker before advancing.
 
   The allocation sleeve, called *Finly Core* (internal research identifier: G4), is a frozen four-fund rule. The coordinated options sleeve uses its own direction model and risk account so that the two sleeves remain independently auditable without becoming separate competition strategies. In a causal 2013--2026 simulation with five-basis-point one-way costs, a modeled \$10,000 became \$106,711 with the allocation rule versus \$68,082 in SPY, the fund used here to represent the S&P 500. At the first measured close, the complete paper account finished \$95.32 above its \$100,000 baseline while the same-clock SPY baseline was \$57.99 below, a \$153.31 difference after 15 ETF fill events. The contribution is therefore architectural as well as empirical: every capital-bearing decision has a rules-based owner, and every broker mutation can be traced to the evidence, policy, and risk state that authorized it.
 ]
@@ -91,10 +91,14 @@ $ <eq:pipeline>
 where $A_t$ is deterministic aggregation, $d_t$ is the permitted direction, and $pi_t$ is a one-use permit. The model contributes to $A_t$ but never receives the account state, candidate list, quantity, credentials, permit key, or mutation tool. This yields three separable claims:
 
 - *economic claim:* a frozen rule produced a measurable historical path;
-- *decision claim:* the model's authority is monotone and reduction-only;
+- *decision claim:* price momentum owns sign while option and model evidence are confirmation-only;
 - *execution claim:* only a fresh, state-bound permit can reach Alpaca.
 
 The remainder derives those three claims and states where the available evidence stops.
+
+== Versioned live-policy provenance
+
+The allocation rule, its historical ledger, and the frozen long-horizon SPY/BIL research artifacts were not revised. After the original options policy repeatedly produced `NO_TRADE`, Finly activated bidirectional live policy v2 at 3:28:21 UTC and then a prospective asymmetric-payoff calibration at 4:08:18 UTC on 2 September 2026. The current cloud workflow, revision `d8e1fcc`, pins implementation `318c943`: fresh market momentum can select a bounded bullish or bearish view; a candidate must show positive conservative value, at least 1.25-to-1 reward/risk, and at least 45 percent modeled probability of profit. The frozen economic receipt remains a freshness and risk-on guard. The \$500 loss ceiling, paper-only scope, preflight, one-use certificate, idempotent client-order identifier, and broker reconciliation remained hard controls. Earlier decisions and P&L remain attributed to the policy revision that produced them. No live options fill is claimed.
 
 #pagebreak()
 
@@ -153,9 +157,9 @@ As a distinct stress test, a 1927--2007 industry-proxy reconstruction covered 21
 
 #pagebreak()
 
-= Reduction-only model evidence
+= Signed live direction under a frozen risk-on guard
 
-The coordinated options sleeve begins from a distinct long-only SPY/BIL authority. For horizons $h in {21,63,252}$,
+The coordinated options sleeve retains a distinct long-only SPY/BIL rule as a long-horizon risk-on guard. For horizons $h in {21,63,252}$,
 
 $
   x_h(t) = ln frac("SPY"_t, "SPY"_(t-h)) - ln frac("BIL"_t, "BIL"_(t-h)),
@@ -164,10 +168,16 @@ $ <eq:excesstrend>
 $
   q_t = frac(1,3) sum_h bb(1)[x_h(t) > 0],
   quad v_t = min(1, frac(0.10, sigma_(20,t))),
-  quad u_t = q_t v_t.
+  quad w_t = q_t v_t.
 $ <eq:econcap>
 
-Thus $u_t$ is an unlevered bullish cap; it is zero when the deterministic policy does not authorize risk. Live market evidence contributes
+The frozen receipt is fresh only after its own point-in-time and hash checks. Live options entry additionally requires $w_t >= 0.50$. It does not choose the short-horizon sign. Instead it supplies bounded directional capacity
+
+$
+  u_t = 0.5 + 0.5 abs(w_t - 0.5),
+$ <eq:livecapacity>
+
+and otherwise returns `NO_TRADE`. Fresh market evidence alone chooses sign through
 
 $
   z_t = 0.65 frac(M_5, sigma sqrt(5)) + 0.35 frac(M_20, sigma sqrt(20)),
@@ -186,38 +196,37 @@ $
   a_j = b_j q_j f_j c_j i_j,
 $ <eq:effectiveweight>
 
-where $b_j$ is a fixed base weight and the remaining factors encode declared quality, freshness, calibration, and independence. The live language-model path receives canonical public Alpaca news and returns only bounded event scores plus short rationales. Live market and option data come from Alpaca. Prediction-market evidence appears only in the synthetic interactive demonstration; it does not enter the live competition runner. Age weighting is $exp(-"hours"/24)$; the aggregate is shrunk by $0.65$.
+where $b_j$ is a fixed base weight and the remaining factors encode declared quality, freshness, calibration, and independence. The live language-model path receives canonical public Alpaca news and returns only bounded event scores plus short rationales. Live market and option data come from Alpaca. Prediction-market evidence appears only in the synthetic interactive demonstration; it does not enter the live competition runner. Age weighting is $exp(-"hours"/24)$; the event aggregate is shrunk by $0.65$.
 
-Let $d_D$ be the direction derived only from deterministic families. Adverse model evidence produces
+Let $s_t = "sign"(d_("market",t))$. Only option-surface or event evidence opposing that sign creates the confirmation penalty
 
 $
-  g_t = "clip"(1 - sum_(j: m_j lt 0) frac((-m_j) a_j, 0.25), 0, 1),
+  g_t = "clip"(1 - sum_(j in {"surface","events"}: "sign"(d_j)=-s_t)
+  frac(abs(d_j) a_j, b_j), 0, 1),
 $ <eq:modelgate>
 
 and the authorized score is
 
 $
-  d_t = min(u_t, max(0,d_D)) g_t.
+  d_t = s_t min(u_t, abs(d_("market",t))) g_t.
 $ <eq:reduction>
 
-#proposition("model evidence cannot increase financial authority")[
-For any fixed deterministic state $(u_t,d_D)$ and any admissible event assessment, $0 <= d_t <= u_t$. Replacing an event score by a more supportive value cannot raise $d_t$ above $min(u_t,max(0,d_D))$.
+#proposition("non-market evidence cannot reverse price sign or enlarge its cap")[
+For any fixed market state and admissible option/news assessments, $abs(d_t) <= min(u_t,abs(d_("market",t)))$. If $d_t != 0$, then $"sign"(d_t)=s_t$. Supportive option or event scores may improve agreement but cannot lift the magnitude above the price-momentum envelope.
 
-*Proof.* By construction $g_t in [0,1]$ and $min(u_t,max(0,d_D)) in [0,u_t]$. Their product therefore lies in $[0,u_t]$. Supportive scores are absent from the penalty sum in @eq:modelgate, so they cannot create authority beyond the deterministic envelope. $square$
+*Proof.* By construction $g_t in [0,1]$ and $min(u_t,abs(d_("market",t))) in [0,u_t]$. Multiplication by $s_t$ fixes the sign, while multiplication by $g_t$ can only preserve or reduce magnitude. $square$
 ]
 
 #figure(
   image("../../public/figures/technical-paper/authority-envelope.svg", width: 53%),
-  caption: [Reduction-only authority. Negative event evidence can shrink a deterministic cap; supportive evidence cannot lift the cap.],
+  caption: [Magnitude envelope after market momentum chooses sign. Opposing option or news evidence may shrink the view to zero; neither family can reverse the sign or lift the deterministic cap.],
 ) <fig:authority>
 
-This is the central safety property. Schema validation controls the shape of the model output; @eq:reduction controls its economic consequence.
-
-#pagebreak()
+This is the central allocation-of-authority property. Schema validation controls the shape of the model output; @eq:reduction controls its economic consequence. Bullish market momentum can compile a call spread, bearish momentum can compile a put spread, and neutral or insufficiently confirmed evidence becomes `NO_TRADE`.
 
 = Defined-risk option compilation
 
-Once $d_t$ passes direction, coverage, and agreement gates, rules-based code enumerates same-expiry SPY vertical debit spreads. A vertical debit spread buys one option and sells another with the same expiry, fixing maximum loss before submission. The competition path is bullish-or-`NO_TRADE`: it requires $d_t >= 0.18$, evidence coverage at least 0.35, agreement at least 0.55, a decision no older than 30 minutes, and a final SPY weight of at least 0.50. It evaluates entry only on the frozen five-session schedule after the relevant close. Quotes must also pass age, feed, spread, open-interest, tradability, and days-to-expiry checks. Width $W$ is between \$1 and \$15. With a \$0.03 allowance on each leg, entry debit is
+Once $d_t$ passes direction, coverage, and agreement gates, rules-based code enumerates same-expiry SPY vertical debit spreads. A vertical debit spread buys one option and sells another with the same expiry, fixing maximum loss before submission. Live v2 requires $abs(d_t) >= 0.12$, evidence coverage at least 0.30, agreement at least 0.45, a decision no older than 30 minutes, and a fresh long-horizon risk-on receipt with at least 50 percent indicated SPY exposure. Positive $d_t$ selects bull-call candidates; negative $d_t$ selects bear-put candidates. Quotes must also pass age, feed, spread, open-interest, tradability, and days-to-expiry checks. Width $W$ is between \$1 and \$15. With a \$0.03 allowance on each leg, entry debit is
 
 $
   D = "ask"_("long") - "bid"_("short") + 2(0.03).
@@ -226,7 +235,7 @@ $ <eq:debit>
 Candidates require $0 < D < W$. For one contract,
 
 $
-  L = 100D, quad G = 100(W-D), quad frac(G,L) >= 1.25,
+  L = 100D, quad G = 100(W-D), quad frac(G,L) >= 1,
 $ <eq:riskreward>
 
 where $L$ and $G$ are maximum loss and maximum gain. Terminal profit for a bull-call or bear-put spread is
@@ -241,7 +250,7 @@ $ <eq:payoff>
 
 #figure(
   image("../../public/figures/technical-paper/options-payoff.svg", width: 48%),
-  caption: [Payoff of the published synthetic SPY 560/550 bear-put compiler fixture. Debit \$3.66 fixes the one-contract loss at \$366 before any order is considered. Because the competition guard is bullish-only, this fixture cannot authorize a live competition trade.],
+  caption: [Payoff of the published synthetic SPY 560/550 bear-put compiler fixture. Debit \$3.66 fixes the one-contract loss at \$366 before any order is considered. Live v2 can compile the same defined-risk structure when fresh market momentum is bearish and every hard execution check passes; this historical fixture remains synthetic.],
 ) <fig:payoff>
 
 == Two-model valuation
@@ -271,19 +280,17 @@ $
   "CEV" = min_k (mu_k - 1.645 "SE"_k),
 $ <eq:cev>
 
-and requires $"CEV" >= max(10,0.06L)$ dollars and worst-model probability of profit at least $0.53$. Quantity is
+and the live policy requires $"CEV" >= max(5,0.02L)$ dollars, worst-model probability of profit at least $0.45$, and reward-to-risk of at least $1.25$. A positive-value asymmetric spread need not win more than half the time; the value and payoff-ratio gates remain independent. Quantity is fixed at one contract when the candidate fits the live budget:
 
 $
-  Q = min(4, floor(frac(min(f E,500),L))),
+  Q = cases(1 & "if " L <= min(0.005E,500), 0 & "otherwise"),
 $ <eq:size>
 
-with $f=0.005$ normally and $f=0.0025$ at half risk. New plus open defined risk may not exceed $0.03E$.
-
-#pagebreak()
+New plus open defined risk may not exceed $0.03E$. Thus a live entry is one contract, at most 0.5 percent of equity, and never more than \$500 of certified maximum loss.
 
 = Challenge, permit, and broker state
 
-Passing the expected-value gate is necessary but insufficient. Finly removes each evidence family in turn and applies 32 deterministic Halton perturbations to evidence scores, spot, IV, history scale, interest rate, horizon, and debit. A candidate survives only if direction does not flip, the trade rate stays above 80 percent, the same structure appears in at least 75 percent of cases, and the fifth-percentile conservative value remains positive. The published synthetic fixture passed four of four family removals and 32 of 32 perturbations, with \$366 maximum loss and \$634 maximum gain.
+Finly records alpha-confidence diagnostics by removing each evidence family in turn and applying 32 deterministic Halton perturbations to evidence scores, spot, IV, history scale, interest rate, horizon, and debit. Live diagnostics prohibit an opposite-sign flip, require all leave-one-family-out variants to retain the base sign when nonneutral, and summarize nonneutral direction, trade, structure, and fifth-percentile conservative-value rates. They diagnose fragility; they are not hard authorization checks. The published synthetic fixture remains a frozen compiler demonstration that passed four removals and 32 perturbations with \$366 maximum loss and \$634 maximum gain. A live `risk_certificate.v3` instead requires an eligible selected candidate, exactly one contract, loss within the \$500 and 0.5-percent budget, aggregate risk within three percent of equity, a fresh recognized quote feed, a fresh unblocked paper account, and MCP execution transport.
 
 == A permit for one projection
 
@@ -300,7 +307,7 @@ $
   quad s = "HMAC-SHA256"(k,B).
 $ <eq:hmac>
 
-Verification recomputes both values with timing-safe equality, requires paper mode and `paper_submit` scope, checks a 30-second time-to-live, and binds the exact account, market snapshot, candidate, quantity, loss reservation, and desired order. A permit is not general permission; any changed field creates a different body and invalidates @eq:hmac.
+Verification recomputes both values with timing-safe equality, requires paper mode and `paper_submit` scope, checks a 30-second time-to-live, and binds the exact account, market snapshot, candidate, quantity, loss reservation, and desired order. The v3 certificate records alpha diagnostics but authorizes only from hard safety checks. A final broker preflight rechecks account, options level, buying power, positions, orders, quote/debit drift, and underlying drift before mutation. A permit is not general permission; any changed field creates a different body and invalidates @eq:hmac.
 
 #proposition("projection binding")[
 Assuming collision resistance of SHA-256 and unforgeability of HMAC under secret key $k$, a certificate for order $O$ cannot authorize a materially different order $O' != O$ without either failing the body-hash comparison or producing a new valid signature.
@@ -327,12 +334,14 @@ $
 $ <eq:optionstates>
 ]
 
-with cancellation, error, and frozen branches. It additionally requires the fresh permit in @eq:hmac and a forced exit by the configured deadline. The two machines share Alpaca read-back and duplicate-prevention rules, but their states are not interchangeable.
+with cancellation, error, and frozen branches. It additionally requires the fresh permit in @eq:hmac and a forced exit by the configured deadline. At that deadline, the runner first reconciles the exact working order, cancels only after identifying that order, waits for terminal cancellation, and makes at most one deterministic replacement at a \$0.01 credit floor. The same client-order identifiers survive retries and restarts, including a lost cancellation acknowledgement. Finly never converts the close into a debit or market order. The floor bounds behavior but cannot guarantee a fill. The two machines share Alpaca read-back and duplicate-prevention rules, but their states are not interchangeable.
+
+Entry and replacement-close placement use Alpaca's official MCP transport. Cancellation uses Alpaca's exact paper-trading REST `DELETE` endpoint, followed by the same broker read-back and reconciliation checks.
 
 #codeblock[
 *Algorithm 2 — One conservative execution cycle*
 
-1. Authenticate the encrypted checkpoint and frozen protocol.
+1. Authenticate the encrypted checkpoint and versioned live protocol.
 2. Read Alpaca clock, account, positions, orders, and asset eligibility.
 3. Persist ORDER_PENDING and the deterministic client-order identifier.
 4. Submit exactly one permitted paper mutation.
@@ -343,14 +352,12 @@ with cancellation, error, and frozen branches. It additionally requires the fres
 
 This ordering addresses the ambiguous-acknowledgement failure: if the runner dies after Alpaca accepts an order but before the response is stored, the next process recovers the same identifier instead of creating a duplicate. GitHub Actions provides the cloud clock; Alpaca's market clock and the in-process authorization window, not the scheduler, decide whether mutation is permitted [5].
 
-#pagebreak()
-
 = Quantitative evidence
 
 The principal historical comparison uses aligned adjusted closes from 2 January 2013 through 27 August 2026 and the causal timing in Algorithm 1. Both Finly Core and SPY begin with \$10,000 and pay five basis points for one-way turnover.
 
 #figure(
-  image("../../public/figures/technical-paper/g4-wealth-drawdown.svg", width: 98%),
+  image("../../public/figures/technical-paper/g4-wealth-drawdown.svg", width: 88%),
   caption: [Modeled wealth and drawdown under an identical date, lag, capital, and cost convention. Finly Core is the four-fund sleeve's historical allocation; this is not realized options P&L.],
 ) <fig:wealth>
 
@@ -370,21 +377,21 @@ The principal historical comparison uses aligned adjusted closes from 2 January 
 
 #source[Source: frozen public wealth ledger and quantitative release gate [6,7]. Values may differ by rounding.]
 
-The \$38,629 ending-wealth difference is the strongest simple description of the ledger. It should be read with two facts. First, Finly Core did not beat QQQ over the full interval; part of its return is an explicit growth allocation. Second, the candidate did not pass its selection-adjusted promotion gate: the Deflated Sharpe probability was 3.75 percent and the worst familywise bootstrap $p$-value was 37.18 percent. The result is therefore sufficiently strong to motivate a forward paper experiment, but not to establish expected future outperformance.
+The \$38,629 ending-wealth difference is the strongest simple description of the ledger. It should be read with two facts. First, Finly Core did not beat QQQ over the full interval; part of its return is an explicit growth allocation. Second, the candidate did not pass its selection-adjusted promotion gate: the Deflated Sharpe probability was 3.75 percent and the worst familywise bootstrap p-value was 37.18 percent. The result is therefore sufficiently strong to motivate a forward paper experiment, but not to establish expected future outperformance.
 
-The verified \$100,000 Alpaca paper account supplies the operational observation for the complete strategy. At the first exact 4:00 p.m. ET close, account equity was \$100,095.32. A same-\$100,000 raw-price SPY baseline was \$99,942.01, giving a \$153.31 difference. The reconciliation record contains 15 ETF *fill events* from four orders and zero external cashflows [8]. No live options position existed, so this is evidence for deployment and measurement, not realized options profitability.
+The verified \$100,000 Alpaca paper account supplies the operational observation for the complete strategy. At the first exact 4:00 p.m. ET close, account equity was \$100,095.32. A same-\$100,000 raw-price SPY baseline was \$99,942.01, giving a \$153.31 difference. The reconciliation record contains 15 ETF *fill events* from four orders and zero external cashflows [8]. No live options position existed at that timestamp, and no live options fill is claimed. This is evidence for deployment and measurement, not realized options profitability.
 
-The public verification run discovered 809 tests: 807 passed, none failed, and two were skipped [9]. Tests cover evidence separation, payoff arithmetic, scenario determinism, source removal, perturbation stability, risk ceilings, HMAC scope, stale permits, client-order recovery, state encryption, causal backtest timing, cost parity, and submission artifacts. Tests establish implemented invariants; they do not turn one forward session into a forecast.
+The live-policy reachability check is deliberately narrower. It sampled 517 five-session SPY signal windows from 2016 through 2026 and compiled each signal against one fixed, symmetric modeled 14-day option surface. Eleven windows cleared every alpha gate: seven bullish call spreads and four bearish put spreads. Maximum loss ranged from \$440 to \$455, conservative modeled value after costs from \$10.08 to \$22.26, reward-to-risk from 2.30 to 2.41, and modeled probability of profit from 45.12 to 47.71 percent [11]. This experiment tests bidirectional signal and quote-surface eligibility. It does not use historical option quotes and therefore is not an options-return backtest.
 
-#pagebreak()
+The public verification run discovered 826 tests: 824 passed, none failed, and two were skipped [9]. Tests cover evidence separation, signed live direction, eligibility-calibration integrity, payoff arithmetic, scenario determinism, source-removal and perturbation diagnostics, risk ceilings, v3 HMAC scope, stale permits, bounded cancel/reprice exits, client-order recovery, state encryption, causal backtest timing, cost parity, and submission artifacts. Tests establish implemented invariants; they do not turn one forward session into a forecast.
 
 = Discussion and reproducibility
 
-Finly's novelty is not another request for a model to “pick a stock.” It is a narrower contract between probabilistic interpretation and deterministic finance. The model can add context where rules are brittle, but @eq:reduction prevents persuasive text from manufacturing exposure. The compiler can search an option chain, but @eq:riskreward, @eq:cev, and @eq:size make the downside explicit before a candidate exists. The executor can mutate the broker, but @eq:hmac binds the permission to one state and one order.
+Finly's novelty is not another request for a model to “pick a stock.” It is a narrower contract between probabilistic interpretation and deterministic finance. Price momentum owns the signed view; option skew and Qwen-assessed news can confirm it or make the system more cautious, while @eq:reduction prevents persuasive text from reversing the sign or manufacturing exposure. The compiler can search an option chain, but @eq:riskreward, @eq:cev, and @eq:size make the downside explicit before a candidate exists. The executor can mutate the broker, but @eq:hmac binds the permission to one state and one order.
 
 This separation also makes failure legible. A forecast error belongs to the evidence layer; a payoff error belongs to the compiler; an oversized order belongs to risk; a repeated call belongs to the state machine. Each layer can be tested without pretending the others are correct.
 
-The principal limitations are selection bias in Finly Core, vendor differences between historical Yahoo adjusted closes and the Alpaca signal panel, simplified close execution and fixed costs, approximation error in the two option scenario models, the possibility of language-model misinterpretation, and the short forward window. Defined loss bounds the consequence of a wrong trade; it does not make the trade right.
+The principal limitations are selection bias in Finly Core, vendor differences between historical Yahoo adjusted closes and the Alpaca signal panel, simplified close execution and fixed costs, approximation error in the two option scenario models, the possibility of language-model misinterpretation, and the short forward window. The live-policy thresholds were calibrated after a no-trade diagnostic, so they have little independent forward exposure and must not be described as proven alpha. Defined loss bounds the consequence of a wrong trade; it does not make the trade right.
 
 The complete implementation, tests, evidence JSON, and build sources are public. A clean checkout uses:
 
@@ -394,7 +401,9 @@ The complete implementation, tests, evidence JSON, and build sources are public.
 `npm run verify`
 ]
 
-The technical boundary is inspectable in the source modules for the frozen Finly Core (`G4`) engine, the options sleeve's distinct SPY/BIL economic authority, signal aggregation, option compiler, risk certificate, stability suite, and both broker lifecycles [6,10]. The PDF figures are generated from the same public data used by the website and deck.
+The frozen research boundary is inspectable at revision `36ce122`; the activated prospective options implementation is inspectable at revision `318c943`, and the cloud pin at revision `d8e1fcc` [6,10]. Together those revisions expose the Finly Core (`G4`) engine, frozen SPY/BIL risk-on receipt, bidirectional options authority, signal aggregation, option compiler, v3 risk certificate, diagnostic stability suite, and both broker lifecycles. The PDF figures are generated from the same public data used by the website and deck.
+
+#pagebreak()
 
 == References
 
@@ -411,12 +420,14 @@ The technical boundary is inspectable in the source modules for the frozen Finly
 
 [5] Alpaca. “Official MCP Server.” #link("https://docs.alpaca.markets/us/docs/alpaca-mcp-server")[docs.alpaca.markets].
 
-[6] Finly. “Quantitative release gate and G4 wealth ledger.” #link("https://github.com/owlsowo/finly-bot/tree/main/research")[research source] and #link("https://owlsowo.github.io/finly-bot/data/g4_wealth_drawdown.json")[public series].
+[6] Finly. “Quantitative release gate and G4 wealth ledger.” #link("https://github.com/owlsowo/finly-bot/tree/36ce122/research")[research source] and #link("https://owlsowo.github.io/finly-bot/data/g4_wealth_drawdown.json")[public series].
 
-[7] Finly. “Frozen competition protocol.” #link("https://github.com/owlsowo/finly-bot/blob/main/config/g4-official-production.json")[configuration record].
+[7] Finly. “Frozen allocation protocol and current options implementation.” #link("https://github.com/owlsowo/finly-bot/blob/36ce122/config/g4-official-production.json")[allocation record] and #link("https://github.com/owlsowo/finly-bot/blob/318c943/lib/live_economic_options_authority.mjs")[live authority].
 
 [8] Finly. “First-session same-clock measurement.” #link("https://owlsowo.github.io/finly-bot/data/competition_forward_profit_2026_08_31.json")[public evidence].
 
 [9] Finly. “Automated verification.” #link("https://github.com/owlsowo/finly-bot/actions")[GitHub Actions].
 
-[10] Finly. “Implementation.” #link("https://github.com/owlsowo/finly-bot")[github.com/owlsowo/finly-bot].
+[10] Finly. “Activated implementation and pinned cloud workflow.” #link("https://github.com/owlsowo/finly-bot/tree/318c943")[implementation] and #link("https://github.com/owlsowo/finly-bot/tree/d8e1fcc")[deployment pin].
+
+[11] Finly. “Current signal and quote-surface eligibility calibration.” #link("https://owlsowo.github.io/finly-bot/data/options_policy_calibration.json")[public artifact].

@@ -73,6 +73,7 @@ function extractPdfText(file) {
 function normalizedText(value) {
   return value
     .normalize("NFKC")
+    .replace(/\\\$/gu, () => "$")
     .replace(/[‐‑‒–—−]/gu, "-")
     .replace(/-\s+/gu, "-")
     .replace(/\s+/gu, " ")
@@ -106,8 +107,8 @@ function pngDimensions(relativePath) {
 }
 
 const onePage = requirePdf("public/judge/Finly_Judge_Brief.pdf", 1);
-const paper = requirePdf("public/judge/Finly_Technical_Proposal.pdf", 7);
-const appendix = requirePdf("public/judge/Finly_Engineering_Appendix.pdf", 14);
+const paper = requirePdf("public/judge/Finly_Technical_Proposal.pdf", 8);
+const appendix = requirePdf("public/judge/Finly_Engineering_Appendix.pdf", 15);
 const deck = requirePdf("public/judge/Finly_Consulting_Deck.pdf", 9);
 requireFile("public/judge/Finly_Judge_Proposal.docx", 20_000);
 requireFile("public/judge/Finly_Engineering_Appendix.docx", 40_000);
@@ -218,6 +219,7 @@ const reviewedPublicData = [
   "latest_receipt.json",
   "llama_decision_trace.json",
   "no_trade_receipt.json",
+  "options_policy_calibration.json",
   "quantitative_release_gate.json",
 ];
 const hostedData = [
@@ -227,6 +229,7 @@ const hostedData = [
   "competition_live.json",
   "latest_receipt.json",
   "no_trade_receipt.json",
+  "options_policy_calibration.json",
   "quantitative_release_gate.json",
 ];
 for (const [dataDirectory, expectedNames] of [
@@ -262,18 +265,22 @@ const earlierEraPatterns = [
   /(?:21\s*\/\s*21|21 of 21|all (?:twenty-one|21)).{0,120}(?:anchors?|offsets?|rebalance (?:dates?|offsets?|schedule)|monthly (?:start|update) (?:dates?|days?)|tests? that changed (?:which trading day|the monthly update day))/iu,
 ];
 const optionsPatterns = [
-    /\$366.{0,80}maximum loss|maximum loss.{0,80}\$366/iu,
-  /\$634.{0,80}maximum gain|maximum gain.{0,80}\$634/iu,
-  /(?:4\s*\/\s*4|4 of 4|all four|four).{0,100}(?:removed|removals?|source-removal|source removal|data sources?|sources?.{0,20}removed)|remov(?:ing|ed).{0,40}(?:each of )?four sources/iu,
-  /(?:32\s*\/\s*32|32 of 32|all (?:thirty-two|32)|thirty-two).{0,100}(?:input|perturb|small.{0,20}changes?)/iu,
+  /517.{0,100}(?:signal|window)|(?:signal|window).{0,100}517/iu,
+  /(?:11|eleven).{0,100}(?:eligible|cleared|alpha gate)|(?:eligible|cleared|alpha gate).{0,100}(?:11|eleven)/iu,
+  /(?:7|seven).{0,100}bullish|bullish.{0,100}(?:7|seven)/iu,
+  /(?:4|four).{0,100}bearish|bearish.{0,100}(?:4|four)/iu,
+  /\$440.{0,80}\$455|\$455.{0,80}\$440/iu,
+  /\$10\.08.{0,100}\$22\.26|\$22\.26.{0,100}\$10\.08/iu,
+  /2\.30.{0,80}2\.41|2\.41.{0,80}2\.30/iu,
+  /(?:bullish|call spread).{0,180}(?:bearish|put spread).{0,180}(?:no trade|stop)|(?:bullish|call spread).{0,180}(?:no trade|stop).{0,180}(?:bearish|put spread)/isu,
 ];
 const accountPatterns = [
   /(?:verified.{0,80}\$100,000|\$100,000.{0,80}(?:verified|paper account))/iu,
   /Alpaca/iu,
 ];
 const testCountPatterns = [
-  /809.{0,240}(?:automated )?tests|(?:automated )?tests.{0,240}809/iu,
-  /807.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}807/iu,
+  /826.{0,240}(?:automated )?tests|(?:automated )?tests.{0,240}826/iu,
+  /824.{0,25}(?:passed|passing)|(?:passed|passing).{0,25}824/iu,
 ];
 const zeroFailurePattern = /(?:0|none).{0,20}failed|failed.{0,20}(?:0|none)/iu;
 const commonDocumentPatterns = [
@@ -364,8 +371,10 @@ requirePatterns("video captions", captions, [
   /Fixed code caps the loss/iu,
   /When signals agree/iu,
   /When signals conflict/iu,
-  /Every decision carries a receipt/iu,
-  /test case, not a live fill/iu,
+  /We tested the live options gate/iu,
+  /517 sampled market windows/iu,
+  /\$426 maximum loss/iu,
+  /reachability check.{0,160}not options profit/isu,
   /allocation sleeve traded during live market hours/iu,
   /at the close/iu,
   /gained \$95\.32/iu,
@@ -379,9 +388,9 @@ requirePatterns("video captions", captions, [
   /13\.37%/iu,
   /9\.48%/iu,
   /all 21 tested monthly rebalance schedules/iu,
-  /\$366/iu,
   /\$500 limit/iu,
-  /verify every number in the public repository/iu,
+  /826 automated checks/iu,
+  /rerun 826 automated checks in the public repository/iu,
 ]);
 requireNoPatterns("video captions", captions, [...staleStoryPatterns, ...evaluatorInstructionPatterns, /llama still does not get the keys/iu]);
 
@@ -399,7 +408,7 @@ const machineSummary = readFileSync(requireFile("public/llms.txt", 1_500).path, 
 requirePatterns("machine-readable summary", machineSummary, [
   ...commonDocumentPatterns,
   zeroFailurePattern,
-  /809 automated tests: 807 passed, 0 failed, and 2 were skipped/iu,
+  /826 automated tests: 824 passed, 0 failed, and 2.{0,50}were skipped/iu,
   /\$153\.31 ahead of SPY/iu,
   /15 (?:ETF|broker) fill events/iu,
   /Alpaca's official (?:MCP server|connection)/iu,
@@ -423,7 +432,7 @@ for (const [label, file] of [["one-page", onePage], ["technical note", paper], [
 }
 
 console.log(
-  `submission artifacts verified: 1-page brief; 7-page mathematical note; 14-page engineering appendix; 9-slide deck; `
-  + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 809 tests / 807 passed / 0 failed; `
+  `submission artifacts verified: 1-page brief; 8-page mathematical note; 15-page engineering appendix; 9-slide deck; `
+  + `${videoDuration.toFixed(1)}s H.264/AAC launch video; 826 tests / 824 passed / 0 failed; `
   + `exact quantitative gate; sanitized public data`,
 );

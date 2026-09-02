@@ -22,39 +22,34 @@ function chartFrame({ width, height, body }) {
 function authorityEnvelope() {
   const width = 860;
   const height = 390;
-  const left = 78;
-  const right = 28;
-  const top = 34;
-  const bottom = 64;
-  const innerWidth = width - left - right;
-  const innerHeight = height - top - bottom;
-  const x = (value) => left + ((value + 1) / 2) * innerWidth;
-  const y = (value) => top + (1 - value) * innerHeight;
-  const values = Array.from({ length: 201 }, (_, index) => -1 + index / 100);
-  const line = (cap) => polyline(values.map((score) => [
-    x(score),
-    y(cap * (score < 0 ? Math.max(0, 1 + score) : 1)),
-  ]));
-  const vertical = [-1, -0.5, 0, 0.5, 1].map((value) => `
-    <line x1="${x(value)}" y1="${top}" x2="${x(value)}" y2="${top + innerHeight}" stroke="#e1e1e1" stroke-width="1"/>
-    <text x="${x(value)}" y="${top + innerHeight + 24}" font-size="14" text-anchor="middle">${value.toFixed(value === 0 ? 0 : 1)}</text>`).join("");
-  const horizontal = [0, 0.25, 0.5, 0.75, 1].map((value) => `
-    <line x1="${left}" y1="${y(value)}" x2="${left + innerWidth}" y2="${y(value)}" stroke="#e1e1e1" stroke-width="1"/>
-    <text x="${left - 14}" y="${y(value) + 5}" font-size="14" text-anchor="end">${value.toFixed(value === 0 || value === 1 ? 0 : 2)}</text>`).join("");
   return chartFrame({
     width,
     height,
-    body: `${vertical}${horizontal}
-    <line x1="${left}" y1="${top + innerHeight}" x2="${left + innerWidth}" y2="${top + innerHeight}" stroke="#171717" stroke-width="1.4"/>
-    <line x1="${left}" y1="${top}" x2="${left}" y2="${top + innerHeight}" stroke="#171717" stroke-width="1.4"/>
-    <polyline points="${line(1)}" fill="none" stroke="#111111" stroke-width="3"/>
-    <polyline points="${line(0.5)}" fill="none" stroke="#777777" stroke-width="2.5" stroke-dasharray="9 6"/>
-    <text x="${x(0.62)}" y="${y(1) - 12}" font-size="15">deterministic cap u = 1.0</text>
-    <text x="${x(0.62)}" y="${y(0.5) - 12}" font-size="15" fill="#555555">deterministic cap u = 0.5</text>
-    <text x="${x(-0.55)}" y="${top + 26}" font-size="14" text-anchor="middle" fill="#555555">adverse event evidence reduces authority</text>
-    <text x="${x(0.55)}" y="${top + 26}" font-size="14" text-anchor="middle" fill="#555555">supportive event evidence adds no authority</text>
-    <text x="${left + innerWidth / 2}" y="${height - 18}" font-size="16" text-anchor="middle">normalized model event score</text>
-    <text x="20" y="${top + innerHeight / 2}" font-size="16" text-anchor="middle" transform="rotate(-90 20 ${top + innerHeight / 2})">authorized direction score</text>`,
+    body: `
+    <text x="430" y="34" font-size="21" font-weight="700" text-anchor="middle">Live options authority is deliberately asymmetric</text>
+    <rect x="42" y="70" width="220" height="104" rx="10" fill="#eef5f1" stroke="#2c8068" stroke-width="2"/>
+    <text x="152" y="102" font-size="15" font-weight="700" text-anchor="middle" fill="#2c8068">PRICE MOMENTUM</text>
+    <text x="152" y="132" font-size="20" font-weight="700" text-anchor="middle">owns direction</text>
+    <text x="152" y="157" font-size="14" text-anchor="middle" fill="#555555">bullish · bearish · neutral</text>
+    <line x1="262" y1="122" x2="342" y2="122" stroke="#171717" stroke-width="2.5"/>
+    <polygon points="342,122 327,114 327,130" fill="#171717"/>
+    <rect x="342" y="70" width="220" height="104" rx="10" fill="#f7f3ea" stroke="#b98b2c" stroke-width="2"/>
+    <text x="452" y="102" font-size="15" font-weight="700" text-anchor="middle" fill="#9d741e">OPTIONS + NEWS</text>
+    <text x="452" y="132" font-size="20" font-weight="700" text-anchor="middle">confirm or reduce</text>
+    <text x="452" y="157" font-size="14" text-anchor="middle" fill="#555555">never reverse the price sign</text>
+    <line x1="562" y1="122" x2="642" y2="122" stroke="#171717" stroke-width="2.5"/>
+    <polygon points="642,122 627,114 627,130" fill="#171717"/>
+    <rect x="642" y="70" width="176" height="104" rx="10" fill="#edf1f5" stroke="#0a2b43" stroke-width="2"/>
+    <text x="730" y="102" font-size="15" font-weight="700" text-anchor="middle" fill="#0a2b43">CODE GATE</text>
+    <text x="730" y="132" font-size="20" font-weight="700" text-anchor="middle">trade or stop</text>
+    <text x="730" y="157" font-size="14" text-anchor="middle" fill="#555555">exact signed order</text>
+    <line x1="42" y1="215" x2="818" y2="215" stroke="#d7d7d7" stroke-width="1.5"/>
+    <text x="42" y="248" font-size="15" font-weight="700" fill="#2c8068">ALPHA DIAGNOSTICS</text>
+    <text x="205" y="248" font-size="15">coverage ≥ 0.30 · agreement ≥ 0.45 · probability of profit ≥ 0.45 · reward/risk ≥ 1.25</text>
+    <text x="42" y="287" font-size="15" font-weight="700" fill="#0a2b43">HARD AUTHORIZATION</text>
+    <text x="225" y="287" font-size="15">fresh quotes · one contract · ≤ $500 loss · ≤ 0.5% equity · ≤ 3% aggregate risk</text>
+    <rect x="42" y="317" width="776" height="48" rx="8" fill="#0a2b43"/>
+    <text x="430" y="347" font-size="16" font-weight="700" text-anchor="middle" fill="#ffffff">If any hard check fails, the signed permit is not issued and no order can move.</text>`,
   });
 }
 

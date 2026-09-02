@@ -390,7 +390,7 @@ export function CompetitionDashboard() {
               <h3>Where the $100,000 paper account stands now.</h3>
             </div>
             <p>
-              This later account value can move as Alpaca re-prices the four funds. It is not the locked day-one score above.
+              This later account value can move as Alpaca re-prices the four funds and any open options position. It is not the locked day-one score above.
             </p>
           </div>
 
@@ -489,7 +489,7 @@ export function CompetitionDashboard() {
         <p className="live-privacy-note">
           This public view contains performance and risk totals only. It never publishes broker credentials, account numbers,
           order identifiers or the private execution log. <a href="./data/competition-deployment-record.json">Read the
-          technical record showing when the competition portfolio was chosen and locked.</a>
+          allocation deployment record.</a>{" "}<a href="https://github.com/owlsowo/finly-bot/blob/main/config/options-policy-revision-v3-2026-09-02.json">Read the current options-policy revision.</a>
         </p>
       </div>
     </section>

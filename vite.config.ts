@@ -10,6 +10,7 @@ const hostedDataAllowlist = new Set([
   "competition_live.json",
   "latest_receipt.json",
   "no_trade_receipt.json",
+  "options_policy_calibration.json",
   "quantitative_release_gate.json",
 ]);
 

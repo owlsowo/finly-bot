@@ -8,7 +8,7 @@ Paper trading follows real market prices with virtual money. SPY is a fund that 
 
 Finly runs one autonomous competition strategy with two coordinated sleeves. Its four-fund allocation keeps roughly half in QQQ, divides most of the remainder across three sector funds selected for stronger longer-term price trends, and keeps 3% in cash. The competition mix was chosen and locked before paper trading began. Technical code and evidence files retain the internal research identifier G4 for reproducibility; G4 is not a product generation or a separate strategy.
 
-The coordinated options sleeve reviews public Alpaca news and explains what supports or weakens a small, time-limited market trade. Qwen3-32B is hosted through Featherless. Fixed code chooses the contracts, limits any new competition options trade to $500 of possible loss, and can stop it before Alpaca sees the order. The two sleeves share one account and risk policy while keeping separate decision records for auditability. The live path uses prices, options data, and Alpaca news. Economic and prediction-market examples appear only in the interactive demonstration.
+The coordinated options sleeve uses fresh SPY price momentum to choose a positive or negative short-horizon view. Option-market evidence and Qwen3-32B's reading of public Alpaca news may support, weaken, or stop it; neither may choose the sign. Fixed code compiles a one-contract bullish call spread, bearish put spread, or no trade and caps any new entry at $500 of possible loss. The two sleeves share one account while keeping separate decision and revision records.
 
 ## Historical results
 
@@ -18,7 +18,9 @@ A simpler industry version was checked on **21,218 earlier market days** from 19
 
 ## Interactive options demonstration
 
-In the public demonstration, Finly prepared one illustrative SPY two-option plan with an exact **$366 maximum loss** and **$634 maximum gain**. The decision remained stable after all four sources were removed one at a time and through **32 of 32 input changes** before Finly prepared a fully specified simulated Alpaca order. No broker order or fill occurred. A second view changes the evidence and shows Finly stopping before the account takes on risk. The demo shows both rising- and falling-price cases; during the competition, the live account may open only a rise-focused options trade or do nothing.
+The public demonstration shows a bullish call spread, bearish put spread, and no-trade path. One illustrative SPY plan has an exact **$366 maximum loss** and **$634 maximum gain**. Source-removal and 32 perturbation results are published as confidence diagnostics; hard account, quote, size, loss, order-binding, idempotency, and broker-read-back checks retain execution authority. No broker order or fill occurred in the demonstration.
+
+Live options eligibility was checked across **517 sampled SPY signal windows**. On a symmetric fixed modeled quote surface, **11 cleared every alpha gate: 7 bullish call spreads and 4 bearish put spreads**. Their maximum losses were **$440–$455**, conservative modeled values after costs were **$10.08–$22.26**, and reward-to-risk ratios were **2.30–2.41**. This uses historical SPY signals and a fixed modeled quote surface, not historical option quotes or options P&L.
 
 ## Live Alpaca paper account
 
@@ -26,7 +28,7 @@ Finly runs in the cloud against a dedicated, verified **$100,000 Alpaca paper ac
 
 At exactly 4:00 p.m. ET on the first market day, Finly was **up $95.32** while a same-$100,000 SPY price benchmark was **down $57.99**. Finly therefore finished the first session **$153.31 ahead of SPY**, after **15 ETF fill events** and with no deposits or withdrawals. Those fills built the four-fund sleeve; no options position was open at that close.
 
-The public verification run discovered **809 automated tests: 807 passed, 0 failed, and 2 were skipped**. They cover the portfolio calculation, causal historical timing, trading costs, option payoff, data freshness, risk limits, order construction, account checks, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
+The public verification run discovered **826 automated tests: 824 passed, 0 failed, and 2 optional private-ledger checks were skipped**. They cover the portfolio calculation, causal historical timing, trading costs, bullish and bearish options paths, ordinary-market calibration, option payoff, data freshness, risk limits, order construction, bounded cancel/reprice exits, account checks, lost acknowledgements, restart recovery, encrypted state, public-data filtering, and competition scoring.
 
 ## Why it matters
 
@@ -44,7 +46,7 @@ Start with the live dashboard, then replay the “evidence agrees” and “evid
 - Presentation: https://owlsowo.github.io/finly-bot/judge/Finly_Consulting_Deck.pdf
 - Product video: https://owlsowo.github.io/finly-bot/judge/Finly_Demo_Video.mp4
 
-Finly is an educational paper-trading project. Historical simulations are not live account results or promises of future returns. The public options example is a synthetic demonstration unless the live dashboard reports an options fill.
+Finly is an educational paper-trading project. Historical simulations are not live account results or promises of future returns. Options calibration and public examples are not broker fills unless the live dashboard links a broker receipt.
 
 ## Reproduce the public checks
 

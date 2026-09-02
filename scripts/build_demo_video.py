@@ -76,10 +76,10 @@ SCENES = [
         "When signals conflict, Finly does nothing. It shows why and stops before the account.",
     ),
     Scene(
-        "receipt",
+        "options-calibration",
         "slide:6",
         10.0,
-        "Every decision carries a receipt: the proposed position, dollars at risk, and checks passed. This checked S and P 500 options example risked at most $366—below Finly's $500 limit. It was a test case, not a live fill.",
+        "We tested the live options gate across 517 sampled market windows. A representative eligible spread had $426 maximum loss, below Finly's $500 limit. This is a reachability check, not options profit.",
     ),
     Scene(
         "live-result",
@@ -103,7 +103,7 @@ SCENES = [
         "technical-handoff",
         "slide:9",
         8.0,
-        "Judges can inspect the 15 Alpaca ETF fill events, replay the options decisions, rerun the tests, and verify every number in the public repository.",
+        "Judges can inspect the 15 Alpaca ETF fill events, replay bullish and bearish options decisions, and rerun 826 automated checks in the public repository.",
     ),
 ]
 
@@ -267,11 +267,12 @@ def verify_claims() -> None:
     required = [
         "does not give it the account keys", "uses real market prices and virtual money",
         "Fixed code caps the loss", "only rules can approve it",
-        "signals conflict", "Every decision carries a receipt",
-        "$366", "$500 limit", "during live market hours",
+        "signals conflict", "tested the live options gate",
+        "517 sampled market windows", "$426 maximum loss", "$500 limit",
+        "reachability check, not options profit", "during live market hours",
         "$10,000", "$106,711", "$38,629", "13.37%", "9.48%",
         "$100,000 start", "$95.32", "$57.99", "$153.31",
-        "Judges can inspect the 15 Alpaca ETF fill events", "public repository",
+        "Judges can inspect the 15 Alpaca ETF fill events", "826 automated checks", "public repository",
     ]
     for phrase in required:
         if phrase.lower() not in narration.lower():

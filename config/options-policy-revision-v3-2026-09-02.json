@@ -3,10 +3,12 @@
   "revision_id": "live-options-v3-2026-09-02",
   "recorded_at": "2026-09-02T04:01:01.000Z",
   "activation": {
-    "status": "PREPARED_NOT_PUSHED",
+    "status": "ACTIVE_ON_MAIN",
+    "activated_at": "2026-09-02T04:08:18Z",
     "implementation_commit": "318c94379af14595e09f414504be8080bc822048",
     "workflow_pin_target": "318c94379af14595e09f414504be8080bc822048",
-    "deployment_requires": "Push the implementation commit and this follow-up pin commit before the cloud runner can execute v3."
+    "deployment_commit": "d8e1fcceb50552c0bcd3cd11e3aad1cec8e454e4",
+    "deployment_note": "The implementation and pinned cloud workflow were pushed to origin/main before this activation record was finalized."
   },
   "reason": {
     "trigger": "PROSPECTIVE_FAIR_SURFACE_REACHABILITY_AUDIT",

@@ -40,7 +40,7 @@
     "options:calibration": "node scripts/build_options_policy_calibration.mjs --verify-existing",
     "video:build": "python3 scripts/build_demo_video.py",
     "submission:check": "node scripts/check_submission_artifacts.mjs",
-    "verify": "npm run lint && npm test && npm run demo && npm run check && npm run llama:decision-check && npm run research:economic-check && npm run economic:decision-check && npm run economic:options-replay-check && npm run research:forward-trial && npm run research:forward-trial-live && npm run mcp:verify && npm run build && npm run submission:check"
+    "verify": "npm run lint && npm test && npm run demo && npm run check && npm run llama:decision-check && npm run research:economic-check && npm run economic:decision-check && npm run economic:options-replay-check && npm run options:calibration && npm run research:forward-trial && npm run research:forward-trial-live && npm run mcp:verify && npm run build && npm run submission:check"
   },
   "dependencies": {
     "react": "19.2.6",

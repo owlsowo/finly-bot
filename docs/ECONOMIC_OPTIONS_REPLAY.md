@@ -1,10 +1,12 @@
-# Economic core → model brake → options replay
+# Frozen v1 economic core → model brake → options replay
 
 Finly publishes a deterministic, credential-free architecture receipt at
 [`public/data/economic_options_overlay_replay.json`](../public/data/economic_options_overlay_replay.json).
-It is deliberately a synthetic, non-mutating replay: it proves which component
-owns direction, how model evidence is bounded, and whether the existing options
-compiler can produce a defined-risk SPY vertical. It does **not** claim
+It is deliberately a synthetic, non-mutating replay of the original v1 policy,
+retained byte-for-byte for provenance after live policy v2 was separately
+versioned. It proves which component owned direction in that frozen policy, how
+model evidence was bounded, and whether the compiler produced a defined-risk
+SPY vertical. It does **not** describe live-v2 direction, and it does **not** claim
 historical options profit, a broker fill, or future performance.
 
 The replay evaluates four exact branches against one hashed bullish economic

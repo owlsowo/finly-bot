@@ -205,13 +205,13 @@ const architecture = [
   },
   {
     number: "04",
-    title: "Try to break the idea",
-    body: "Finly removes evidence and changes inputs to see whether the decision survives.",
+    title: "Challenge the idea",
+    body: "Finly publishes what changes when evidence is removed or inputs are nudged.",
   },
   {
     number: "05",
-    title: "Trade—or do nothing",
-    body: "Only a proposal that passes every check reaches Alpaca. Otherwise, nothing moves.",
+    title: "Apply the hard limits",
+    body: "One contract, $500 maximum loss, fresh data, exact order binding, and broker read-back control execution.",
   },
 ] as const;
 
@@ -226,14 +226,14 @@ const sourceFamilyCopy = {
   aligned: {
     market: ["Market trend", "Recent prices have been falling, and heavier trading gives modest support to that signal."],
     options: ["Options prices", "More traders are paying to protect against a price drop. That supports a negative view, but not an extreme one."],
-    events: ["Economic events", "An upcoming economic report raises the chance of weaker short-term growth."],
-    prediction_market: ["Prediction markets", "A public prediction market points the same way."],
+    events: ["Illustrative public events", "An upcoming economic report raises the chance of weaker short-term growth."],
+    prediction_market: ["Illustrative prediction market", "A public prediction market points the same way."],
   },
   conflict: {
     market: ["Market trend", "Recent prices have been rising."],
     options: ["Options prices", "Prices for time-limited market contracts mildly favor a rise."],
-    events: ["Economic events", "An upcoming economic report points the other way."],
-    prediction_market: ["Prediction markets", "A public prediction market disagrees with the price data."],
+    events: ["Illustrative public events", "An upcoming economic report points the other way."],
+    prediction_market: ["Illustrative prediction market", "A public prediction market disagrees with the price data."],
   },
 } as const;
 
@@ -253,7 +253,7 @@ const deliverables = [
   ["01", "One-page proposal", "Start here for the problem, product, evidence and hackathon fit in plain English.", "./judge/Finly_Judge_Brief.pdf"],
   ["02", "Technical note", "Go deeper into the equations, algorithms, risk proofs, tests and academic sources.", "./judge/Finly_Technical_Proposal.pdf"],
   ["03", "Presentation", "Nine visual slides that move from the product idea to the measured results.", "./judge/Finly_Consulting_Deck.pdf"],
-  ["04", "Demo film", "A 90-second walkthrough of the product, historical test and live paper account.", "./judge/Finly_Demo_Video.mp4"],
+  ["04", "Demo film", "An 81-second walkthrough of the product, historical test and live paper account.", "./judge/Finly_Demo_Video.mp4"],
   ["05", "Repository", "Source code, tests, evidence files, and commands to rerun them.", "https://github.com/owlsowo/finly-bot"],
 ] as const;
 
@@ -280,11 +280,11 @@ const claimEvidence = [
     scope: "Earlier-market replay",
   },
   {
-    claim: "In the options demonstration, code fixed maximum loss at $366 and the decision passed 4/4 source-removal and 32/32 input-change checks.",
-    evidence: "Checked options decision",
-    href: "./data/latest_receipt.json",
-    reproduce: "npm run demo && npm run check",
-    scope: "Decision replay",
+    claim: "Across 517 sampled SPY signals, 11 cleared every alpha gate on a symmetric modeled quote surface: 7 bullish call spreads and 4 bearish put spreads.",
+    evidence: "Bidirectional options eligibility calibration",
+    href: "./data/options_policy_calibration.json",
+    reproduce: "npm run options:calibration",
+    scope: "Signal / quote-surface calibration",
   },
 ] as const;
 
@@ -334,8 +334,8 @@ export function DemoClient() {
             <h1>AI explains the trade. Code controls the money.</h1>
             <p className="hero-deck">
               Finly runs one autonomous strategy with two coordinated sleeves: a rules-based four-fund allocation and
-              an AI-researched options sleeve. Fixed code chooses the contracts, limits any new options trade to $500
-              of possible loss, and can stop it before Alpaca, the paper broker, sees the order.
+              an AI-researched options sleeve. Fresh price momentum can become a bullish call spread, a bearish put
+              spread, or no trade. Fixed code limits any live entry to one contract and $500 of possible loss.
             </p>
             <div className="hero-actions">
               <a className="primary-action" href="#controls">Watch Finly decide</a>
@@ -394,8 +394,8 @@ export function DemoClient() {
             </div>
             <div>
               <dt>Automated checks</dt>
-              <dd>809 checks run</dd>
-              <p>807 passed, zero failed, and two optional private-ledger checks were skipped.</p>
+              <dd>826 checks run</dd>
+              <p>824 passed, zero failed, and two optional private-ledger checks were skipped.</p>
             </div>
           </dl>
         </section>
@@ -413,8 +413,8 @@ export function DemoClient() {
                 Those decisions belong to fixed, tested code.
               </p>
               <p>
-                Before anything reaches Alpaca, Finly removes evidence one source at a time and changes the inputs to see whether
-                the original decision still holds. If it does not, the account stays untouched.
+                Finly publishes how the idea changes when evidence is removed or inputs are nudged. Those diagnostics explain
+                confidence; hard account, quote, size, loss, idempotency, and broker checks still control whether money may move.
               </p>
             </div>
           </div>
@@ -509,10 +509,10 @@ export function DemoClient() {
           <div className="section-intro">
             <div>
               <p className="kicker">Here's how it works</p>
-              <h2>Five checks stand between an AI idea and the account.</h2>
+              <h2>Five steps turn a market idea into a checked broker decision.</h2>
             </div>
             <p>
-              The model explains the opportunity. Code fixes the risk and order. Tests try to break the idea before Alpaca sees it.
+              Price momentum sets the direction. AI explains public news. Code fixes the risk and order, then hard checks decide whether Alpaca may see it.
             </p>
           </div>
 
@@ -531,7 +531,7 @@ export function DemoClient() {
             <span aria-hidden="true">→</span>
             <p>Code fixes the loss and order</p>
             <span aria-hidden="true">→</span>
-            <p>Tests try to break it</p>
+            <p>Diagnostics challenge it</p>
             <span aria-hidden="true">→</span>
             <strong>Trade—or leave the account alone</strong>
           </aside>
@@ -542,11 +542,11 @@ export function DemoClient() {
             <div className="section-intro receipt-intro">
               <div>
                 <p className="kicker">Try it</p>
-                <h2>See what Finly does when the evidence agrees—and when it does not.</h2>
+                <h2>See a capped-loss trade—and the same pipeline deciding not to trade.</h2>
               </div>
               <p>
-                An option is a time-limited contract tied to a market price. Choose either preset: Finly will pair two contracts
-                so the worst possible loss is known in advance—or leave the account alone.
+                These are synthetic architecture examples, not broker fills. Choose either preset: Finly pairs two contracts
+                so the worst possible loss is known in advance—or leaves the account alone.
               </p>
             </div>
 
@@ -593,9 +593,9 @@ export function DemoClient() {
               </li>
               <li>
                 <span>02</span>
-                <p className="decision-story-label">AI conclusion</p>
+                <p className="decision-story-label">Evidence conclusion</p>
                 <strong>{humanDirectionCopy(receipt.intent.direction)}</strong>
-                <p>The model explained the market view. Its explanation did not grant permission to trade.</p>
+                <p>Price evidence set the direction. AI-read events could only weaken or stop it, never grant permission to trade.</p>
               </li>
               <li>
                 <span>03</span>

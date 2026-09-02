@@ -1,91 +1,91 @@
 1
-00:00:00,000 --> 00:00:01,543
+00:00:00,000 --> 00:00:01,902
 AI can sound certain and still be wrong.
 
 2
-00:00:01,543 --> 00:00:03,085
+00:00:01,902 --> 00:00:03,805
 Finly does not give it the account keys.
 
 3
-00:00:03,285 --> 00:00:07,247
+00:00:04,005 --> 00:00:07,561
 Finly is a trading bot that uses real market prices and virtual money.
 
 4
-00:00:07,247 --> 00:00:09,684
+00:00:07,561 --> 00:00:09,749
 AI studies the market and explains a trade.
 
 5
-00:00:09,684 --> 00:00:12,731
+00:00:09,749 --> 00:00:12,485
 Fixed code caps the loss and decides what reaches Alpaca.
 
 6
-00:00:12,931 --> 00:00:16,679
+00:00:12,685 --> 00:00:15,965
 When signals agree, Finly builds a paper-order plan. AI explains it;
 
 7
-00:00:16,679 --> 00:00:18,383
+00:00:15,965 --> 00:00:17,455
 only rules can approve it.
 
 8
-00:00:18,583 --> 00:00:20,254
+00:00:17,655 --> 00:00:19,253
 When signals conflict, Finly does nothing.
 
 9
-00:00:20,254 --> 00:00:22,482
+00:00:19,253 --> 00:00:21,384
 It shows why and stops before the account.
 
 10
-00:00:22,682 --> 00:00:25,791
-Every decision carries a receipt: the proposed position,
+00:00:21,584 --> 00:00:25,943
+We tested the live options gate across 517 sampled market windows.
 
 11
-00:00:25,791 --> 00:00:28,122
-dollars at risk, and checks passed.
+00:00:25,943 --> 00:00:29,114
+A representative eligible spread had $426 maximum loss,
 
 12
-00:00:28,122 --> 00:00:33,174
-This checked S&P 500 options example risked at most $366—below Finly's $500 limit.
+00:00:29,114 --> 00:00:32,680
+below Finly's $500 limit. This is a reachability check,
 
 13
-00:00:33,174 --> 00:00:36,671
-It was a test case, not a live fill.
+00:00:32,680 --> 00:00:33,869
+not options profit.
 
 14
-00:00:36,871 --> 00:00:40,311
+00:00:34,069 --> 00:00:37,220
 Finly's allocation sleeve traded during live market hours,
 
 15
-00:00:40,311 --> 00:00:46,332
+00:00:37,220 --> 00:00:42,732
 while its options sleeve was flat at the close rather than forcing a trade.
 
 16
-00:00:46,332 --> 00:00:52,353
+00:00:42,732 --> 00:00:48,245
 Finly gained $95.32 while SPY lost $57.99—a $153.31 advantage from the same $100,000 start.
 
 17
-00:00:52,553 --> 00:00:58,257
+00:00:48,445 --> 00:00:53,676
 We also replayed the allocation rule from 2013 to 2026.
 
 18
-00:00:58,257 --> 00:01:05,103
+00:00:53,676 --> 00:00:59,954
 $10,000 became $106,711 with Finly—$38,629 more than SPY after modeled trading costs.
 
 19
-00:01:05,303 --> 00:01:10,580
+00:01:00,154 --> 00:01:04,823
 A simpler version of the portfolio was tested on a separate 80-year market record.
 
 20
-00:01:10,580 --> 00:01:18,118
+00:01:04,823 --> 00:01:11,493
 It returned 13.37% a year versus 9.48% for the market and stayed ahead across all 21 tested monthly rebalance schedules.
 
 21
-00:01:18,318 --> 00:01:21,108
+00:01:11,693 --> 00:01:14,731
 Judges can inspect the 15 Alpaca ETF fill events,
 
 22
-00:01:21,108 --> 00:01:23,277
-replay the options decisions, rerun the tests,
+00:01:14,731 --> 00:01:16,756
+replay bullish and bearish options decisions,
 
 23
-00:01:23,277 --> 00:01:25,757
-and verify every number in the public repository.
+00:01:16,756 --> 00:01:19,794
+and rerun 826 automated checks in the public repository.
