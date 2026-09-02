@@ -26,8 +26,14 @@ const execFileAsync = promisify(execFile);
 const STATE_BRANCH = "finly-cloud-state";
 const STATE_FILE = "private-state.enc.json";
 const SNAPSHOT_FILE = "competition_live.json";
-const MAX_FILE_BYTES = 64 * 1024 * 1024;
-const MAX_TOTAL_BYTES = 96 * 1024 * 1024;
+// Decision records include the evidence used by each cycle. A full market
+// session can legitimately exceed the original 64 MiB raw-file ceiling even
+// though the encrypted gzip envelope remains small. Bound the raw payload for
+// memory safety and independently cap the Git-published envelope below
+// GitHub's 100 MiB blob limit.
+const MAX_FILE_BYTES = 192 * 1024 * 1024;
+const MAX_TOTAL_BYTES = 256 * 1024 * 1024;
+const MAX_ENVELOPE_BYTES = 90 * 1024 * 1024;
 const MAX_FILES = 1_024;
 const STATE_ROOTS = Object.freeze([
   "data/ledger",
@@ -231,10 +237,14 @@ export async function restoreCloudState({ root = projectRoot, envelope, secret }
 async function writeEnvelope({ root, output, secret }) {
   const payload = await buildCloudStatePayload({ root });
   const envelope = encryptCloudState(payload, secret);
+  const serialized = `${JSON.stringify(envelope)}\n`;
+  if (Buffer.byteLength(serialized) > MAX_ENVELOPE_BYTES) {
+    throw new Error("encrypted cloud state exceeds its publication size limit");
+  }
   const absolute = resolve(output);
   await mkdir(dirname(absolute), { recursive: true, mode: 0o700 });
   const temporary = `${absolute}.${process.pid}.tmp`;
-  await writeFile(temporary, `${JSON.stringify(envelope)}\n`, { flag: "wx", mode: 0o600 });
+  await writeFile(temporary, serialized, { flag: "wx", mode: 0o600 });
   await rename(temporary, absolute);
   return payload;
 }
