@@ -164,7 +164,12 @@ jobs:
         if: needs.gate.outputs.mode != 'final'
         run: |
           python -m venv .venv-alpaca-mcp
-          .venv-alpaca-mcp/bin/python -m pip install --disable-pip-version-check -r config/cloud-requirements.txt
+          # The workflow checks out the frozen trading revision above. That
+          # revision predates the FastMCP compatibility pin now on main, so
+          # install both audited versions explicitly instead of allowing pip
+          # to resolve the incompatible FastMCP 4.x release.
+          .venv-alpaca-mcp/bin/python -m pip install --disable-pip-version-check \
+            alpaca-mcp-server==2.2.1 fastmcp==3.4.7
 
       - name: Verify both pinned mutation schemas without a broker call
         if: needs.gate.outputs.mode != 'final'
