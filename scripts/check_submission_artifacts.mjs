@@ -327,6 +327,14 @@ const presentationPatterns = [
   ...testCountPatterns,
   ...liveResultPatterns,
 ];
+const onePageRequirementPatterns = [
+  /AI logic\./iu,
+  /Risk gates\./iu,
+  /Alpaca infrastructure\./iu,
+  /official MCP server and Trading API/iu,
+  /deterministic client order ID/iu,
+  /broker acknowledgement.{0,100}(?:exact )?read-back/iu,
+];
 
 const staleStoryPatterns = [
   /G4.{0,80}(?:was )?(?:rejected|denied|not promoted)/iu,
@@ -356,7 +364,7 @@ const documentContracts = [
     label: "one-page proposal",
     sourcePath: "docs/paper/one_page_writeup.md",
     pdfPath: "public/judge/Finly_Judge_Brief.pdf",
-    patterns: commonDocumentPatterns,
+    patterns: [...commonDocumentPatterns, ...onePageRequirementPatterns],
     forbiddenPatterns: [...staleStoryPatterns, ...evaluatorInstructionPatterns],
   },
   {
